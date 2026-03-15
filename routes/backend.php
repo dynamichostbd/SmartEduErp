@@ -36,6 +36,17 @@ use App\Http\Controllers\Backend\MasterSetup\AcademicSessionController;
 use App\Http\Controllers\Backend\MasterSetup\AcademicQualificationController;
 use App\Http\Controllers\Backend\MasterSetup\AcademicClassController;
 use App\Http\Controllers\Backend\MasterSetup\DepartmentController;
+use App\Http\Controllers\Backend\MasterSetup\DesignationController;
+use App\Http\Controllers\Backend\MasterSetup\LeaveTypeController;
+use App\Http\Controllers\Backend\MasterSetup\HolidayController;
+use App\Http\Controllers\Backend\MasterSetup\SubjectController;
+use App\Http\Controllers\Backend\MasterSetup\SubjectClusterController;
+use App\Http\Controllers\Backend\MasterSetup\ExamController as MasterSetupExamController;
+use App\Http\Controllers\Backend\MasterSetup\SubjectAssignController as MasterSetupSubjectAssignController;
+use App\Http\Controllers\Backend\SMS\SmsTemplateController;
+use App\Http\Controllers\Backend\SMS\SmsHistoryController;
+use App\Http\Controllers\Backend\SMS\SmsTransactionController;
+use App\Http\Controllers\Backend\HostelController;
 use App\Http\Controllers\Backend\Website\BusController;
 use App\Http\Controllers\Backend\Website\CalenderController;
 use App\Http\Controllers\Backend\Website\ClassRoutineController;
@@ -66,6 +77,9 @@ Route::middleware('auth:admin')->group(function () {
     Route::post('get-print-invoice', [InvoiceController::class, 'invoicePrint']);
 
     Route::get('get-exam', [ExamController::class, 'index'])->name('get-exam.index');
+    Route::get('get-designation', [DesignationController::class, 'index'])->name('get-designation.index');
+    Route::get('all-subjects', [SubjectController::class, 'allSubjects'])->name('subject.allSubjects');
+    Route::get('all-child-subjects', [SubjectController::class, 'allChildSubjects'])->name('subject.allChildSubjects');
 
     Route::get('get-departments-level', [DepartmentController::class, 'departmentQualifications'])->name('department.departmentQualifications');
 
@@ -207,6 +221,118 @@ Route::middleware(['auth:admin', 'auth.access'])->group(function () {
     Route::put('department/{id}', [DepartmentController::class, 'update'])->name('department.update');
     Route::delete('department/{id}', [DepartmentController::class, 'destroy'])->name('department.destroy');
 
+    // Master Setup: Designation
+    Route::get('designation', [DesignationController::class, 'index'])->name('designation.index');
+    Route::view('designation/create', 'layouts.backend_app')->name('designation.create');
+    Route::post('designation', [DesignationController::class, 'store'])->name('designation.store');
+    Route::get('designation/{id}', [DesignationController::class, 'show'])->name('designation.show');
+    Route::view('designation/{id}/edit', 'layouts.backend_app')->name('designation.edit');
+    Route::put('designation/{id}', [DesignationController::class, 'update'])->name('designation.update');
+    Route::delete('designation/{id}', [DesignationController::class, 'destroy'])->name('designation.destroy');
+
+    // Master Setup: Leave Type
+    Route::get('leaveType', [LeaveTypeController::class, 'index'])->name('leaveType.index');
+    Route::view('leaveType/create', 'layouts.backend_app')->name('leaveType.create');
+    Route::post('leaveType', [LeaveTypeController::class, 'store'])->name('leaveType.store');
+    Route::get('leaveType/{id}', [LeaveTypeController::class, 'show'])->name('leaveType.show');
+    Route::view('leaveType/{id}/edit', 'layouts.backend_app')->name('leaveType.edit');
+    Route::put('leaveType/{id}', [LeaveTypeController::class, 'update'])->name('leaveType.update');
+    Route::delete('leaveType/{id}', [LeaveTypeController::class, 'destroy'])->name('leaveType.destroy');
+
+    // Master Setup: Holiday
+    Route::get('holiday', [HolidayController::class, 'index'])->name('holiday.index');
+    Route::view('holiday/create', 'layouts.backend_app')->name('holiday.create');
+    Route::post('holiday', [HolidayController::class, 'store'])->name('holiday.store');
+    Route::get('holiday/{id}', [HolidayController::class, 'show'])->name('holiday.show');
+    Route::view('holiday/{id}/edit', 'layouts.backend_app')->name('holiday.edit');
+    Route::put('holiday/{id}', [HolidayController::class, 'update'])->name('holiday.update');
+    Route::delete('holiday/{id}', [HolidayController::class, 'destroy'])->name('holiday.destroy');
+
+    // Master Setup: Subject
+    Route::get('subject', [SubjectController::class, 'index'])->name('subject.index');
+    Route::view('subject/create', 'layouts.backend_app')->name('subject.create');
+    Route::post('subject', [SubjectController::class, 'store'])->name('subject.store');
+    Route::get('subject/{id}', [SubjectController::class, 'show'])->name('subject.show');
+    Route::view('subject/{id}/edit', 'layouts.backend_app')->name('subject.edit');
+    Route::put('subject/{id}', [SubjectController::class, 'update'])->name('subject.update');
+    Route::delete('subject/{id}', [SubjectController::class, 'destroy'])->name('subject.destroy');
+
+    // Master Setup: Subject Cluster
+    Route::get('subjectCluster', [SubjectClusterController::class, 'index'])->name('subjectCluster.index');
+    Route::view('subjectCluster/create', 'layouts.backend_app')->name('subjectCluster.create');
+    Route::post('subjectCluster', [SubjectClusterController::class, 'store'])->name('subjectCluster.store');
+    Route::get('subjectCluster/{id}', [SubjectClusterController::class, 'show'])->name('subjectCluster.show');
+    Route::view('subjectCluster/{id}/edit', 'layouts.backend_app')->name('subjectCluster.edit');
+    Route::put('subjectCluster/{id}', [SubjectClusterController::class, 'update'])->name('subjectCluster.update');
+    Route::delete('subjectCluster/{id}', [SubjectClusterController::class, 'destroy'])->name('subjectCluster.destroy');
+
+    // Master Setup: Exam
+    Route::get('exam', [MasterSetupExamController::class, 'index'])->name('exam.index');
+    Route::view('exam/create', 'layouts.backend_app')->name('exam.create');
+    Route::post('exam', [MasterSetupExamController::class, 'store'])->name('exam.store');
+    Route::get('exam/{id}', [MasterSetupExamController::class, 'show'])->name('exam.show');
+    Route::view('exam/{id}/edit', 'layouts.backend_app')->name('exam.edit');
+    Route::put('exam/{id}', [MasterSetupExamController::class, 'update'])->name('exam.update');
+    Route::delete('exam/{id}', [MasterSetupExamController::class, 'destroy'])->name('exam.destroy');
+
+    // Master Setup: Subject Assign
+    Route::get('subjectAssign', [MasterSetupSubjectAssignController::class, 'index'])->name('subjectAssign.index');
+    Route::view('subjectAssign/create', 'layouts.backend_app')->name('subjectAssign.create');
+    Route::post('subjectAssign', [MasterSetupSubjectAssignController::class, 'store'])->name('subjectAssign.store');
+    Route::get('subjectAssign/{id}', [MasterSetupSubjectAssignController::class, 'show'])->name('subjectAssign.show');
+    Route::view('subjectAssign/{id}/edit', 'layouts.backend_app')->name('subjectAssign.edit');
+    Route::put('subjectAssign/{id}', [MasterSetupSubjectAssignController::class, 'update'])->name('subjectAssign.update');
+    Route::delete('subjectAssign/{id}', [MasterSetupSubjectAssignController::class, 'destroy'])->name('subjectAssign.destroy');
+
+    // SMS
+    Route::get('smsTemplate', [SmsTemplateController::class, 'index'])->name('smsTemplate.index');
+    Route::view('smsTemplate/create', 'layouts.backend_app')->name('smsTemplate.create');
+    Route::post('smsTemplate', [SmsTemplateController::class, 'store'])->name('smsTemplate.store');
+    Route::get('smsTemplate/{id}', [SmsTemplateController::class, 'show'])->name('smsTemplate.show');
+    Route::view('smsTemplate/{id}/edit', 'layouts.backend_app')->name('smsTemplate.edit');
+    Route::put('smsTemplate/{id}', [SmsTemplateController::class, 'update'])->name('smsTemplate.update');
+    Route::delete('smsTemplate/{id}', [SmsTemplateController::class, 'destroy'])->name('smsTemplate.destroy');
+
+    Route::get('smsHistory', [SmsHistoryController::class, 'index'])->name('smsHistory.index');
+    Route::view('smsHistory/create', 'layouts.backend_app')->name('smsHistory.create');
+    Route::post('smsHistory', [SmsHistoryController::class, 'store'])->name('smsHistory.store');
+    Route::get('smsHistory/{id}', [SmsHistoryController::class, 'show'])->name('smsHistory.show');
+    Route::delete('smsHistory/{id}', [SmsHistoryController::class, 'destroy'])->name('smsHistory.destroy');
+    Route::get('smsHistory/students', [SmsHistoryController::class, 'students'])->name('smsHistory.students');
+
+    Route::get('smsTransaction', [SmsTransactionController::class, 'index'])->name('smsTransaction.index');
+    Route::view('smsTransaction/create', 'layouts.backend_app')->name('smsTransaction.create');
+    Route::post('smsTransaction', [SmsTransactionController::class, 'store'])->name('smsTransaction.store');
+    Route::get('smsTransaction/{id}', [SmsTransactionController::class, 'show'])->name('smsTransaction.show');
+    Route::delete('smsTransaction/{id}', [SmsTransactionController::class, 'destroy'])->name('smsTransaction.destroy');
+
+    // Hostel
+    Route::get('hostel', [HostelController::class, 'index'])->name('hostel.index');
+    Route::view('hostel/create', 'layouts.backend_app')->name('hostel.create');
+    Route::post('hostel', [HostelController::class, 'store'])->name('hostel.store');
+    Route::get('hostel/{id}', [HostelController::class, 'show'])->name('hostel.show');
+    Route::view('hostel/{id}/edit', 'layouts.backend_app')->name('hostel.edit');
+    Route::put('hostel/{id}', [HostelController::class, 'update'])->name('hostel.update');
+    Route::delete('hostel/{id}', [HostelController::class, 'destroy'])->name('hostel.destroy');
+
+    // Payment Gateway
+    Route::get('paymentGateway', [PaymentGatewayController::class, 'index'])->name('paymentGateway.index');
+    Route::view('paymentGateway/create', 'layouts.backend_app')->name('paymentGateway.create');
+    Route::post('paymentGateway', [PaymentGatewayController::class, 'store'])->name('paymentGateway.store');
+    Route::get('paymentGateway/{id}', [PaymentGatewayController::class, 'show'])->name('paymentGateway.show');
+    Route::view('paymentGateway/{id}/edit', 'layouts.backend_app')->name('paymentGateway.edit');
+    Route::put('paymentGateway/{id}', [PaymentGatewayController::class, 'update'])->name('paymentGateway.update');
+    Route::delete('paymentGateway/{id}', [PaymentGatewayController::class, 'destroy'])->name('paymentGateway.destroy');
+
+    // Fee Setup
+    Route::get('feeSetup', [FeeSetupController::class, 'index'])->name('feeSetup.index');
+    Route::view('feeSetup/create', 'layouts.backend_app')->name('feeSetup.create');
+    Route::post('feeSetup', [FeeSetupController::class, 'store'])->name('feeSetup.store');
+    Route::get('feeSetup/{id}', [FeeSetupController::class, 'show'])->name('feeSetup.show');
+    Route::view('feeSetup/{id}/edit', 'layouts.backend_app')->name('feeSetup.edit');
+    Route::put('feeSetup/{id}', [FeeSetupController::class, 'update'])->name('feeSetup.update');
+    Route::delete('feeSetup/{id}', [FeeSetupController::class, 'destroy'])->name('feeSetup.destroy');
+
     Route::get('student', [StudentController::class, 'index'])->name('student.index');
 
     Route::get('admin', [AdminManagementController::class, 'index'])->name('admin.index');
@@ -279,6 +405,8 @@ Route::middleware(['auth:admin', 'auth.access'])->group(function () {
     Route::get('all-account', [PaymentGatewayController::class, 'allAccount']);
 
     Route::get('fees-lists', [FeeSetupController::class, 'feesLists'])->name('fees.lists');
+    Route::get('exist-feeSetup', [FeeSetupController::class, 'existSetup']);
+    Route::get('get-classes', [FeeSetupController::class, 'getClasses']);
 
     Route::get('admin-admit-card-four-in-one', [StudentController::class, 'adminAdmitCard'])->name('admin.admitCard.index');
     Route::get('admin-admit-card-two-in-one', [StudentController::class, 'adminAdmitCardTwoInOne'])->name('admin.admitCardTwoInOne.index');
@@ -310,7 +438,13 @@ Route::middleware(['auth:admin', 'auth.access'])->group(function () {
     Route::put('registrationNoVerify/{id}', [RegistrationNoVerifyController::class, 'update']);
     Route::delete('registrationNoVerify/{id}', [RegistrationNoVerifyController::class, 'destroy']);
 
-    Route::get('accountHead', [AccountHeadController::class, 'index']);
+    Route::get('accountHead', [AccountHeadController::class, 'index'])->name('accountHead.index');
+    Route::view('accountHead/create', 'layouts.backend_app')->name('accountHead.create');
+    Route::post('accountHead', [AccountHeadController::class, 'store'])->name('accountHead.store');
+    Route::get('accountHead/{id}', [AccountHeadController::class, 'show'])->name('accountHead.show');
+    Route::view('accountHead/{id}/edit', 'layouts.backend_app')->name('accountHead.edit');
+    Route::put('accountHead/{id}', [AccountHeadController::class, 'update'])->name('accountHead.update');
+    Route::delete('accountHead/{id}', [AccountHeadController::class, 'destroy'])->name('accountHead.destroy');
     Route::get('get-paymentGateway', [PaymentGatewayController::class, 'index']);
 
     Route::get('certificateTemplate/list', [CertificateTemplateController::class, 'index']);

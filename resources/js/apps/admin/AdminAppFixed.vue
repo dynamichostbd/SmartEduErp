@@ -326,6 +326,88 @@ export default {
             if (p.match(/^\/admin\/department\/[0-9]+\/edit$/)) return { file: './pages/DepartmentManage.vue', props: { systems: this.systems, departmentId: this.numericId('/admin/department/') } }
             if (p.match(/^\/admin\/department\/[0-9]+$/)) return { file: './pages/DepartmentView.vue', props: { departmentId: this.numericId('/admin/department/') } }
 
+            // Designation
+            if (p === '/admin/designation') return { file: './pages/DesignationIndex.vue', props: { systems: this.systems } }
+            if (p === '/admin/designation/create') return { file: './pages/DesignationManage.vue', props: { systems: this.systems } }
+            if (p.match(/^\/admin\/designation\/[0-9]+\/edit$/)) return { file: './pages/DesignationManage.vue', props: { systems: this.systems, designationId: this.numericId('/admin/designation/') } }
+            if (p.match(/^\/admin\/designation\/[0-9]+$/)) return { file: './pages/DesignationView.vue', props: { designationId: this.numericId('/admin/designation/') } }
+
+            // Leave Type
+            if (p === '/admin/leaveType') return { file: './pages/LeaveTypeIndex.vue', props: { systems: this.systems } }
+            if (p === '/admin/leaveType/create') return { file: './pages/LeaveTypeManage.vue', props: { systems: this.systems } }
+            if (p.match(/^\/admin\/leaveType\/[0-9]+\/edit$/)) return { file: './pages/LeaveTypeManage.vue', props: { systems: this.systems, leaveTypeId: this.numericId('/admin/leaveType/') } }
+            if (p.match(/^\/admin\/leaveType\/[0-9]+$/)) return { file: './pages/LeaveTypeView.vue', props: { leaveTypeId: this.numericId('/admin/leaveType/') } }
+
+            // Holiday
+            if (p === '/admin/holiday') return { file: './pages/HolidayIndex.vue', props: { systems: this.systems } }
+            if (p === '/admin/holiday/create') return { file: './pages/HolidayManage.vue', props: { systems: this.systems } }
+            if (p.match(/^\/admin\/holiday\/[0-9]+\/edit$/)) return { file: './pages/HolidayManage.vue', props: { systems: this.systems, holidayId: this.numericId('/admin/holiday/') } }
+            if (p.match(/^\/admin\/holiday\/[0-9]+$/)) return { file: './pages/HolidayView.vue', props: { holidayId: this.numericId('/admin/holiday/') } }
+
+            // Subject
+            if (p === '/admin/subject') return { file: './pages/SubjectIndex.vue', props: { systems: this.systems } }
+            if (p === '/admin/subject/create') return { file: './pages/SubjectManage.vue', props: { systems: this.systems } }
+            if (p.match(/^\/admin\/subject\/[0-9]+\/edit$/)) return { file: './pages/SubjectManage.vue', props: { systems: this.systems, subjectId: this.numericId('/admin/subject/') } }
+            if (p.match(/^\/admin\/subject\/[0-9]+$/)) return { file: './pages/SubjectView.vue', props: { subjectId: this.numericId('/admin/subject/') } }
+
+            // Subject Cluster
+            if (p === '/admin/subjectCluster') return { file: './pages/SubjectClusterIndex.vue', props: { systems: this.systems } }
+            if (p === '/admin/subjectCluster/create') return { file: './pages/SubjectClusterManage.vue', props: { systems: this.systems } }
+            if (p.match(/^\/admin\/subjectCluster\/[0-9]+\/edit$/)) return { file: './pages/SubjectClusterManage.vue', props: { systems: this.systems, subjectClusterId: this.numericId('/admin/subjectCluster/') } }
+            if (p.match(/^\/admin\/subjectCluster\/[0-9]+$/)) return { file: './pages/SubjectClusterView.vue', props: { subjectClusterId: this.numericId('/admin/subjectCluster/') } }
+
+            // Exam
+            if (p === '/admin/exam') return { file: './pages/ExamIndex.vue', props: { systems: this.systems } }
+            if (p === '/admin/exam/create') return { file: './pages/ExamManage.vue', props: { systems: this.systems } }
+            if (p.match(/^\/admin\/exam\/[0-9]+\/edit$/)) return { file: './pages/ExamManage.vue', props: { systems: this.systems, examId: this.numericId('/admin/exam/') } }
+            if (p.match(/^\/admin\/exam\/[0-9]+$/)) return { file: './pages/ExamView.vue', props: { examId: this.numericId('/admin/exam/') } }
+
+            // Subject Assign
+            if (p === '/admin/subjectAssign') return { file: './pages/SubjectAssignIndex.vue', props: { systems: this.systems } }
+            if (p === '/admin/subjectAssign/create') return { file: './pages/SubjectAssignManage.vue', props: { systems: this.systems } }
+            if (p.match(/^\/admin\/subjectAssign\/[0-9]+\/edit$/)) return { file: './pages/SubjectAssignManage.vue', props: { systems: this.systems, subjectAssignId: this.numericId('/admin/subjectAssign/') } }
+            if (p.match(/^\/admin\/subjectAssign\/[0-9]+$/)) return { file: './pages/SubjectAssignView.vue', props: { subjectAssignId: this.numericId('/admin/subjectAssign/') } }
+
+            // SMS Template
+            if (p === '/admin/smsTemplate') return { file: './pages/SmsTemplateIndex.vue', props: { systems: this.systems } }
+            if (p === '/admin/smsTemplate/create') return { file: './pages/SmsTemplateManage.vue', props: { systems: this.systems } }
+            if (p.match(/^\/admin\/smsTemplate\/[0-9]+\/edit$/)) return { file: './pages/SmsTemplateManage.vue', props: { systems: this.systems, smsTemplateId: this.numericId('/admin/smsTemplate/') } }
+            if (p.match(/^\/admin\/smsTemplate\/[0-9]+$/)) return { file: './pages/SmsTemplateView.vue', props: { systems: this.systems, smsTemplateId: this.numericId('/admin/smsTemplate/') } }
+
+            // SMS History
+            if (p === '/admin/smsHistory') return { file: './pages/SmsHistoryIndex.vue', props: { systems: this.systems } }
+            if (p === '/admin/smsHistory/create') return { file: './pages/SmsHistoryManage.vue', props: { systems: this.systems } }
+            if (p.match(/^\/admin\/smsHistory\/[0-9]+$/)) return { file: './pages/SmsHistoryView.vue', props: { smsHistoryId: this.numericId('/admin/smsHistory/') } }
+
+            // SMS Transaction
+            if (p === '/admin/smsTransaction') return { file: './pages/SmsTransactionIndex.vue', props: { systems: this.systems } }
+            if (p === '/admin/smsTransaction/create') return { file: './pages/SmsTransactionManage.vue', props: { systems: this.systems } }
+            if (p.match(/^\/admin\/smsTransaction\/[0-9]+$/)) return { file: './pages/SmsTransactionView.vue', props: { smsTransactionId: this.numericId('/admin/smsTransaction/') } }
+
+            // Hostel
+            if (p === '/admin/hostel') return { file: './pages/HostelIndex.vue', props: { systems: this.systems } }
+            if (p === '/admin/hostel/create') return { file: './pages/HostelManage.vue', props: { systems: this.systems } }
+            if (p.match(/^\/admin\/hostel\/[0-9]+\/edit$/)) return { file: './pages/HostelManage.vue', props: { systems: this.systems, hostelId: this.numericId('/admin/hostel/') } }
+            if (p.match(/^\/admin\/hostel\/[0-9]+$/)) return { file: './pages/HostelView.vue', props: { hostelId: this.numericId('/admin/hostel/') } }
+
+            // Payment Gateway
+            if (p === '/admin/paymentGateway') return { file: './pages/PaymentGatewayIndex.vue', props: { systems: this.systems } }
+            if (p === '/admin/paymentGateway/create') return { file: './pages/PaymentGatewayManage.vue', props: { systems: this.systems } }
+            if (p.match(/^\/admin\/paymentGateway\/[0-9]+\/edit$/)) return { file: './pages/PaymentGatewayManage.vue', props: { systems: this.systems, paymentGatewayId: this.numericId('/admin/paymentGateway/') } }
+            if (p.match(/^\/admin\/paymentGateway\/[0-9]+$/)) return { file: './pages/PaymentGatewayView.vue', props: { systems: this.systems, paymentGatewayId: this.numericId('/admin/paymentGateway/') } }
+
+            // Account Head
+            if (p === '/admin/accountHead') return { file: './pages/AccountHeadIndex.vue', props: { systems: this.systems } }
+            if (p === '/admin/accountHead/create') return { file: './pages/AccountHeadManage.vue', props: { systems: this.systems } }
+            if (p.match(/^\/admin\/accountHead\/[0-9]+\/edit$/)) return { file: './pages/AccountHeadManage.vue', props: { systems: this.systems, accountHeadId: this.numericId('/admin/accountHead/') } }
+            if (p.match(/^\/admin\/accountHead\/[0-9]+$/)) return { file: './pages/AccountHeadView.vue', props: { accountHeadId: this.numericId('/admin/accountHead/') } }
+
+            // Fee Setup
+            if (p === '/admin/feeSetup') return { file: './pages/FeeSetupIndex.vue', props: { systems: this.systems } }
+            if (p === '/admin/feeSetup/create') return { file: './pages/FeeSetupManage.vue', props: { systems: this.systems } }
+            if (p.match(/^\/admin\/feeSetup\/[0-9]+\/edit$/)) return { file: './pages/FeeSetupManage.vue', props: { systems: this.systems, feeSetupId: this.numericId('/admin/feeSetup/') } }
+            if (p.match(/^\/admin\/feeSetup\/[0-9]+$/)) return { file: './pages/FeeSetupView.vue', props: { systems: this.systems, feeSetupId: this.numericId('/admin/feeSetup/') } }
+
             // Admin
             if (p === '/admin/admin') return { file: './pages/AdminIndex.vue', props: { systems: this.systems } }
             if (p === '/admin/admin/create') return { file: './pages/AdminManage.vue', props: { systems: this.systems } }
@@ -751,6 +833,34 @@ export default {
             if (name === 'academicClass.create') return '/admin/academicClass/create'
             if (name === 'department.index') return '/admin/department'
             if (name === 'department.create') return '/admin/department/create'
+            if (name === 'designation.index') return '/admin/designation'
+            if (name === 'designation.create') return '/admin/designation/create'
+            if (name === 'leaveType.index') return '/admin/leaveType'
+            if (name === 'leaveType.create') return '/admin/leaveType/create'
+            if (name === 'holiday.index') return '/admin/holiday'
+            if (name === 'holiday.create') return '/admin/holiday/create'
+            if (name === 'subject.index') return '/admin/subject'
+            if (name === 'subject.create') return '/admin/subject/create'
+            if (name === 'subjectCluster.index') return '/admin/subjectCluster'
+            if (name === 'subjectCluster.create') return '/admin/subjectCluster/create'
+            if (name === 'exam.index') return '/admin/exam'
+            if (name === 'exam.create') return '/admin/exam/create'
+            if (name === 'subjectAssign.index') return '/admin/subjectAssign'
+            if (name === 'subjectAssign.create') return '/admin/subjectAssign/create'
+            if (name === 'smsTemplate.index') return '/admin/smsTemplate'
+            if (name === 'smsTemplate.create') return '/admin/smsTemplate/create'
+            if (name === 'smsHistory.index') return '/admin/smsHistory'
+            if (name === 'smsHistory.create') return '/admin/smsHistory/create'
+            if (name === 'smsTransaction.index') return '/admin/smsTransaction'
+            if (name === 'smsTransaction.create') return '/admin/smsTransaction/create'
+            if (name === 'hostel.index') return '/admin/hostel'
+            if (name === 'hostel.create') return '/admin/hostel/create'
+            if (name === 'paymentGateway.index') return '/admin/paymentGateway'
+            if (name === 'paymentGateway.create') return '/admin/paymentGateway/create'
+            if (name === 'accountHead.index') return '/admin/accountHead'
+            if (name === 'accountHead.create') return '/admin/accountHead/create'
+            if (name === 'feeSetup.index') return '/admin/feeSetup'
+            if (name === 'feeSetup.create') return '/admin/feeSetup/create'
             if (name === 'videoSlider.index') return '/admin/videoSlider'
             if (name === 'videoSlider.create') return '/admin/videoSlider/create'
             if (name === 'bus.index') return '/admin/bus'
@@ -776,6 +886,7 @@ export default {
             if (name === 'registrationNoVerify.index') return '/admin/registrationNoVerify'
             if (name === 'certificateApplication.index') return '/admin/certificateApplication'
             if (name === 'certificateTemplate.index') return '/admin/certificateTemplate'
+            if (name === 'approveStudent.index') return '/admin/onlineAdmission'
             if (name === 'onlineAdmission.index') return '/admin/onlineAdmission'
             if (name === 'onlineAdmission.rejectedList') return '/admin/onlineAdmission-rejected'
             if (name === 'onlineAdmissionRollVerify.index') return '/admin/onlineAdmissionRollVerify'
