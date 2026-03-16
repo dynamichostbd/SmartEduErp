@@ -46,83 +46,108 @@
                 </div>
 
                 <div class="mt-4 overflow-x-auto rounded-xl border border-slate-200">
-                    <table class="min-w-full divide-y divide-slate-200 text-sm">
+                    <table class="min-w-full border-collapse text-sm">
                         <thead class="bg-slate-50">
                             <tr>
-                                <th class="px-3 py-2 text-left font-semibold text-slate-700">SI.</th>
-                                <th class="px-3 py-2 text-left font-semibold text-slate-700" colspan="2">Name of Subjects</th>
-                                <th v-if="it?.result?.has_ct_mark" class="px-3 py-2 text-left font-semibold text-slate-700">CT</th>
-                                <th class="px-3 py-2 text-left font-semibold text-slate-700">CQ</th>
-                                <th class="px-3 py-2 text-left font-semibold text-slate-700">MCQ</th>
-                                <th class="px-3 py-2 text-left font-semibold text-slate-700">Prac.</th>
-                                <th class="px-3 py-2 text-left font-semibold text-slate-700">Obtained</th>
-                                <th class="px-3 py-2 text-left font-semibold text-slate-700">Total Obtained</th>
-                                <th class="px-3 py-2 text-left font-semibold text-slate-700">Letter Grade</th>
-                                <th class="px-3 py-2 text-left font-semibold text-slate-700">Grade Point</th>
-                                <th class="px-3 py-2 text-left font-semibold text-slate-700">GPA</th>
-                                <th class="px-3 py-2 text-left font-semibold text-slate-700">GRADE</th>
+                                <th class="border border-slate-200 px-3 py-2 text-left font-semibold text-slate-700">SI.</th>
+                                <th class="border border-slate-200 px-3 py-2 text-left font-semibold text-slate-700" colspan="2">Name of Subjects</th>
+                                <th v-if="it?.result?.has_ct_mark" class="border border-slate-200 px-3 py-2 text-left font-semibold text-slate-700">CT</th>
+                                <th class="border border-slate-200 px-3 py-2 text-left font-semibold text-slate-700">CQ</th>
+                                <th class="border border-slate-200 px-3 py-2 text-left font-semibold text-slate-700">MCQ</th>
+                                <th class="border border-slate-200 px-3 py-2 text-left font-semibold text-slate-700">Prac.</th>
+                                <th class="border border-slate-200 px-3 py-2 text-left font-semibold text-slate-700">Obtained</th>
+                                <th class="border border-slate-200 px-3 py-2 text-left font-semibold text-slate-700">Total Obtained</th>
+                                <th class="border border-slate-200 px-3 py-2 text-left font-semibold text-slate-700">Letter Grade</th>
+                                <th class="border border-slate-200 px-3 py-2 text-left font-semibold text-slate-700">Grade Point</th>
+                                <th class="border border-slate-200 px-3 py-2 text-left font-semibold text-slate-700">GPA</th>
+                                <th class="border border-slate-200 px-3 py-2 text-left font-semibold text-slate-700">GRADE</th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y divide-slate-200 bg-white">
-                            <tr v-for="(mark, key) in (it?.marks || [])" :key="'mk-all-row-' + (it?.id || idx) + '-' + key">
-                                <td v-if="shouldShowMergedCell(it?.marks, key)" :rowspan="getMergedCellRowspan(it?.marks, key)" class="px-3 py-2 text-center text-slate-800">
+                        <tbody class="bg-white">
+                            <tr
+                                v-for="(mark, key) in (it?.marks || [])"
+                                :key="'mk-all-row-' + (it?.id || idx) + '-' + key"
+                                :class="key % 2 === 1 ? 'bg-slate-50' : 'bg-white'"
+                            >
+                                <td
+                                    v-if="shouldShowMergedCell(it?.marks, key)"
+                                    :rowspan="getMergedCellRowspan(it?.marks, key)"
+                                    class="border border-slate-200 px-3 py-2 text-center text-slate-800"
+                                >
                                     {{ getGroupIndex(it?.marks, key) }}
                                 </td>
 
                                 <td
                                     v-if="mark?.parent_subject_name && shouldShowMergedCell(it?.marks, key)"
                                     :rowspan="getMergedCellRowspan(it?.marks, key)"
-                                    class="px-3 py-2 text-slate-800"
+                                    class="border border-slate-200 px-3 py-2 text-slate-800"
                                     :class="Number(mark?.is_fourth_subject || 0) === 1 ? 'text-red-600' : ''"
                                 >
                                     {{ mark?.parent_subject_name || '' }}
                                     <span v-if="Number(mark?.is_fourth_subject || 0) === 1">(4th)</span>
                                 </td>
 
-                                <td v-if="!mark?.parent_subject_name" colspan="2" class="px-3 py-2 text-slate-800" :class="Number(mark?.is_fourth_subject || 0) === 1 ? 'text-red-600' : ''">
+                                <td
+                                    v-if="!mark?.parent_subject_name"
+                                    colspan="2"
+                                    class="border border-slate-200 px-3 py-2 text-slate-800"
+                                    :class="Number(mark?.is_fourth_subject || 0) === 1 ? 'text-red-600' : ''"
+                                >
                                     {{ mark?.subject?.name_en || '' }}
                                     <span v-if="Number(mark?.is_fourth_subject || 0) === 1">(4th)</span>
                                 </td>
-                                <td v-else class="px-3 py-2 text-slate-800">{{ mark?.subject?.name_en || '' }}</td>
+                                <td v-else class="border border-slate-200 px-3 py-2 text-slate-800">{{ mark?.subject?.name_en || '' }}</td>
 
-                                <td v-if="it?.result?.has_ct_mark" class="px-3 py-2 text-center text-slate-800">
+                                <td v-if="it?.result?.has_ct_mark" class="border border-slate-200 px-3 py-2 text-center text-slate-800">
                                     <span v-if="Number(mark?.is_absent || 0) === 1 && (mark?.ct_mark ?? null) === null && mark?.ct_allocated" class="text-red-600">ABS</span>
                                     <span v-else>{{ mark?.ct_mark ?? '' }}</span>
                                 </td>
-                                <td class="px-3 py-2 text-center text-slate-800">
+                                <td class="border border-slate-200 px-3 py-2 text-center text-slate-800">
                                     <span v-if="Number(mark?.is_absent || 0) === 1 && (mark?.cq_mark ?? null) === null && mark?.cq_allocated" class="text-red-600">ABS</span>
                                     <span v-else>{{ mark?.cq_mark ?? '' }}</span>
                                 </td>
-                                <td class="px-3 py-2 text-center text-slate-800">
+                                <td class="border border-slate-200 px-3 py-2 text-center text-slate-800">
                                     <span v-if="Number(mark?.is_absent || 0) === 1 && (mark?.mcq_mark ?? null) === null && mark?.mcq_allocated" class="text-red-600">ABS</span>
                                     <span v-else>{{ mark?.mcq_mark ?? '' }}</span>
                                 </td>
-                                <td class="px-3 py-2 text-center text-slate-800">
+                                <td class="border border-slate-200 px-3 py-2 text-center text-slate-800">
                                     <span v-if="Number(mark?.is_absent || 0) === 1 && (mark?.practical_mark ?? null) === null && mark?.practical_allocated" class="text-red-600">ABS</span>
                                     <span v-else>{{ mark?.practical_mark ?? '' }}</span>
                                 </td>
-                                <td class="px-3 py-2 text-center text-slate-800">{{ mark?.obtained_mark ?? '' }}</td>
+                                <td class="border border-slate-200 px-3 py-2 text-center text-slate-800">{{ mark?.obtained_mark ?? '' }}</td>
 
-                                <td v-if="shouldShowMergedCell(it?.marks, key)" :rowspan="getMergedCellRowspan(it?.marks, key)" class="px-3 py-2 text-center text-slate-800">
+                                <td
+                                    v-if="shouldShowMergedCell(it?.marks, key)"
+                                    :rowspan="getMergedCellRowspan(it?.marks, key)"
+                                    class="border border-slate-200 px-3 py-2 text-center text-slate-800"
+                                >
                                     {{ mark?.total_mark ?? '' }}
                                 </td>
-                                <td v-if="shouldShowMergedCell(it?.marks, key)" :rowspan="getMergedCellRowspan(it?.marks, key)" class="px-3 py-2 text-center text-slate-800">
+                                <td
+                                    v-if="shouldShowMergedCell(it?.marks, key)"
+                                    :rowspan="getMergedCellRowspan(it?.marks, key)"
+                                    class="border border-slate-200 px-3 py-2 text-center text-slate-800"
+                                >
                                     {{ mark?.letter_grade ?? '' }}
                                 </td>
-                                <td v-if="shouldShowMergedCell(it?.marks, key)" :rowspan="getMergedCellRowspan(it?.marks, key)" class="px-3 py-2 text-center text-slate-800">
+                                <td
+                                    v-if="shouldShowMergedCell(it?.marks, key)"
+                                    :rowspan="getMergedCellRowspan(it?.marks, key)"
+                                    class="border border-slate-200 px-3 py-2 text-center text-slate-800"
+                                >
                                     {{ mark?.gpa ?? '' }}
                                 </td>
 
-                                <td v-if="key === 0" class="px-3 py-2 text-center text-slate-800" :rowspan="(it?.marks || []).length">
+                                <td v-if="key === 0" class="border border-slate-200 px-3 py-2 text-center text-slate-800" :rowspan="(it?.marks || []).length">
                                     {{ it?.result_details?.gpa ?? '' }}
                                 </td>
-                                <td v-if="key === 0" class="px-3 py-2 text-center text-slate-800" :rowspan="(it?.marks || []).length">
+                                <td v-if="key === 0" class="border border-slate-200 px-3 py-2 text-center text-slate-800" :rowspan="(it?.marks || []).length">
                                     {{ it?.result_details?.letter_grade ?? '' }}
                                 </td>
                             </tr>
 
                             <tr v-if="!(it?.marks || []).length">
-                                <td colspan="13" class="px-3 py-10 text-center text-slate-500">No marks found</td>
+                                <td colspan="13" class="border border-slate-200 px-3 py-10 text-center text-slate-500">No marks found</td>
                             </tr>
                         </tbody>
                     </table>

@@ -22,6 +22,7 @@ class AdminAccess
                 'result.bulkMarksheetStatus',
                 'result.downloadBulkMarksheetFile',
                 'result.exportTabulationSheet',
+                'role.getPermissions',
             ];
 
             if (in_array($routeName, $bypassSpaShellRoutes, true)) {

@@ -85,14 +85,22 @@ class Menu extends Model
         return Cache::rememberForever($cacheKey, function () use ($allowed) {
             $select = ['id', 'parent_id', 'menu_name', 'route_name'];
 
-            if (Schema::hasColumn('menus', 'sorting')) $select[] = 'sorting';
-            if (Schema::hasColumn('menus', 'icon')) $select[] = 'icon';
-            if (Schema::hasColumn('menus', 'menu_look_type')) $select[] = 'menu_look_type';
-            if (Schema::hasColumn('menus', 'params')) $select[] = 'params';
-            if (Schema::hasColumn('menus', 'show_dasboard')) $select[] = 'show_dasboard';
+            $hasCol = function (string $col): bool {
+                static $cache = [];
+                if (array_key_exists($col, $cache)) {
+                    return $cache[$col];
+                }
+                return $cache[$col] = Schema::hasColumn('menus', $col);
+            };
+
+            if ($hasCol('sorting')) $select[] = 'sorting';
+            if ($hasCol('icon')) $select[] = 'icon';
+            if ($hasCol('menu_look_type')) $select[] = 'menu_look_type';
+            if ($hasCol('params')) $select[] = 'params';
+            if ($hasCol('show_dasboard')) $select[] = 'show_dasboard';
 
             $q = DB::table('menus')->select($select);
-            if (Schema::hasColumn('menus', 'sorting')) {
+            if ($hasCol('sorting')) {
                 $q->orderBy('sorting', 'asc');
             }
             $rows = $q->orderBy('id', 'asc')->get();

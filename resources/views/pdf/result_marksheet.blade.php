@@ -6,6 +6,34 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Marksheet</title>
     <style type="text/css">
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        table {
+            border-collapse: collapse;
+            border-spacing: 0;
+        }
+
+        td,
+        th {
+            padding: 0;
+            margin: 0;
+        }
+
+        p {
+            margin: 0;
+            padding: 0;
+        }
+
         body {
             position: relative;
             width: 100%;
@@ -13,15 +41,27 @@
             font-size: 18px;
         }
 
-        .marksheet-body img {
-            height: 100%;
+        .marksheet-body {
+            position: relative;
             width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .marksheet-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
         }
 
         .marksheet_name {
             position: absolute;
             top: 150px;
             left: 10px;
+            z-index: 1;
             font-size: 22px;
             font-weight: bold;
             width: 97.5%;
@@ -33,10 +73,11 @@
             left: 193px;
             top: 277px;
             width: 71.4%;
+            z-index: 1;
         }
 
         .marksheet-body .student_info td {
-            height: 35.3px;
+            height: 37.3px;
         }
 
         .marksheet-body .student_info .right_side {
@@ -48,10 +89,11 @@
             left: 98px;
             bottom: 519px;
             width: 83.7%;
+            z-index: 1;
         }
 
         .marksheet-body .marks_info td {
-            height: 39px;
+            height: 40.5px;
             font-size: 14px;
             text-align: center;
             line-height: 17px;
@@ -62,6 +104,7 @@
             left: 98px;
             bottom: 230.5px;
             width: 68.5%;
+            z-index: 1;
         }
 
         .marksheet-body .additional_subject_info td {
@@ -80,14 +123,16 @@
         .marksheet-body .published_date {
             position: absolute;
             left: 132px;
-            bottom: 12px;
+            bottom: 28px;
+            z-index: 1;
             font-size: 16px;
         }
 
         .marksheet-body .merit_position_department {
             position: absolute;
             left: 230px;
-            bottom: 132px;
+            bottom: 152px;
+            z-index: 1;
             font-size: 16px;
             font-weight: bold;
         }
@@ -95,13 +140,15 @@
         .marksheet-body .merit_position_class {
             position: absolute;
             right: 174px;
-            bottom: 132px;
+            bottom: 152px;
+            z-index: 1;
             font-size: 16px;
             font-weight: bold;
         }
 
         @page {
             margin: 0;
+            size: A4 portrait;
         }
     </style>
 </head>
@@ -129,7 +176,7 @@
 
         $mainMarks = collect($marks)
             ->filter(function ($m) {
-                return (int) ($m['additional_subject'] ?? 0) !== 1 && (int) data_get($m, 'subject.is_child', 0) !== 1;
+                return (int) ($m['additional_subject'] ?? 0) !== 1 && (int) data_get($m, 'subject.parent_id', 0) === 0;
             })
             ->values();
 
@@ -150,7 +197,7 @@
     @endphp
 
     <div class="marksheet-body">
-        <img src="{{ !empty($bgImage) ? $bgImage : $bg }}" alt="">
+        <img class="marksheet-bg" src="{{ !empty($bgImage) ? $bgImage : $bg }}" alt="">
         <div class="marksheet_name">
             {{ data_get($result, 'exam.name', '') }}
         </div>

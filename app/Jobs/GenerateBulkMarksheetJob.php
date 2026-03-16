@@ -28,6 +28,25 @@ class GenerateBulkMarksheetJob implements ShouldQueue
         $this->exportId = $exportId;
     }
 
+    private function fetchRemoteImageAsBase64(?string $url): ?string
+    {
+        if (empty($url)) {
+            return null;
+        }
+
+        try {
+            $data = @file_get_contents($url);
+            if (!$data) {
+                return null;
+            }
+
+            $type = strtolower(pathinfo($url, PATHINFO_EXTENSION) ?: 'jpg');
+            return 'data:image/' . $type . ';base64,' . base64_encode($data);
+        } catch (Throwable $e) {
+            return null;
+        }
+    }
+
     public function handle(): void
     {
         ini_set('memory_limit', '4096M');
@@ -75,7 +94,7 @@ class GenerateBulkMarksheetJob implements ShouldQueue
 
             $controller = app(ResultController::class);
             foreach ($detailIds as $detailId) {
-                $payload = $controller->marksheet($detailId)->getData(true);
+                $payload = $controller->marksheet($detailId, 'pdf')->getData(true);
                 if (is_array($payload) && !empty($payload['id'] ?? null)) {
                     $items[] = $payload;
                 }
@@ -83,7 +102,12 @@ class GenerateBulkMarksheetJob implements ShouldQueue
 
             $config = app()->make('siteSettingObj');
 
-            $pdf = Pdf::loadView('pdf.result_marksheet_bulk', ['items' => $items, 'config' => $config])
+            $bgImage = null;
+            if (is_array($config)) {
+                $bgImage = $this->fetchRemoteImageAsBase64($config['marksheet_image'] ?? null);
+            }
+
+            $pdf = Pdf::loadView('pdf.result_marksheet_bulk', ['items' => $items, 'config' => $config, 'bgImage' => $bgImage])
                 ->setPaper('a4', 'portrait')
                 ->setOptions([
                     'isRemoteEnabled' => true,

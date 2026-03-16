@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\App;
 
 class SiteSettingController extends Controller
 {
@@ -18,15 +19,19 @@ class SiteSettingController extends Controller
             return view('layouts.backend_app');
         }
 
+        // Prefer cached site settings for speed (also includes accessor-resolved image URLs)
+        try {
+            $cached = App::make('siteSettingObj');
+            return response()->json(is_array($cached) ? $cached : []);
+        } catch (\Throwable $e) {
+            // fallback below
+        }
+
         if (!Schema::hasTable('site_settings')) {
             return response()->json([], 404);
         }
 
-        $site = SiteSetting::query()->where('id', (int) $id)->first();
-        if (!$site) {
-            $site = SiteSetting::query()->first();
-        }
-
+        $site = SiteSetting::query()->where('id', (int) $id)->first() ?: SiteSetting::query()->first();
         return response()->json($site ? $site->toArray() : []);
     }
 
@@ -85,24 +90,36 @@ class SiteSettingController extends Controller
             if ($request->hasFile($field)) {
                 $file = $request->file($field);
                 if ($file && $file->isValid()) {
-                    $path = $file->storePublicly('upload/conf');
+                    $disk = config('filesystems.default');
+                    if (config('filesystems.disks.spaces') && env('DO_ASSET_URL')) {
+                        $disk = 'spaces';
+                    }
 
-                    // Keep legacy DB format (old ERP): store without leading "upload/"
-                    $path = ltrim((string) $path, '/');
-                    $payload[$field] = preg_replace('#^upload/#i', '', $path);
+                    $collegeName = (string) (config('app.college') ?: env('COLLEGE_NAME', 'default_college'));
+                    $collegeName = trim($collegeName);
+                    $dir = trim($collegeName, '/');
+                    $dir = ($dir !== '' ? $dir : 'default_college') . '/conf';
+
+                    $path = $file->storePublicly($dir, ['disk' => $disk]);
+                    $payload[$field] = ltrim((string) $path, '/');
 
                     // Best-effort delete old file from default disk when possible
                     $old = $row->{$field} ?? null;
                     $old = is_string($old) ? trim($old) : '';
                     if ($old !== '') {
                         $old = ltrim($old, '/');
-                        if (str_starts_with($old, 'conf/')) {
-                            $old = 'upload/' . $old;
-                        }
                         try {
-                            Storage::delete($old);
+                            Storage::disk($disk)->delete($old);
                         } catch (\Throwable $e) {
                             // ignore
+                        }
+
+                        if (str_starts_with($old, 'conf/')) {
+                            try {
+                                Storage::disk($disk)->delete('upload/' . $old);
+                            } catch (\Throwable $e) {
+                                // ignore
+                            }
                         }
                     }
                 }

@@ -120,7 +120,7 @@ class ResultController extends Controller
         ini_set('memory_limit', '2048M');
         set_time_limit(0);
 
-        $data = $this->marksheet($id)->getData(true);
+        $data = $this->marksheet($id, 'pdf')->getData(true);
         if (!is_array($data) || empty($data['id'] ?? null)) {
             abort(404);
         }
@@ -163,7 +163,7 @@ class ResultController extends Controller
         $details = DB::table('result_details')->where('result_id', $id)->orderBy('id')->pluck('id')->map(fn($v) => (int) $v)->values()->all();
         $items = [];
         foreach ($details as $detailId) {
-            $payload = $this->marksheet($detailId)->getData(true);
+            $payload = $this->marksheet($detailId, 'pdf')->getData(true);
             if (is_array($payload) && !empty($payload['id'] ?? null)) {
                 $items[] = $payload;
             }
@@ -353,7 +353,7 @@ class ResultController extends Controller
 
             $marks = $marksByDetailId[$did] ?? [];
             $fourthSubjectId = $fourthSubjectByStudentId[$studentId] ?? null;
-            $marks = $this->normalizeMarksheetMarks($marks, $assignDetailsBySubjectId, $fourthSubjectId, $hasCtMark);
+            $marks = $this->normalizeMarksheetMarks($marks, $assignDetailsBySubjectId, $fourthSubjectId, $hasCtMark, 'view');
 
             $items[] = [
                 'id' => $did,
@@ -398,7 +398,7 @@ class ResultController extends Controller
         ]);
     }
 
-    private function normalizeMarksheetMarks(array $marks, array $assignDetailsBySubjectId, ?int $fourthSubjectId, bool &$hasCtMark): array
+    private function normalizeMarksheetMarks(array $marks, array $assignDetailsBySubjectId, ?int $fourthSubjectId, bool &$hasCtMark, string $mode = 'pdf'): array
     {
         $bySubjectId = [];
         foreach ($marks as $m) {
@@ -460,34 +460,266 @@ class ResultController extends Controller
         }
 
         $hasChildSubjects = !empty($parentIdsWithChildren);
-        $filtered = [];
+        if (!$hasChildSubjects) {
+            foreach ($marks as &$m) {
+                $m['parent_subject_name'] = null;
+            }
+            unset($m);
+            return array_values($marks);
+        }
+
+        if (Schema::hasTable('grade_management')) {
+            $gradeRanges = DB::table('grade_management')
+                ->select(['from_mark', 'to_mark', 'grade', 'gpa'])
+                ->orderBy('from_mark')
+                ->get();
+        } else {
+            $gradeRanges = null;
+        }
+
+        $calcGrade = static function (float $mark) use ($gradeRanges): array {
+            if (!$gradeRanges) {
+                return ['letter_grade' => null, 'gpa' => 0];
+            }
+            foreach ($gradeRanges as $r) {
+                $from = (float) ($r->from_mark ?? 0);
+                $to = (float) ($r->to_mark ?? 0);
+                if ($mark >= $from && $mark <= $to) {
+                    return ['letter_grade' => $r->grade, 'gpa' => (float) ($r->gpa ?? 0)];
+                }
+            }
+            return ['letter_grade' => null, 'gpa' => 0];
+        };
+
+        // View mode: keep child rows (grouped by parent_id), but show total/grade once per group.
+        if ($mode === 'view') {
+            $groups = [];
+            $groupOrder = [];
+            foreach ($marks as $m) {
+                $sub = (array) ($m['subject'] ?? []);
+                $pid = (int) ($sub['parent_id'] ?? 0);
+                $groupId = $pid > 0 ? $pid : (int) ($m['subject_id'] ?? 0);
+                if (!isset($groups[$groupId])) {
+                    $groups[$groupId] = [
+                        'rows' => [],
+                        'has_children' => false,
+                        'parent_name' => null,
+                    ];
+                    $groupOrder[] = $groupId;
+                }
+                if ($pid > 0) {
+                    $groups[$groupId]['has_children'] = true;
+                    if ($groups[$groupId]['parent_name'] === null) {
+                        $groups[$groupId]['parent_name'] = (string) ($sub['parent_name_en'] ?? '');
+                    }
+                }
+                $groups[$groupId]['rows'][] = $m;
+            }
+
+            $final = [];
+            foreach ($groupOrder as $gid) {
+                $g = $groups[$gid] ?? null;
+                if (!$g) continue;
+
+                $rows = $g['rows'] ?? [];
+                $hasChildren = (bool) ($g['has_children'] ?? false);
+                if (!$hasChildren) {
+                    foreach ($rows as $m) {
+                        $m['parent_subject_name'] = null;
+                        $final[] = $m;
+                    }
+                    continue;
+                }
+
+                $childRows = [];
+                $childIds = [];
+                foreach ($rows as $m) {
+                    $sub = (array) ($m['subject'] ?? []);
+                    if ((int) ($sub['parent_id'] ?? 0) > 0) {
+                        $childRows[] = $m;
+                        $childIds[] = (int) ($m['subject_id'] ?? 0);
+                    }
+                }
+
+                // Fallback: if for some reason we don't have child rows, behave like no-children.
+                if (empty($childRows)) {
+                    foreach ($rows as $m) {
+                        $m['parent_subject_name'] = null;
+                        $final[] = $m;
+                    }
+                    continue;
+                }
+
+                $sumTotal = 0.0;
+                $sumObtained = 0.0;
+                $sumCt = 0.0;
+                $absent = false;
+                $additional = 0;
+
+                foreach ($childRows as $cm) {
+                    $sumTotal += (float) ($cm['total_mark'] ?? 0);
+                    $sumObtained += (float) ($cm['obtained_mark'] ?? 0);
+                    $sumCt += (float) ($cm['ct_mark'] ?? 0);
+                    if ((int) ($cm['is_absent'] ?? 0) === 1) {
+                        $absent = true;
+                    }
+                    if ((int) ($cm['additional_subject'] ?? 0) === 1) {
+                        $additional = 1;
+                    }
+                }
+
+                $avgForGrade = count($childRows) > 0 ? ($sumTotal / count($childRows)) : $sumTotal;
+                $grade = $calcGrade($avgForGrade);
+
+                $parentName = (string) ($g['parent_name'] ?? '');
+                if ($parentName === '') {
+                    $sub0 = (array) (($childRows[0]['subject'] ?? []) ?: []);
+                    $parentName = (string) ($sub0['parent_name_en'] ?? '');
+                }
+                $codes = array_values(array_filter(array_unique($childIds)));
+                sort($codes);
+                $suffix = !empty($codes) ? (' (' . implode(', ', $codes) . ')') : '';
+                $parentLabel = trim($parentName . $suffix);
+
+                foreach ($childRows as $i => $m) {
+                    $m['parent_subject_name'] = $parentLabel;
+                    if ($i === 0) {
+                        $m['total_mark'] = $sumTotal;
+                        $m['letter_grade'] = $absent ? 'ABS' : ($grade['letter_grade'] ?? ($m['letter_grade'] ?? null));
+                        $m['gpa'] = $absent ? 0 : ($grade['gpa'] ?? ($m['gpa'] ?? 0));
+                    }
+                    $final[] = $m;
+                }
+            }
+
+            return array_values($final);
+        }
+
+        // PDF mode: show parent subjects only (child rows are aggregated or synthesized).
+        $childGroups = [];
+        foreach ($marks as $m) {
+            $sub = (array) ($m['subject'] ?? []);
+            $pid = (int) ($sub['parent_id'] ?? 0);
+            if ($pid > 0) {
+                $childGroups[$pid] ??= [];
+                $childGroups[$pid][] = $m;
+            }
+        }
+
+        $final = [];
+        $added = [];
+
         foreach ($marks as $m) {
             $sub = (array) ($m['subject'] ?? []);
             $subjectId = (int) ($m['subject_id'] ?? 0);
             $parentId = (int) ($sub['parent_id'] ?? 0);
 
-            if ($hasChildSubjects && isset($parentIdsWithChildren[$subjectId])) {
+            // If this is a child subject row, skip it (we'll display the parent row).
+            if ($parentId > 0) {
+                // If parent mark row already exists, we'll let it render when we reach it.
+                if (isset($bySubjectId[$parentId])) {
+                    continue;
+                }
+
+                // Edge case: only child mark exists, parent mark row is missing.
+                // Synthesize a parent row by aggregating child marks.
+                if (!isset($added[$parentId])) {
+                    $children = $childGroups[$parentId] ?? [$m];
+                    $sumTotal = 0.0;
+                    $sumObtained = 0.0;
+                    $sumCt = 0.0;
+                    $absent = false;
+                    $additional = 0;
+                    $sorting = null;
+
+                    foreach ($children as $cm) {
+                        $sumTotal += (float) ($cm['total_mark'] ?? 0);
+                        $sumObtained += (float) ($cm['obtained_mark'] ?? 0);
+                        $sumCt += (float) ($cm['ct_mark'] ?? 0);
+                        if ((int) ($cm['is_absent'] ?? 0) === 1) {
+                            $absent = true;
+                        }
+                        if ((int) ($cm['additional_subject'] ?? 0) === 1) {
+                            $additional = 1;
+                        }
+                        if ($sorting === null) {
+                            $sorting = $cm['sorting'] ?? null;
+                        } else {
+                            $sorting = min((float) $sorting, (float) ($cm['sorting'] ?? $sorting));
+                        }
+                    }
+
+                    $avgForGrade = count($children) > 0 ? ($sumTotal / count($children)) : $sumTotal;
+                    $grade = $calcGrade($avgForGrade);
+
+                    $synth = $m;
+                    $synth['subject_id'] = $parentId;
+                    $synth['ct_mark'] = $sumCt;
+                    $synth['obtained_mark'] = $sumObtained;
+                    $synth['total_mark'] = $sumTotal;
+                    $synth['sorting'] = $sorting;
+                    $synth['is_absent'] = $absent ? 1 : 0;
+                    $synth['additional_subject'] = $additional;
+                    $synth['letter_grade'] = $absent ? 'ABS' : ($grade['letter_grade'] ?? null);
+                    $synth['gpa'] = $absent ? 0 : ($grade['gpa'] ?? 0);
+                    $synth['is_fourth_subject'] = ($fourthSubjectId && ($parentId === $fourthSubjectId)) ? 1 : ($synth['is_fourth_subject'] ?? 0);
+                    $synth['subject'] = [
+                        'id' => $parentId,
+                        'name_en' => (string) ($sub['parent_name_en'] ?? ($sub['name_en'] ?? '')),
+                        'is_child' => 0,
+                        'parent_id' => 0,
+                        'parent_name_en' => null,
+                    ];
+                    $synth['parent_subject_name'] = null;
+                    $final[] = $synth;
+                    $added[$parentId] = true;
+                }
                 continue;
             }
 
-            if ($hasChildSubjects && $parentId > 0) {
-                $pm = $bySubjectId[$parentId] ?? null;
-                if (is_array($pm)) {
-                    $m['total_mark'] = $pm['total_mark'] ?? $m['total_mark'];
-                    $m['letter_grade'] = $pm['letter_grade'] ?? $m['letter_grade'];
-                    $m['gpa'] = $pm['gpa'] ?? $m['gpa'];
-                    $m['parent_subject_name'] = (string) data_get($pm, 'subject.name_en', '');
-                } else {
-                    $m['parent_subject_name'] = (string) ($sub['parent_name_en'] ?? '');
-                }
-            } else {
-                $m['parent_subject_name'] = null;
+            if (isset($added[$subjectId])) {
+                continue;
             }
 
-            $filtered[] = $m;
+            // If this is a parent subject row but its aggregate is missing/blank, compute display values
+            // from child subjects (old ERP creates/updates a parent aggregate row; in new ERP it may be missing).
+            if (isset($childGroups[$subjectId])) {
+                $curTotal = (float) ($m['total_mark'] ?? 0);
+                $children = $childGroups[$subjectId];
+                $sumTotal = 0.0;
+                $sumObtained = 0.0;
+                $sumCt = 0.0;
+                $absent = false;
+
+                foreach ($children as $cm) {
+                    $sumTotal += (float) ($cm['total_mark'] ?? 0);
+                    $sumObtained += (float) ($cm['obtained_mark'] ?? 0);
+                    $sumCt += (float) ($cm['ct_mark'] ?? 0);
+                    if ((int) ($cm['is_absent'] ?? 0) === 1) {
+                        $absent = true;
+                    }
+                }
+
+                if ($curTotal <= 0 && $sumTotal > 0) {
+                    $avgForGrade = count($children) > 0 ? ($sumTotal / count($children)) : $sumTotal;
+                    $grade = $calcGrade($avgForGrade);
+                    $m['ct_mark'] = $sumCt;
+                    $m['obtained_mark'] = $sumObtained;
+                    $m['total_mark'] = $sumTotal;
+                    $m['is_absent'] = $absent ? 1 : 0;
+                    $m['letter_grade'] = $absent ? 'ABS' : ($grade['letter_grade'] ?? ($m['letter_grade'] ?? null));
+                    $m['gpa'] = $absent ? 0 : ($grade['gpa'] ?? ($m['gpa'] ?? 0));
+                }
+            }
+
+            // Ensure parent display row carries 4th-subject flag even if the selected subject is a child.
+            $m['is_fourth_subject'] = ($m['is_fourth_subject'] ?? 0) ? 1 : (($fourthSubjectId && isset($parentIdsWithChildren[$subjectId]) && $fourthSubjectId === $subjectId) ? 1 : 0);
+            $m['parent_subject_name'] = null;
+            $final[] = $m;
+            $added[$subjectId] = true;
         }
 
-        return array_values($filtered);
+        return array_values($final);
     }
 
     public function downloadBulkMarksheet(Request $request)
@@ -2247,7 +2479,7 @@ class ResultController extends Controller
         ], 200);
     }
 
-    public function marksheet($id)
+    public function marksheet($id, string $mode = 'view')
     {
         if (!Schema::hasTable('result_details') || !Schema::hasTable('result_marks')) {
             return response()->json(['message' => 'Result module not ready'], 422);
@@ -2391,7 +2623,7 @@ class ResultController extends Controller
         }
 
         $hasCtMark = empty($assignDetailsBySubjectId);
-        $marks = $this->normalizeMarksheetMarks($marks, $assignDetailsBySubjectId, $fourthSubjectId, $hasCtMark);
+        $marks = $this->normalizeMarksheetMarks($marks, $assignDetailsBySubjectId, $fourthSubjectId, $hasCtMark, $mode);
 
         return response()->json([
             'id' => $detail->detail_id,

@@ -8,13 +8,34 @@ use Illuminate\Support\Facades\Schema;
 
 trait DynamicDataTrait
 {
+    protected function hasTableCached(string $table): bool
+    {
+        static $cache = [];
+        if (array_key_exists($table, $cache)) {
+            return $cache[$table];
+        }
+
+        return $cache[$table] = Schema::hasTable($table);
+    }
+
+    protected function hasColumnCached(string $table, string $column): bool
+    {
+        static $cache = [];
+        $key = $table . '.' . $column;
+        if (array_key_exists($key, $cache)) {
+            return $cache[$key];
+        }
+
+        return $cache[$key] = Schema::hasColumn($table, $column);
+    }
+
     protected function dynamicData()
     {
-        return Cache::remember('dynamic_data_cache', 600, function () {
+        return Cache::rememberForever('dynamic_data_cache', function () {
             $exams = [];
-            if (Schema::hasTable('exams')) {
+            if ($this->hasTableCached('exams')) {
                 $examCols = ['id', 'name'];
-                if (Schema::hasColumn('exams', 'status')) {
+                if ($this->hasColumnCached('exams', 'status')) {
                     $examCols[] = 'status';
                 }
 
@@ -26,44 +47,44 @@ trait DynamicDataTrait
             }
 
             $accountHeads = [];
-            if (Schema::hasTable('account_heads')) {
+            if ($this->hasTableCached('account_heads')) {
                 $q = DB::table('account_heads');
-                if (Schema::hasColumn('account_heads', 'status')) {
+                if ($this->hasColumnCached('account_heads', 'status')) {
                     $q->where('status', 'active');
                 }
                 $accountHeads = $q->orderBy('id')->pluck('name', 'id')->toArray();
             }
 
             $admissionHeads = [];
-            if (Schema::hasTable('account_heads')) {
+            if ($this->hasTableCached('account_heads')) {
                 $q = DB::table('account_heads');
-                if (Schema::hasColumn('account_heads', 'status')) {
+                if ($this->hasColumnCached('account_heads', 'status')) {
                     $q->where('status', 'active');
                 }
-                if (Schema::hasColumn('account_heads', 'type')) {
+                if ($this->hasColumnCached('account_heads', 'type')) {
                     $q->whereIn('type', ['admission', 'certificate']);
                 }
                 $admissionHeads = $q->orderBy('id')->pluck('name', 'id')->toArray();
             }
 
             $accountsCommons = [];
-            if (Schema::hasTable('payment_gateways') && Schema::hasColumn('payment_gateways', 'store_id')) {
+            if ($this->hasTableCached('payment_gateways') && $this->hasColumnCached('payment_gateways', 'store_id')) {
                 $cols = ['id', 'store_id'];
-                if (Schema::hasColumn('payment_gateways', 'account_no')) {
+                if ($this->hasColumnCached('payment_gateways', 'account_no')) {
                     $cols[] = 'account_no';
                 }
-                if (Schema::hasColumn('payment_gateways', 'title')) {
+                if ($this->hasColumnCached('payment_gateways', 'title')) {
                     $cols[] = 'title';
                 }
-                if (Schema::hasColumn('payment_gateways', 'status')) {
+                if ($this->hasColumnCached('payment_gateways', 'status')) {
                     $cols[] = 'status';
                 }
 
                 $q = DB::table('payment_gateways')->select($cols)->orderByDesc('id');
-                if (Schema::hasColumn('payment_gateways', 'status')) {
+                if ($this->hasColumnCached('payment_gateways', 'status')) {
                     $q->where('status', 'active');
                 }
-                if (Schema::hasColumn('payment_gateways', 'account_no')) {
+                if ($this->hasColumnCached('payment_gateways', 'account_no')) {
                     $q->whereNotNull('account_no');
                 }
 
@@ -71,9 +92,9 @@ trait DynamicDataTrait
             }
 
             $accountsAdmissions = [];
-            if (Schema::hasTable('admission_fee_setups') && Schema::hasColumn('admission_fee_setups', 'store_id')) {
+            if ($this->hasTableCached('admission_fee_setups') && $this->hasColumnCached('admission_fee_setups', 'store_id')) {
                 $cols = ['id', 'store_id'];
-                if (Schema::hasColumn('admission_fee_setups', 'account_no')) {
+                if ($this->hasColumnCached('admission_fee_setups', 'account_no')) {
                     $cols[] = 'account_no';
                 }
                 $accountsAdmissions = DB::table('admission_fee_setups')
@@ -87,21 +108,21 @@ trait DynamicDataTrait
             }
 
             $roles = [];
-            if (Schema::hasTable('roles')) {
+            if ($this->hasTableCached('roles')) {
                 $cols = ['id', 'name'];
-                if (Schema::hasColumn('roles', 'status')) {
+                if ($this->hasColumnCached('roles', 'status')) {
                     $cols[] = 'status';
                 }
 
                 $q = DB::table('roles')->select($cols)->orderBy('id');
-                if (Schema::hasColumn('roles', 'status')) {
+                if ($this->hasColumnCached('roles', 'status')) {
                     $q->where('status', 'active');
                 }
                 $roles = $q->get()->toArray();
             }
 
             $academicClasses = [];
-            if (Schema::hasTable('academic_classes')) {
+            if ($this->hasTableCached('academic_classes')) {
                 $academicClasses = DB::table('academic_classes')
                     ->select('id', 'name', 'academic_qualification_id', 'status')
                     ->orderBy('id')
@@ -110,7 +131,7 @@ trait DynamicDataTrait
             }
 
             $academicQualifications = [];
-            if (Schema::hasTable('academic_qualifications')) {
+            if ($this->hasTableCached('academic_qualifications')) {
                 $academicQualifications = DB::table('academic_qualifications')
                     ->select('id', 'name', 'status')
                     ->orderBy('id')
@@ -119,7 +140,7 @@ trait DynamicDataTrait
             }
 
             $departments = [];
-            if (Schema::hasTable('departments')) {
+            if ($this->hasTableCached('departments')) {
                 $departments = DB::table('departments')
                     ->select('id', 'name', 'status')
                     ->orderBy('id')
@@ -128,7 +149,7 @@ trait DynamicDataTrait
             }
 
             $departmentQualidactions = [];
-            if (Schema::hasTable('department_qualidactions')) {
+            if ($this->hasTableCached('department_qualidactions')) {
                 $departmentQualidactions = DB::table('department_qualidactions')
                     ->select('id', 'department_id', 'academic_qualification_id', 'department_code')
                     ->orderBy('id')
@@ -138,7 +159,7 @@ trait DynamicDataTrait
 
             return [
                 'academic_classes' => $academicClasses,
-                'academic_sessions' => Schema::hasTable('academic_sessions')
+                'academic_sessions' => $this->hasTableCached('academic_sessions')
                     ? DB::table('academic_sessions')
                         ->select('id', 'name', 'status')
                         ->orderBy('id')

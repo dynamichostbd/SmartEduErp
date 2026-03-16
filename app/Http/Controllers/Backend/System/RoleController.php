@@ -19,7 +19,7 @@ class RoleController extends Controller
         }
 
         $cols = Schema::getColumnListing('permissions');
-        if (!in_array('name', $cols, true) || !in_array('route', $cols, true)) {
+        if (!in_array('name', $cols, true) || !in_array('route', $cols, true) || !in_array('parent_id', $cols, true)) {
             return;
         }
 
@@ -47,9 +47,17 @@ class RoleController extends Controller
                     $ins['parent_id'] = null;
                 }
                 if (in_array('route', $cols, true)) {
-                    $ins['route'] = null;
+                    $ins['route'] = '';
                 }
-                $parentId = (int) DB::table('permissions')->insertGetId($ins);
+
+                try {
+                    $parentId = (int) DB::table('permissions')->insertGetId($ins);
+                } catch (\Throwable $e) {
+                    if (array_key_exists('parent_id', $ins)) {
+                        $ins['parent_id'] = 0;
+                    }
+                    $parentId = (int) DB::table('permissions')->insertGetId($ins);
+                }
             }
 
             foreach ($modules as $routePrefix => $actions) {
@@ -281,21 +289,188 @@ class RoleController extends Controller
 
         $this->ensurePermissionRows();
 
-        $parents = DB::table('permissions')->whereNull('parent_id')->orderBy('name')->get();
-        $children = DB::table('permissions')->whereNotNull('parent_id')->orderBy('name')->get()->groupBy('parent_id');
+        $cols = Schema::getColumnListing('permissions');
+        $routeCol = in_array('route', $cols, true) ? 'route' : (in_array('route_name', $cols, true) ? 'route_name' : null);
+        $hasRoute = $routeCol !== null;
+        $hasParentId = in_array('parent_id', $cols, true);
 
+        $select = ['id', 'name'];
+        if ($hasRoute) {
+            $select[] = DB::raw("{$routeCol} as route");
+        }
+        if ($hasParentId) {
+            $select[] = 'parent_id';
+        }
+
+        $all = DB::table('permissions')->select($select)->orderBy('name')->get();
+
+        if ($all->count() === 0 && $hasRoute && Schema::hasTable('menus') && Schema::hasColumn('menus', 'route_name')) {
+            $menus = DB::table('menus')
+                ->select('id', 'parent_id', 'menu_name', 'route_name')
+                ->orderBy('id')
+                ->get();
+
+            $byId = [];
+            foreach ($menus as $m) {
+                $byId[(int) ($m->id ?? 0)] = $m;
+            }
+
+            $findRoot = function ($menuId) use ($byId) {
+                $seen = [];
+                $cur = $byId[(int) $menuId] ?? null;
+                while ($cur && !empty($cur->parent_id)) {
+                    $cid = (int) ($cur->id ?? 0);
+                    if ($cid > 0 && isset($seen[$cid])) {
+                        break;
+                    }
+                    if ($cid > 0) {
+                        $seen[$cid] = true;
+                    }
+                    $cur = $byId[(int) ($cur->parent_id ?? 0)] ?? null;
+                }
+                return $cur;
+            };
+
+            $toTitle = function (?string $text) {
+                $t = trim((string) $text);
+                if ($t === '') {
+                    return 'Permissions';
+                }
+                $t = preg_replace('/[_\-]+/', ' ', $t);
+                $t = preg_replace('/([a-z])([A-Z])/', '$1 $2', $t);
+                $t = preg_replace('/\s+/', ' ', $t);
+                return ucwords($t);
+            };
+
+            $parentsByName = [];
+            if ($hasParentId) {
+                $existingParents = DB::table('permissions')
+                    ->whereNull('parent_id')
+                    ->select('id', 'name')
+                    ->get();
+                foreach ($existingParents as $p) {
+                    $name = (string) ($p->name ?? '');
+                    if ($name !== '') {
+                        $parentsByName[$name] = (int) ($p->id ?? 0);
+                    }
+                }
+            }
+
+            foreach ($menus as $m) {
+                $route = trim((string) ($m->route_name ?? ''));
+                if ($route === '') {
+                    continue;
+                }
+
+                $groupName = null;
+                $root = $findRoot((int) ($m->id ?? 0));
+                if ($root) {
+                    $groupName = $toTitle($root->menu_name ?? null);
+                }
+                if (!$groupName) {
+                    $prefix = str_contains($route, '.') ? explode('.', $route, 2)[0] : $route;
+                    $groupName = $toTitle($prefix);
+                }
+
+                $parentId = null;
+                if ($hasParentId) {
+                    if (!isset($parentsByName[$groupName]) || $parentsByName[$groupName] <= 0) {
+                        $ins = ['name' => $groupName, 'parent_id' => null];
+                        $ins[$routeCol] = '';
+
+                        try {
+                            $parentsByName[$groupName] = (int) DB::table('permissions')->insertGetId($ins);
+                        } catch (\Throwable $e) {
+                            $ins['parent_id'] = 0;
+                            $parentsByName[$groupName] = (int) DB::table('permissions')->insertGetId($ins);
+                        }
+                    }
+                    $parentId = $parentsByName[$groupName] ?? null;
+                }
+
+                $action = str_contains($route, '.') ? (explode('.', $route, 2)[1] ?? $route) : $route;
+                $action = strtolower(trim((string) $action));
+                $action = $action !== '' ? $action : $route;
+
+                $exists = DB::table('permissions')->where($routeCol, $route)->exists();
+                if ($exists) {
+                    continue;
+                }
+
+                $child = ['name' => $action];
+                $child[$routeCol] = $route;
+                if ($hasParentId) {
+                    $child['parent_id'] = $parentId;
+                }
+                DB::table('permissions')->insert($child);
+            }
+
+            $all = DB::table('permissions')->select($select)->orderBy('name')->get();
+        }
+
+        $buildFromFlat = function ($rows) use ($hasRoute) {
+            $groups = [];
+            $groupIndex = 0;
+
+            foreach ($rows as $r) {
+                $route = $hasRoute ? ($r->route ?? null) : null;
+                $prefix = null;
+                if (is_string($route) && $route !== '' && str_contains($route, '.')) {
+                    $prefix = explode('.', $route, 2)[0] ?: null;
+                }
+
+                $groupKey = $prefix ?: 'Permissions';
+                if (!isset($groups[$groupKey])) {
+                    $groupIndex++;
+                    $groups[$groupKey] = [
+                        'id' => 0 - $groupIndex,
+                        'name' => $groupKey,
+                        'route' => null,
+                        'parent_id' => null,
+                        'children' => [],
+                    ];
+                }
+
+                $groups[$groupKey]['children'][] = [
+                    'id' => (int) ($r->id ?? 0),
+                    'name' => $r->name ?? null,
+                    'route' => $hasRoute ? ($r->route ?? null) : null,
+                    'parent_id' => null,
+                ];
+            }
+
+            foreach ($groups as &$g) {
+                usort($g['children'], function ($a, $b) {
+                    return strcmp((string) ($a['name'] ?? ''), (string) ($b['name'] ?? ''));
+                });
+            }
+            unset($g);
+
+            return array_values($groups);
+        };
+
+        if (!$hasParentId) {
+            return response()->json($buildFromFlat($all));
+        }
+
+        $parents = $all->whereNull('parent_id')->values();
+        if ($parents->count() === 0) {
+            return response()->json($buildFromFlat($all));
+        }
+
+        $children = $all->whereNotNull('parent_id')->groupBy('parent_id');
         $tree = [];
         foreach ($parents as $p) {
             $tree[] = [
                 'id' => (int) ($p->id ?? 0),
                 'name' => $p->name ?? null,
-                'route' => $p->route ?? null,
+                'route' => $hasRoute ? ($p->route ?? null) : null,
                 'parent_id' => $p->parent_id ?? null,
-                'children' => collect($children->get($p->id) ?? [])->map(function ($c) {
+                'children' => collect($children->get($p->id) ?? [])->map(function ($c) use ($hasRoute) {
                     return [
                         'id' => (int) ($c->id ?? 0),
                         'name' => $c->name ?? null,
-                        'route' => $c->route ?? null,
+                        'route' => $hasRoute ? ($c->route ?? null) : null,
                         'parent_id' => $c->parent_id ?? null,
                     ];
                 })->values()->all(),

@@ -213,6 +213,19 @@ import { defineAsyncComponent } from 'vue'
 
 const pages = import.meta.glob('./pages/*.vue')
 
+const __pageComponentCache = {}
+const __comingSoonComponent = defineAsyncComponent(() => import('./pages/ComingSoon.vue'))
+
+function __getAsyncPageComponent(file) {
+    if (!file) return __comingSoonComponent
+    if (__pageComponentCache[file]) return __pageComponentCache[file]
+    if (pages[file]) {
+        __pageComponentCache[file] = defineAsyncComponent(pages[file])
+        return __pageComponentCache[file]
+    }
+    return __comingSoonComponent
+}
+
 export default {
     name: 'AdminAppFixed',
     data() {
@@ -579,10 +592,7 @@ export default {
         },
         resolvedComponent() {
             const file = this.resolved?.file
-            if (file && pages[file]) {
-                return defineAsyncComponent(pages[file])
-            }
-            return defineAsyncComponent(() => import('./pages/ComingSoon.vue'))
+            return __getAsyncPageComponent(file)
         },
         resolvedProps() {
             return this.resolved?.props || {}

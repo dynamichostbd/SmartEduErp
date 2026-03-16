@@ -31,28 +31,32 @@ class SiteSetting extends Model
         $value = preg_replace('#^storage/#i', '', $value);
         $value = ltrim((string) $value, '/');
 
-        // legacy: some tables store without the leading "upload/"
+        // Old ERP behavior: always build public URL from DO_ASSET_URL for stored relative paths.
+        $bucketUrl = trim((string) env('DO_ASSET_URL', ''));
+        if ($bucketUrl !== '') {
+            // If legacy data is still stored locally (public disk), prefer local URL
+            // to prevent broken images until you re-upload to bucket.
+            if (config('filesystems.default') === 'public') {
+                try {
+                    if (Storage::disk('public')->exists($value)) {
+                        return url('storage/' . ltrim($value, '/'));
+                    }
+                } catch (\Throwable $e) {
+                    // ignore
+                }
+            }
+
+            $bucketUrl = rtrim($bucketUrl, '/');
+            return $bucketUrl . '/' . ltrim($value, '/');
+        }
+
+        // Local fallback (public disk via storage:link)
+        // legacy: some old rows may store without leading "upload/".
         if (str_starts_with($value, 'conf/')) {
             $value = 'upload/' . $value;
         }
         if (str_starts_with($value, 'upload/upload/')) {
             $value = substr($value, strlen('upload/'));
-        }
-
-        try {
-            // Storage::url() uses the default filesystem disk (FILESYSTEM_DISK)
-            $url = Storage::url($value);
-            if (!empty($url)) {
-                return $url;
-            }
-        } catch (\Throwable $e) {
-            // ignore and fallback
-        }
-
-        $bucketUrl = trim((string) env('DO_ASSET_URL', ''));
-        if ($bucketUrl !== '') {
-            $bucketUrl = rtrim($bucketUrl, '/');
-            return $bucketUrl . '/' . ltrim($value, '/');
         }
 
         return url('storage/' . ltrim($value, '/'));

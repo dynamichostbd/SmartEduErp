@@ -168,11 +168,19 @@ export default {
         },
         async loadPermissions() {
             this.loadingPerms = true
+            this.error = ''
             try {
                 const res = await window.axios.get('/admin/get-permissions')
-                this.permissions = Array.isArray(res?.data) ? res.data : []
-            } catch {
+                if (Array.isArray(res?.data)) {
+                    this.permissions = res.data
+                } else {
+                    this.permissions = []
+                    const preview = typeof res?.data === 'string' ? res.data.slice(0, 120) : ''
+                    this.error = preview ? `Permissions API returned unexpected response: ${preview}` : 'Permissions API returned unexpected response.'
+                }
+            } catch (e) {
                 this.permissions = []
+                this.error = e?.response?.data?.message || `Failed to load permissions. (${e?.response?.status || 'network error'})`
             } finally {
                 this.loadingPerms = false
             }
