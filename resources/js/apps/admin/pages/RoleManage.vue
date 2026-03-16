@@ -26,7 +26,7 @@
                     <div class="grid grid-cols-1 gap-4 lg:grid-cols-12">
                         <div class="lg:col-span-6">
                             <div class="text-xs font-semibold text-slate-600">Role Type</div>
-                            <select v-model="form.type" class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" :disabled="!hasTypeColumn">
+                            <select v-model="form.type" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" :disabled="!hasTypeColumn">
                                 <option :value="null">--Select Any--</option>
                                 <option value="Admin">Admin</option>
                                 <option value="Teacher">Teacher</option>
@@ -35,7 +35,7 @@
                         </div>
                         <div class="lg:col-span-6">
                             <div class="text-xs font-semibold text-slate-600">Name</div>
-                            <input v-model="form.name" type="text" class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
+                            <input v-model="form.name" type="text" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
                         </div>
 
                         <div class="lg:col-span-12">
@@ -74,16 +74,16 @@
             <div class="lg:col-span-3">
                 <div class="rounded-2xl border border-slate-200 bg-white p-5">
                     <div class="text-sm font-semibold text-slate-900">Status</div>
-                    <select v-model="form.status" class="mt-2 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" :disabled="!hasStatusColumn">
+                    <select v-model="form.status" class="mt-2 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" :disabled="!hasStatusColumn">
                         <option value="active">Active</option>
                         <option value="deactive">Deactive</option>
                     </select>
 
-                    <button type="button" class="mt-4 h-10 w-full rounded-lg bg-slate-900 px-4 text-sm font-semibold text-white hover:bg-slate-800" :disabled="saving" @click="submit">
+                    <button type="button" class="mt-4 h-9 w-full rounded-lg bg-slate-900 px-4 text-sm font-semibold text-white hover:bg-slate-800" :disabled="saving" @click="submit">
                         {{ saving ? '...' : (isEdit ? 'Update' : 'Create') }}
                     </button>
 
-                    <button type="button" class="mt-2 h-10 w-full rounded-lg border border-slate-200 bg-white px-4 text-sm font-semibold text-slate-700 hover:bg-slate-50" :disabled="saving" @click="goIndex">
+                    <button type="button" class="mt-2 h-9 w-full rounded-lg border border-slate-200 bg-white px-4 text-sm font-semibold text-slate-700 hover:bg-slate-50" :disabled="saving" @click="goIndex">
                         Cancel
                     </button>
                 </div>

@@ -42,7 +42,7 @@
             <div class="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-6">
                 <div>
                     <div class="text-xs font-semibold text-slate-600">Academic Session <span class="text-red-600">*</span></div>
-                    <select v-model="search.academic_session_id" class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" required>
+                    <select v-model="search.academic_session_id" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" required>
                         <option value="">Select</option>
                         <option v-for="s in sessionsSorted" :key="'ses-' + s.id" :value="String(s.id)">{{ s.name }}</option>
                     </select>
@@ -50,7 +50,7 @@
 
                 <div>
                     <div class="text-xs font-semibold text-slate-600">Academic Level <span class="text-red-600">*</span></div>
-                    <select v-model="search.academic_qualification_id" class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" required>
+                    <select v-model="search.academic_qualification_id" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" required>
                         <option value="">Select</option>
                         <option v-for="q in qualifications" :key="'q-' + q.id" :value="String(q.id)">{{ q.name }}</option>
                     </select>
@@ -58,7 +58,7 @@
 
                 <div>
                     <div class="text-xs font-semibold text-slate-600">Department/Group <span class="text-red-600">*</span></div>
-                    <select v-model="search.department_id" class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" required>
+                    <select v-model="search.department_id" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" required>
                         <option value="">Select</option>
                         <option v-for="d in searchFilteredDepartments" :key="'d-' + d.id" :value="String(d.id)">{{ d.name }}</option>
                     </select>
@@ -66,7 +66,7 @@
 
                 <div>
                     <div class="text-xs font-semibold text-slate-600">Academic Class <span class="text-red-600">*</span></div>
-                    <select v-model="search.academic_class_id" class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" required>
+                    <select v-model="search.academic_class_id" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" required>
                         <option value="">Select</option>
                         <option v-for="c in searchFilteredClasses" :key="'c-' + c.id" :value="String(c.id)">{{ c.name }}</option>
                     </select>
@@ -74,7 +74,7 @@
 
                 <div>
                     <div class="text-xs font-semibold text-slate-600">Student Type <span class="text-red-600">*</span></div>
-                    <select v-model="search.student_type" class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" required>
+                    <select v-model="search.student_type" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" required>
                         <option value="">Select</option>
                         <option v-for="t in studentTypes" :key="'t-' + t" :value="t">{{ t }}</option>
                     </select>
@@ -83,7 +83,7 @@
                 <div class="flex items-end">
                     <button
                         type="button"
-                        class="h-10 w-full rounded-lg bg-slate-900 px-4 text-sm font-semibold text-white hover:bg-slate-800"
+                        class="h-9 w-full rounded-lg bg-slate-900 px-4 text-sm font-semibold text-white hover:bg-slate-800"
                         :disabled="loading"
                         @click="searchStudents"
                     >
@@ -103,7 +103,7 @@
                 <div class="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
                     <div>
                         <div class="text-xs font-semibold text-slate-600">New Academic Session <span class="text-red-600">*</span></div>
-                        <select v-model="promotion.academic_session_id" class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" required>
+                        <select v-model="promotion.academic_session_id" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" required>
                             <option value="">Select</option>
                             <option v-for="s in sessionsSorted" :key="'nses-' + s.id" :value="String(s.id)">{{ s.name }}</option>
                         </select>
@@ -111,7 +111,7 @@
 
                     <div>
                         <div class="text-xs font-semibold text-slate-600">New Academic Level <span class="text-red-600">*</span></div>
-                        <select v-model="promotion.academic_qualification_id" class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" required>
+                        <select v-model="promotion.academic_qualification_id" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" required>
                             <option value="">Select</option>
                             <option v-for="q in qualifications" :key="'nq-' + q.id" :value="String(q.id)">{{ q.name }}</option>
                         </select>
@@ -119,7 +119,7 @@
 
                     <div>
                         <div class="text-xs font-semibold text-slate-600">New Department/Group <span class="text-red-600">*</span></div>
-                        <select v-model="promotion.department_id" class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" required>
+                        <select v-model="promotion.department_id" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" required>
                             <option value="">Select</option>
                             <option v-for="d in promoFilteredDepartments" :key="'nd-' + d.id" :value="String(d.id)">{{ d.name }}</option>
                         </select>
@@ -127,7 +127,7 @@
 
                     <div>
                         <div class="text-xs font-semibold text-slate-600">New Class <span class="text-red-600">*</span></div>
-                        <select v-model="promotion.academic_class_id" class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" required>
+                        <select v-model="promotion.academic_class_id" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" required>
                             <option value="">Select</option>
                             <option v-for="c in promoFilteredClasses" :key="'nc-' + c.id" :value="String(c.id)">{{ c.name }}</option>
                         </select>

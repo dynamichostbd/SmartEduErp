@@ -46,7 +46,7 @@
             <div class="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
                 <div>
                     <div class="text-xs font-semibold text-slate-600">Select Session <span class="text-red-600">*</span></div>
-                    <select v-model="form.academic_session_id" class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" required>
+                    <select v-model="form.academic_session_id" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" required>
                         <option value="">Select Session</option>
                         <option v-for="s in sessionsSorted" :key="s.id" :value="String(s.id)">{{ s.name }}</option>
                     </select>
@@ -54,7 +54,7 @@
 
                 <div>
                     <div class="text-xs font-semibold text-slate-600">Academic Level <span class="text-red-600">*</span></div>
-                    <select v-model="form.academic_qualification_id" class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" required>
+                    <select v-model="form.academic_qualification_id" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" required>
                         <option value="">Select Qualification</option>
                         <option v-for="q in qualifications" :key="q.id" :value="String(q.id)">{{ q.name }}</option>
                     </select>
@@ -62,7 +62,7 @@
 
                 <div>
                     <div class="text-xs font-semibold text-slate-600">Department/Group <span class="text-red-600">*</span></div>
-                    <select v-model="form.department_id" class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" required>
+                    <select v-model="form.department_id" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" required>
                         <option value="">Select Department</option>
                         <option v-for="d in filteredDepartments" :key="d.id" :value="String(d.id)">{{ d.name }}</option>
                     </select>
@@ -70,7 +70,7 @@
 
                 <div>
                     <div class="text-xs font-semibold text-slate-600">Class <span class="text-red-600">*</span></div>
-                    <select v-model="form.academic_class_id" class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" required>
+                    <select v-model="form.academic_class_id" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" required>
                         <option value="">Select Class</option>
                         <option v-for="c in filteredClasses" :key="c.id" :value="String(c.id)">{{ c.name }}</option>
                     </select>

@@ -4,13 +4,12 @@
             <div class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
                 <div>
                     <div class="text-xl font-semibold text-slate-900">Student List</div>
-                    <!-- <div class="mt-1 text-sm text-slate-600">Search and browse students from the legacy database.</div> -->
                 </div>
 
                 <div class="flex w-full flex-col gap-2 sm:w-auto sm:flex-row">
                     <select
                         v-model="filters.field_name"
-                        class="h-10 rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-slate-300 focus:ring-2 focus:ring-slate-200"
+                        class="h-9 rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-slate-300 focus:ring-2 focus:ring-slate-200"
                         :disabled="loading"
                     >
                         <option value="name">Name</option>
@@ -23,7 +22,7 @@
                     <input
                         v-model="filters.value"
                         type="text"
-                        class="h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-slate-300 focus:ring-2 focus:ring-slate-200 sm:w-72"
+                        class="h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-slate-300 focus:ring-2 focus:ring-slate-200 sm:w-72"
                         placeholder="Search..."
                         :disabled="loading"
                         @keyup.enter="load(1)"
@@ -31,7 +30,7 @@
 
                     <div class="flex items-center gap-2">
                         <button
-                            class="inline-flex h-10 w-10 items-center justify-center rounded-lg bg-emerald-600 text-white hover:bg-emerald-700"
+                            class="inline-flex h-9 w-10 items-center justify-center rounded-lg bg-emerald-600 text-white hover:bg-emerald-700"
                             :disabled="loading"
                             @click="load(1)"
                         >
@@ -41,7 +40,7 @@
                             </svg>
                         </button>
                         <button
-                            class="h-10 rounded-lg border border-slate-200 bg-white px-4 text-sm font-semibold text-slate-700 hover:bg-slate-50"
+                            class="h-9 rounded-lg border border-slate-200 bg-white px-4 text-sm font-semibold text-slate-700 hover:bg-slate-50"
                             :disabled="loading"
                             @click="reset"
                         >
@@ -51,7 +50,7 @@
                         <div class="relative" ref="bulkMenu">
                             <button
                                 type="button"
-                                class="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-700 hover:bg-slate-50"
+                                class="inline-flex h-9 w-10 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-700 hover:bg-slate-50"
                                 :disabled="loading"
                                 @click="toggleBulkMenu"
                             >
@@ -108,10 +107,10 @@
                 </div>
             </div>
 
-            <div class="mt-4 grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-4">
+            <div class="mt-4 grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-6">
                 <select
                     v-model="advanced.status"
-                    class="h-10 rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-slate-300 focus:ring-2 focus:ring-slate-200"
+                    class="h-9 rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-slate-300 focus:ring-2 focus:ring-slate-200"
                     :disabled="loading"
                 >
                     <option value="">Status</option>
@@ -120,7 +119,7 @@
                 </select>
                  <select
                     v-model="advanced.academic_session_id"
-                    class="h-10 rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-slate-300 focus:ring-2 focus:ring-slate-200"
+                    class="h-9 rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-slate-300 focus:ring-2 focus:ring-slate-200"
                     :disabled="loading"
                 >
                     <option value="">Select Session</option>
@@ -128,7 +127,7 @@
                 </select>
                 <select
                     v-model="advanced.academic_qualification_id"
-                    class="h-10 rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-slate-300 focus:ring-2 focus:ring-slate-200"
+                    class="h-9 rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-slate-300 focus:ring-2 focus:ring-slate-200"
                     :disabled="loading"
                 >
                     <option value="">Select Qualification</option>
@@ -137,7 +136,7 @@
 
                 <select
                     v-model="advanced.department_id"
-                    class="h-10 rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-slate-300 focus:ring-2 focus:ring-slate-200"
+                    class="h-9 rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-slate-300 focus:ring-2 focus:ring-slate-200"
                     :disabled="loading"
                 >
                     <option value="">Select Department</option>
@@ -146,7 +145,7 @@
 
                 <select
                     v-model="advanced.academic_class_id"
-                    class="h-10 rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-slate-300 focus:ring-2 focus:ring-slate-200"
+                    class="h-9 rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-slate-300 focus:ring-2 focus:ring-slate-200"
                     :disabled="loading"
                 >
                     <option value="">Select Class</option>
@@ -155,7 +154,7 @@
 
                 <select
                     v-model="advanced.student_type"
-                    class="h-10 rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-slate-300 focus:ring-2 focus:ring-slate-200"
+                    class="h-9 rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-slate-300 focus:ring-2 focus:ring-slate-200"
                     :disabled="loading"
                 >
                     <option value="">Student Type</option>
@@ -164,7 +163,7 @@
 
                 <select
                     v-model="advanced.fourth_subject_id"
-                    class="h-10 rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-slate-300 focus:ring-2 focus:ring-slate-200"
+                    class="h-9 rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-slate-300 focus:ring-2 focus:ring-slate-200"
                     :disabled="loading || fourthSubjectOptions.length === 0"
                 >
                     <option value="">4th Subject</option>
@@ -176,7 +175,7 @@
                 <div class="relative" ref="mainSubjectFilter">
                     <button
                         type="button"
-                        class="flex h-10 w-full items-center justify-between rounded-lg border border-slate-200 bg-white px-3 text-sm text-slate-700 outline-none focus:border-slate-300 focus:ring-2 focus:ring-slate-200"
+                        class="flex h-9 w-full items-center justify-between rounded-lg border border-slate-200 bg-white px-3 text-sm text-slate-700 outline-none focus:border-slate-300 focus:ring-2 focus:ring-slate-200"
                         :disabled="loading || mainSubjectOptions.length === 0"
                         @click="toggleMainSubjectDropdown"
                     >
@@ -201,7 +200,7 @@
 
                 <select
                     v-model="advanced.hostel_id"
-                    class="h-10 rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-slate-300 focus:ring-2 focus:ring-slate-200"
+                    class="h-9 rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-slate-300 focus:ring-2 focus:ring-slate-200"
                     :disabled="loading"
                 >
                     <option value="">Hostel</option>
@@ -212,7 +211,7 @@
 
                 <select
                     v-model="advanced.gender"
-                    class="h-10 rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-slate-300 focus:ring-2 focus:ring-slate-200"
+                    class="h-9 rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-slate-300 focus:ring-2 focus:ring-slate-200"
                     :disabled="loading"
                 >
                     <option value="">Gender</option>
@@ -222,7 +221,7 @@
 
                 <select
                     v-model="pagination"
-                    class="h-10 rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-slate-300 focus:ring-2 focus:ring-slate-200"
+                    class="h-9 rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-slate-300 focus:ring-2 focus:ring-slate-200"
                     :disabled="loading"
                 >
                     <option :value="10">10 / page</option>
@@ -272,7 +271,7 @@
                             <td class="border border-slate-200 px-4 py-3 text-slate-600">{{ rowSerial(idx) }}</td>
                             <td class="border border-slate-200 px-4 py-3 text-center">
                                 <div class="flex flex-col items-center gap-1">
-                                    <div class="h-10 w-10 overflow-hidden rounded-md bg-slate-100">
+                                    <div class="h-9 w-10 overflow-hidden rounded-md bg-slate-100">
                                         <img v-if="row.profile" class="h-full w-full object-cover" :src="row.profile" />
                                         <div v-else class="flex h-full w-full items-center justify-center text-xs font-semibold text-slate-500">
                                             {{ (row.student_id || '').slice(0, 2) || 'NA' }}

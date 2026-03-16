@@ -45,32 +45,32 @@
 
                         <div class="lg:col-span-6">
                             <div class="text-xs font-semibold text-slate-600">Name</div>
-                            <input v-model="form.name" type="text" class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
+                            <input v-model="form.name" type="text" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
                         </div>
 
                         <div class="lg:col-span-6">
                             <div class="text-xs font-semibold text-slate-600">Mobile</div>
-                            <input v-model="form.mobile" type="text" class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
+                            <input v-model="form.mobile" type="text" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
                         </div>
 
                         <div class="lg:col-span-6">
                             <div class="text-xs font-semibold text-slate-600">Emergency Contacts</div>
-                            <input v-model="form.emergency_contacts" type="text" class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
+                            <input v-model="form.emergency_contacts" type="text" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
                         </div>
 
                         <div class="lg:col-span-6">
                             <div class="text-xs font-semibold text-slate-600">Email</div>
-                            <input v-model="form.email" type="email" class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
+                            <input v-model="form.email" type="email" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
                         </div>
 
                         <div v-if="isSuper" class="lg:col-span-6">
                             <div class="text-xs font-semibold text-slate-600">Password</div>
-                            <input v-model="form.password" type="password" class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" :placeholder="isEdit ? '(keep blank to keep same)' : ''" />
+                            <input v-model="form.password" type="password" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" :placeholder="isEdit ? '(keep blank to keep same)' : ''" />
                         </div>
 
                         <div v-if="isSuper" class="lg:col-span-3">
                             <div class="text-xs font-semibold text-slate-600">Select Role</div>
-                            <select v-model="form.role_id" class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
+                            <select v-model="form.role_id" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
                                 <option value="">--Select Any--</option>
                                 <option v-for="r in roles" :key="'r-' + r.id" :value="r.id">{{ r.name }}</option>
                             </select>
@@ -78,7 +78,7 @@
 
                         <div v-if="isSuper" class="lg:col-span-3">
                             <div class="text-xs font-semibold text-slate-600">Department</div>
-                            <select v-model="form.department_id" class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
+                            <select v-model="form.department_id" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
                                 <option value="">--Select Any--</option>
                                 <option v-for="d in departments" :key="'d-' + d.id" :value="d.id">{{ d.name }}</option>
                             </select>
@@ -86,7 +86,7 @@
 
                         <div v-if="isSuper" class="lg:col-span-4">
                             <div class="text-xs font-semibold text-slate-600">Is Two Factor Authentication?</div>
-                            <select v-model="form.is_two_factor_auth" class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
+                            <select v-model="form.is_two_factor_auth" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
                                 <option :value="1">Yes</option>
                                 <option :value="0">No</option>
                             </select>
@@ -94,7 +94,7 @@
 
                         <div v-if="isSuper" class="lg:col-span-4">
                             <div class="text-xs font-semibold text-slate-600">Is Block?</div>
-                            <select v-model="form.block" class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
+                            <select v-model="form.block" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
                                 <option :value="1">Yes</option>
                                 <option :value="0">No</option>
                             </select>
@@ -102,7 +102,7 @@
 
                         <div v-if="isSuper" class="lg:col-span-4">
                             <div class="text-xs font-semibold text-slate-600">Status</div>
-                            <select v-model="form.status" class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
+                            <select v-model="form.status" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
                                 <option value="active">Active</option>
                                 <option value="deactive">Deactive</option>
                             </select>
@@ -115,10 +115,10 @@
                 <div class="rounded-2xl border border-slate-200 bg-white p-5">
                     <div class="text-sm font-semibold text-slate-900">Actions</div>
                     <div class="mt-3 flex flex-col gap-2">
-                        <button type="button" class="h-10 rounded-lg bg-slate-900 px-4 text-sm font-semibold text-white hover:bg-slate-800" :disabled="saving" @click="submit">
+                        <button type="button" class="h-9 rounded-lg bg-slate-900 px-4 text-sm font-semibold text-white hover:bg-slate-800" :disabled="saving" @click="submit">
                             {{ saving ? '...' : (isEdit ? 'Update' : 'Create') }}
                         </button>
-                        <button type="button" class="h-10 rounded-lg border border-slate-200 bg-white px-4 text-sm font-semibold text-slate-700 hover:bg-slate-50" :disabled="saving" @click="goIndex">
+                        <button type="button" class="h-9 rounded-lg border border-slate-200 bg-white px-4 text-sm font-semibold text-slate-700 hover:bg-slate-50" :disabled="saving" @click="goIndex">
                             Cancel
                         </button>
                     </div>

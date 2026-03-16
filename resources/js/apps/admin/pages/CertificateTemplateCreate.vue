@@ -23,7 +23,7 @@
             <div class="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-12">
                 <div class="xl:col-span-3">
                     <div class="text-xs font-semibold text-slate-600">Academic Level <span class="text-red-600">*</span></div>
-                    <select v-model="form.academic_qualification_id" class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" required>
+                    <select v-model="form.academic_qualification_id" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" required>
                         <option value="">Select</option>
                         <option v-for="q in qualifications" :key="'q-' + q.id" :value="String(q.id)">{{ q.name }}</option>
                     </select>
@@ -31,7 +31,7 @@
 
                 <div class="xl:col-span-3">
                     <div class="text-xs font-semibold text-slate-600">Account Head <span class="text-red-600">*</span></div>
-                    <select v-model="form.account_head_id" class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" required>
+                    <select v-model="form.account_head_id" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" required>
                         <option value="">Select</option>
                         <option v-for="h in accountHeads" :key="'h-' + h.id" :value="String(h.id)">{{ h.name }}</option>
                     </select>
@@ -39,7 +39,7 @@
 
                 <div class="xl:col-span-6">
                     <div class="text-xs font-semibold text-slate-600">Title <span class="text-red-600">*</span></div>
-                    <input v-model="form.title" type="text" class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" required />
+                    <input v-model="form.title" type="text" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" required />
                 </div>
 
                 <div class="xl:col-span-3">
@@ -61,7 +61,7 @@
 
                 <div class="xl:col-span-6">
                     <div class="text-xs font-semibold text-slate-600">Payment Gateway <span class="text-red-600">*</span></div>
-                    <select v-model="form.payment_gateway_id" class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" required>
+                    <select v-model="form.payment_gateway_id" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" required>
                         <option value="">Select</option>
                         <option v-for="g in gateways" :key="'g-' + g.id" :value="String(g.id)">{{ g.account_no }}</option>
                     </select>
@@ -69,12 +69,12 @@
 
                 <div class="xl:col-span-3">
                     <div class="text-xs font-semibold text-slate-600">Amount <span class="text-red-600">*</span></div>
-                    <input v-model="form.amount" type="number" step="0.01" class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" required />
+                    <input v-model="form.amount" type="number" step="0.01" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" required />
                 </div>
 
                 <div class="xl:col-span-3">
                     <div class="text-xs font-semibold text-slate-600">Status <span class="text-red-600">*</span></div>
-                    <select v-model="form.status" class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" required>
+                    <select v-model="form.status" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" required>
                         <option value="draft">Draft</option>
                         <option value="active">Active</option>
                         <option value="deactive">Deactive</option>
@@ -83,12 +83,12 @@
 
                 <div class="xl:col-span-6">
                     <div class="text-xs font-semibold text-slate-600">Background Image (EN) <span class="text-red-600">*</span></div>
-                    <input type="file" accept="image/*" class="mt-1 block h-10 w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm" @change="onPickFile($event, 'bg_en_image')" required />
+                    <input type="file" accept="image/*" class="mt-1 block h-9 w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm" @change="onPickFile($event, 'bg_en_image')" required />
                 </div>
 
                 <div class="xl:col-span-6">
                     <div class="text-xs font-semibold text-slate-600">Background Image (BN) <span class="text-red-600">*</span></div>
-                    <input type="file" accept="image/*" class="mt-1 block h-10 w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm" @change="onPickFile($event, 'bg_bn_image')" required />
+                    <input type="file" accept="image/*" class="mt-1 block h-9 w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm" @change="onPickFile($event, 'bg_bn_image')" required />
                 </div>
             </div>
         </div>

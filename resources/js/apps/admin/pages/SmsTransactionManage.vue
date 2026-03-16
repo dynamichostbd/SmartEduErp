@@ -22,19 +22,19 @@
                     <div class="grid grid-cols-12 items-center gap-3">
                         <div class="col-span-5 text-sm font-semibold text-slate-700">Invoice Date :</div>
                         <div class="col-span-7">
-                            <input v-model="invoiceDate" readonly type="text" class="h-10 w-full rounded-lg border border-slate-200 bg-slate-50 px-3 text-sm outline-none" />
+                            <input v-model="invoiceDate" readonly type="text" class="h-9 w-full rounded-lg border border-slate-200 bg-slate-50 px-3 text-sm outline-none" />
                         </div>
                     </div>
 
                     <div class="grid grid-cols-12 items-center gap-3">
                         <div class="col-span-5 text-sm font-semibold text-slate-700">Recharge Amount :</div>
                         <div class="col-span-7">
-                            <input v-model.number="form.amount" type="number" min="0" class="h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" placeholder="Recharge Amount" />
+                            <input v-model.number="form.amount" type="number" min="0" class="h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" placeholder="Recharge Amount" />
                         </div>
                     </div>
 
                     <div class="pt-4 text-center">
-                        <button type="button" class="h-10 rounded-lg bg-emerald-600 px-8 text-sm font-semibold text-white hover:bg-emerald-700" :disabled="saving" @click="submit">{{ saving ? 'processing..' : 'PAY NOW' }}</button>
+                        <button type="button" class="h-9 rounded-lg bg-emerald-600 px-8 text-sm font-semibold text-white hover:bg-emerald-700" :disabled="saving" @click="submit">{{ saving ? 'processing..' : 'PAY NOW' }}</button>
                     </div>
 
                     <div class="text-center text-xs text-slate-500">Note: Payment gateway integration is not enabled in this build yet. This will create a pending invoice.</div>

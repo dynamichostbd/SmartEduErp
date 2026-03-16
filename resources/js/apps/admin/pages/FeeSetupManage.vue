@@ -20,7 +20,7 @@
             <div class="grid grid-cols-1 gap-4 lg:grid-cols-12">
                 <div class="lg:col-span-2">
                     <div class="text-xs font-semibold text-slate-600">Academic Level</div>
-                    <select v-model="form.academic_qualification_id" class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none" @change="onQualificationChange">
+                    <select v-model="form.academic_qualification_id" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none" @change="onQualificationChange">
                         <option value="">Select</option>
                         <option v-for="q in qualifications" :key="'q-' + q.id" :value="String(q.id)">{{ q.name }}</option>
                     </select>
@@ -28,7 +28,7 @@
 
                 <div class="lg:col-span-2">
                     <div class="text-xs font-semibold text-slate-600">Department/Group</div>
-                    <select v-model="form.department_id" class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none" @change="onDepartmentChange">
+                    <select v-model="form.department_id" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none" @change="onDepartmentChange">
                         <option value="">Select</option>
                         <option v-for="d in departmentsFiltered" :key="'d-' + d.id" :value="String(d.id)">{{ d.name }}</option>
                     </select>
@@ -36,7 +36,7 @@
 
                 <div class="lg:col-span-2">
                     <div class="text-xs font-semibold text-slate-600">Class</div>
-                    <select v-model="form.academic_class_id" class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none" @change="checkExist">
+                    <select v-model="form.academic_class_id" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none" @change="checkExist">
                         <option value="">Select</option>
                         <option v-for="c in classOptions" :key="'c-' + c.id" :value="String(c.id)">{{ c.name }}</option>
                     </select>
@@ -79,14 +79,12 @@
                         :key="d._key"
                         class="rounded-xl border p-4"
                         :class="Number(d.status) === 1 ? 'border-emerald-200 bg-emerald-50/40' : 'border-rose-200 bg-rose-50/40'"
-                        draggable="true"
-                        @dragstart="dragStart(idx)"
                         @dragover.prevent
                         @drop="drop(idx)"
                     >
                         <div class="grid grid-cols-12 gap-3">
                             <div class="col-span-12 lg:col-span-2">
-                                <select v-model.number="d.account_head_id" class="h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none">
+                                <select v-model.number="d.account_head_id" class="h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none">
                                     <option :value="null">--Select Any--</option>
                                     <option v-for="h in accountHeadOptions" :key="'h-' + h.id" :value="h.id">{{ h.name }}</option>
                                 </select>
@@ -119,7 +117,7 @@
                             </div>
 
                             <div class="col-span-6 lg:col-span-1">
-                                <input v-model.number="d.amount" type="number" min="0" class="h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none" placeholder="Amount" />
+                                <input v-model.number="d.amount" type="number" min="0" class="h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none" placeholder="Amount" />
 
                                 <select v-model="d.payment_duration" class="mt-2 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none">
                                     <option :value="null">--Durations--</option>
@@ -128,7 +126,7 @@
                             </div>
 
                             <div class="col-span-6 lg:col-span-2 relative">
-                                <select v-model.number="d.payment_gateway_id" class="h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none">
+                                <select v-model.number="d.payment_gateway_id" class="h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none">
                                     <option :value="null">--Select Any--</option>
                                     <option v-for="g in gatewayAccounts" :key="'g-' + g.id" :value="Number(g.id)">{{ g.title || g.store_id }}</option>
                                 </select>
@@ -148,7 +146,7 @@
                             </div>
 
                             <div class="col-span-6 lg:col-span-2">
-                                <input v-model="d.start_date" type="datetime-local" step="1" class="h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none" />
+                                <input v-model="d.start_date" type="datetime-local" step="1" class="h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none" />
 
                                 <select v-model.number="d.exam_id" class="mt-2 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none">
                                     <option :value="null">--Select Exam--</option>
@@ -157,7 +155,7 @@
                             </div>
 
                             <div class="col-span-6 lg:col-span-2">
-                                <input v-model="d.expire_date" type="datetime-local" step="1" class="h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none" />
+                                <input v-model="d.expire_date" type="datetime-local" step="1" class="h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none" />
 
                                 <select v-if="d.exam_id" v-model="d.examination_year" class="mt-2 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none">
                                     <option :value="null">--Select Exam Year--</option>
@@ -166,7 +164,7 @@
                             </div>
 
                             <div class="col-span-6 lg:col-span-2">
-                                <input v-model="d.additional_date" type="datetime-local" step="1" class="h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none" />
+                                <input v-model="d.additional_date" type="datetime-local" step="1" class="h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none" />
 
                                 <select v-if="Number(d.improvement) === 1" v-model.number="d.academic_class_id_improvment" class="mt-2 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none">
                                     <option :value="null">--Select Class--</option>
@@ -175,8 +173,32 @@
                             </div>
 
                             <div class="col-span-6 lg:col-span-1 flex items-start justify-center gap-2">
-                                <button type="button" class="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-rose-200 bg-white text-rose-700 hover:bg-rose-50" :disabled="form.details.length <= 1" @click="removeDetail(idx)">-</button>
-                                <button type="button" class="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-emerald-200 bg-white text-emerald-700 hover:bg-emerald-50" v-if="idx === form.details.length - 1" @click="addDetail">+</button>
+                               
+                                <button type="button" class="inline-flex h-9 w-10 items-center justify-center rounded-lg border border-rose-200 bg-white text-rose-700 hover:bg-rose-50" :disabled="form.details.length <= 1" @click="removeDetail(idx)">-</button>
+                                <button type="button" class="inline-flex h-9 w-10 items-center justify-center rounded-lg border border-emerald-200 bg-white text-emerald-700 hover:bg-emerald-50" v-if="idx === form.details.length - 1" @click="addDetail">+</button>
+                            </div>
+
+                            <div class="col-span-12 mt-3 flex flex-wrap items-center justify-center gap-4 border-t border-slate-200 pt-3">
+
+                                <div class="flex flex-wrap items-center gap-4">
+                                    <label class="flex items-center gap-2 text-sm font-semibold" :class="d.is_maker == 1 ? 'text-emerald-700' : 'text-slate-700'">
+                                        <input type="checkbox" class="h-4 w-4" v-model.number="d.is_maker" :true-value="1" :false-value="0" @change="handleMakerChange(d)" />
+                                        <span>Maker</span>
+                                        <span v-if="d.maker && d.maker.name" class="text-xs font-semibold text-slate-500">({{ d.maker.name }})</span>
+                                    </label>
+
+                                    <label class="flex items-center gap-2 text-sm font-semibold" :class="d.is_checker == 1 ? 'text-emerald-700' : 'text-slate-700'">
+                                        <input type="checkbox" class="h-4 w-4" v-model.number="d.is_checker" :true-value="1" :false-value="0" :disabled="isCheckerDisabled(d)" @change="handleCheckerChange(d)" />
+                                        <span>Checker</span>
+                                        <span v-if="d.checker && d.checker.name" class="text-xs font-semibold text-slate-500">({{ d.checker.name }})</span>
+                                    </label>
+
+                                    <label class="flex items-center gap-2 text-sm font-semibold" :class="d.is_approver == 1 ? 'text-emerald-700' : 'text-slate-700'">
+                                        <input type="checkbox" class="h-4 w-4" v-model.number="d.is_approver" :true-value="1" :false-value="0" :disabled="isApproverDisabled(d)" @change="handleApproverChange(d)" />
+                                        <span>Approver</span>
+                                        <span v-if="d.approver && d.approver.name" class="text-xs font-semibold text-slate-500">({{ d.approver.name }})</span>
+                                    </label>
+                                </div>
                             </div>
 
                             <div class="col-span-12 mt-3 flex flex-wrap items-center justify-center gap-4 border-t border-slate-200 pt-3">
@@ -185,17 +207,31 @@
                                     <span>{{ Number(d.status) === 1 ? 'Active' : 'Deactive' }}</span>
                                 </label>
 
+                                 <button
+                                    type="button"
+                                    class="inline-flex h-9 w-10 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-700 hover:bg-slate-50"
+                                    draggable="true"
+                                    title="Drag"
+                                    @dragstart.stop="dragStart(idx)"
+                                >
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M10 6h.01M10 12h.01M10 18h.01M14 6h.01M14 12h.01M14 18h.01" />
+                                    </svg>
+                                </button>
+
+
                                 <div class="text-sm font-semibold" :class="onlineNow(d) ? 'text-emerald-700' : 'text-rose-700'">
                                     <span class="mr-2 inline-block h-2 w-2 rounded-full" :class="onlineNow(d) ? 'bg-emerald-600' : 'bg-rose-600'"></span>
                                     {{ onlineNow(d) ? 'ONLINE' : 'OFFLINE' }}
                                 </div>
                             </div>
+
                         </div>
                     </div>
                 </div>
 
                 <div class="pt-4 text-center">
-                    <button type="button" class="h-10 rounded-lg bg-emerald-600 px-6 text-sm font-semibold text-white hover:bg-emerald-700" :disabled="submitting || setupExist" @click="submit">{{ submitting ? 'processing...' : 'Save' }}</button>
+                    <button type="button" class="h-9 rounded-lg bg-emerald-600 px-6 text-sm font-semibold text-white hover:bg-emerald-700" :disabled="submitting || setupExist" @click="submit">{{ submitting ? 'processing...' : 'Save' }}</button>
                 </div>
             </div>
         </div>
@@ -307,6 +343,12 @@ export default {
             if (!did) return []
             return (this.paymentGateways || []).filter((g) => String(g.department_id || '') === did)
         },
+        loggedId() {
+            return Number(this.systems?.global?.auth_user?.id || 0)
+        },
+        loggedName() {
+            return this.systems?.global?.auth_user?.name || ''
+        },
     },
     async created() {
         await this.loadPaymentGateways()
@@ -356,6 +398,15 @@ export default {
                 migration_fee: 0,
                 check_registration_no: 0,
                 improvement: 0,
+                is_maker: 0,
+                maker_id: null,
+                maker: null,
+                is_checker: 0,
+                checker_id: null,
+                checker: null,
+                is_approver: 0,
+                approver_id: null,
+                approver: null,
                 status: 1,
             }
         },
@@ -538,6 +589,15 @@ export default {
                         migration_fee: Number(d?.migration_fee || 0),
                         check_registration_no: Number(d?.check_registration_no || 0),
                         improvement: Number(d?.improvement || 0),
+                        is_maker: Number(d?.is_maker || 0),
+                        maker_id: d?.maker_id != null ? Number(d.maker_id) : null,
+                        maker: d?.maker_id ? { name: d?.maker_name || '' } : null,
+                        is_checker: Number(d?.is_checker || 0),
+                        checker_id: d?.checker_id != null ? Number(d.checker_id) : null,
+                        checker: d?.checker_id ? { name: d?.checker_name || '' } : null,
+                        is_approver: Number(d?.is_approver || 0),
+                        approver_id: d?.approver_id != null ? Number(d.approver_id) : null,
+                        approver: d?.approver_id ? { name: d?.approver_name || '' } : null,
                         status: Number(d?.status ?? 1),
                     }
                 })
@@ -609,6 +669,12 @@ export default {
                         migration_fee: Number(d.migration_fee || 0),
                         check_registration_no: Number(d.check_registration_no || 0),
                         improvement: Number(d.improvement || 0),
+                        is_maker: Number(d.is_maker || 0),
+                        maker_id: d.maker_id != null ? Number(d.maker_id) : null,
+                        is_checker: Number(d.is_checker || 0),
+                        checker_id: d.checker_id != null ? Number(d.checker_id) : null,
+                        is_approver: Number(d.is_approver || 0),
+                        approver_id: d.approver_id != null ? Number(d.approver_id) : null,
                         status: Number(d.status || 0),
                     })),
                 }
@@ -628,6 +694,65 @@ export default {
             } finally {
                 this.submitting = false
             }
+        },
+        handleMakerChange(d) {
+            if (Number(d.is_maker) === 1) {
+                d.maker_id = this.loggedId || null
+                d.maker = this.loggedName ? { name: this.loggedName } : null
+                d.is_checker = 0
+                d.checker_id = null
+                d.checker = null
+                d.is_approver = 0
+                d.approver_id = null
+                d.approver = null
+                d.status = 0
+            } else {
+                d.maker_id = null
+                d.maker = null
+                d.is_checker = 0
+                d.checker_id = null
+                d.checker = null
+                d.is_approver = 0
+                d.approver_id = null
+                d.approver = null
+                d.status = 0
+            }
+        },
+        handleCheckerChange(d) {
+            if (Number(d.is_checker) === 1) {
+                d.checker_id = this.loggedId || null
+                d.checker = this.loggedName ? { name: this.loggedName } : null
+            } else {
+                d.checker_id = null
+                d.checker = null
+                d.is_approver = 0
+                d.approver_id = null
+                d.approver = null
+                d.status = 0
+            }
+        },
+        handleApproverChange(d) {
+            if (Number(d.is_approver) === 1) {
+                d.approver_id = this.loggedId || null
+                d.approver = this.loggedName ? { name: this.loggedName } : null
+            } else {
+                d.approver_id = null
+                d.approver = null
+                d.status = 0
+            }
+        },
+        isCheckerDisabled(d) {
+            if (Number(d.is_maker) !== 1) return true
+            if (Number(d.maker_id || 0) === Number(this.loggedId || 0)) return true
+            if (d.checker_id && Number(d.checker_id) !== Number(this.loggedId || 0)) return true
+            return false
+        },
+        isApproverDisabled(d) {
+            if (Number(d.is_maker) !== 1) return true
+            if (Number(d.is_checker) !== 1) return true
+            if (Number(d.maker_id || 0) === Number(this.loggedId || 0)) return true
+            if (d.approver_id && Number(d.approver_id) !== Number(this.loggedId || 0)) return true
+            return false
         },
     },
 }

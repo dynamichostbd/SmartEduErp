@@ -30,12 +30,12 @@
             <div class="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-12">
                 <div class="xl:col-span-2">
                     <div class="text-xs font-semibold text-slate-600">Date <span class="text-rose-600">*</span></div>
-                    <input v-model="form.date" type="date" required class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
+                    <input v-model="form.date" type="date" required class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
                 </div>
 
                 <div class="xl:col-span-2">
                     <div class="text-xs font-semibold text-slate-600">Session <span class="text-rose-600">*</span></div>
-                    <select v-model="form.academic_session_id" required class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
+                    <select v-model="form.academic_session_id" required class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
                         <option value="">Select</option>
                         <option v-for="s in sessionsSorted" :key="'ses-' + s.id" :value="String(s.id)">{{ s.name }}</option>
                     </select>
@@ -43,7 +43,7 @@
 
                 <div class="xl:col-span-2">
                     <div class="text-xs font-semibold text-slate-600">Academic Level <span class="text-rose-600">*</span></div>
-                    <select v-model="form.academic_qualification_id" required class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
+                    <select v-model="form.academic_qualification_id" required class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
                         <option value="">Select</option>
                         <option v-for="q in qualifications" :key="'q-' + q.id" :value="String(q.id)">{{ q.name }}</option>
                     </select>
@@ -51,7 +51,7 @@
 
                 <div class="xl:col-span-3">
                     <div class="text-xs font-semibold text-slate-600">Department <span class="text-rose-600">*</span></div>
-                    <select v-model="form.department_id" required class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
+                    <select v-model="form.department_id" required class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
                         <option value="">Select</option>
                         <option v-for="d in filteredDepartments" :key="'d-' + d.id" :value="String(d.id)">{{ d.name }}</option>
                     </select>
@@ -59,14 +59,14 @@
 
                 <div class="xl:col-span-3">
                     <div class="text-xs font-semibold text-slate-600">Class <span class="text-rose-600">*</span></div>
-                    <select v-model="form.academic_class_id" required class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
+                    <select v-model="form.academic_class_id" required class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
                         <option value="">Select</option>
                         <option v-for="c in filteredClasses" :key="'c-' + c.id" :value="String(c.id)">{{ c.name }}</option>
                     </select>
                 </div>
 
                 <div class="xl:col-span-12 flex justify-end">
-                    <button type="button" class="h-10 rounded-lg bg-slate-900 px-5 text-sm font-semibold text-white hover:bg-slate-800" :disabled="loadingStudents" @click="loadStudents">
+                    <button type="button" class="h-9 rounded-lg bg-slate-900 px-5 text-sm font-semibold text-white hover:bg-slate-800" :disabled="loadingStudents" @click="loadStudents">
                         {{ loadingStudents ? 'Loading...' : 'Search Students' }}
                     </button>
                 </div>

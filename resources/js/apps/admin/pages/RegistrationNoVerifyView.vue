@@ -43,7 +43,7 @@
                     <div class="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                         <div class="text-sm font-semibold text-slate-900">Roll Lists</div>
                         <div class="w-full sm:w-72">
-                            <input v-model="keyword" type="text" class="h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" placeholder="Search by roll..." />
+                            <input v-model="keyword" type="text" class="h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" placeholder="Search by roll..." />
                         </div>
                     </div>
 
@@ -83,14 +83,14 @@
                             <input
                                 v-model="inputData.registration_no"
                                 type="text"
-                                class="h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
+                                class="h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
                                 placeholder="Registration No"
                             />
                         </div>
                         <div class="col-span-3">
                             <button
                                 type="button"
-                                class="h-10 w-full rounded-lg bg-sky-600 text-sm font-semibold text-white hover:bg-sky-700"
+                                class="h-9 w-full rounded-lg bg-sky-600 text-sm font-semibold text-white hover:bg-sky-700"
                                 :disabled="!inputData.registration_no"
                                 @click="addRegistrationNo"
                             >

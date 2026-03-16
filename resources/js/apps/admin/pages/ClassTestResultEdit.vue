@@ -27,36 +27,36 @@
             <div class="grid grid-cols-1 gap-4 lg:grid-cols-12">
                 <div class="lg:col-span-3">
                     <div class="text-xs font-semibold text-slate-600">Session</div>
-                    <input :value="result.academic_session_name || ''" disabled class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-slate-50 px-3 text-sm" />
+                    <input :value="result.academic_session_name || ''" disabled class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-slate-50 px-3 text-sm" />
                 </div>
                 <div class="lg:col-span-3">
                     <div class="text-xs font-semibold text-slate-600">Academic Level</div>
-                    <input :value="result.academic_qualification_name || ''" disabled class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-slate-50 px-3 text-sm" />
+                    <input :value="result.academic_qualification_name || ''" disabled class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-slate-50 px-3 text-sm" />
                 </div>
                 <div class="lg:col-span-3">
                     <div class="text-xs font-semibold text-slate-600">Department</div>
-                    <input :value="result.department_name || ''" disabled class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-slate-50 px-3 text-sm" />
+                    <input :value="result.department_name || ''" disabled class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-slate-50 px-3 text-sm" />
                 </div>
                 <div class="lg:col-span-3">
                     <div class="text-xs font-semibold text-slate-600">Class</div>
-                    <input :value="result.academic_class_name || ''" disabled class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-slate-50 px-3 text-sm" />
+                    <input :value="result.academic_class_name || ''" disabled class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-slate-50 px-3 text-sm" />
                 </div>
 
                 <div class="lg:col-span-4">
                     <div class="text-xs font-semibold text-slate-600">Exam</div>
-                    <input :value="result.exam_name || ''" disabled class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-slate-50 px-3 text-sm" />
+                    <input :value="result.exam_name || ''" disabled class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-slate-50 px-3 text-sm" />
                 </div>
 
                 <div class="lg:col-span-4">
                     <div class="text-xs font-semibold text-slate-600">Exam Date</div>
-                    <input :value="result.exam_date || ''" disabled class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-slate-50 px-3 text-sm" />
+                    <input :value="result.exam_date || ''" disabled class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-slate-50 px-3 text-sm" />
                 </div>
 
                 <div class="lg:col-span-4">
                     <div class="text-xs font-semibold text-slate-600">Subject <span class="text-rose-600">*</span></div>
                     <select
                         v-model="subjectId"
-                        class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
+                        class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
                         :disabled="isPublished || loadingSubjects"
                         @change="selectSubject"
                     >

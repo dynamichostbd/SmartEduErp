@@ -61,19 +61,19 @@
                     <div v-if="tab === 'edit'" class="mt-4 grid grid-cols-1 gap-4 lg:grid-cols-12">
                         <div class="lg:col-span-6">
                             <div class="text-xs font-semibold text-slate-600">Name</div>
-                            <input v-model="form.name" type="text" class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
+                            <input v-model="form.name" type="text" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
                         </div>
                         <div class="lg:col-span-6">
                             <div class="text-xs font-semibold text-slate-600">Email</div>
-                            <input v-model="form.email" type="email" class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
+                            <input v-model="form.email" type="email" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
                         </div>
                         <div class="lg:col-span-6">
                             <div class="text-xs font-semibold text-slate-600">Mobile</div>
-                            <input v-model="form.mobile" type="text" class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
+                            <input v-model="form.mobile" type="text" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
                         </div>
                         <div class="lg:col-span-6">
                             <div class="text-xs font-semibold text-slate-600">Emergency Contact</div>
-                            <input v-model="form.emergency_contacts" type="text" class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
+                            <input v-model="form.emergency_contacts" type="text" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
                         </div>
                         <div class="lg:col-span-12">
                             <div class="text-xs font-semibold text-slate-600">Address</div>
@@ -84,7 +84,7 @@
                     <div v-else class="mt-4 grid grid-cols-1 gap-4 lg:grid-cols-12">
                         <div class="lg:col-span-6">
                             <div class="text-xs font-semibold text-slate-600">Old Password</div>
-                            <input v-model="pass.old_password" type="password" class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" @blur="checkOld" />
+                            <input v-model="pass.old_password" type="password" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" @blur="checkOld" />
                             <div v-if="pass.old_checked" class="mt-1 text-xs" :class="pass.old_valid ? 'text-emerald-700' : 'text-rose-700'">
                                 {{ pass.old_valid ? 'Old password matched.' : 'Old password do not match our records!!' }}
                             </div>
@@ -93,11 +93,11 @@
 
                         <div class="lg:col-span-6">
                             <div class="text-xs font-semibold text-slate-600">New Password</div>
-                            <input v-model="pass.new_password" type="password" class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
+                            <input v-model="pass.new_password" type="password" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
                         </div>
                         <div class="lg:col-span-6">
                             <div class="text-xs font-semibold text-slate-600">Confirm Password</div>
-                            <input v-model="pass.confirm_password" type="password" class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
+                            <input v-model="pass.confirm_password" type="password" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
                         </div>
 
                         <div class="lg:col-span-12">

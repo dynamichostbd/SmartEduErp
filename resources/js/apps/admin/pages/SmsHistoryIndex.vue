@@ -7,23 +7,23 @@
                 </div>
 
                 <div class="flex w-full flex-col gap-2 sm:w-auto sm:flex-row">
-                    <select v-model="filters.sms_template_id" class="h-10 rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-slate-300 focus:ring-2 focus:ring-slate-200" :disabled="loading">
+                    <select v-model="filters.sms_template_id" class="h-9 rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-slate-300 focus:ring-2 focus:ring-slate-200" :disabled="loading">
                         <option value="">All Templates</option>
                         <option v-for="t in templates" :key="'t-' + t.id" :value="String(t.id)">{{ t.name }}</option>
                     </select>
 
-                    <input v-model="filters.from_date" type="date" class="h-10 rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-slate-300 focus:ring-2 focus:ring-slate-200" :disabled="loading" />
-                    <input v-model="filters.to_date" type="date" class="h-10 rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-slate-300 focus:ring-2 focus:ring-slate-200" :disabled="loading" />
+                    <input v-model="filters.from_date" type="date" class="h-9 rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-slate-300 focus:ring-2 focus:ring-slate-200" :disabled="loading" />
+                    <input v-model="filters.to_date" type="date" class="h-9 rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-slate-300 focus:ring-2 focus:ring-slate-200" :disabled="loading" />
 
                     <div class="flex items-center gap-2">
-                        <button class="inline-flex h-10 w-10 items-center justify-center rounded-lg bg-emerald-600 text-white hover:bg-emerald-700" :disabled="loading" @click="load(1)">
+                        <button class="inline-flex h-9 w-10 items-center justify-center rounded-lg bg-emerald-600 text-white hover:bg-emerald-700" :disabled="loading" @click="load(1)">
                             <span class="sr-only">Search</span>
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-5 w-5">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35m1.35-5.15a7 7 0 11-14 0 7 0 0114 0z" />
                             </svg>
                         </button>
 
-                        <button class="h-10 rounded-lg bg-slate-900 px-4 text-sm font-semibold text-white hover:bg-slate-800" :disabled="loading" @click="goCreate">Send SMS</button>
+                        <button class="h-9 rounded-lg bg-slate-900 px-4 text-sm font-semibold text-white hover:bg-slate-800" :disabled="loading" @click="goCreate">Send SMS</button>
                     </div>
                 </div>
             </div>

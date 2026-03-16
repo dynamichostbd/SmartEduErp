@@ -32,7 +32,7 @@
             <div class="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-12">
                 <div class="xl:col-span-2">
                     <div class="text-xs font-semibold text-slate-600">Status</div>
-                    <select v-model="filters.status" class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm" @change="search(true)">
+                    <select v-model="filters.status" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm" @change="search(true)">
                         <option value="">All</option>
                         <option value="pending">Pending</option>
                         <option value="approved">Approved</option>
@@ -42,7 +42,7 @@
 
                 <div class="xl:col-span-2">
                     <div class="text-xs font-semibold text-slate-600">Session</div>
-                    <select v-model="filters.academic_session_id" class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm">
+                    <select v-model="filters.academic_session_id" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm">
                         <option value="">All</option>
                         <option v-for="s in sessionsSorted" :key="'ses-' + s.id" :value="String(s.id)">{{ s.name }}</option>
                     </select>
@@ -50,7 +50,7 @@
 
                 <div class="xl:col-span-2">
                     <div class="text-xs font-semibold text-slate-600">Academic Level</div>
-                    <select v-model="filters.academic_qualification_id" class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm">
+                    <select v-model="filters.academic_qualification_id" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm">
                         <option value="">All</option>
                         <option v-for="q in qualifications" :key="'q-' + q.id" :value="String(q.id)">{{ q.name }}</option>
                     </select>
@@ -58,7 +58,7 @@
 
                 <div class="xl:col-span-2">
                     <div class="text-xs font-semibold text-slate-600">Department</div>
-                    <select v-model="filters.department_id" class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm">
+                    <select v-model="filters.department_id" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm">
                         <option value="">All</option>
                         <option v-for="d in departments" :key="'d-' + d.id" :value="String(d.id)">{{ d.name }}</option>
                     </select>
@@ -66,7 +66,7 @@
 
                 <div class="xl:col-span-2">
                     <div class="text-xs font-semibold text-slate-600">Class</div>
-                    <select v-model="filters.academic_class_id" class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm">
+                    <select v-model="filters.academic_class_id" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm">
                         <option value="">All</option>
                         <option v-for="c in classes" :key="'c-' + c.id" :value="String(c.id)">{{ c.name }}</option>
                     </select>
@@ -74,29 +74,29 @@
 
                 <div class="xl:col-span-2">
                     <div class="text-xs font-semibold text-slate-600">Gender</div>
-                    <select v-model="filters.gender" class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm">
+                    <select v-model="filters.gender" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm">
                         <option value="">All</option>
                         <option value="Male">Male</option>
                         <option value="Female">Female</option>
                     </select>
                 </div>
 
-                <div class="xl:col-span-6">
+                <div class="xl:col-span-4">
                     <div class="text-xs font-semibold text-slate-600">Search</div>
                     <div class="mt-1 flex gap-2">
-                        <select v-model="filters.field_name" class="h-10 w-44 rounded-lg border border-slate-200 bg-white px-2 text-sm">
+                        <select v-model="filters.field_name" class="h-9 w-44 rounded-lg border border-slate-200 bg-white px-2 text-sm">
                             <option value="mobile">Mobile</option>
                             <option value="name">Name</option>
                             <option value="admission_roll">Admission Roll</option>
                             <option value="registration_no">Reg No</option>
                         </select>
-                        <input v-model="filters.value" type="text" class="h-10 flex-1 rounded-lg border border-slate-200 bg-white px-3 text-sm" placeholder="Search..." />
+                        <input v-model="filters.value" type="text" class="h-9 flex-1 rounded-lg border border-slate-200 bg-white px-3 text-sm" placeholder="Search..." />
                     </div>
                 </div>
 
                 <div class="xl:col-span-2">
                     <div class="text-xs font-semibold text-slate-600">Per Page</div>
-                    <select v-model.number="filters.pagination" class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm">
+                    <select v-model.number="filters.pagination" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm">
                         <option :value="10">10</option>
                         <option :value="25">25</option>
                         <option :value="50">50</option>
@@ -106,7 +106,7 @@
                 <div class="xl:col-span-4 flex items-end justify-end">
                     <button
                         type="button"
-                        class="h-10 rounded-lg bg-slate-900 px-5 text-sm font-semibold text-white hover:bg-slate-800"
+                        class="h-9 rounded-lg bg-slate-900 px-5 text-sm font-semibold text-white hover:bg-slate-800"
                         :disabled="loading"
                         @click="search(true)"
                     >

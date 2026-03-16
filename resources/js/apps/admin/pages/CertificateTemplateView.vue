@@ -36,7 +36,7 @@
 
             <div class="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <div class="w-full sm:w-56">
-                    <select v-model="selected" class="h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm" @change="selectCertificate">
+                    <select v-model="selected" class="h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm" @change="selectCertificate">
                         <option value="en">EN Certificate</option>
                         <option value="bn">BN Certificate</option>
                     </select>

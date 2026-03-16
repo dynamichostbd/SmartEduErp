@@ -19,7 +19,7 @@
             <div class="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-6">
                 <div class="xl:col-span-1">
                     <div class="text-xs font-semibold text-slate-600">Status</div>
-                    <select v-model="filters.status" class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" @change="search(true)">
+                    <select v-model="filters.status" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" @change="search(true)">
                         <option value="">All</option>
                         <option v-for="(label, key) in statuses" :key="'st-' + key" :value="key">{{ label }}</option>
                     </select>
@@ -27,12 +27,12 @@
 
                 <div class="xl:col-span-2">
                     <div class="text-xs font-semibold text-slate-600">Title</div>
-                    <input v-model="filters.value" type="text" class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" placeholder="Search by title" />
+                    <input v-model="filters.value" type="text" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" placeholder="Search by title" />
                 </div>
 
                 <div class="xl:col-span-1">
                     <div class="text-xs font-semibold text-slate-600">Per Page</div>
-                    <select v-model.number="filters.pagination" class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
+                    <select v-model.number="filters.pagination" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
                         <option :value="10">10</option>
                         <option :value="25">25</option>
                         <option :value="50">50</option>
@@ -40,7 +40,7 @@
                 </div>
 
                 <div class="xl:col-span-1 flex items-end">
-                    <button type="button" class="h-10 w-full rounded-lg bg-slate-900 px-4 text-sm font-semibold text-white hover:bg-slate-800" :disabled="loading" @click="search(true)">
+                    <button type="button" class="h-9 w-full rounded-lg bg-slate-900 px-4 text-sm font-semibold text-white hover:bg-slate-800" :disabled="loading" @click="search(true)">
                         {{ loading ? 'Loading...' : 'Search' }}
                     </button>
                 </div>

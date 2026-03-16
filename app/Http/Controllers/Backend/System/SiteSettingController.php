@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\Backend\System;
 
 use App\Http\Controllers\Controller;
+use App\Models\System\SiteSetting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\Storage;
 
 class SiteSettingController extends Controller
 {
@@ -20,12 +22,12 @@ class SiteSettingController extends Controller
             return response()->json([], 404);
         }
 
-        $row = DB::table('site_settings')->where('id', (int) $id)->first();
-        if (!$row) {
-            $row = DB::table('site_settings')->first();
+        $site = SiteSetting::query()->where('id', (int) $id)->first();
+        if (!$site) {
+            $site = SiteSetting::query()->first();
         }
 
-        return response()->json($row ?? []);
+        return response()->json($site ? $site->toArray() : []);
     }
 
     public function update(Request $request, $id)
@@ -83,8 +85,26 @@ class SiteSettingController extends Controller
             if ($request->hasFile($field)) {
                 $file = $request->file($field);
                 if ($file && $file->isValid()) {
-                    $path = $file->store('upload/conf', 'public');
-                    $payload[$field] = preg_replace('/^upload\//', '', $path);
+                    $path = $file->storePublicly('upload/conf');
+
+                    // Keep legacy DB format (old ERP): store without leading "upload/"
+                    $path = ltrim((string) $path, '/');
+                    $payload[$field] = preg_replace('#^upload/#i', '', $path);
+
+                    // Best-effort delete old file from default disk when possible
+                    $old = $row->{$field} ?? null;
+                    $old = is_string($old) ? trim($old) : '';
+                    if ($old !== '') {
+                        $old = ltrim($old, '/');
+                        if (str_starts_with($old, 'conf/')) {
+                            $old = 'upload/' . $old;
+                        }
+                        try {
+                            Storage::delete($old);
+                        } catch (\Throwable $e) {
+                            // ignore
+                        }
+                    }
                 }
             }
         }

@@ -11,13 +11,13 @@
                 </div>
 
                 <div class="flex w-full flex-col gap-2 sm:w-auto sm:flex-row">
-                    <select v-model="filters.field_name" class="h-10 rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none" :disabled="loading">
+                    <select v-model="filters.field_name" class="h-9 rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none" :disabled="loading">
                         <option value="invoice_number">Invoice Number</option>
                     </select>
 
-                    <input v-model="filters.value" type="text" class="h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none sm:w-72" placeholder="Search..." :disabled="loading" @keyup.enter="load(1)" />
+                    <input v-model="filters.value" type="text" class="h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none sm:w-72" placeholder="Search..." :disabled="loading" @keyup.enter="load(1)" />
 
-                    <button class="h-10 rounded-lg bg-slate-900 px-4 text-sm font-semibold text-white hover:bg-slate-800" :disabled="loading" @click="goCreate">Recharge Balance</button>
+                    <button class="h-9 rounded-lg bg-slate-900 px-4 text-sm font-semibold text-white hover:bg-slate-800" :disabled="loading" @click="goCreate">Recharge Balance</button>
                 </div>
             </div>
         </div>

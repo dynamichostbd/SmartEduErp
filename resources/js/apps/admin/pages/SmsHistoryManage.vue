@@ -25,7 +25,7 @@
                     <div class="mt-4 grid grid-cols-1 gap-3">
                         <div>
                             <div class="text-xs font-semibold text-slate-600">Sending Type</div>
-                            <select v-model="form.sending_type" class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none">
+                            <select v-model="form.sending_type" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none">
                                 <option value="all">All</option>
                                 <option value="students">College Students</option>
                                 <option value="applicants">Applicant Students</option>
@@ -36,7 +36,7 @@
                         <template v-if="form.sending_type !== 'any'">
                             <div>
                                 <div class="text-xs font-semibold text-slate-600">Select Session</div>
-                                <select v-model="form.academic_session_id" class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none">
+                                <select v-model="form.academic_session_id" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none">
                                     <option value="">Select</option>
                                     <option v-for="s in sessions" :key="'s-' + s.id" :value="String(s.id)">{{ s.name }}</option>
                                 </select>
@@ -44,7 +44,7 @@
 
                             <div>
                                 <div class="text-xs font-semibold text-slate-600">Academic Level</div>
-                                <select v-model="form.academic_qualification_id" class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none" @change="onQualChange">
+                                <select v-model="form.academic_qualification_id" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none" @change="onQualChange">
                                     <option value="">Select</option>
                                     <option v-for="q in qualifications" :key="'q-' + q.id" :value="String(q.id)">{{ q.name }}</option>
                                 </select>
@@ -52,7 +52,7 @@
 
                             <div>
                                 <div class="text-xs font-semibold text-slate-600">Department/Group</div>
-                                <select v-model="form.department_id" class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none">
+                                <select v-model="form.department_id" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none">
                                     <option value="">Select</option>
                                     <option v-for="d in departmentsFiltered" :key="'d-' + d.id" :value="String(d.id)">{{ d.name }}</option>
                                 </select>
@@ -60,13 +60,13 @@
 
                             <div>
                                 <div class="text-xs font-semibold text-slate-600">Class</div>
-                                <select v-model="form.academic_class_id" class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none">
+                                <select v-model="form.academic_class_id" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none">
                                     <option value="">Select</option>
                                     <option v-for="c in classesFiltered" :key="'c-' + c.id" :value="String(c.id)">{{ c.name }}</option>
                                 </select>
                             </div>
 
-                            <button type="button" class="mt-2 h-10 rounded-lg bg-slate-900 px-4 text-sm font-semibold text-white hover:bg-slate-800" :disabled="loadingStudents" @click="getStudents">
+                            <button type="button" class="mt-2 h-9 rounded-lg bg-slate-900 px-4 text-sm font-semibold text-white hover:bg-slate-800" :disabled="loadingStudents" @click="getStudents">
                                 {{ loadingStudents ? 'Searching...' : 'Search Students' }}
                             </button>
                         </template>
@@ -81,7 +81,7 @@
                     <div class="mt-4 grid grid-cols-1 gap-3">
                         <div>
                             <div class="text-xs font-semibold text-slate-600">SMS Template</div>
-                            <select v-model="form.sms_template_id" class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none">
+                            <select v-model="form.sms_template_id" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none">
                                 <option value="">Select</option>
                                 <option v-for="t in templates" :key="'t-' + t.id" :value="String(t.id)">{{ t.name }}</option>
                             </select>
@@ -105,8 +105,8 @@
 
             <div class="lg:col-span-2">
                 <div class="rounded-2xl border border-slate-200 bg-white p-5">
-                    <button type="button" class="h-10 w-full rounded-lg bg-emerald-600 px-4 text-sm font-semibold text-white hover:bg-emerald-700 disabled:opacity-50" :disabled="sending || !canSend" @click="submit">{{ sending ? 'Sending...' : 'Send' }}</button>
-                    <button type="button" class="mt-2 h-10 w-full rounded-lg border border-slate-200 bg-white px-4 text-sm font-semibold text-slate-700 hover:bg-slate-50" :disabled="sending" @click="goIndex">Cancel</button>
+                    <button type="button" class="h-9 w-full rounded-lg bg-emerald-600 px-4 text-sm font-semibold text-white hover:bg-emerald-700 disabled:opacity-50" :disabled="sending || !canSend" @click="submit">{{ sending ? 'Sending...' : 'Send' }}</button>
+                    <button type="button" class="mt-2 h-9 w-full rounded-lg border border-slate-200 bg-white px-4 text-sm font-semibold text-slate-700 hover:bg-slate-50" :disabled="sending" @click="goIndex">Cancel</button>
                     <div v-if="!canSend" class="mt-3 text-xs text-rose-700">Please recharge your SMS balance.</div>
                 </div>
             </div>

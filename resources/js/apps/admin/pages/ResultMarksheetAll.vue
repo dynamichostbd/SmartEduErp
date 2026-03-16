@@ -23,9 +23,12 @@
             <div v-if="!(items || []).length" class="rounded-2xl border border-slate-200 bg-white p-8 text-center text-sm text-slate-500">No marks found</div>
 
             <div v-for="(it, idx) in (items || [])" :key="'mk-all-' + (it?.id || idx)" class="rounded-2xl border border-slate-200 bg-white p-4 sm:p-6">
+                <div class="relative">
+                    <img v-if="marksheetBgUrl" :src="marksheetBgUrl" alt="" class="pointer-events-none absolute inset-0 h-full w-full object-contain opacity-20" />
+                    <div class="relative">
                 <div class="flex items-center justify-between gap-3 border-b border-slate-200 pb-3">
                     <div class="flex items-center gap-3">
-                        <img v-if="siteLogoUrl" :src="siteLogoUrl" alt="" class="h-10 w-10 object-contain" />
+                        <img v-if="siteLogoUrl" :src="siteLogoUrl" alt="" class="h-9 w-10 object-contain" />
                         <div class="text-lg font-semibold text-slate-900">{{ siteName || '' }}</div>
                     </div>
                     <div class="text-sm font-semibold text-slate-700">{{ it?.result?.exam?.name || '' }}</div>
@@ -131,6 +134,8 @@
                     <div><span class="font-semibold">GRADE</span> {{ it?.result_details?.letter_grade ?? '' }}</div>
                     <div><span class="font-semibold">Status</span> {{ it?.result_details?.result_status ?? '' }}</div>
                 </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -162,9 +167,20 @@ export default {
         siteName() {
             return this.systems?.site?.college_name || this.systems?.site?.school_name || ''
         },
+        marksheetBgRaw() {
+            const s = this.systems?.site || {}
+            return s.marksheet_image || ''
+        },
         siteLogoRaw() {
             const s = this.systems?.site || {}
             return s.logo || s.site_logo || s.college_logo || s.school_logo || s.logo_path || ''
+        },
+        marksheetBgUrl() {
+            const raw = String(this.marksheetBgRaw || '').trim()
+            if (!raw) return ''
+            if (/^https?:\/\//i.test(raw)) return raw
+            if (raw.startsWith('/')) return raw
+            return `/storage/upload/${raw.replace(/^storage\//, '').replace(/^upload\//, '')}`
         },
         siteLogoUrl() {
             const raw = String(this.siteLogoRaw || '').trim()
@@ -260,7 +276,9 @@ export default {
             if (!this.resultId) return
             this.downloading = true
             try {
-                window.location.href = `/admin/marksheet-all-download/${this.resultId}`
+                const url = `/admin/marksheet-all-download/${this.resultId}?view=1`
+                const win = window.open(url, '_blank')
+                if (!win) window.location.href = url
             } finally {
                 setTimeout(() => {
                     this.downloading = false

@@ -23,6 +23,10 @@ use App\Http\Controllers\Backend\OnlineAdmissionController;
 use App\Http\Controllers\Backend\OnlineAdmissionRollVerifyController;
 use App\Http\Controllers\Backend\AttendanceController;
 use App\Http\Controllers\Backend\AttendanceSummaryController;
+use App\Http\Controllers\Backend\TeacherController;
+use App\Http\Controllers\Backend\TeacherAttendanceController;
+use App\Http\Controllers\Backend\LeaveApplicationController;
+use App\Http\Controllers\Backend\LibraryBooksInfoController;
 use App\Http\Controllers\Backend\AdmitCardController;
 use App\Http\Controllers\Backend\ExamController;
 use App\Http\Controllers\Backend\Result\ClassTestResultController;
@@ -332,6 +336,38 @@ Route::middleware(['auth:admin', 'auth.access'])->group(function () {
     Route::view('feeSetup/{id}/edit', 'layouts.backend_app')->name('feeSetup.edit');
     Route::put('feeSetup/{id}', [FeeSetupController::class, 'update'])->name('feeSetup.update');
     Route::delete('feeSetup/{id}', [FeeSetupController::class, 'destroy'])->name('feeSetup.destroy');
+
+    // Teacher
+    Route::get('teacher', [TeacherController::class, 'index'])->name('teacher.index');
+    Route::view('teacher/create', 'layouts.backend_app')->name('teacher.create');
+    Route::post('teacher', [TeacherController::class, 'store'])->name('teacher.store');
+    Route::get('teacher/{id}', [TeacherController::class, 'show'])->name('teacher.show');
+    Route::view('teacher/{id}/edit', 'layouts.backend_app')->name('teacher.edit');
+    Route::put('teacher/{id}', [TeacherController::class, 'update'])->name('teacher.update');
+    Route::delete('teacher/{id}', [TeacherController::class, 'destroy'])->name('teacher.destroy');
+
+    Route::match(['get', 'post'], 'teacher-import', [TeacherController::class, 'import'])->name('teacher.import');
+
+    // Teacher Attendance
+    Route::get('teacherAttendance', [TeacherAttendanceController::class, 'index'])->name('teacherAttendance.index');
+    Route::view('teacherAttendance/create', 'layouts.backend_app')->name('teacherAttendance.create');
+    Route::post('teacherAttendance', [TeacherAttendanceController::class, 'store'])->name('teacherAttendance.store');
+    Route::get('teacherAttendance/{id}', [TeacherAttendanceController::class, 'show'])->name('teacherAttendance.show');
+    Route::view('teacherAttendance/{id}/edit', 'layouts.backend_app')->name('teacherAttendance.edit');
+    Route::put('teacherAttendance/{id}', [TeacherAttendanceController::class, 'update'])->name('teacherAttendance.update');
+    Route::delete('teacherAttendance/{id}', [TeacherAttendanceController::class, 'destroy'])->name('teacherAttendance.destroy');
+
+    // Leave Application
+    Route::get('leaveApplication', [LeaveApplicationController::class, 'index'])->name('leaveApplication.index');
+    Route::view('leaveApplication/create', 'layouts.backend_app')->name('leaveApplication.create');
+    Route::post('leaveApplication', [LeaveApplicationController::class, 'store'])->name('leaveApplication.store');
+    Route::get('leaveApplication/{id}', [LeaveApplicationController::class, 'show'])->name('leaveApplication.show');
+    Route::view('leaveApplication/{id}/edit', 'layouts.backend_app')->name('leaveApplication.edit');
+    Route::put('leaveApplication/{id}', [LeaveApplicationController::class, 'update'])->name('leaveApplication.update');
+    Route::delete('leaveApplication/{id}', [LeaveApplicationController::class, 'destroy'])->name('leaveApplication.destroy');
+
+    // Library
+    Route::get('libraryBooksInfo', [LibraryBooksInfoController::class, 'index'])->name('libraryBooksInfo.index');
 
     Route::get('student', [StudentController::class, 'index'])->name('student.index');
 

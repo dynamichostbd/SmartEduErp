@@ -14,7 +14,7 @@
                 <div class="grid grid-cols-1 gap-4 md:grid-cols-12">
                     <div class="md:col-span-3">
                         <div class="text-xs font-semibold text-slate-600">Academic Level</div>
-                        <select v-model="data.academic_qualification_id" class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" required>
+                        <select v-model="data.academic_qualification_id" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" required>
                             <option value="">Select</option>
                             <option v-for="q in qualifications" :key="'q-' + q.id" :value="String(q.id)">{{ q.name }}</option>
                         </select>
@@ -22,7 +22,7 @@
 
                     <div class="md:col-span-3">
                         <div class="text-xs font-semibold text-slate-600">Account Head</div>
-                        <select v-model="data.account_head_id" class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" required>
+                        <select v-model="data.account_head_id" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" required>
                             <option value="">Select</option>
                             <option v-for="h in accountHeads" :key="'h-' + h.id" :value="String(h.id)">{{ h.name }}</option>
                         </select>
@@ -30,17 +30,17 @@
 
                     <div class="md:col-span-6">
                         <div class="text-xs font-semibold text-slate-600">Title</div>
-                        <input v-model="data.title" type="text" class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" required />
+                        <input v-model="data.title" type="text" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" required />
                     </div>
 
                     <div class="md:col-span-6">
                         <div class="text-xs font-semibold text-slate-600">Background Image (EN)</div>
-                        <input type="file" accept="image/*" class="mt-1 block h-10 w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm" @change="onPickFile($event, 'bg_en_image')" />
+                        <input type="file" accept="image/*" class="mt-1 block h-9 w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm" @change="onPickFile($event, 'bg_en_image')" />
                     </div>
 
                     <div class="md:col-span-6">
                         <div class="text-xs font-semibold text-slate-600">Background Image (BN)</div>
-                        <input type="file" accept="image/*" class="mt-1 block h-10 w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm" @change="onPickFile($event, 'bg_bn_image')" />
+                        <input type="file" accept="image/*" class="mt-1 block h-9 w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm" @change="onPickFile($event, 'bg_bn_image')" />
                     </div>
 
                     <div class="md:col-span-3">
@@ -62,7 +62,7 @@
 
                     <div class="md:col-span-6">
                         <div class="text-xs font-semibold text-slate-600">Payment Gateway</div>
-                        <select v-model="data.payment_gateway_id" class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" required>
+                        <select v-model="data.payment_gateway_id" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" required>
                             <option value="">Select</option>
                             <option v-for="g in gateways" :key="'g-' + g.id" :value="String(g.id)">{{ g.account_no }}</option>
                         </select>
@@ -70,7 +70,7 @@
 
                     <div class="md:col-span-3">
                         <div class="text-xs font-semibold text-slate-600">Amount</div>
-                        <input v-model="data.amount" type="number" step="0.01" class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" required />
+                        <input v-model="data.amount" type="number" step="0.01" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" required />
                     </div>
                 </div>
             </div>

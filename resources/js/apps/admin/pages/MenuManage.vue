@@ -26,7 +26,7 @@
                     <div class="grid grid-cols-1 gap-4 lg:grid-cols-12">
                         <div class="lg:col-span-6">
                             <div class="text-xs font-semibold text-slate-600">Parent Menu</div>
-                            <select v-model="form.parent_id" class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
+                            <select v-model="form.parent_id" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
                                 <option :value="null">--Select Any--</option>
                                 <option v-for="(label, id) in allMenus" :key="'pm-' + id" :value="Number(id)">{{ label }}</option>
                             </select>
@@ -34,17 +34,17 @@
 
                         <div class="lg:col-span-6">
                             <div class="text-xs font-semibold text-slate-600">Menu Name</div>
-                            <input v-model="form.menu_name" type="text" class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
+                            <input v-model="form.menu_name" type="text" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
                         </div>
 
                         <div class="lg:col-span-6">
                             <div class="text-xs font-semibold text-slate-600">Menu Icon</div>
-                            <input v-model="form.icon" type="text" class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
+                            <input v-model="form.icon" type="text" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
                         </div>
 
                         <div class="lg:col-span-6">
                             <div class="text-xs font-semibold text-slate-600">Sorting</div>
-                            <input v-model="form.sorting" type="number" class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
+                            <input v-model="form.sorting" type="number" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
                         </div>
 
                         <div class="lg:col-span-6">
@@ -53,7 +53,7 @@
                                 v-model="form.route_name"
                                 list="routeOptionsList"
                                 type="text"
-                                class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
+                                class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
                                 placeholder="Type or select route name"
                             />
                             <datalist id="routeOptionsList">
@@ -63,7 +63,7 @@
 
                         <div class="lg:col-span-6">
                             <div class="text-xs font-semibold text-slate-600">Menu Look Type</div>
-                            <select v-model="form.menu_look_type" class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
+                            <select v-model="form.menu_look_type" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
                                 <option value="normal">Normal</option>
                                 <option value="mega">Mega</option>
                             </select>
@@ -71,12 +71,12 @@
 
                         <div class="lg:col-span-6">
                             <div class="text-xs font-semibold text-slate-600">Params</div>
-                            <input v-model="form.params" type="text" class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
+                            <input v-model="form.params" type="text" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
                         </div>
 
                         <div class="lg:col-span-6">
                             <div class="text-xs font-semibold text-slate-600">Show Dashboard</div>
-                            <select v-model="form.show_dasboard" class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
+                            <select v-model="form.show_dasboard" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
                                 <option :value="1">Yes</option>
                                 <option :value="0">No</option>
                             </select>
@@ -89,10 +89,10 @@
                 <div class="rounded-2xl border border-slate-200 bg-white p-5">
                     <div class="text-sm font-semibold text-slate-900">Actions</div>
                     <div class="mt-3 flex flex-col gap-2">
-                        <button type="button" class="h-10 rounded-lg bg-slate-900 px-4 text-sm font-semibold text-white hover:bg-slate-800" :disabled="saving" @click="submit">
+                        <button type="button" class="h-9 rounded-lg bg-slate-900 px-4 text-sm font-semibold text-white hover:bg-slate-800" :disabled="saving" @click="submit">
                             {{ saving ? '...' : (isEdit ? 'Update' : 'Create') }}
                         </button>
-                        <button type="button" class="h-10 rounded-lg border border-slate-200 bg-white px-4 text-sm font-semibold text-slate-700 hover:bg-slate-50" :disabled="saving" @click="goIndex">Cancel</button>
+                        <button type="button" class="h-9 rounded-lg border border-slate-200 bg-white px-4 text-sm font-semibold text-slate-700 hover:bg-slate-50" :disabled="saving" @click="goIndex">Cancel</button>
                     </div>
                 </div>
             </div>

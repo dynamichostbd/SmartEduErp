@@ -61,17 +61,17 @@
             <div class="mt-4 grid grid-cols-1 gap-4 lg:grid-cols-12">
                 <div class="lg:col-span-6">
                     <div class="text-xs font-semibold text-slate-600">Search</div>
-                    <input v-model="keyword" type="text" class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm" placeholder="Search roll/name..." />
+                    <input v-model="keyword" type="text" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm" placeholder="Search roll/name..." />
                 </div>
 
                 <div class="lg:col-span-6">
                     <div class="text-xs font-semibold text-slate-600">Add New</div>
                     <div class="mt-1 flex gap-2">
-                        <input v-model="newRoll" type="text" class="h-10 w-40 rounded-lg border border-slate-200 bg-white px-3 text-sm" placeholder="Roll" />
-                        <input v-model="newName" type="text" class="h-10 flex-1 rounded-lg border border-slate-200 bg-white px-3 text-sm" placeholder="Name" />
+                        <input v-model="newRoll" type="text" class="h-9 w-40 rounded-lg border border-slate-200 bg-white px-3 text-sm" placeholder="Roll" />
+                        <input v-model="newName" type="text" class="h-9 flex-1 rounded-lg border border-slate-200 bg-white px-3 text-sm" placeholder="Name" />
                         <button
                             type="button"
-                            class="h-10 rounded-lg bg-slate-900 px-4 text-sm font-semibold text-white hover:bg-slate-800"
+                            class="h-9 rounded-lg bg-slate-900 px-4 text-sm font-semibold text-white hover:bg-slate-800"
                             :disabled="saving"
                             @click="addRoll"
                         >

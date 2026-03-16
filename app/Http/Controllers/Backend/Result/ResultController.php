@@ -15,6 +15,35 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class ResultController extends Controller
 {
+    private function fetchRemoteImageAsBase64(?string $url): ?string
+    {
+        if (empty($url)) {
+            return null;
+        }
+
+        $url = trim((string) $url);
+        if ($url === '') {
+            return null;
+        }
+
+        $imageContext = stream_context_create([
+            'http' => ['timeout' => 15, 'ignore_errors' => true],
+            'ssl' => ['verify_peer' => false, 'verify_peer_name' => false],
+        ]);
+
+        try {
+            $data = @file_get_contents($url, false, $imageContext);
+            if (!$data) {
+                return null;
+            }
+
+            $type = strtolower(pathinfo($url, PATHINFO_EXTENSION) ?: 'jpg');
+            return 'data:image/' . $type . ';base64,' . base64_encode($data);
+        } catch (\Throwable $e) {
+            return null;
+        }
+    }
+
     public function index(Request $request)
     {
         if (!Schema::hasTable('results')) {
@@ -86,7 +115,7 @@ class ResultController extends Controller
         ]);
     }
 
-    public function downloadMarksheet($id)
+    public function downloadMarksheet(Request $request, $id)
     {
         ini_set('memory_limit', '2048M');
         set_time_limit(0);
@@ -98,17 +127,26 @@ class ResultController extends Controller
 
         $config = app()->make('siteSettingObj');
 
-        $pdf = Pdf::loadView('pdf.result_marksheet', ['data' => $data, 'config' => $config])
+        $bgImage = null;
+        if (is_array($config)) {
+            $bgImage = $this->fetchRemoteImageAsBase64($config['marksheet_image'] ?? null);
+        }
+
+        $pdf = Pdf::loadView('pdf.result_marksheet', ['data' => $data, 'config' => $config, 'bgImage' => $bgImage])
             ->setPaper('a4', 'portrait')
             ->setOptions([
                 'isRemoteEnabled' => true,
                 'isHtml5ParserEnabled' => true,
             ]);
 
+        if ($request->boolean('view')) {
+            return $pdf->stream('marksheet.pdf');
+        }
+
         return $pdf->download('marksheet.pdf');
     }
 
-    public function marksheetAll($id)
+    public function marksheetAll(Request $request, $id)
     {
         ini_set('memory_limit', '4096M');
         set_time_limit(0);
@@ -133,12 +171,21 @@ class ResultController extends Controller
 
         $config = app()->make('siteSettingObj');
 
-        $pdf = Pdf::loadView('pdf.result_marksheet_bulk', ['items' => $items, 'config' => $config])
+        $bgImage = null;
+        if (is_array($config)) {
+            $bgImage = $this->fetchRemoteImageAsBase64($config['marksheet_image'] ?? null);
+        }
+
+        $pdf = Pdf::loadView('pdf.result_marksheet_bulk', ['items' => $items, 'config' => $config, 'bgImage' => $bgImage])
             ->setPaper('a4', 'portrait')
             ->setOptions([
                 'isRemoteEnabled' => true,
                 'isHtml5ParserEnabled' => true,
             ]);
+
+        if ($request->boolean('view')) {
+            return $pdf->stream('all-marksheet.pdf');
+        }
 
         return $pdf->download('all-marksheet.pdf');
     }

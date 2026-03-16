@@ -15,7 +15,7 @@
             <div class="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-12">
                 <div class="xl:col-span-2">
                     <div class="text-xs font-semibold text-slate-600">Payment Status</div>
-                    <select v-model="filters.payment_status" class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm" @change="search(true)">
+                    <select v-model="filters.payment_status" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm" @change="search(true)">
                         <option value="">All</option>
                         <option value="pending">Dues</option>
                         <option value="success">Paid</option>
@@ -26,7 +26,7 @@
 
                 <div class="xl:col-span-2">
                     <div class="text-xs font-semibold text-slate-600">Application Status</div>
-                    <select v-model="filters.application_status" class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm" @change="search(true)">
+                    <select v-model="filters.application_status" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm" @change="search(true)">
                         <option value="">All</option>
                         <option value="pending">Pending</option>
                         <option value="approved">Approved</option>
@@ -36,7 +36,7 @@
 
                 <div class="xl:col-span-2">
                     <div class="text-xs font-semibold text-slate-600">Session</div>
-                    <select v-model="filters.academic_session_id" class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm">
+                    <select v-model="filters.academic_session_id" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm">
                         <option value="">All</option>
                         <option v-for="s in sessionsSorted" :key="'ses-' + s.id" :value="String(s.id)">{{ s.name }}</option>
                     </select>
@@ -44,7 +44,7 @@
 
                 <div class="xl:col-span-2">
                     <div class="text-xs font-semibold text-slate-600">Academic Level</div>
-                    <select v-model="filters.academic_qualification_id" class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm">
+                    <select v-model="filters.academic_qualification_id" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm">
                         <option value="">All</option>
                         <option v-for="q in qualifications" :key="'q-' + q.id" :value="String(q.id)">{{ q.name }}</option>
                     </select>
@@ -53,20 +53,20 @@
                 <div class="xl:col-span-3">
                     <div class="text-xs font-semibold text-slate-600">Search</div>
                     <div class="mt-1 flex gap-2">
-                        <select v-model="filters.field_name" class="h-10 w-40 rounded-lg border border-slate-200 bg-white px-2 text-sm">
+                        <select v-model="filters.field_name" class="h-9 w-40 rounded-lg border border-slate-200 bg-white px-2 text-sm">
                             <option value="mobile">Mobile</option>
                             <option value="student_name_en">Student Name</option>
                             <option value="registration_no_en">Reg No</option>
                             <option value="college_roll_en">College Roll</option>
                             <option value="invoice_number">Invoice Number</option>
                         </select>
-                        <input v-model="filters.value" type="text" class="h-10 flex-1 rounded-lg border border-slate-200 bg-white px-3 text-sm" placeholder="Search..." />
+                        <input v-model="filters.value" type="text" class="h-9 flex-1 rounded-lg border border-slate-200 bg-white px-3 text-sm" placeholder="Search..." />
                     </div>
                 </div>
 
                 <div class="xl:col-span-1">
                     <div class="text-xs font-semibold text-slate-600">Per Page</div>
-                    <select v-model.number="filters.pagination" class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm">
+                    <select v-model.number="filters.pagination" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm">
                         <option :value="10">10</option>
                         <option :value="25">25</option>
                         <option :value="50">50</option>
@@ -74,7 +74,7 @@
                 </div>
 
                 <div class="xl:col-span-12 flex justify-end">
-                    <button type="button" class="h-10 rounded-lg bg-slate-900 px-5 text-sm font-semibold text-white hover:bg-slate-800" :disabled="loading" @click="search(true)">
+                    <button type="button" class="h-9 rounded-lg bg-slate-900 px-5 text-sm font-semibold text-white hover:bg-slate-800" :disabled="loading" @click="search(true)">
                         {{ loading ? 'Loading...' : 'Search' }}
                     </button>
                 </div>

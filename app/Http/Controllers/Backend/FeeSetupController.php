@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
@@ -163,6 +164,8 @@ class FeeSetupController extends Controller
 
         $setupCols = Schema::getColumnListing($table);
         $detailCols = Schema::getColumnListing($detailsTable);
+        $admin = Auth::guard('admin')->user();
+        $adminId = (int) ($admin->id ?? 0);
 
         DB::beginTransaction();
         try {
@@ -212,6 +215,22 @@ class FeeSetupController extends Controller
                     if (array_key_exists($c, $d) && in_array($c, $detailCols, true)) {
                         $row[$c] = $d[$c];
                     }
+                }
+
+                foreach (['is_maker', 'is_checker', 'is_approver', 'maker_id', 'checker_id', 'approver_id'] as $c) {
+                    if (array_key_exists($c, $d) && in_array($c, $detailCols, true)) {
+                        $row[$c] = $d[$c];
+                    }
+                }
+
+                if (in_array('is_maker', $detailCols, true) && (int) ($row['is_maker'] ?? 0) === 1 && in_array('maker_id', $detailCols, true)) {
+                    $row['maker_id'] = (int) ($row['maker_id'] ?? 0) ?: $adminId;
+                }
+                if (in_array('is_checker', $detailCols, true) && (int) ($row['is_checker'] ?? 0) === 1 && in_array('checker_id', $detailCols, true)) {
+                    $row['checker_id'] = (int) ($row['checker_id'] ?? 0) ?: $adminId;
+                }
+                if (in_array('is_approver', $detailCols, true) && (int) ($row['is_approver'] ?? 0) === 1 && in_array('approver_id', $detailCols, true)) {
+                    $row['approver_id'] = (int) ($row['approver_id'] ?? 0) ?: $adminId;
                 }
 
                 if (array_key_exists('depend_head_id', $d) && in_array('depend_head_id', $detailCols, true)) {
@@ -265,17 +284,46 @@ class FeeSetupController extends Controller
 
         $details = [];
         if (Schema::hasTable('account_heads') && Schema::hasTable('payment_gateways')) {
-            $details = DB::table("{$detailsTable} as d")
+            $q = DB::table("{$detailsTable} as d")
                 ->leftJoin('account_heads as ah', 'ah.id', '=', 'd.account_head_id')
                 ->leftJoin('payment_gateways as g', 'g.id', '=', 'd.payment_gateway_id')
                 ->leftJoin('exams as e', 'e.id', '=', 'd.exam_id')
-                ->where('d.fee_setup_id', (int) $id)
-                ->select([
-                    'd.*',
-                    'ah.name as account_head_name',
-                    'g.title as gateway_title',
-                    'e.name as exam_name',
-                ])
+                ->where('d.fee_setup_id', (int) $id);
+
+            if (Schema::hasTable('admins')) {
+                $cols = Schema::getColumnListing($detailsTable);
+                if (in_array('maker_id', $cols, true)) {
+                    $q->leftJoin('admins as am', 'am.id', '=', 'd.maker_id');
+                }
+                if (in_array('checker_id', $cols, true)) {
+                    $q->leftJoin('admins as ac', 'ac.id', '=', 'd.checker_id');
+                }
+                if (in_array('approver_id', $cols, true)) {
+                    $q->leftJoin('admins as aa', 'aa.id', '=', 'd.approver_id');
+                }
+            }
+
+            $select = [
+                'd.*',
+                'ah.name as account_head_name',
+                'g.title as gateway_title',
+                'e.name as exam_name',
+            ];
+            if (Schema::hasTable('admins')) {
+                $cols = Schema::getColumnListing($detailsTable);
+                if (in_array('maker_id', $cols, true)) {
+                    $select[] = 'am.name as maker_name';
+                }
+                if (in_array('checker_id', $cols, true)) {
+                    $select[] = 'ac.name as checker_name';
+                }
+                if (in_array('approver_id', $cols, true)) {
+                    $select[] = 'aa.name as approver_name';
+                }
+            }
+
+            $details = $q
+                ->select($select)
                 ->orderBy('d.id')
                 ->get()
                 ->map(function ($row) {
@@ -364,6 +412,22 @@ class FeeSetupController extends Controller
                     if (array_key_exists($c, $d) && in_array($c, $detailCols, true)) {
                         $row[$c] = $d[$c];
                     }
+                }
+
+                foreach (['is_maker', 'is_checker', 'is_approver', 'maker_id', 'checker_id', 'approver_id'] as $c) {
+                    if (array_key_exists($c, $d) && in_array($c, $detailCols, true)) {
+                        $row[$c] = $d[$c];
+                    }
+                }
+
+                if (in_array('is_maker', $detailCols, true) && (int) ($row['is_maker'] ?? 0) === 1 && in_array('maker_id', $detailCols, true)) {
+                    $row['maker_id'] = (int) ($row['maker_id'] ?? 0) ?: $adminId;
+                }
+                if (in_array('is_checker', $detailCols, true) && (int) ($row['is_checker'] ?? 0) === 1 && in_array('checker_id', $detailCols, true)) {
+                    $row['checker_id'] = (int) ($row['checker_id'] ?? 0) ?: $adminId;
+                }
+                if (in_array('is_approver', $detailCols, true) && (int) ($row['is_approver'] ?? 0) === 1 && in_array('approver_id', $detailCols, true)) {
+                    $row['approver_id'] = (int) ($row['approver_id'] ?? 0) ?: $adminId;
                 }
 
                 if (array_key_exists('depend_head_id', $d) && in_array('depend_head_id', $detailCols, true)) {

@@ -25,8 +25,7 @@
                         alt="logo"
                     />
                     <div class="min-w-0">
-                        <a href="#" class="truncate text-sm font-semibold text-slate-900 hover:underline" @click.prevent.stop="goDashboard">{{ collegeName }}</a>
-                        <div class="text-[11px] text-slate-500">{{ pageTitle }}</div>
+                        <a href="#" class="truncate text-xl font-semibold text-slate-900" @click.prevent.stop="goDashboard">{{ collegeName }}</a>
                     </div>
                 </div>
 
@@ -135,9 +134,9 @@
                                 <a
                                     v-for="leaf in getChildren(activeTopMenu)"
                                     :key="'mega-simple-' + leaf.id"
-                                    href="#"
+                                    :href="menuHref(leaf)"
                                     class="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-emerald-100"
-                                    @click.prevent="handleMenuClick(leaf)"
+                                    @click="handleMenuClick(leaf, $event)"
                                 >
                                     <span class="text-emerald-700" v-html="menuIcon(leaf, 'child')"></span>
                                     <span class="min-w-0 whitespace-normal">{{ leaf.menu_name || leaf.name || leaf.title || 'Item' }}</span>
@@ -151,9 +150,9 @@
                                         <a
                                             v-for="grand in (getChildren(child).length ? getChildren(child) : [child])"
                                             :key="'mega-item-' + grand.id"
-                                            href="#"
+                                            :href="menuHref(grand)"
                                             class="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-emerald-900 hover:bg-emerald-100"
-                                            @click.prevent="handleMenuClick(grand)"
+                                            @click="handleMenuClick(grand, $event)"
                                         >
                                             <span class="text-emerald-700" v-html="menuIcon(grand, 'child')"></span>
                                             <span class="min-w-0 whitespace-normal">{{ grand.menu_name || grand.name || grand.title || 'Item' }}</span>
@@ -189,9 +188,9 @@
                                 <a
                                     v-for="child in flattenLeafChildren(item)"
                                     :key="'side-leaf-' + child.id"
-                                    href="#"
+                                    :href="menuHref(child)"
                                     class="block rounded-lg px-3 py-2 text-sm text-slate-200 hover:bg-white/10"
-                                    @click.prevent="handleMenuClick(child)"
+                                    @click="handleMenuClick(child, $event)"
                                 >
                                     {{ child.menu_name || child.name || child.title || 'Item' }}
                                 </a>
@@ -470,6 +469,19 @@ export default {
             if (p === '/admin/attendanceSummary/create') return { file: './pages/AttendanceSummaryCreate.vue', props: { systems: this.systems } }
             if (p.match(/^\/admin\/attendanceSummary\/[0-9]+$/)) return { file: './pages/AttendanceSummaryView.vue', props: { systems: this.systems, summaryId: this.numericId('/admin/attendanceSummary/') } }
 
+            // Teacher
+            if (p === '/admin/teacher') return { file: './pages/TeacherIndex.vue', props: { systems: this.systems } }
+            if (p === '/admin/teacher/create') return { file: './pages/TeacherManage.vue', props: { systems: this.systems } }
+            if (p.match(/^\/admin\/teacher\/[0-9]+\/edit$/)) return { file: './pages/TeacherManage.vue', props: { systems: this.systems, teacherId: this.numericId('/admin/teacher/') } }
+            if (p.match(/^\/admin\/teacher\/[0-9]+$/)) return { file: './pages/TeacherView.vue', props: { systems: this.systems, teacherId: this.numericId('/admin/teacher/') } }
+            if (p === '/admin/teacher-import') return { file: './pages/TeacherImport.vue', props: { systems: this.systems } }
+
+            if (p === '/admin/teacherAttendance') return { file: './pages/TeacherAttendanceIndex.vue', props: { systems: this.systems } }
+            if (p === '/admin/leaveApplication') return { file: './pages/LeaveApplicationIndex.vue', props: { systems: this.systems } }
+
+            // Library
+            if (p === '/admin/libraryBooksInfo') return { file: './pages/LibraryBooksInfoIndex.vue', props: { systems: this.systems } }
+
             // Result
             if (p === '/admin/result') return { file: './pages/ResultIndex.vue', props: { systems: this.systems } }
             if (p === '/admin/result/create') return { file: './pages/ResultCreate.vue', props: { systems: this.systems } }
@@ -481,6 +493,8 @@ export default {
             if (p === '/admin/tabulation-sheet-ct') return { file: './pages/ResultTabulationSheetCT.vue', props: { systems: this.systems } }
             if (p === '/admin/tabulation-sheet-v2') return { file: './pages/ResultTabulationSheetV2.vue', props: { systems: this.systems } }
             if (p === '/admin/result-grade-summary') return { file: './pages/ResultGradeSummary.vue', props: { systems: this.systems } }
+            if (p.match(/^\/admin\/result-marksheet\/[0-9]+$/)) return { file: './pages/ResultMarksheet.vue', props: { systems: this.systems, detailId: this.numericId('/admin/result-marksheet/') } }
+            if (p.match(/^\/admin\/marksheet-all\/[0-9]+$/)) return { file: './pages/ResultMarksheetAll.vue', props: { systems: this.systems, resultId: this.numericId('/admin/marksheet-all/') } }
 
             // Class Test Result
             if (p === '/admin/classTestResult') return { file: './pages/ClassTestResultIndex.vue', props: { systems: this.systems } }
@@ -897,6 +911,12 @@ export default {
             if (name === 'attendance.attendanceSheet') return '/admin/attendance-sheet'
             if (name === 'attendanceSummary.index') return '/admin/attendanceSummary'
             if (name === 'attendanceSummary.create') return '/admin/attendanceSummary/create'
+            if (name === 'teacher.index') return '/admin/teacher'
+            if (name === 'teacher.create') return '/admin/teacher/create'
+            if (name === 'teacher.import') return '/admin/teacher-import'
+            if (name === 'teacherAttendance.index') return '/admin/teacherAttendance'
+            if (name === 'leaveApplication.index') return '/admin/leaveApplication'
+            if (name === 'libraryBooksInfo.index') return '/admin/libraryBooksInfo'
             if (name === 'admitCard.index') return '/admin/admitCard'
             if (name === 'admitCard.create') return '/admin/admitCard/create'
             if (name === 'admin.admitCard.index') return '/admin/admin-admit-card-four-in-one'
@@ -913,6 +933,14 @@ export default {
             if (name === 'result.tabulationSheetCt') return '/admin/tabulation-sheet-ct'
             if (name === 'result.tabulationSheetV2') return '/admin/tabulation-sheet-v2'
             if (name === 'result.gradeSummary') return '/admin/result-grade-summary'
+            if (name === 'result.marksheet') {
+                const id = item?.id || item?.result_details_id || item?.detail_id || this.numericId('/admin/result-marksheet/')
+                return id ? `/admin/result-marksheet/${id}` : ''
+            }
+            if (name === 'result.marksheetAll') {
+                const id = item?.id || item?.result_id || this.numericId('/admin/marksheet-all/')
+                return id ? `/admin/marksheet-all/${id}` : ''
+            }
             if (name === 'invoice.index') return '/admin/invoice'
             if (name === 'invoice.create') return '/admin/invoice/create'
             if (name === 'invoice.print') return '/admin/invoice-print'
@@ -936,7 +964,7 @@ export default {
             }
             return ''
         },
-        handleMenuClick(item) {
+        buildMenuPath(item) {
             let path = this.routeToPath(item?.route_name, item)
             const q = this.queryFromItem(item)
             if (q) {
@@ -948,7 +976,36 @@ export default {
                     path = `${path}${extra}`
                 }
             }
+            return path || ''
+        },
+        menuHref(item) {
+            const path = this.buildMenuPath(item)
+            return path || '#'
+        },
+        shouldOpenMenuNewTab(item) {
+            const raw = String(item?.params || '')
+            const p = raw.toLowerCase()
+            return p.includes('target=_blank') || p.includes('new_tab=1') || p.includes('newtab=1')
+        },
+        handleMenuClick(item, evt = null) {
+            const path = this.buildMenuPath(item)
             if (!path) return
+
+            const isNewTabGesture = !!evt && (evt.ctrlKey || evt.metaKey || evt.shiftKey || evt.button === 1)
+            if (isNewTabGesture) {
+                return
+            }
+
+            if (evt && typeof evt.preventDefault === 'function') {
+                evt.preventDefault()
+            }
+
+            if (this.shouldOpenMenuNewTab(item)) {
+                window.open(path, '_blank')
+                this.sidebarOpen = false
+                this.closeMegaMenu()
+                return
+            }
 
             if ((this.currentPath || '') !== path) {
                 window.history.pushState({}, '', path)

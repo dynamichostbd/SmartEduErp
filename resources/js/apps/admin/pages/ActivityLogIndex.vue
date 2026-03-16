@@ -7,22 +7,22 @@
                 </div>
 
                 <div class="flex w-full flex-col gap-2 sm:w-auto sm:flex-row">
-                    <input v-model="filters.from_date" type="date" class="h-10 rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-slate-300 focus:ring-2 focus:ring-slate-200" :disabled="loading" @change="load(1)" />
-                    <input v-model="filters.to_date" type="date" class="h-10 rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-slate-300 focus:ring-2 focus:ring-slate-200" :disabled="loading" @change="load(1)" />
+                    <input v-model="filters.from_date" type="date" class="h-9 rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-slate-300 focus:ring-2 focus:ring-slate-200" :disabled="loading" @change="load(1)" />
+                    <input v-model="filters.to_date" type="date" class="h-9 rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-slate-300 focus:ring-2 focus:ring-slate-200" :disabled="loading" @change="load(1)" />
 
-                    <select v-model="filters.description" class="h-10 rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-slate-300 focus:ring-2 focus:ring-slate-200" :disabled="loading" @change="load(1)">
+                    <select v-model="filters.description" class="h-9 rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-slate-300 focus:ring-2 focus:ring-slate-200" :disabled="loading" @change="load(1)">
                         <option value="">All User</option>
                         <option v-for="a in admins" :key="'a-' + a.id" :value="a.name">{{ a.name }}</option>
                     </select>
 
-                    <select v-model="filters.action" class="h-10 rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-slate-300 focus:ring-2 focus:ring-slate-200" :disabled="loading" @change="load(1)">
+                    <select v-model="filters.action" class="h-9 rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-slate-300 focus:ring-2 focus:ring-slate-200" :disabled="loading" @change="load(1)">
                         <option value="">All</option>
                         <option value="Created">Created</option>
                         <option value="Updated">Updated</option>
                         <option value="Deleted">Deleted</option>
                     </select>
 
-                    <select v-model="filters.status" class="h-10 rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-slate-300 focus:ring-2 focus:ring-slate-200" :disabled="loading" @change="load(1)">
+                    <select v-model="filters.status" class="h-9 rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-slate-300 focus:ring-2 focus:ring-slate-200" :disabled="loading" @change="load(1)">
                         <option value="">All</option>
                         <option value="r">Read</option>
                         <option value="ur">Unread</option>
@@ -30,7 +30,7 @@
 
                     <select
                         v-model="filters.field_name"
-                        class="h-10 rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-slate-300 focus:ring-2 focus:ring-slate-200"
+                        class="h-9 rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-slate-300 focus:ring-2 focus:ring-slate-200"
                         :disabled="loading"
                     >
                         <option value="log_name">Module</option>
@@ -40,15 +40,15 @@
                     <input
                         v-model="filters.value"
                         type="text"
-                        class="h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-slate-300 focus:ring-2 focus:ring-slate-200 sm:w-64"
+                        class="h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-slate-300 focus:ring-2 focus:ring-slate-200 sm:w-64"
                         placeholder="Search..."
                         :disabled="loading"
                         @keyup.enter="load(1)"
                     />
 
                     <div class="flex items-center gap-2">
-                        <button class="h-10 rounded-lg bg-slate-900 px-4 text-sm font-semibold text-white hover:bg-slate-800" :disabled="loading" @click="allRead">All Read</button>
-                        <button class="h-10 rounded-lg border border-slate-200 bg-white px-4 text-sm font-semibold text-slate-700 hover:bg-slate-50" :disabled="loading" @click="reset">Reset</button>
+                        <button class="h-9 rounded-lg bg-slate-900 px-4 text-sm font-semibold text-white hover:bg-slate-800" :disabled="loading" @click="allRead">All Read</button>
+                        <button class="h-9 rounded-lg border border-slate-200 bg-white px-4 text-sm font-semibold text-slate-700 hover:bg-slate-50" :disabled="loading" @click="reset">Reset</button>
                     </div>
                 </div>
             </div>

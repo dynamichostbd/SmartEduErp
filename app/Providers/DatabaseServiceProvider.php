@@ -19,7 +19,32 @@ class DatabaseServiceProvider extends ServiceProvider
             return Cache::rememberForever('site_setting_cache', function () {
                 $site = SiteSetting::first();
 
-                return !empty($site) ? $site->toArray() : [];
+                if (empty($site)) {
+                    return [];
+                }
+
+                $data = $site->toArray();
+                foreach ([
+                    'logo',
+                    'logo_small',
+                    'favicon',
+                    'idcard_front_part',
+                    'idcard_back_part',
+                    'admit_card_image',
+                    'marksheet_image',
+                    'online_admission_form_image',
+                    'teacher_id_card_front',
+                    'teacher_id_card_back',
+                    'principle_signature',
+                    'admin_admit_card',
+                    'seat_card',
+                    'admin_admit_card_front',
+                    'admin_admit_card_back',
+                ] as $k) {
+                    $data[$k] = $site->{$k};
+                }
+
+                return $data;
             });
         });
 

@@ -21,24 +21,24 @@
                 <div class="rounded-2xl border border-slate-200 bg-white p-5">
                     <div class="text-sm font-semibold text-slate-900">Academic Info</div>
                     <div class="mt-4 grid grid-cols-1 gap-3">
-                        <select v-model="form.academic_session_id" class="h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
+                        <select v-model="form.academic_session_id" class="h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
                             <option value="">Select Session</option>
                             <option v-for="s in sessionsSorted" :key="'s-' + s.id" :value="String(s.id)">{{ s.name }}</option>
                         </select>
-                        <select v-model="form.academic_qualification_id" class="h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
+                        <select v-model="form.academic_qualification_id" class="h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
                             <option value="">Select Academic Level</option>
                             <option v-for="q in qualifications" :key="'q-' + q.id" :value="String(q.id)">{{ q.name }}</option>
                         </select>
-                        <select v-model="form.department_id" class="h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
+                        <select v-model="form.department_id" class="h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
                             <option value="">Select Department/Group</option>
                             <option v-for="d in filteredDepartments" :key="'d-' + d.id" :value="String(d.id)">{{ d.name }}</option>
                         </select>
-                        <select v-model="form.academic_class_id" class="h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
+                        <select v-model="form.academic_class_id" class="h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
                             <option value="">Select Class</option>
                             <option v-for="c in filteredClasses" :key="'c-' + c.id" :value="String(c.id)">{{ c.name }}</option>
                         </select>
 
-                        <button type="button" class="h-10 rounded-lg bg-slate-900 px-4 text-sm font-semibold text-white hover:bg-slate-800" :disabled="loadingStudents" @click="loadStudentsAndFees">
+                        <button type="button" class="h-9 rounded-lg bg-slate-900 px-4 text-sm font-semibold text-white hover:bg-slate-800" :disabled="loadingStudents" @click="loadStudentsAndFees">
                             {{ loadingStudents ? '...' : 'Search Students' }}
                         </button>
                     </div>
@@ -49,17 +49,17 @@
                 <div class="rounded-2xl border border-slate-200 bg-white p-5">
                     <div class="text-sm font-semibold text-slate-900">Payment Info</div>
                     <div class="mt-4 grid grid-cols-1 gap-3">
-                        <select v-model="form.student_id" class="h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" :disabled="!students.length">
+                        <select v-model="form.student_id" class="h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" :disabled="!students.length">
                             <option value="">Select Student</option>
                             <option v-for="s in students" :key="'st-' + s.id" :value="String(s.id)">{{ studentLabel(s) }}</option>
                         </select>
 
-                        <select v-model="form.account_head_id" class="h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" :disabled="!fees.length" @change="onFeeSelect">
+                        <select v-model="form.account_head_id" class="h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" :disabled="!fees.length" @change="onFeeSelect">
                             <option value="">Select Payment Type</option>
                             <option v-for="f in fees" :key="'f-' + f.id" :value="String(f.id)">{{ f.name }}</option>
                         </select>
 
-                        <input v-model="form.amount" type="number" class="h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" placeholder="Amount" />
+                        <input v-model="form.amount" type="number" class="h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" placeholder="Amount" />
                     </div>
                 </div>
             </div>

@@ -44,11 +44,11 @@
                     <div class="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2">
                         <div>
                             <div class="text-xs font-semibold text-slate-600">Name</div>
-                            <input v-model="form.name" type="text" class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm" required />
+                            <input v-model="form.name" type="text" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm" required />
                         </div>
                         <div>
                             <div class="text-xs font-semibold text-slate-600">Gender</div>
-                            <select v-model="form.gender" class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm" required>
+                            <select v-model="form.gender" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm" required>
                                 <option value="">Select</option>
                                 <option value="Male">Male</option>
                                 <option value="Female">Female</option>
@@ -56,39 +56,39 @@
                         </div>
                         <div>
                             <div class="text-xs font-semibold text-slate-600">DOB</div>
-                            <input v-model="form.dob" type="date" class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm" />
+                            <input v-model="form.dob" type="date" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm" />
                         </div>
                         <div>
                             <div class="text-xs font-semibold text-slate-600">Religion</div>
-                            <input v-model="form.religion" type="text" class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm" />
+                            <input v-model="form.religion" type="text" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm" />
                         </div>
                         <div>
                             <div class="text-xs font-semibold text-slate-600">NID</div>
-                            <input v-model="form.nid" type="text" class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm" />
+                            <input v-model="form.nid" type="text" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm" />
                         </div>
                         <div>
                             <div class="text-xs font-semibold text-slate-600">Blood Group</div>
-                            <input v-model="form.blood_group" type="text" class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm" />
+                            <input v-model="form.blood_group" type="text" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm" />
                         </div>
                         <div>
                             <div class="text-xs font-semibold text-slate-600">Father's Name</div>
-                            <input v-model="form.fathers_name" type="text" class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm" />
+                            <input v-model="form.fathers_name" type="text" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm" />
                         </div>
                         <div>
                             <div class="text-xs font-semibold text-slate-600">Mother's Name</div>
-                            <input v-model="form.mothers_name" type="text" class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm" />
+                            <input v-model="form.mothers_name" type="text" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm" />
                         </div>
                         <div>
                             <div class="text-xs font-semibold text-slate-600">Mobile</div>
-                            <input v-model="form.mobile" type="text" class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm" required />
+                            <input v-model="form.mobile" type="text" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm" required />
                         </div>
                         <div>
                             <div class="text-xs font-semibold text-slate-600">Email</div>
-                            <input v-model="form.email" type="email" class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm" />
+                            <input v-model="form.email" type="email" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm" />
                         </div>
                         <div class="md:col-span-2">
                             <div class="text-xs font-semibold text-slate-600">Address</div>
-                            <input v-model="form.address" type="text" class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm" />
+                            <input v-model="form.address" type="text" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm" />
                         </div>
                         <div class="md:col-span-2">
                             <div class="text-xs font-semibold text-slate-600">Permanent Address</div>
@@ -102,46 +102,46 @@
                     <div class="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2">
                         <div>
                             <div class="text-xs font-semibold text-slate-600">Admission Roll</div>
-                            <input v-model="form.admission_roll" type="text" class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm" required />
+                            <input v-model="form.admission_roll" type="text" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm" required />
                         </div>
                         <div>
                             <div class="text-xs font-semibold text-slate-600">Registration No</div>
-                            <input v-model="form.registration_no" type="text" class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm" />
+                            <input v-model="form.registration_no" type="text" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm" />
                         </div>
                         <div>
                             <div class="text-xs font-semibold text-slate-600">SSC GPA</div>
-                            <input v-model="form.ssc_gpa" type="number" step="0.01" class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm" />
+                            <input v-model="form.ssc_gpa" type="number" step="0.01" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm" />
                         </div>
                         <div>
                             <div class="text-xs font-semibold text-slate-600">Student Type</div>
-                            <select v-model="form.student_type" class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm">
+                            <select v-model="form.student_type" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm">
                                 <option value="Regular">Regular</option>
                             </select>
                         </div>
                         <div>
                             <div class="text-xs font-semibold text-slate-600">Session</div>
-                            <select v-model="form.academic_session_id" class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm" required>
+                            <select v-model="form.academic_session_id" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm" required>
                                 <option value="">Select</option>
                                 <option v-for="s in sessionsSorted" :key="'ses-' + s.id" :value="Number(s.id)">{{ s.name }}</option>
                             </select>
                         </div>
                         <div>
                             <div class="text-xs font-semibold text-slate-600">Academic Level</div>
-                            <select v-model="form.academic_qualification_id" class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm" required>
+                            <select v-model="form.academic_qualification_id" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm" required>
                                 <option value="">Select</option>
                                 <option v-for="q in qualifications" :key="'q-' + q.id" :value="Number(q.id)">{{ q.name }}</option>
                             </select>
                         </div>
                         <div>
                             <div class="text-xs font-semibold text-slate-600">Department</div>
-                            <select v-model="form.department_id" class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm">
+                            <select v-model="form.department_id" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm">
                                 <option value="">Select</option>
                                 <option v-for="d in departments" :key="'d-' + d.id" :value="Number(d.id)">{{ d.name }}</option>
                             </select>
                         </div>
                         <div>
                             <div class="text-xs font-semibold text-slate-600">Class</div>
-                            <select v-model="form.academic_class_id" class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm" required>
+                            <select v-model="form.academic_class_id" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm" required>
                                 <option value="">Select</option>
                                 <option v-for="c in classes" :key="'c-' + c.id" :value="Number(c.id)">{{ c.name }}</option>
                             </select>
@@ -154,19 +154,19 @@
                     <div class="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2">
                         <div>
                             <div class="text-xs font-semibold text-slate-600">Guardian Type</div>
-                            <input v-model="form.guardian_type" type="text" class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm" />
+                            <input v-model="form.guardian_type" type="text" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm" />
                         </div>
                         <div>
                             <div class="text-xs font-semibold text-slate-600">Guardian Name</div>
-                            <input v-model="form.guardian_name" type="text" class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm" />
+                            <input v-model="form.guardian_name" type="text" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm" />
                         </div>
                         <div>
                             <div class="text-xs font-semibold text-slate-600">Guardian Mobile</div>
-                            <input v-model="form.guardian_mobile" type="text" class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm" />
+                            <input v-model="form.guardian_mobile" type="text" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm" />
                         </div>
                         <div>
                             <div class="text-xs font-semibold text-slate-600">Guardian Relations</div>
-                            <input v-model="form.guardian_relations" type="text" class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm" />
+                            <input v-model="form.guardian_relations" type="text" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm" />
                         </div>
                     </div>
                 </div>
@@ -176,23 +176,23 @@
                     <div class="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2">
                         <div>
                             <div class="text-xs font-semibold text-slate-600">Passing Year</div>
-                            <input v-model="form.passing_year" type="number" class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm" />
+                            <input v-model="form.passing_year" type="number" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm" />
                         </div>
                         <div>
                             <div class="text-xs font-semibold text-slate-600">Nationality</div>
-                            <input v-model="form.nationality" type="text" class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm" />
+                            <input v-model="form.nationality" type="text" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm" />
                         </div>
                         <div>
                             <div class="text-xs font-semibold text-slate-600">Quota</div>
-                            <input v-model="form.quota" type="text" class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm" />
+                            <input v-model="form.quota" type="text" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm" />
                         </div>
                         <div>
                             <div class="text-xs font-semibold text-slate-600">Marital Status</div>
-                            <input v-model="form.marital_status" type="text" class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm" />
+                            <input v-model="form.marital_status" type="text" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm" />
                         </div>
                         <div class="md:col-span-2">
                             <div class="text-xs font-semibold text-slate-600">Extra Curricular Activity</div>
-                            <input v-model="form.extra_curricular_activity" type="text" class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm" />
+                            <input v-model="form.extra_curricular_activity" type="text" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm" />
                         </div>
                     </div>
                 </div>
@@ -217,7 +217,7 @@
                 <div class="rounded-2xl border border-slate-200 bg-white p-5">
                     <div class="text-sm font-semibold text-slate-900">Status</div>
                     <div class="mt-3">
-                        <select v-model="form.status" class="h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm">
+                        <select v-model="form.status" class="h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm">
                             <option value="pending">Pending</option>
                             <option value="approved">Approved</option>
                             <option value="rejected">Rejected</option>

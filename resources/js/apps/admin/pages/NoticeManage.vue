@@ -22,12 +22,12 @@
                     <div class="grid grid-cols-1 gap-4 lg:grid-cols-12">
                         <div class="lg:col-span-4">
                             <div class="text-xs font-semibold text-slate-600">Date</div>
-                            <input v-model="form.date" type="date" class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
+                            <input v-model="form.date" type="date" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
                         </div>
 
                         <div class="lg:col-span-4">
                             <div class="text-xs font-semibold text-slate-600">Type</div>
-                            <select v-model="form.type" class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
+                            <select v-model="form.type" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
                                 <option value="public">Public</option>
                                 <option value="office">Office</option>
                                 <option value="student">Student</option>
@@ -36,7 +36,7 @@
 
                         <div class="lg:col-span-4">
                             <div class="text-xs font-semibold text-slate-600">File Type</div>
-                            <select v-model="form.file_type" class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
+                            <select v-model="form.file_type" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
                                 <option value="Image">Image</option>
                                 <option value="PDF">PDF</option>
                             </select>
@@ -44,7 +44,7 @@
 
                         <div class="lg:col-span-12">
                             <div class="text-xs font-semibold text-slate-600">Title</div>
-                            <input v-model="form.title" type="text" class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
+                            <input v-model="form.title" type="text" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
                         </div>
 
                         <div class="lg:col-span-12">
@@ -79,8 +79,8 @@
 
             <div class="lg:col-span-3">
                 <div class="rounded-2xl border border-slate-200 bg-white p-5">
-                    <button type="button" class="h-10 w-full rounded-lg bg-slate-900 px-4 text-sm font-semibold text-white hover:bg-slate-800" :disabled="saving" @click="submit">{{ saving ? '...' : (isEdit ? 'Update' : 'Create') }}</button>
-                    <button type="button" class="mt-2 h-10 w-full rounded-lg border border-slate-200 bg-white px-4 text-sm font-semibold text-slate-700 hover:bg-slate-50" :disabled="saving" @click="goIndex">Cancel</button>
+                    <button type="button" class="h-9 w-full rounded-lg bg-slate-900 px-4 text-sm font-semibold text-white hover:bg-slate-800" :disabled="saving" @click="submit">{{ saving ? '...' : (isEdit ? 'Update' : 'Create') }}</button>
+                    <button type="button" class="mt-2 h-9 w-full rounded-lg border border-slate-200 bg-white px-4 text-sm font-semibold text-slate-700 hover:bg-slate-50" :disabled="saving" @click="goIndex">Cancel</button>
                 </div>
             </div>
         </div>

@@ -15,7 +15,7 @@
             <form class="mt-4 grid grid-cols-1 gap-3 lg:grid-cols-12" @submit.prevent="search">
                 <div class="lg:col-span-3">
                     <div class="text-xs font-semibold text-slate-600">Account No.</div>
-                    <select v-model="search_data.account" class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
+                    <select v-model="search_data.account" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
                         <option value="">Select Account No.</option>
                         <option v-for="acc in accounts" :key="'acc-' + acc.account_no" :value="String(acc.account_no)">
                             {{ acc.account_no }}
@@ -25,26 +25,26 @@
 
                 <div class="lg:col-span-3">
                     <div class="text-xs font-semibold text-slate-600">Start Date</div>
-                    <input v-model="search_data.start_date" type="datetime-local" step="1" class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
+                    <input v-model="search_data.start_date" type="datetime-local" step="1" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
                 </div>
 
                 <div class="lg:col-span-3">
                     <div class="text-xs font-semibold text-slate-600">End Date</div>
-                    <input v-model="search_data.end_date" type="datetime-local" step="1" class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
+                    <input v-model="search_data.end_date" type="datetime-local" step="1" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
                 </div>
 
                 <div class="lg:col-span-1">
                     <div class="text-xs font-semibold text-slate-600">Page</div>
-                    <input v-model.number="search_data.page" type="number" min="1" class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
+                    <input v-model.number="search_data.page" type="number" min="1" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
                 </div>
 
                 <div class="lg:col-span-1">
                     <div class="text-xs font-semibold text-slate-600">Limit</div>
-                    <input v-model.number="search_data.limit" type="number" min="1" class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
+                    <input v-model.number="search_data.limit" type="number" min="1" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
                 </div>
 
                 <div class="lg:col-span-1 flex items-end">
-                    <button type="submit" class="mt-1 h-10 w-full rounded-lg bg-emerald-600 px-4 text-sm font-semibold text-white hover:bg-emerald-700" :disabled="loading">
+                    <button type="submit" class="mt-1 h-9 w-full rounded-lg bg-emerald-600 px-4 text-sm font-semibold text-white hover:bg-emerald-700" :disabled="loading">
                         {{ loading ? '...' : 'Search' }}
                     </button>
                 </div>

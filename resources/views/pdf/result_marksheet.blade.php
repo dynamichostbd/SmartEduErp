@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Marksheet</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <style type="text/css">
         body {
             position: relative;
@@ -115,24 +114,16 @@
         $marks = $data['marks'] ?? [];
 
         $bg = $config['marksheet_image'] ?? '';
-        if (!empty($bg) && !preg_match('#^https?://#i', $bg)) {
-            $bgStr = ltrim((string) $bg, '/');
-            $bgStr = preg_replace('#^(storage/)?upload/#i', '', $bgStr);
+        $bg = is_string($bg) ? trim($bg) : '';
 
-            $candidates = [
-                public_path((string) $bg),
-                public_path($bgStr),
-                public_path('storage/upload/' . $bgStr),
-            ];
-
-            foreach ($candidates as $p) {
-                if (!empty($p) && file_exists($p)) {
-                    $bg = $p;
-                    break;
-                }
-            }
+        $bgImage = $bgImage ?? null;
+        if (is_string($bgImage)) {
+            $bgImage = trim($bgImage);
         }
-        if (!empty($bg) && !preg_match('#^https?://#i', (string) $bg) && file_exists($bg)) {
+
+        // If it's already a remote URL (bucket/CDN), dompdf can load it when isRemoteEnabled=true
+        // If it's a local path, convert to file:/// URI.
+        if (!empty($bg) && !preg_match('#^https?://#i', $bg) && file_exists($bg)) {
             $bg = 'file:///' . str_replace(' ', '%20', str_replace('\\', '/', $bg));
         }
 
@@ -159,7 +150,7 @@
     @endphp
 
     <div class="marksheet-body">
-        <img src="{{ $bg }}" alt="">
+        <img src="{{ !empty($bgImage) ? $bgImage : $bg }}" alt="">
         <div class="marksheet_name">
             {{ data_get($result, 'exam.name', '') }}
         </div>
