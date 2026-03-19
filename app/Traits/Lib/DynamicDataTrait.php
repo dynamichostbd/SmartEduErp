@@ -132,8 +132,25 @@ trait DynamicDataTrait
 
             $academicQualifications = [];
             if ($this->hasTableCached('academic_qualifications')) {
-                $academicQualifications = DB::table('academic_qualifications')
-                    ->select('id', 'name', 'status')
+                $q = DB::table('academic_qualifications');
+
+                $select = ['id', 'name'];
+                if ($this->hasColumnCached('academic_qualifications', 'status')) {
+                    $select[] = 'status';
+                }
+                foreach (['application_fees', 'admission_roll_verify', 'subject_choose', 'migration', 'registration', 'online_admission', 'application_fee'] as $col) {
+                    if ($this->hasColumnCached('academic_qualifications', $col)) {
+                        $select[] = $col;
+                    }
+                }
+                foreach (['commitment', 'admission_files'] as $col) {
+                    if ($this->hasColumnCached('academic_qualifications', $col)) {
+                        $select[] = $col;
+                    }
+                }
+
+                $academicQualifications = $q
+                    ->select($select)
                     ->orderBy('id')
                     ->get()
                     ->toArray();
@@ -161,7 +178,12 @@ trait DynamicDataTrait
                 'academic_classes' => $academicClasses,
                 'academic_sessions' => $this->hasTableCached('academic_sessions')
                     ? DB::table('academic_sessions')
-                        ->select('id', 'name', 'status')
+                        ->select(array_values(array_filter([
+                            'id',
+                            'name',
+                            $this->hasColumnCached('academic_sessions', 'status') ? 'status' : null,
+                            $this->hasColumnCached('academic_sessions', 'online_admission') ? 'online_admission' : null,
+                        ])))
                         ->orderBy('id')
                         ->get()
                         ->toArray()

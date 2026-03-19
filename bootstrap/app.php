@@ -12,6 +12,25 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
+        $middleware->validateCsrfTokens(except: [
+            'api/public/apply-fees/success',
+            'api/public/apply-fees/fail',
+            'api/public/apply-fees/cancel',
+            'api/public/apply-fees/ipn',
+            'api/public/certificate/success',
+            'api/public/certificate/fail',
+            'api/public/certificate/cancel',
+            'api/public/certificate/ipn',
+            'api/public/online-admission/success',
+            'api/public/online-admission/fail',
+            'api/public/online-admission/cancel',
+            'api/public/online-admission/ipn',
+            'api/public/student/pay-now/success',
+            'api/public/student/pay-now/fail',
+            'api/public/student/pay-now/cancel',
+            'api/public/student/pay-now/ipn',
+        ]);
+
         $middleware->alias([
             'auth.access' => App\Http\Middleware\AdminAccess::class,
         ]);
