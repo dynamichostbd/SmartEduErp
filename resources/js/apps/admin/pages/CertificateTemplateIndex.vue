@@ -1,6 +1,6 @@
 <template>
     <div class="flex flex-col gap-4">
-        <div class="rounded-2xl border border-slate-200 bg-white p-5">
+        <div class=" border border-slate-300 bg-white p-5">
             <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <div class="min-w-0">
                     <div class="truncate text-xl font-semibold text-slate-900">Certificate Template</div>
@@ -8,18 +8,18 @@
                 </div>
 
                 <div class="flex flex-wrap items-center gap-2">
-                    <button type="button" class="rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-700" @click="goCreate">Add New</button>
+                    <button type="button" class="rounded-sm bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-700" @click="goCreate">Add New</button>
                 </div>
             </div>
         </div>
 
-        <div v-if="error" class="rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-800">{{ error }}</div>
+        <div v-if="error" class=" border border-red-200 bg-red-50 p-4 text-sm text-red-800">{{ error }}</div>
 
-        <div class="rounded-2xl border border-slate-200 bg-white p-5">
+        <div class=" border border-slate-300 bg-white p-5">
             <div class="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-6">
                 <div class="xl:col-span-1">
                     <div class="text-xs font-semibold text-slate-600">Status</div>
-                    <select v-model="filters.status" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" @change="search(true)">
+                    <select v-model="filters.status" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
                         <option value="">All</option>
                         <option v-for="(label, key) in statuses" :key="'st-' + key" :value="key">{{ label }}</option>
                     </select>
@@ -27,12 +27,12 @@
 
                 <div class="xl:col-span-2">
                     <div class="text-xs font-semibold text-slate-600">Title</div>
-                    <input v-model="filters.value" type="text" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" placeholder="Search by title" />
+                    <input v-model="filters.value" type="text" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" placeholder="Search by title" />
                 </div>
 
                 <div class="xl:col-span-1">
                     <div class="text-xs font-semibold text-slate-600">Per Page</div>
-                    <select v-model.number="filters.pagination" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
+                    <select v-model.number="filters.pagination" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
                         <option :value="10">10</option>
                         <option :value="25">25</option>
                         <option :value="50">50</option>
@@ -40,41 +40,46 @@
                 </div>
 
                 <div class="xl:col-span-1 flex items-end">
-                    <button type="button" class="h-9 w-full rounded-lg bg-slate-900 px-4 text-sm font-semibold text-white hover:bg-slate-800" :disabled="loading" @click="search(true)">
+                    <button type="button" class="h-9 w-full rounded-sm bg-slate-900 px-4 text-sm font-semibold text-white hover:bg-slate-800" :disabled="loading" @click="search(true)">
                         {{ loading ? 'Loading...' : 'Search' }}
                     </button>
                 </div>
             </div>
         </div>
 
-        <div class="rounded-2xl border border-slate-200 bg-white p-5">
-            <div class="overflow-x-auto rounded-xl border border-slate-200">
-                <table class="min-w-full divide-y divide-slate-200 text-sm">
-                    <thead class="bg-slate-50">
-                        <tr>
-                            <th class="px-3 py-2 text-left font-semibold text-slate-700">Academic Level</th>
-                            <th class="px-3 py-2 text-left font-semibold text-slate-700">Account Head</th>
-                            <th class="px-3 py-2 text-left font-semibold text-slate-700">Title</th>
-                            <th class="px-3 py-2 text-left font-semibold text-slate-700">Certificate Fees</th>
-                            <th class="px-3 py-2 text-left font-semibold text-slate-700">Amount</th>
-                            <th class="px-3 py-2 text-left font-semibold text-slate-700">Gateway</th>
-                            <th class="px-3 py-2 text-right font-semibold text-slate-700">Actions</th>
+        <div class=" border border-slate-300 bg-white p-5">
+            <div class="overflow-x-auto">
+                <table class="min-w-full border-collapse border border-slate-300 text-sm">
+                    <thead class="bg-emerald-100">
+                        <tr class="text-left text-xs font-semibold uppercase tracking-wider text-slate-700">
+                            <th class="border border-slate-300 bg-emerald-100 px-1 py-2 text-slate-700">Academic Level</th>
+                            <th class="border border-slate-300 bg-emerald-100 px-1 py-2 text-slate-700">Account Head</th>
+                            <th class="border border-slate-300 bg-emerald-100 px-1 py-2 text-slate-700">Title</th>
+                            <th class="border border-slate-300 bg-emerald-100 px-1 py-2 text-slate-700">Certificate Fees</th>
+                            <th class="border border-slate-300 bg-emerald-100 px-1 py-2 text-slate-700">Amount</th>
+                            <th class="border border-slate-300 bg-emerald-100 px-1 py-2 text-slate-700">Gateway</th>
+                            <th class="border border-slate-300 bg-emerald-100 px-1 py-2 text-right text-slate-700">Actions</th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-slate-200 bg-white">
-                        <tr v-for="row in rows" :key="'t-' + row.id">
-                            <td class="px-3 py-2 text-slate-800">{{ row.academic_qualification_name || '--' }}</td>
-                            <td class="px-3 py-2 text-slate-800">{{ row.account_head_name || '--' }}</td>
-                            <td class="px-3 py-2 text-slate-800">{{ row.title || '--' }}</td>
-                            <td class="px-3 py-2 text-slate-800 uppercase">{{ row.certificate_fees || '--' }}</td>
-                            <td class="px-3 py-2 text-slate-800">{{ row.amount ?? '--' }}</td>
-                            <td class="px-3 py-2 text-slate-800">{{ row.gateway_account_no || '--' }}</td>
-                            <td class="px-3 py-2">
+                    <tbody class="bg-white">
+                        <tr v-for="(row, idx) in rows" :key="'t-' + row.id" :class="idx % 2 === 0 ? 'bg-white' : 'bg-slate-50'">
+                            <td class="border border-slate-300 px-1 py-1 text-slate-800">{{ row.academic_qualification_name || '--' }}</td>
+                            <td class="border border-slate-300 px-1 py-1 text-slate-800">{{ row.account_head_name || '--' }}</td>
+                            <td class="border border-slate-300 px-1 py-1 text-slate-800">{{ row.title || '--' }}</td>
+                            <td class="border border-slate-300 px-1 py-1 text-slate-800 uppercase">{{ row.certificate_fees || '--' }}</td>
+                            <td class="border border-slate-300 px-1 py-1 text-slate-800">{{ row.amount ?? '--' }}</td>
+                            <td class="border border-slate-300 px-1 py-1 text-slate-800">{{ row.gateway_account_no || '--' }}</td>
+                            <td class="border border-slate-300 px-1 py-1">
                                 <div class="flex items-center justify-end gap-2">
-                                    <button type="button" class="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-50" @click="goView(row.id)">View</button>
-                                    <button type="button" class="rounded-lg border border-sky-200 bg-sky-50 px-3 py-1.5 text-xs font-semibold text-sky-700 hover:bg-sky-100" @click="goEdit(row.id)">Edit</button>
-                                    <button type="button" class="rounded-lg border border-red-200 bg-red-50 px-3 py-1.5 text-xs font-semibold text-red-700 hover:bg-red-100" :disabled="deletingId === row.id" @click="destroyRow(row.id)">
-                                        {{ deletingId === row.id ? 'Deleting...' : 'Delete' }}
+                                    <button type="button" class="inline-flex h-8 w-8 items-center justify-center rounded-sm border border-slate-300 bg-white text-slate-700 hover:bg-slate-50" title="View" @click="goView(row.id)">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button type="button" class="inline-flex h-8 w-8 items-center justify-center rounded-sm border border-sky-200 bg-sky-50 text-sky-700 hover:bg-sky-100" title="Edit" @click="goEdit(row.id)">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button type="button" class="inline-flex h-8 w-8 items-center justify-center rounded-sm border border-red-200 bg-red-50 text-red-700 hover:bg-red-100" title="Delete" :disabled="deletingId === row.id" @click="destroyRow(row.id)">
+                                        <i v-if="deletingId === row.id" class="fas fa-spinner fa-spin"></i>
+                                        <i v-else class="fas fa-trash"></i>
                                     </button>
                                 </div>
                             </td>
@@ -90,9 +95,9 @@
             <div v-if="meta.total" class="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <div class="text-sm text-slate-600">Showing {{ meta.from || 0 }} to {{ meta.to || 0 }} of {{ meta.total || 0 }} entries</div>
                 <div class="flex flex-wrap items-center gap-1">
-                    <button type="button" class="h-9 rounded-lg border border-slate-200 bg-white px-3 text-sm font-semibold text-slate-700 hover:bg-slate-50" :disabled="filters.page <= 1 || loading" @click="goPage(filters.page - 1)">Prev</button>
-                    <button v-for="p in pageNumbers" :key="'p-' + p" type="button" class="h-9 rounded-lg border px-3 text-sm font-semibold" :class="p === filters.page ? 'border-emerald-300 bg-emerald-50 text-emerald-700' : 'border-slate-200 bg-white text-slate-700 hover:bg-slate-50'" :disabled="loading" @click="goPage(p)">{{ p }}</button>
-                    <button type="button" class="h-9 rounded-lg border border-slate-200 bg-white px-3 text-sm font-semibold text-slate-700 hover:bg-slate-50" :disabled="filters.page >= meta.last_page || loading" @click="goPage(filters.page + 1)">Next</button>
+                    <button type="button" class="h-9 rounded-sm border border-slate-300 bg-white px-3 text-sm font-semibold text-slate-700 hover:bg-slate-50" :disabled="filters.page <= 1 || loading" @click="goPage(filters.page - 1)">Prev</button>
+                    <button v-for="p in pageNumbers" :key="'p-' + p" type="button" class="h-9 rounded-sm border px-3 text-sm font-semibold" :class="p === filters.page ? 'border-emerald-300 bg-emerald-50 text-emerald-700' : 'border-slate-300 bg-white text-slate-700 hover:bg-slate-50'" :disabled="loading" @click="goPage(p)">{{ p }}</button>
+                    <button type="button" class="h-9 rounded-sm border border-slate-300 bg-white px-3 text-sm font-semibold text-slate-700 hover:bg-slate-50" :disabled="filters.page >= meta.last_page || loading" @click="goPage(filters.page + 1)">Next</button>
                 </div>
             </div>
         </div>
@@ -113,6 +118,7 @@ export default {
             loading: false,
             error: '',
             deletingId: null,
+            searchTimer: null,
             rows: [],
             meta: {
                 current_page: 1,
@@ -148,7 +154,24 @@ export default {
     mounted() {
         this.search(true)
     },
+    watch: {
+        'filters.status'(next, prev) {
+            if (String(next || '') !== String(prev || '')) this.scheduleSearch(true)
+        },
+        'filters.value'(next, prev) {
+            if (String(next || '') !== String(prev || '')) this.scheduleSearch(true)
+        },
+        'filters.pagination'(next, prev) {
+            if (Number(next || 0) !== Number(prev || 0)) this.scheduleSearch(true)
+        },
+    },
     methods: {
+        scheduleSearch(resetPage) {
+            if (this.searchTimer) clearTimeout(this.searchTimer)
+            this.searchTimer = setTimeout(() => {
+                this.search(resetPage)
+            }, 250)
+        },
         goCreate() {
             window.location.href = '/admin/certificateTemplate/create'
         },

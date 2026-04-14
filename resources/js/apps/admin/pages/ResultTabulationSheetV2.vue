@@ -1,6 +1,6 @@
 <template>
     <div class="flex flex-col gap-4">
-        <div class="rounded-2xl border border-slate-200 bg-white p-5 print:hidden">
+        <div class=" border border-slate-300 bg-white p-5 print:hidden">
             <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <div class="min-w-0">
                     <div class="truncate text-xl font-semibold text-slate-900">Tabulation Sheet</div>
@@ -8,19 +8,19 @@
                 </div>
 
                 <div class="flex flex-wrap items-center gap-2">
-                    <button type="button" class="rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50" @click="goBack">Back</button>
-                    <button type="button" class="rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800" :disabled="printing || !hasPages" @click="print">{{ printing ? '...' : 'PRINT' }}</button>
+                    <button type="button" class="rounded-sm border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50" @click="goBack">Back</button>
+                    <button type="button" class="rounded-sm bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800" :disabled="printing || !hasPages" @click="print">{{ printing ? '...' : 'PRINT' }}</button>
                 </div>
             </div>
         </div>
 
-        <div v-if="error" class="rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-800 print:hidden">{{ error }}</div>
+        <div v-if="error" class=" border border-red-200 bg-red-50 p-4 text-sm text-red-800 print:hidden">{{ error }}</div>
 
-        <div class="rounded-2xl border border-slate-200 bg-white p-5 print:hidden">
+        <div class=" border border-slate-300 bg-white p-5 print:hidden">
             <div class="grid grid-cols-1 gap-4 lg:grid-cols-12">
                 <div class="lg:col-span-2">
                     <div class="text-xs font-semibold text-slate-600">Session</div>
-                    <select v-model="filters.academic_session_id" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
+                    <select v-model="filters.academic_session_id" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
                         <option value="">Select</option>
                         <option v-for="s in sessionsSorted" :key="'ses-' + s.id" :value="String(s.id)">{{ s.name }}</option>
                     </select>
@@ -28,7 +28,7 @@
 
                 <div class="lg:col-span-2">
                     <div class="text-xs font-semibold text-slate-600">Academic Level</div>
-                    <select v-model="filters.academic_qualification_id" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
+                    <select v-model="filters.academic_qualification_id" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
                         <option value="">Select</option>
                         <option v-for="q in qualifications" :key="'q-' + q.id" :value="String(q.id)">{{ q.name }}</option>
                     </select>
@@ -36,7 +36,7 @@
 
                 <div class="lg:col-span-2">
                     <div class="text-xs font-semibold text-slate-600">Department/Group</div>
-                    <select v-model="filters.department_id" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
+                    <select v-model="filters.department_id" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
                         <option value="">Select</option>
                         <option v-for="d in filteredDepartments" :key="'d-' + d.id" :value="String(d.id)">{{ d.name }}</option>
                     </select>
@@ -44,7 +44,7 @@
 
                 <div class="lg:col-span-2">
                     <div class="text-xs font-semibold text-slate-600">Class</div>
-                    <select v-model="filters.academic_class_id" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
+                    <select v-model="filters.academic_class_id" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
                         <option value="">Select</option>
                         <option v-for="c in filteredClasses" :key="'c-' + c.id" :value="String(c.id)">{{ c.name }}</option>
                     </select>
@@ -52,7 +52,7 @@
 
                 <div class="lg:col-span-2">
                     <div class="text-xs font-semibold text-slate-600">Exam</div>
-                    <select v-model="filters.exam_id" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
+                    <select v-model="filters.exam_id" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
                         <option value="">Select</option>
                         <option v-for="e in exams" :key="'ex-' + e.id" :value="String(e.id)">{{ e.name }}</option>
                     </select>
@@ -60,7 +60,7 @@
 
                 <div class="lg:col-span-2">
                     <div class="text-xs font-semibold text-slate-600">Search Field</div>
-                    <select v-model="filters.field_name" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
+                    <select v-model="filters.field_name" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
                         <option value="">--Select One--</option>
                         <option value="student_id">Software ID</option>
                         <option value="name">Name</option>
@@ -71,27 +71,27 @@
 
                 <div class="lg:col-span-3">
                     <div class="text-xs font-semibold text-slate-600">Search</div>
-                    <input v-model="filters.search_keyword" type="text" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" placeholder="Type your text" @keydown.enter.prevent="search" />
+                    <input v-model="filters.search_keyword" type="text" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" placeholder="Type your text" @keydown.enter.prevent="search" />
                 </div>
 
                 <div class="lg:col-span-1 flex items-end">
-                    <button type="button" class="h-9 w-full rounded-lg bg-emerald-600 px-4 text-sm font-semibold text-white hover:bg-emerald-700" :disabled="loading" @click="search">{{ loading ? '...' : 'Go' }}</button>
+                    <button type="button" class="h-9 w-full rounded-sm bg-emerald-600 px-4 text-sm font-semibold text-white hover:bg-emerald-700" :disabled="loading" @click="search">{{ loading ? '...' : 'Go' }}</button>
                 </div>
             </div>
         </div>
 
-        <div class="rounded-2xl border border-slate-200 bg-white p-5" id="printArea">
+        <div class=" border border-slate-300 bg-white p-5" id="printArea">
             <div v-if="hasPages" class="space-y-6">
                 <div v-for="(subjectChunk, chunkIndex) in result.subject_chunks" :key="'chunk-' + chunkIndex" class="tabulation-page" :class="{ 'page-break': chunkIndex < result.subject_chunks.length - 1 }">
-                    <table class="mb-3 w-full overflow-hidden rounded-xl border border-slate-200 text-sm">
+                    <table class="mb-3 w-full overflow-hidden rounded-xl border border-slate-300 text-sm">
                         <tbody>
-                            <tr class="border-b border-slate-200">
+                            <tr class="border-b border-slate-300">
                                 <th class="w-[20%] bg-slate-50 px-3 py-2 text-left font-semibold text-slate-700">Session</th>
                                 <td class="w-[30%] px-3 py-2">{{ result.academic_session }}</td>
                                 <th class="w-[20%] bg-slate-50 px-3 py-2 text-left font-semibold text-slate-700">Academic Level</th>
                                 <td class="px-3 py-2">{{ result.academic_level }}</td>
                             </tr>
-                            <tr class="border-b border-slate-200">
+                            <tr class="border-b border-slate-300">
                                 <th class="bg-slate-50 px-3 py-2 text-left font-semibold text-slate-700">Department/Group</th>
                                 <td class="px-3 py-2">{{ result.department }}</td>
                                 <th class="bg-slate-50 px-3 py-2 text-left font-semibold text-slate-700">Class</th>
@@ -104,9 +104,9 @@
                         </tbody>
                     </table>
 
-                    <div class="overflow-x-auto rounded-xl border border-slate-200">
+                    <div class="overflow-x-auto">
                         <table class="min-w-full border-collapse text-xs">
-                            <thead class="bg-slate-50">
+                            <thead class="bg-emerald-100">
                                 <tr>
                                     <th rowspan="2" class="border border-slate-300 px-2 py-2 text-center font-semibold">SL.</th>
                                     <th rowspan="2" class="border border-slate-300 px-2 py-2 text-left font-semibold">Software ID</th>
@@ -188,7 +188,7 @@
                 </div>
             </div>
 
-            <div v-else class="rounded-xl border border-slate-200 bg-slate-50 p-8 text-center text-sm text-slate-600">No result found.</div>
+            <div v-else class="rounded-xl border border-slate-300 bg-slate-50 p-8 text-center text-sm text-slate-600">No result found.</div>
         </div>
     </div>
 </template>

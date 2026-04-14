@@ -1,6 +1,6 @@
 <template>
-    <div class="rounded-xl border border-slate-200 bg-white p-4">
-        <div class="flex items-start justify-between gap-4 border-b border-slate-200 pb-3">
+    <div class="rounded-xl border border-slate-300 bg-white p-4">
+        <div class="flex items-start justify-between gap-4 border-b border-slate-300 pb-3">
             <div class="flex items-center gap-3">
                 <img v-if="logo" :src="logo" class="h-[60px] w-auto" />
                 <div>
@@ -58,22 +58,29 @@
 
         <div class="mt-4 text-center text-base font-semibold text-slate-900">EPAYMENT INVOICE</div>
 
-        <div class="mt-3 overflow-hidden rounded-xl border border-slate-200">
+        <div class="mt-3 overflow-hidden rounded-xl border border-slate-300">
             <table class="w-full border-collapse text-sm">
-                <thead class="bg-slate-50">
+                <thead class="bg-emerald-100">
                     <tr>
                         <th class="border border-slate-300 px-3 py-2 text-center font-semibold" style="width: 90px">Sl No.</th>
+                        <th v-if="hostel" class="border border-slate-300 px-3 py-2 text-left font-semibold">Year</th>
+                        <th v-if="hostel" class="border border-slate-300 px-3 py-2 text-left font-semibold">Month</th>
                         <th class="border border-slate-300 px-3 py-2 text-left font-semibold">Description</th>
                         <th class="border border-slate-300 px-3 py-2 text-right font-semibold" style="width: 130px">Amount</th>
                     </tr>
                 </thead>
-                <tbody class="bg-white">
-                    <tr>
-                        <td class="border border-slate-300 px-3 py-2 text-center">01</td>
-                        <td class="border border-slate-300 px-3 py-2">{{ data.head ? data.head.name : '' }}</td>
-                        <td class="border border-slate-300 px-3 py-2 text-right font-semibold">{{ money(data.amount) }}</td>
-                    </tr>
-                </tbody>
+
+                <slot name="account-heads">
+                    <tbody class="bg-white">
+                        <tr>
+                            <td class="border border-slate-300 px-3 py-2 text-center">01</td>
+                            <td v-if="hostel" class="border border-slate-300 px-3 py-2">{{ formatYear(data.invoice_date) }}</td>
+                            <td v-if="hostel" class="border border-slate-300 px-3 py-2">{{ formatMonth(data.invoice_date) }}</td>
+                            <td class="border border-slate-300 px-3 py-2">{{ data.head ? data.head.name : '' }}</td>
+                            <td class="border border-slate-300 px-3 py-2 text-right font-semibold">{{ money(data.amount) }}</td>
+                        </tr>
+                    </tbody>
+                </slot>
             </table>
         </div>
 
@@ -95,6 +102,10 @@ export default {
             type: Object,
             default: () => ({}),
         },
+        hostel: {
+            type: Boolean,
+            default: false,
+        },
     },
     computed: {
         title() {
@@ -114,6 +125,14 @@ export default {
             const n = Number(v || 0)
             const val = Number.isFinite(n) ? n : 0
             return val.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+        },
+        formatMonth(date) {
+            if (!date) return ''
+            return new Date(date).toLocaleDateString('en-US', { month: 'long' })
+        },
+        formatYear(date) {
+            if (!date) return ''
+            return new Date(date).getFullYear()
         },
     },
 }

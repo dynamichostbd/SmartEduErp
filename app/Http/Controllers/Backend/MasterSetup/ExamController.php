@@ -13,7 +13,19 @@ class ExamController extends Controller
 {
     private function table(): ?string
     {
-        return Schema::hasTable('exams') ? 'exams' : null;
+        $has = Cache::rememberForever('has_table_exams', function () {
+            return Schema::hasTable('exams');
+        });
+
+        return $has ? 'exams' : null;
+    }
+
+    private function columnsCached(string $table): array
+    {
+        $key = "table_columns_{$table}";
+        return Cache::rememberForever($key, function () use ($table) {
+            return Schema::getColumnListing($table);
+        });
     }
 
     private function emptyPaginator(int $perPage)
@@ -32,6 +44,11 @@ class ExamController extends Controller
     private function flushCaches(): void
     {
         Cache::forget('dynamic_data_cache');
+        try {
+            Cache::increment('exam_index_version');
+        } catch (\Throwable $e) {
+            Cache::forever('exam_index_version', ((int) Cache::get('exam_index_version', 1)) + 1);
+        }
     }
 
     public function index(Request $request)
@@ -48,7 +65,23 @@ class ExamController extends Controller
             return $this->emptyPaginator($perPage);
         }
 
-        $cols = Schema::getColumnListing($table);
+        $cols = $this->columnsCached($table);
+
+        $ver = (int) Cache::get('exam_index_version', 1);
+        $cacheKey = 'exam_index_v' . $ver . '_' . md5(json_encode([
+            'page' => (int) $request->input('page', 1),
+            'pagination' => $perPage,
+            'field_name' => (string) ($request->input('field_name') ?? 'name'),
+            'value' => trim((string) ($request->input('value') ?? '')),
+            'exam_type' => $request->has('exam_type') ? trim((string) $request->input('exam_type')) : null,
+            'allData' => (bool) $request->boolean('allData'),
+            'pluck' => (bool) $request->boolean('pluck'),
+        ]));
+
+        $cached = Cache::get($cacheKey);
+        if (is_array($cached)) {
+            return response()->json($cached);
+        }
 
         $q = DB::table("{$table} as e")
             ->leftJoin("{$table} as ct", 'ct.id', '=', 'e.class_test_exam_id')
@@ -77,14 +110,19 @@ class ExamController extends Controller
             }
         }
 
+        $payload = null;
         if ($request->boolean('allData')) {
             if ($request->boolean('pluck')) {
-                return response()->json($q->pluck('e.name', 'e.id'));
+                $payload = $q->pluck('e.name', 'e.id')->toArray();
+            } else {
+                $payload = $q->get()->toArray();
             }
-            return response()->json($q->get());
+        } else {
+            $payload = $q->paginate($perPage)->toArray();
         }
 
-        return response()->json($q->paginate($perPage));
+        Cache::put($cacheKey, $payload, now()->addSeconds(60));
+        return response()->json($payload);
     }
 
     public function store(Request $request)

@@ -1,31 +1,31 @@
 <template>
     <div class="flex flex-col gap-4">
-        <div class="rounded-2xl border border-slate-200 bg-white p-5">
+        <div class=" border border-slate-300 bg-white p-5">
             <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <div class="min-w-0">
                     <div class="truncate text-xl font-semibold text-slate-900">Activity Log View</div>
                 </div>
                 <div class="flex flex-wrap items-center gap-2">
-                    <button type="button" class="rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50" @click="goIndex">Back</button>
+                    <button type="button" class="rounded-sm border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50" @click="goIndex">Back</button>
                 </div>
             </div>
         </div>
 
-        <div v-if="error" class="rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-800">{{ error }}</div>
+        <div v-if="error" class=" border border-red-200 bg-red-50 p-4 text-sm text-red-800">{{ error }}</div>
 
         <div v-if="row" class="grid grid-cols-1 gap-4 lg:grid-cols-12">
             <div class="lg:col-span-6">
-                <div class="rounded-2xl border border-slate-200 bg-white p-5">
+                <div class=" border border-slate-300 bg-white p-5">
                     <div class="text-sm font-semibold text-slate-900">Before Process Data</div>
-                    <div class="mt-3 overflow-hidden rounded-xl border border-slate-200">
+                    <div class="mt-3 overflow-hidden rounded-xl border border-slate-300">
                         <table class="min-w-full border-collapse">
                             <tbody>
                                 <tr v-for="(v, k) in beforeData" :key="'b-' + k" class="text-sm">
-                                    <td class="border border-slate-200 px-3 py-2 font-semibold text-slate-700">{{ prettyKey(k) }}</td>
-                                    <td class="border border-slate-200 px-3 py-2 text-slate-700">{{ formatVal(v) }}</td>
+                                    <td class="border border-slate-300 px-3 py-2 font-semibold text-slate-700">{{ prettyKey(k) }}</td>
+                                    <td class="border border-slate-300 px-3 py-2 text-slate-700">{{ formatVal(v) }}</td>
                                 </tr>
                                 <tr v-if="Object.keys(beforeData).length === 0" class="text-sm text-slate-600">
-                                    <td class="border border-slate-200 px-3 py-2" colspan="2">No data</td>
+                                    <td class="border border-slate-300 px-3 py-2" colspan="2">No data</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -34,17 +34,17 @@
             </div>
 
             <div class="lg:col-span-6">
-                <div class="rounded-2xl border border-slate-200 bg-white p-5">
+                <div class=" border border-slate-300 bg-white p-5">
                     <div class="text-sm font-semibold text-slate-900">After Process Data</div>
-                    <div class="mt-3 overflow-hidden rounded-xl border border-slate-200">
+                    <div class="mt-3 overflow-hidden rounded-xl border border-slate-300">
                         <table class="min-w-full border-collapse">
                             <tbody>
                                 <tr v-for="(v, k) in afterData" :key="'a-' + k" class="text-sm">
-                                    <td class="border border-slate-200 px-3 py-2 font-semibold text-slate-700">{{ prettyKey(k) }}</td>
-                                    <td class="border border-slate-200 px-3 py-2 text-slate-700">{{ formatVal(v) }}</td>
+                                    <td class="border border-slate-300 px-3 py-2 font-semibold text-slate-700">{{ prettyKey(k) }}</td>
+                                    <td class="border border-slate-300 px-3 py-2 text-slate-700">{{ formatVal(v) }}</td>
                                 </tr>
                                 <tr v-if="Object.keys(afterData).length === 0" class="text-sm text-slate-600">
-                                    <td class="border border-slate-200 px-3 py-2" colspan="2">No data</td>
+                                    <td class="border border-slate-300 px-3 py-2" colspan="2">No data</td>
                                 </tr>
                             </tbody>
                         </table>

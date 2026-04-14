@@ -1,6 +1,6 @@
 <template>
     <div class="flex flex-col gap-4">
-        <div class="rounded-2xl border border-slate-200 bg-white p-5">
+        <div class=" border border-slate-300 bg-white p-5">
             <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <div class="min-w-0">
                     <div class="truncate text-xl font-semibold text-slate-900">Migration Roll Verify</div>
@@ -10,7 +10,7 @@
                 <div class="flex flex-wrap items-center gap-2">
                     <button
                         type="button"
-                        class="rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-700"
+                        class="rounded-sm bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-700"
                         @click="goCreate"
                     >
                         Add New
@@ -19,15 +19,15 @@
             </div>
         </div>
 
-        <div v-if="error" class="rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-800">
+        <div v-if="error" class=" border border-red-200 bg-red-50 p-4 text-sm text-red-800">
             {{ error }}
         </div>
 
-        <div class="rounded-2xl border border-slate-200 bg-white p-5">
+        <div class=" border border-slate-300 bg-white p-5">
             <div class="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-6">
                 <div class="xl:col-span-2">
                     <div class="text-xs font-semibold text-slate-600">Session</div>
-                    <select v-model="filters.academic_session_id" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
+                    <select v-model="filters.academic_session_id" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
                         <option value="">All Session</option>
                         <option v-for="s in sessionsSorted" :key="'ses-' + s.id" :value="String(s.id)">{{ s.name }}</option>
                     </select>
@@ -35,7 +35,7 @@
 
                 <div class="xl:col-span-2">
                     <div class="text-xs font-semibold text-slate-600">Migrate Department</div>
-                    <select v-model="filters.department_id" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
+                    <select v-model="filters.department_id" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
                         <option value="">All Department</option>
                         <option v-for="d in departments" :key="'d-' + d.id" :value="String(d.id)">{{ d.name }}</option>
                     </select>
@@ -43,7 +43,7 @@
 
                 <div class="xl:col-span-1">
                     <div class="text-xs font-semibold text-slate-600">Per Page</div>
-                    <select v-model.number="filters.pagination" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
+                    <select v-model.number="filters.pagination" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
                         <option :value="10">10</option>
                         <option :value="25">25</option>
                         <option :value="50">50</option>
@@ -53,7 +53,7 @@
                 <div class="xl:col-span-1 flex items-end">
                     <button
                         type="button"
-                        class="h-9 w-full rounded-lg bg-slate-900 px-4 text-sm font-semibold text-white hover:bg-slate-800"
+                        class="h-9 w-full rounded-sm bg-slate-900 px-4 text-sm font-semibold text-white hover:bg-slate-800"
                         :disabled="loading"
                         @click="search"
                     >
@@ -63,43 +63,46 @@
             </div>
         </div>
 
-        <div class="rounded-2xl border border-slate-200 bg-white p-5">
-            <div class="overflow-x-auto rounded-xl border border-slate-200">
-                <table class="min-w-full divide-y divide-slate-200 text-sm">
-                    <thead class="bg-slate-50">
-                        <tr>
-                            <th class="px-3 py-2 text-left font-semibold text-slate-700">Academic Session</th>
-                            <th class="px-3 py-2 text-left font-semibold text-slate-700">Migrate Department</th>
-                            <th class="px-3 py-2 text-right font-semibold text-slate-700">Actions</th>
+        <div class="overflow-hidden border border-slate-300 bg-white">
+            <div class="overflow-x-auto">
+                <table class="min-w-[700px] w-full border-collapse border border-slate-300 text-sm">
+                    <thead class="bg-emerald-100">
+                        <tr class="text-left text-xs font-semibold uppercase tracking-wider text-slate-700">
+                            <th class="border border-slate-300 bg-slate-50 px-1 py-1 text-xs whitespace-nowrap">Academic Session</th>
+                            <th class="border border-slate-300 bg-slate-50 px-1 py-1 text-xs whitespace-nowrap">Migrate Department</th>
+                            <th class="border border-slate-300 bg-slate-50 px-1 py-1 text-xs whitespace-nowrap text-right">Actions</th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-slate-200 bg-white">
-                        <tr v-for="row in rows" :key="'row-' + row.id">
-                            <td class="px-3 py-2 text-slate-800">{{ row.academic_session_name || '--' }}</td>
-                            <td class="px-3 py-2 text-slate-800">{{ row.migrate_department_name || '--' }}</td>
-                            <td class="px-3 py-2">
+                    <tbody>
+                        <tr v-for="(row, idx) in rows" :key="'row-' + row.id" class="text-sm text-slate-800" :class="idx % 2 === 0 ? 'bg-white' : 'bg-slate-50'">
+                            <td class="border border-slate-300 px-1 py-1">{{ row.academic_session_name || '--' }}</td>
+                            <td class="border border-slate-300 px-1 py-1">{{ row.migrate_department_name || '--' }}</td>
+                            <td class="border border-slate-300 px-1 py-1">
                                 <div class="flex items-center justify-end gap-2">
                                     <button
                                         type="button"
-                                        class="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-50"
+                                        class="inline-flex h-8 w-8 items-center justify-center rounded-sm border border-slate-300 bg-white text-slate-700 hover:bg-slate-50"
+                                        title="View"
                                         @click="goView(row.id)"
                                     >
-                                        View
+                                        <i class="fas fa-eye"></i>
                                     </button>
                                     <button
                                         type="button"
-                                        class="rounded-lg border border-red-200 bg-red-50 px-3 py-1.5 text-xs font-semibold text-red-700 hover:bg-red-100"
+                                        class="inline-flex h-8 w-8 items-center justify-center rounded-sm border border-red-200 bg-white text-red-700 hover:bg-red-50"
+                                        title="Delete"
                                         :disabled="deletingId === row.id"
                                         @click="destroyRow(row.id)"
                                     >
-                                        {{ deletingId === row.id ? 'Deleting...' : 'Delete' }}
+                                        <i v-if="deletingId === row.id" class="fas fa-spinner fa-spin"></i>
+                                        <i v-else class="fas fa-trash"></i>
                                     </button>
                                 </div>
                             </td>
                         </tr>
 
-                        <tr v-if="!rows.length">
-                            <td colspan="3" class="px-3 py-10 text-center text-sm text-slate-500">
+                        <tr v-if="!rows.length" class="text-sm text-slate-600">
+                            <td colspan="3" class="border border-slate-300 px-1 py-10 text-center">
                                 {{ loading ? 'Loading...' : 'No data found' }}
                             </td>
                         </tr>
@@ -115,7 +118,7 @@
                 <div class="flex flex-wrap items-center gap-1">
                     <button
                         type="button"
-                        class="h-9 rounded-lg border border-slate-200 bg-white px-3 text-sm font-semibold text-slate-700 hover:bg-slate-50"
+                        class="h-9 rounded-sm border border-slate-300 bg-white px-3 text-sm font-semibold text-slate-700 hover:bg-slate-50"
                         :disabled="filters.page <= 1 || loading"
                         @click="goPage(filters.page - 1)"
                     >
@@ -126,8 +129,8 @@
                         v-for="p in pageNumbers"
                         :key="'p-' + p"
                         type="button"
-                        class="h-9 rounded-lg border px-3 text-sm font-semibold"
-                        :class="p === filters.page ? 'border-emerald-300 bg-emerald-50 text-emerald-700' : 'border-slate-200 bg-white text-slate-700 hover:bg-slate-50'"
+                        class="h-9 rounded-sm border px-3 text-sm font-semibold"
+                        :class="p === filters.page ? 'border-emerald-300 bg-emerald-50 text-emerald-700' : 'border-slate-300 bg-white text-slate-700 hover:bg-slate-50'"
                         :disabled="loading"
                         @click="goPage(p)"
                     >
@@ -136,7 +139,7 @@
 
                     <button
                         type="button"
-                        class="h-9 rounded-lg border border-slate-200 bg-white px-3 text-sm font-semibold text-slate-700 hover:bg-slate-50"
+                        class="h-9 rounded-sm border border-slate-300 bg-white px-3 text-sm font-semibold text-slate-700 hover:bg-slate-50"
                         :disabled="filters.page >= meta.last_page || loading"
                         @click="goPage(filters.page + 1)"
                     >
@@ -163,6 +166,7 @@ export default {
             error: '',
             deletingId: null,
             rows: [],
+            searchTimer: null,
             meta: {
                 current_page: 1,
                 from: 0,
@@ -205,7 +209,25 @@ export default {
     mounted() {
         this.search()
     },
+    watch: {
+        'filters.academic_session_id'(next, prev) {
+            if (String(next || '') !== String(prev || '')) this.scheduleSearch(true)
+        },
+        'filters.department_id'(next, prev) {
+            if (String(next || '') !== String(prev || '')) this.scheduleSearch(true)
+        },
+        'filters.pagination'(next, prev) {
+            if (Number(next || 0) !== Number(prev || 0)) this.scheduleSearch(true)
+        },
+    },
     methods: {
+        scheduleSearch(resetPage) {
+            if (this.searchTimer) clearTimeout(this.searchTimer)
+            this.searchTimer = setTimeout(() => {
+                if (resetPage) this.filters.page = 1
+                this.search()
+            }, 250)
+        },
         sessionSortKey(s) {
             const name = String(s?.name || '')
             const m = name.match(/(\d{4})\s*[-/]\s*(\d{4})/)

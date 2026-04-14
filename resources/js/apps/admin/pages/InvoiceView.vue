@@ -1,6 +1,6 @@
 <template>
     <div class="flex flex-col gap-4">
-        <div class="rounded-2xl border border-slate-200 bg-white p-5 print:hidden">
+        <div class=" border border-slate-300 bg-white p-5 print:hidden">
             <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <div class="min-w-0">
                     <div class="truncate text-xl font-semibold text-slate-900">Invoice</div>
@@ -8,19 +8,19 @@
                 </div>
 
                 <div class="flex flex-wrap items-center gap-2">
-                    <button type="button" class="rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50" @click="goBack">Back</button>
-                    <button type="button" class="rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800" :disabled="printing || !invoice" @click="print">{{ printing ? '...' : 'PRINT' }}</button>
+                    <button type="button" class="rounded-sm border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50" @click="goBack">Back</button>
+                    <button type="button" class="rounded-sm bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800" :disabled="printing || !invoice" @click="print">{{ printing ? '...' : 'PRINT' }}</button>
                 </div>
             </div>
         </div>
 
-        <div v-if="error" class="rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-800 print:hidden">{{ error }}</div>
+        <div v-if="error" class=" border border-red-200 bg-red-50 p-4 text-sm text-red-800 print:hidden">{{ error }}</div>
 
-        <div class="rounded-2xl border border-slate-200 bg-white p-5">
+        <div class=" border border-slate-300 bg-white p-5">
             <div id="printArea" class="mx-auto flex max-w-3xl flex-col gap-4">
                 <InvoiceTemplate v-if="invoice" :systems="systems" :data="invoice" />
                 <InvoiceTemplate v-if="invoice" :systems="systems" :data="invoice" />
-                <div v-if="!invoice" class="rounded-xl border border-slate-200 bg-slate-50 p-8 text-center text-sm text-slate-600">No data Found</div>
+                <div v-if="!invoice" class="rounded-xl border border-slate-300 bg-slate-50 p-8 text-center text-sm text-slate-600">No data Found</div>
             </div>
         </div>
     </div>

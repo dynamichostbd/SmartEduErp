@@ -13,7 +13,19 @@ class SubjectController extends Controller
 {
     private function table(): ?string
     {
-        return Schema::hasTable('subjects') ? 'subjects' : null;
+        $has = Cache::rememberForever('has_table_subjects', function () {
+            return Schema::hasTable('subjects');
+        });
+
+        return $has ? 'subjects' : null;
+    }
+
+    private function columnsCached(string $table): array
+    {
+        $key = "table_columns_{$table}";
+        return Cache::rememberForever($key, function () use ($table) {
+            return Schema::getColumnListing($table);
+        });
     }
 
     private function emptyPaginator(int $perPage)
@@ -32,6 +44,11 @@ class SubjectController extends Controller
     private function flushCaches(): void
     {
         Cache::forget('dynamic_data_cache');
+        try {
+            Cache::increment('subject_index_version');
+        } catch (\Throwable $e) {
+            Cache::forever('subject_index_version', ((int) Cache::get('subject_index_version', 1)) + 1);
+        }
     }
 
     public function allSubjects(Request $request)
@@ -42,11 +59,12 @@ class SubjectController extends Controller
         }
 
         $q = DB::table($table);
-        if (Schema::hasColumn($table, 'is_child')) {
+        $cols = $this->columnsCached($table);
+        if (in_array('is_child', $cols, true)) {
             $q->where('is_child', 0);
         }
 
-        $nameCol = Schema::hasColumn($table, 'name_en') ? 'name_en' : (Schema::hasColumn($table, 'name') ? 'name' : null);
+        $nameCol = in_array('name_en', $cols, true) ? 'name_en' : (in_array('name', $cols, true) ? 'name' : null);
         $select = ['id'];
         if ($nameCol) {
             $select[] = "{$nameCol} as name";
@@ -63,16 +81,17 @@ class SubjectController extends Controller
         }
 
         $q = DB::table($table);
-        if (Schema::hasColumn($table, 'is_child')) {
+        $cols = $this->columnsCached($table);
+        if (in_array('is_child', $cols, true)) {
             $q->where('is_child', 1);
         }
 
-        $nameCol = Schema::hasColumn($table, 'name_en') ? 'name_en' : (Schema::hasColumn($table, 'name') ? 'name' : null);
+        $nameCol = in_array('name_en', $cols, true) ? 'name_en' : (in_array('name', $cols, true) ? 'name' : null);
         $select = ['id'];
         if ($nameCol) {
             $select[] = "{$nameCol} as name";
         }
-        if (Schema::hasColumn($table, 'parent_id')) {
+        if (in_array('parent_id', $cols, true)) {
             $select[] = 'parent_id';
         }
 
@@ -93,8 +112,16 @@ class SubjectController extends Controller
             return $this->emptyPaginator($perPage);
         }
 
-        $cols = Schema::getColumnListing($table);
+        $cols = $this->columnsCached($table);
         $q = DB::table($table);
+
+        $select = ['id'];
+        foreach (['name_en', 'name_bn', 'name', 'sorting', 'parent_id', 'is_child'] as $col) {
+            if (in_array($col, $cols, true)) {
+                $select[] = $col;
+            }
+        }
+        $q->select(array_values(array_unique($select)));
 
         if (in_array('sorting', $cols, true)) {
             $q->orderBy('sorting', 'asc');
@@ -116,23 +143,37 @@ class SubjectController extends Controller
             }
         }
 
-        if ($request->boolean('allData')) {
-            $select = ['id'];
-            if (in_array('name_en', $cols, true)) {
-                $select[] = 'name_en as name';
-            } elseif (in_array('name', $cols, true)) {
-                $select[] = 'name';
-            }
-            if (in_array('parent_id', $cols, true)) {
-                $select[] = 'parent_id';
-            }
-            if (in_array('is_child', $cols, true)) {
-                $select[] = 'is_child';
-            }
-            return response()->json($q->select($select)->get());
-        }
+        $ver = (int) Cache::get('subject_index_version', 1);
+        $cacheKey = 'subject_index_v' . $ver . '_' . md5(json_encode([
+            'page' => (int) $request->input('page', 1),
+            'pagination' => $perPage,
+            'field_name' => $field,
+            'value' => $value,
+            'is_child' => $request->has('is_child') ? (string) $request->input('is_child') : null,
+            'allData' => (bool) $request->boolean('allData'),
+        ]));
 
-        return response()->json($q->paginate($perPage));
+        $payload = Cache::remember($cacheKey, now()->addSeconds(30), function () use ($request, $q, $cols, $perPage) {
+            if ($request->boolean('allData')) {
+                $select = ['id'];
+                if (in_array('name_en', $cols, true)) {
+                    $select[] = 'name_en as name';
+                } elseif (in_array('name', $cols, true)) {
+                    $select[] = 'name';
+                }
+                if (in_array('parent_id', $cols, true)) {
+                    $select[] = 'parent_id';
+                }
+                if (in_array('is_child', $cols, true)) {
+                    $select[] = 'is_child';
+                }
+                return $q->select($select)->get()->toArray();
+            }
+
+            return $q->paginate($perPage)->toArray();
+        });
+
+        return response()->json($payload);
     }
 
     public function store(Request $request)
@@ -146,7 +187,7 @@ class SubjectController extends Controller
             'name_en' => ['required'],
         ]);
 
-        $columns = Schema::getColumnListing($table);
+        $columns = $this->columnsCached($table);
         $admin = Auth::guard('admin')->user();
         $ip = (string) $request->ip();
 
@@ -232,7 +273,7 @@ class SubjectController extends Controller
             'name_en' => ['required'],
         ]);
 
-        $columns = Schema::getColumnListing($table);
+        $columns = $this->columnsCached($table);
         $admin = Auth::guard('admin')->user();
         $ip = (string) $request->ip();
 

@@ -1,6 +1,6 @@
 <template>
     <div class="flex flex-col gap-4">
-        <div class="rounded-2xl border border-slate-200 bg-white p-5">
+        <div class=" border border-slate-300 bg-white p-5">
             <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <div class="min-w-0">
                     <div class="truncate text-xl font-semibold text-slate-900">Attendance Summary</div>
@@ -8,27 +8,27 @@
                 </div>
 
                 <div class="flex flex-wrap items-center gap-2">
-                    <button type="button" class="rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50" @click="goBack">
+                    <button type="button" class="rounded-sm border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50" @click="goBack">
                         Back
                     </button>
-                    <button type="button" class="rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50" :disabled="!details.length" @click="printReport">
+                    <button type="button" class="rounded-sm border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50" :disabled="!details.length" @click="printReport">
                         Print
                     </button>
-                    <button type="button" class="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-700" :disabled="submitting || !details.length" @click="downloadAllAdmitCards">
+                    <button type="button" class="rounded-sm bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-700" :disabled="submitting || !details.length" @click="downloadAllAdmitCards">
                         {{ submitting ? 'Processing...' : 'Download All Admit Cards' }}
                     </button>
                 </div>
             </div>
         </div>
 
-        <div v-if="error" class="rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-800">
+        <div v-if="error" class=" border border-red-200 bg-red-50 p-4 text-sm text-red-800">
             {{ error }}
         </div>
 
         <div id="printArea" class="flex flex-col gap-4">
-            <div class="rounded-2xl border border-slate-200 bg-white p-5">
+            <div class=" border border-slate-300 bg-white p-5">
                 <div class="text-sm font-semibold text-slate-900">Attendance Info</div>
-                <div class="mt-3 overflow-x-auto rounded-xl border border-slate-200">
+                <div class="mt-3 overflow-x-auto">
                     <table class="min-w-full divide-y divide-slate-200 text-sm">
                         <tbody class="divide-y divide-slate-200">
                             <tr>
@@ -54,14 +54,14 @@
                 </div>
             </div>
 
-            <div class="rounded-2xl border border-slate-200 bg-white">
-                <div class="border-b border-slate-200 px-5 py-4">
+            <div class=" border border-slate-300 bg-white">
+                <div class="border-b border-slate-300 px-5 py-4">
                     <div class="text-sm font-semibold text-slate-900">Students Attendance Summary</div>
                 </div>
                 <div class="p-5">
-                    <div class="overflow-x-auto rounded-xl border border-slate-200">
+                    <div class="overflow-x-auto">
                         <table class="min-w-full divide-y divide-slate-200 text-sm">
-                            <thead class="bg-slate-50">
+                            <thead class="bg-emerald-100">
                                 <tr>
                                     <th class="px-3 py-2 text-center font-semibold text-slate-700">#</th>
                                     <th class="px-3 py-2 text-left font-semibold text-slate-700">Software ID</th>
@@ -87,7 +87,7 @@
                                     <td class="px-3 py-2 text-center text-rose-700"><b>{{ d.total_absent }}</b></td>
                                     <td class="px-3 py-2 text-center text-amber-700"><b>{{ d.present_percentage }}%</b></td>
                                     <td class="px-3 py-2 text-center">
-                                        <span class="rounded-md px-2 py-1 text-xs font-semibold" :class="d.status === 'P' ? 'bg-emerald-50 text-emerald-700' : 'bg-rose-50 text-rose-700'">
+                                        <span class="rounded-sm px-2 py-1 text-xs font-semibold" :class="d.status === 'P' ? 'bg-emerald-50 text-emerald-700' : 'bg-rose-50 text-rose-700'">
                                             {{ d.status }}
                                         </span>
                                     </td>

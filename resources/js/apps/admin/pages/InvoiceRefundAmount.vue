@@ -1,6 +1,6 @@
 <template>
     <div class="flex flex-col gap-4">
-        <div class="rounded-2xl border border-slate-200 bg-white p-5">
+        <div class=" border border-slate-300 bg-white p-5">
             <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <div class="min-w-0">
                     <div class="truncate text-xl font-semibold text-slate-900">Refund Amount</div>
@@ -8,21 +8,21 @@
                 </div>
 
                 <div class="flex flex-wrap items-center gap-2">
-                    <button type="button" class="rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50" @click="goInvoices">Invoices</button>
-                    <button type="button" class="rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-700" :disabled="loading" @click="load(1)">
+                    <button type="button" class="rounded-sm border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50" @click="goInvoices">Invoices</button>
+                    <button type="button" class="rounded-sm bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-700" :disabled="loading" @click="load(1)">
                         {{ loading ? '...' : 'Search' }}
                     </button>
                 </div>
             </div>
         </div>
 
-        <div v-if="error" class="rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-800">{{ error }}</div>
+        <div v-if="error" class=" border border-red-200 bg-red-50 p-4 text-sm text-red-800">{{ error }}</div>
 
-        <div class="rounded-2xl border border-slate-200 bg-white p-5">
+        <div class=" border border-slate-300 bg-white p-5">
             <div class="grid grid-cols-1 gap-3 lg:grid-cols-12">
                 <div class="lg:col-span-2">
                     <div class="text-xs font-semibold text-slate-600">Session</div>
-                    <select v-model="filters.academic_session_id" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
+                    <select v-model="filters.academic_session_id" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
                         <option value="">All</option>
                         <option v-for="s in sessionsSorted" :key="'ses-' + s.id" :value="String(s.id)">{{ s.name }}</option>
                     </select>
@@ -30,7 +30,7 @@
 
                 <div class="lg:col-span-2">
                     <div class="text-xs font-semibold text-slate-600">Academic Level</div>
-                    <select v-model="filters.academic_qualification_id" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
+                    <select v-model="filters.academic_qualification_id" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
                         <option value="">All</option>
                         <option v-for="q in qualifications" :key="'q-' + q.id" :value="String(q.id)">{{ q.name }}</option>
                     </select>
@@ -38,7 +38,7 @@
 
                 <div class="lg:col-span-2">
                     <div class="text-xs font-semibold text-slate-600">Department</div>
-                    <select v-model="filters.department_id" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
+                    <select v-model="filters.department_id" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
                         <option value="">All</option>
                         <option v-for="d in filteredDepartments" :key="'d-' + d.id" :value="String(d.id)">{{ d.name }}</option>
                     </select>
@@ -46,7 +46,7 @@
 
                 <div class="lg:col-span-2">
                     <div class="text-xs font-semibold text-slate-600">Class</div>
-                    <select v-model="filters.academic_class_id" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
+                    <select v-model="filters.academic_class_id" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
                         <option value="">All</option>
                         <option v-for="c in filteredClasses" :key="'c-' + c.id" :value="String(c.id)">{{ c.name }}</option>
                     </select>
@@ -54,17 +54,17 @@
 
                 <div class="lg:col-span-2">
                     <div class="text-xs font-semibold text-slate-600">From Date</div>
-                    <input v-model="filters.from_date" type="date" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
+                    <input v-model="filters.from_date" type="date" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
                 </div>
 
                 <div class="lg:col-span-2">
                     <div class="text-xs font-semibold text-slate-600">To Date</div>
-                    <input v-model="filters.to_date" type="date" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
+                    <input v-model="filters.to_date" type="date" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
                 </div>
 
                 <div class="lg:col-span-2">
                     <div class="text-xs font-semibold text-slate-600">Search Field</div>
-                    <select v-model="filters.field_name" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
+                    <select v-model="filters.field_name" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
                         <option value="invoice_number">Invoice Number</option>
                         <option value="student_id">Software ID</option>
                         <option value="name">Name</option>
@@ -76,12 +76,12 @@
 
                 <div class="lg:col-span-4">
                     <div class="text-xs font-semibold text-slate-600">Search</div>
-                    <input v-model="filters.value" type="text" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" @keydown.enter.prevent="load(1)" />
+                    <input v-model="filters.value" type="text" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" @keydown.enter.prevent="load(1)" />
                 </div>
 
                 <div class="lg:col-span-2">
                     <div class="text-xs font-semibold text-slate-600">Per Page</div>
-                    <select v-model="filters.pagination" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" @change="load(1)">
+                    <select v-model="filters.pagination" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" @change="load(1)">
                         <option :value="10">10</option>
                         <option :value="15">15</option>
                         <option :value="25">25</option>
@@ -91,10 +91,10 @@
             </div>
         </div>
 
-        <div class="rounded-2xl border border-slate-200 bg-white p-5">
-            <div class="overflow-x-auto rounded-xl border border-slate-200">
+        <div class=" border border-slate-300 bg-white p-5">
+            <div class="overflow-x-auto">
                 <table class="min-w-full divide-y divide-slate-200 text-sm">
-                    <thead class="bg-slate-50">
+                    <thead class="bg-emerald-100">
                         <tr>
                             <th class="px-3 py-2 text-left font-semibold text-slate-700">Student</th>
                             <th class="px-3 py-2 text-left font-semibold text-slate-700">Admission ID</th>
@@ -136,7 +136,7 @@
                             <td colspan="8" class="px-3 py-10 text-center text-slate-500">No Data Found</td>
                         </tr>
                     </tbody>
-                    <tfoot v-if="rows.length" class="bg-slate-50">
+                    <tfoot v-if="rows.length" class="bg-emerald-100">
                         <tr>
                             <td colspan="6" class="px-3 py-2 text-right font-semibold text-slate-700">Total</td>
                             <td class="px-3 py-2 text-right font-semibold text-rose-700">{{ money(totalRefundAmount) }}</td>
@@ -150,11 +150,11 @@
                 <div class="text-sm text-slate-600">Showing {{ meta.from }} to {{ meta.to }} of {{ meta.total }} entries</div>
 
                 <div class="flex items-center gap-2">
-                    <button type="button" class="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-sm font-semibold text-slate-700 hover:bg-slate-50" :disabled="meta.current_page <= 1" @click="load(meta.current_page - 1)">
+                    <button type="button" class="rounded-sm border border-slate-300 bg-white px-3 py-1.5 text-sm font-semibold text-slate-700 hover:bg-slate-50" :disabled="meta.current_page <= 1" @click="load(meta.current_page - 1)">
                         Prev
                     </button>
                     <div class="text-sm font-semibold text-slate-700">{{ meta.current_page }} / {{ meta.last_page }}</div>
-                    <button type="button" class="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-sm font-semibold text-slate-700 hover:bg-slate-50" :disabled="meta.current_page >= meta.last_page" @click="load(meta.current_page + 1)">
+                    <button type="button" class="rounded-sm border border-slate-300 bg-white px-3 py-1.5 text-sm font-semibold text-slate-700 hover:bg-slate-50" :disabled="meta.current_page >= meta.last_page" @click="load(meta.current_page + 1)">
                         Next
                     </button>
                 </div>

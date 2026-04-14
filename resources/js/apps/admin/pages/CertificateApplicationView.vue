@@ -1,6 +1,6 @@
 <template>
     <div class="flex flex-col gap-4">
-        <div class="rounded-2xl border border-slate-200 bg-white p-5">
+        <div class=" border border-slate-300 bg-white p-5">
             <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <div class="min-w-0">
                     <div class="truncate text-xl font-semibold text-slate-900">Certificate Application</div>
@@ -8,11 +8,11 @@
                 </div>
 
                 <div class="flex flex-wrap items-center gap-2">
-                    <button type="button" class="rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50" @click="goBack">Back</button>
+                    <button type="button" class="rounded-sm border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50" @click="goBack">Back</button>
                     <button
                         v-if="String(data?.application_status) === 'approved'"
                         type="button"
-                        class="rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-700"
+                        class="rounded-sm bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-700"
                         :disabled="printing"
                         @click="printCertificate"
                     >
@@ -22,9 +22,9 @@
             </div>
         </div>
 
-        <div v-if="error" class="rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-800">{{ error }}</div>
+        <div v-if="error" class=" border border-red-200 bg-red-50 p-4 text-sm text-red-800">{{ error }}</div>
 
-        <div class="rounded-2xl border border-slate-200 bg-white p-5">
+        <div class=" border border-slate-300 bg-white p-5">
             <div class="overflow-x-auto">
                 <table class="w-full text-sm">
                     <tbody class="divide-y divide-slate-200">
@@ -46,7 +46,7 @@
 
             <div class="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <div class="w-full sm:w-56">
-                    <select v-model="selected" class="h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm" @change="selectCertificate">
+                    <select v-model="selected" class="h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm" @change="selectCertificate">
                         <option value="en">EN Certificate</option>
                         <option value="bn">BN Certificate</option>
                     </select>
@@ -56,7 +56,7 @@
             <div class="mt-4 flex justify-center overflow-x-auto">
                 <div id="print-certificate" class="py-3">
                     <div class="certificate-template-main" :class="data?.template?.print_layout" :style="canvasStyle">
-                        <div v-for="(item, index) in templateJson" :key="'p-' + index" v-show="item.value" :style="sectionStyle(item)">
+                        <div v-for="(item, index) in templateJson" :key="'p-' + index" v-show="item.value" :id="'drag' + index" :style="sectionStyle(item)">
                             {{ item.value }}
                         </div>
                     </div>
@@ -129,17 +129,15 @@ export default {
             return { left, top }
         },
         sectionStyle(item) {
-            const { left, top } = this.parsePosition(item)
-            return {
-                position: 'absolute',
-                left: `${left}px`,
-                top: `${top}px`,
-                width: item.section_width || '250px',
-                fontSize: `${Number(item.fornt_size || 16)}px`,
-                fontWeight: item.font_weight || 'normal',
-                color: item.color || '#111827',
-                textAlign: item.text_align || 'left',
-            }
+            return `
+                position: absolute; 
+                width:${item.section_width || '250px'};
+                font-size:${item.fornt_size || 16}px; 
+                font-weight: ${item.font_weight || 'normal'};
+                color: ${item.color || '#111827'};
+                text-align: ${item.text_align || 'left'};
+                ${item.section_position || ''};
+            `
         },
         getLabelMapping() {
             const lang = this.selected

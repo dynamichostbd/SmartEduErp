@@ -1,117 +1,167 @@
 <template>
     <form class="flex flex-col gap-4" @submit.prevent="submit">
-        <div class="rounded-2xl border border-slate-200 bg-white p-5">
+        <div class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
             <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <div class="min-w-0">
                     <div class="truncate text-xl font-semibold text-slate-900">Result Entry</div>
                     <div class="mt-1 text-sm text-slate-600">Create new result</div>
                 </div>
-
-                <div class="flex flex-wrap items-center gap-2">
-                    <button
-                        type="button"
-                        class="rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50"
-                        :disabled="submitting"
-                        @click="goBack"
-                    >
-                        Back
-                    </button>
-                    <button
-                        type="submit"
-                        class="rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-700"
-                        :disabled="submitting"
-                    >
-                        {{ submitting ? 'Processing...' : 'Save & Next' }}
-                    </button>
-                </div>
             </div>
         </div>
 
-        <div v-if="message" class="rounded-2xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-900">
+        <div v-if="message" class="rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-900">
             {{ message }}
         </div>
 
-        <div v-if="error" class="rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-800">
+        <div v-if="error" class="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-800">
             {{ error }}
         </div>
 
-        <div class="rounded-2xl border border-slate-200 bg-white p-5">
-            <div class="grid grid-cols-1 gap-4 lg:grid-cols-12">
-                <div class="lg:col-span-3">
-                    <div class="text-xs font-semibold text-slate-600">Session <span class="text-rose-600">*</span></div>
-                    <select v-model="form.academic_session_id" required class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
-                        <option value="">Select</option>
-                        <option v-for="s in sessionsSorted" :key="'ses-' + s.id" :value="String(s.id)">{{ s.name }}</option>
-                    </select>
-                </div>
+        <div class="grid grid-cols-1 gap-4 lg:grid-cols-12">
+            <div class="flex flex-col gap-4 lg:col-span-8">
+                <div class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+                    <div class="text-sm font-semibold text-slate-900">Result Setup</div>
 
-                <div class="lg:col-span-3">
-                    <div class="text-xs font-semibold text-slate-600">Academic Level <span class="text-rose-600">*</span></div>
-                    <select v-model="form.academic_qualification_id" required class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
-                        <option value="">Select</option>
-                        <option v-for="q in qualifications" :key="'q-' + q.id" :value="String(q.id)">{{ q.name }}</option>
-                    </select>
-                </div>
+                    <div class="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                        <div>
+                            <div class="text-xs font-semibold text-slate-600">Session <span class="text-rose-600">*</span></div>
+                            <select
+                                v-model="form.academic_session_id"
+                                required
+                                class="mt-1 h-9 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
+                            >
+                                <option value="">Select</option>
+                                <option v-for="s in sessionsSorted" :key="'ses-' + s.id" :value="String(s.id)">{{ s.name }}</option>
+                            </select>
+                        </div>
 
-                <div class="lg:col-span-3">
-                    <div class="text-xs font-semibold text-slate-600">Department <span class="text-rose-600">*</span></div>
-                    <select v-model="form.department_id" required class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
-                        <option value="">Select</option>
-                        <option v-for="d in filteredDepartments" :key="'d-' + d.id" :value="String(d.id)">{{ d.name }}</option>
-                    </select>
-                </div>
+                        <div>
+                            <div class="text-xs font-semibold text-slate-600">Academic Level <span class="text-rose-600">*</span></div>
+                            <select
+                                v-model="form.academic_qualification_id"
+                                required
+                                class="mt-1 h-9 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
+                            >
+                                <option value="">Select</option>
+                                <option v-for="q in qualifications" :key="'q-' + q.id" :value="String(q.id)">{{ q.name }}</option>
+                            </select>
+                        </div>
 
-                <div class="lg:col-span-3">
-                    <div class="text-xs font-semibold text-slate-600">Class <span class="text-rose-600">*</span></div>
-                    <select v-model="form.academic_class_id" required class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
-                        <option value="">Select</option>
-                        <option v-for="c in filteredClasses" :key="'c-' + c.id" :value="String(c.id)">{{ c.name }}</option>
-                    </select>
-                </div>
+                        <div>
+                            <div class="text-xs font-semibold text-slate-600">Department <span class="text-rose-600">*</span></div>
+                            <select
+                                v-model="form.department_id"
+                                required
+                                class="mt-1 h-9 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
+                            >
+                                <option value="">Select</option>
+                                <option v-for="d in filteredDepartments" :key="'d-' + d.id" :value="String(d.id)">{{ d.name }}</option>
+                            </select>
+                        </div>
 
-                <div class="lg:col-span-4">
-                    <div class="text-xs font-semibold text-slate-600">Exam <span class="text-rose-600">*</span></div>
-                    <select v-model="form.exam_id" required class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
-                        <option value="">Select</option>
-                        <option v-for="e in examsTerm" :key="'ex-' + e.id" :value="String(e.id)">{{ e.name }}</option>
-                    </select>
-                    <div class="mt-1 text-xs text-slate-500">Only Term exams are shown</div>
-                </div>
+                        <div>
+                            <div class="text-xs font-semibold text-slate-600">Class <span class="text-rose-600">*</span></div>
+                            <select
+                                v-model="form.academic_class_id"
+                                required
+                                class="mt-1 h-9 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
+                            >
+                                <option value="">Select</option>
+                                <option v-for="c in filteredClasses" :key="'c-' + c.id" :value="String(c.id)">{{ c.name }}</option>
+                            </select>
+                        </div>
 
-                <div class="lg:col-span-4">
-                    <div class="text-xs font-semibold text-slate-600">Exam Subjects <span class="text-rose-600">*</span></div>
-                    <input v-model.number="form.total_exam_subjects" type="number" min="1" required class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
-                </div>
+                        <div>
+                            <div class="text-xs font-semibold text-slate-600">Exam <span class="text-rose-600">*</span></div>
+                            <select
+                                v-model="form.exam_id"
+                                required
+                                class="mt-1 h-9 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
+                            >
+                                <option value="">Select</option>
+                                <option v-for="e in examsTerm" :key="'ex-' + e.id" :value="String(e.id)">{{ e.name }}</option>
+                            </select>
+                            <div class="mt-1 text-xs text-slate-500">Only Term exams are shown</div>
+                        </div>
 
-                <div class="lg:col-span-4">
-                    <div class="text-xs font-semibold text-slate-600">Two Paper</div>
-                    <select v-model.number="form.child_subject_enabled" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
-                        <option :value="0">Disable</option>
-                        <option :value="1">Enable</option>
-                    </select>
-                </div>
+                        <div>
+                            <div class="text-xs font-semibold text-slate-600">Exam Subjects <span class="text-rose-600">*</span></div>
+                            <input
+                                v-model.number="form.total_exam_subjects"
+                                type="number"
+                                min="1"
+                                required
+                                class="mt-1 h-9 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
+                            />
+                        </div>
 
-                <div class="lg:col-span-12" v-if="form.child_subject_enabled === 0">
-                    <div class="flex flex-wrap items-center gap-2">
-                        <button type="button" class="h-9 rounded-lg bg-slate-900 px-4 text-sm font-semibold text-white hover:bg-slate-800" @click="showSpecificSubject = !showSpecificSubject">
-                            {{ showSpecificSubject ? 'Disable Specific Subject' : 'Enable Specific Subject' }}
-                        </button>
-                        <div class="text-xs text-slate-500">Enable child-subject feature only for selected subjects</div>
+                        <div>
+                            <div class="text-xs font-semibold text-slate-600">Two Paper</div>
+                            <select
+                                v-model.number="form.child_subject_enabled"
+                                class="mt-1 h-9 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
+                            >
+                                <option :value="0">Disable</option>
+                                <option :value="1">Enable</option>
+                            </select>
+                        </div>
+
+                        <div class="sm:col-span-2 lg:col-span-3" v-if="form.child_subject_enabled === 0">
+                            <div class="flex flex-wrap items-center gap-2">
+                                <button
+                                    type="button"
+                                    class="h-9 rounded-lg bg-slate-900 px-4 text-sm font-semibold text-white hover:bg-slate-800"
+                                    @click="showSpecificSubject = !showSpecificSubject"
+                                >
+                                    {{ showSpecificSubject ? 'Disable Specific Subject' : 'Enable Specific Subject' }}
+                                </button>
+                                <div class="text-xs text-slate-500">Enable child-subject feature only for selected subjects</div>
+                            </div>
+                        </div>
+
+                        <div class="sm:col-span-2 lg:col-span-3" v-if="form.child_subject_enabled === 0 && showSpecificSubject">
+                            <div class="text-xs font-semibold text-slate-600">Enable Child For Subjects</div>
+                            <select
+                                v-model="form.child_subject_enabled_subject_ids"
+                                multiple
+                                class="mt-1 h-40 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm shadow-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
+                            >
+                                <option v-for="s in subjects" :key="'sub-' + s.subject_id" :value="Number(s.subject_id)">
+                                    {{ s.subject_name }}
+                                </option>
+                            </select>
+                            <div class="mt-1 text-xs text-slate-500">Hold Ctrl to select multiple</div>
+                        </div>
                     </div>
                 </div>
+            </div>
 
-                <div class="lg:col-span-12" v-if="form.child_subject_enabled === 0 && showSpecificSubject">
-                    <div class="text-xs font-semibold text-slate-600">Enable Child For Subjects</div>
-                    <select
-                        v-model="form.child_subject_enabled_subject_ids"
-                        multiple
-                        class="mt-1 h-40 w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
-                    >
-                        <option v-for="s in subjects" :key="'sub-' + s.subject_id" :value="Number(s.subject_id)">
-                            {{ s.subject_name }}
-                        </option>
-                    </select>
-                    <div class="mt-1 text-xs text-slate-500">Hold Ctrl to select multiple</div>
+            <div class="flex flex-col gap-4 lg:col-span-4">
+                <div class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+                    <div class="text-sm font-semibold text-slate-900">Status</div>
+                    <div class="mt-2 text-sm text-slate-600">Select the result scope and exam, then save to continue with result entry.</div>
+                </div>
+
+                <div class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+                    <div class="text-sm font-semibold text-slate-900">Actions</div>
+
+                    <div class="mt-4 flex flex-col gap-2">
+                        <button
+                            type="button"
+                            class="w-full rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50"
+                            :disabled="submitting"
+                            @click="goBack"
+                        >
+                            Back
+                        </button>
+                        <button
+                            type="submit"
+                            class="w-full rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-700"
+                            :disabled="submitting"
+                        >
+                            {{ submitting ? 'Processing...' : 'Save & Next' }}
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>

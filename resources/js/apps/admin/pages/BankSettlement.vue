@@ -1,21 +1,21 @@
 <template>
     <div class="flex flex-col gap-4">
-        <div class="rounded-2xl border border-slate-200 bg-white p-5">
+        <div class=" border border-slate-300 bg-white p-5">
             <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <div class="min-w-0">
                     <div class="truncate text-xl font-semibold text-slate-900">SSLCommerz Settlement Records</div>
                 </div>
 
                 <div class="flex flex-wrap items-center gap-2">
-                    <button type="button" class="rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800" :disabled="loading || !apiResponse" @click="generatePdf">Download PDF</button>
-                    <button type="button" class="rounded-lg bg-rose-600 px-4 py-2 text-sm font-semibold text-white hover:bg-rose-700" :disabled="loading || !apiResponse" @click="exportExcel">Export as Excel</button>
+                    <button type="button" class="rounded-sm bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800" :disabled="loading || !apiResponse" @click="generatePdf">Download PDF</button>
+                    <button type="button" class="rounded-sm bg-rose-600 px-4 py-2 text-sm font-semibold text-white hover:bg-rose-700" :disabled="loading || !apiResponse" @click="exportExcel">Export as Excel</button>
                 </div>
             </div>
 
             <form class="mt-4 grid grid-cols-1 gap-3 lg:grid-cols-12" @submit.prevent="search">
                 <div class="lg:col-span-3">
                     <div class="text-xs font-semibold text-slate-600">Account No.</div>
-                    <select v-model="search_data.account" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
+                    <select v-model="search_data.account" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
                         <option value="">Select Account No.</option>
                         <option v-for="acc in accounts" :key="'acc-' + acc.account_no" :value="String(acc.account_no)">
                             {{ acc.account_no }}
@@ -25,26 +25,26 @@
 
                 <div class="lg:col-span-3">
                     <div class="text-xs font-semibold text-slate-600">Start Date</div>
-                    <input v-model="search_data.start_date" type="datetime-local" step="1" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
+                    <input v-model="search_data.start_date" type="datetime-local" step="1" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
                 </div>
 
                 <div class="lg:col-span-3">
                     <div class="text-xs font-semibold text-slate-600">End Date</div>
-                    <input v-model="search_data.end_date" type="datetime-local" step="1" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
+                    <input v-model="search_data.end_date" type="datetime-local" step="1" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
                 </div>
 
                 <div class="lg:col-span-1">
                     <div class="text-xs font-semibold text-slate-600">Page</div>
-                    <input v-model.number="search_data.page" type="number" min="1" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
+                    <input v-model.number="search_data.page" type="number" min="1" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
                 </div>
 
                 <div class="lg:col-span-1">
                     <div class="text-xs font-semibold text-slate-600">Limit</div>
-                    <input v-model.number="search_data.limit" type="number" min="1" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
+                    <input v-model.number="search_data.limit" type="number" min="1" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
                 </div>
 
                 <div class="lg:col-span-1 flex items-end">
-                    <button type="submit" class="mt-1 h-9 w-full rounded-lg bg-emerald-600 px-4 text-sm font-semibold text-white hover:bg-emerald-700" :disabled="loading">
+                    <button type="submit" class="mt-1 h-9 w-full rounded-sm bg-emerald-600 px-4 text-sm font-semibold text-white hover:bg-emerald-700" :disabled="loading">
                         {{ loading ? '...' : 'Search' }}
                     </button>
                 </div>
@@ -52,7 +52,7 @@
 
             <div v-if="error" class="mt-4 rounded-xl border border-red-200 bg-red-50 p-3 text-sm text-red-800">{{ error }}</div>
 
-            <div v-if="apiResponse" class="mt-4 rounded-xl border border-slate-200 bg-slate-50 p-3 text-sm text-slate-700">
+            <div v-if="apiResponse" class="mt-4 rounded-xl border border-slate-300 bg-slate-50 p-3 text-sm text-slate-700">
                 <div class="grid grid-cols-1 gap-2 md:grid-cols-4">
                     <div><span class="font-semibold">Status:</span> {{ apiResponse.status }}</div>
                     <div><span class="font-semibold">Transactions:</span> {{ apiResponse?.data?.no_of_trans }}</div>
@@ -62,13 +62,13 @@
             </div>
         </div>
 
-        <div class="rounded-2xl border border-slate-200 bg-white p-5">
+        <div class=" border border-slate-300 bg-white p-5">
             <div v-if="!apiResponse && !loading" class="py-10 text-center text-sm text-slate-600">Use the form above to search for settlement records.</div>
             <div v-else-if="apiResponse && !combinedData.length" class="py-10 text-center text-sm text-slate-600">No settlement data found for the selected criteria.</div>
 
-            <div v-if="combinedData.length" class="overflow-x-auto rounded-xl border border-slate-200">
+            <div v-if="combinedData.length" class="overflow-x-auto">
                 <table id="pdf-table" class="min-w-full divide-y divide-slate-200 text-sm">
-                    <thead class="bg-slate-50">
+                    <thead class="bg-emerald-100">
                         <tr>
                             <th class="px-3 py-2 text-center font-semibold text-slate-700">Student Name</th>
                             <th class="px-3 py-2 text-center font-semibold text-slate-700">Mobile</th>
@@ -102,7 +102,7 @@
                             <td class="px-3 py-2 text-right font-semibold">{{ money(row?.settlement?.cr_amount) }}</td>
                         </tr>
                     </tbody>
-                    <tfoot class="bg-slate-50">
+                    <tfoot class="bg-emerald-100">
                         <tr>
                             <td colspan="12" class="px-3 py-2 text-right font-semibold text-slate-700">Total</td>
                             <td class="px-3 py-2 text-right font-semibold text-slate-900">{{ money(totalAmount) }}</td>
@@ -112,11 +112,11 @@
             </div>
 
             <div v-if="apiResponse && totalPages > 1" class="mt-4 flex items-center justify-center gap-2">
-                <button type="button" class="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-sm font-semibold text-slate-700 hover:bg-slate-50" :disabled="search_data.page <= 1" @click="changePage(search_data.page - 1)">
+                <button type="button" class="rounded-sm border border-slate-300 bg-white px-3 py-1.5 text-sm font-semibold text-slate-700 hover:bg-slate-50" :disabled="search_data.page <= 1" @click="changePage(search_data.page - 1)">
                     Previous
                 </button>
                 <div class="text-sm font-semibold text-slate-700">{{ search_data.page }} / {{ totalPages }}</div>
-                <button type="button" class="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-sm font-semibold text-slate-700 hover:bg-slate-50" :disabled="search_data.page >= totalPages" @click="changePage(search_data.page + 1)">
+                <button type="button" class="rounded-sm border border-slate-300 bg-white px-3 py-1.5 text-sm font-semibold text-slate-700 hover:bg-slate-50" :disabled="search_data.page >= totalPages" @click="changePage(search_data.page + 1)">
                     Next
                 </button>
             </div>

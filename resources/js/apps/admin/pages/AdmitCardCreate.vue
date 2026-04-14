@@ -1,86 +1,146 @@
 <template>
     <form class="flex flex-col gap-4" @submit.prevent="submit">
-        <div class="rounded-2xl border border-slate-200 bg-white p-5">
+        <div class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
             <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <div class="min-w-0">
                     <div class="truncate text-xl font-semibold text-slate-900">{{ isEdit ? 'Edit Admit Card' : 'Admit Card' }}</div>
                     <div class="mt-1 text-sm text-slate-600">Create or update admit card</div>
                 </div>
-
-                <div class="flex flex-wrap items-center gap-2">
-                    <button type="button" class="rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50" :disabled="submitting" @click="goBack">
-                        Back
-                    </button>
-                    <button type="submit" class="rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-700" :disabled="submitting">
-                        {{ submitting ? 'Processing...' : 'Save' }}
-                    </button>
-                </div>
             </div>
         </div>
 
-        <div v-if="message" class="rounded-2xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-900">
+        <div v-if="message" class="rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-900">
             {{ message }}
         </div>
 
-        <div v-if="error" class="rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-800">
+        <div v-if="error" class="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-800">
             {{ error }}
         </div>
 
-        <div class="rounded-2xl border border-slate-200 bg-white p-5">
-            <div class="grid grid-cols-1 gap-4 lg:grid-cols-12">
-                <div class="lg:col-span-3">
-                    <div class="text-xs font-semibold text-slate-600">Session <span class="text-rose-600">*</span></div>
-                    <select v-model="form.academic_session_id" required class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
-                        <option value="">Select</option>
-                        <option v-for="s in sessionsSorted" :key="'ses-' + s.id" :value="String(s.id)">{{ s.name }}</option>
-                    </select>
+        <div class="grid grid-cols-1 gap-4 lg:grid-cols-12">
+            <div class="flex flex-col gap-4 lg:col-span-8">
+                <div class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+                    <div class="text-sm font-semibold text-slate-900">Admit Card Details</div>
+
+                    <div class="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                        <div>
+                            <div class="text-xs font-semibold text-slate-600">Session <span class="text-rose-600">*</span></div>
+                            <select
+                                v-model="form.academic_session_id"
+                                required
+                                class="mt-1 h-9 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
+                            >
+                                <option value="">Select</option>
+                                <option v-for="s in sessionsSorted" :key="'ses-' + s.id" :value="String(s.id)">{{ s.name }}</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <div class="text-xs font-semibold text-slate-600">Academic Level <span class="text-rose-600">*</span></div>
+                            <select
+                                v-model="form.academic_qualification_id"
+                                required
+                                class="mt-1 h-9 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
+                            >
+                                <option value="">Select</option>
+                                <option v-for="q in qualifications" :key="'q-' + q.id" :value="String(q.id)">{{ q.name }}</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <div class="text-xs font-semibold text-slate-600">Department/Group</div>
+                            <select
+                                v-model="form.department_id"
+                                class="mt-1 h-9 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
+                            >
+                                <option value="">Select</option>
+                                <option v-for="d in filteredDepartments" :key="'d-' + d.id" :value="String(d.id)">{{ d.name }}</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <div class="text-xs font-semibold text-slate-600">Class <span class="text-rose-600">*</span></div>
+                            <select
+                                v-model="form.academic_class_id"
+                                required
+                                class="mt-1 h-9 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
+                            >
+                                <option value="">Select</option>
+                                <option v-for="c in filteredClasses" :key="'c-' + c.id" :value="String(c.id)">{{ c.name }}</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <div class="text-xs font-semibold text-slate-600">Exam <span class="text-rose-600">*</span></div>
+                            <select
+                                v-model="form.exam_id"
+                                required
+                                class="mt-1 h-9 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
+                            >
+                                <option value="">Select</option>
+                                <option v-for="e in exams" :key="'ex-' + e.id" :value="String(e.id)">{{ e.name }}</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <div class="text-xs font-semibold text-slate-600">Admit Card Name <span class="text-rose-600">*</span></div>
+                            <input
+                                v-model="form.name"
+                                type="text"
+                                required
+                                class="mt-1 h-9 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
+                            />
+                        </div>
+
+                        <div>
+                            <div class="text-xs font-semibold text-slate-600">Issue Date <span class="text-rose-600">*</span></div>
+                            <input
+                                v-model="form.issue_date"
+                                type="date"
+                                required
+                                class="mt-1 h-9 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
+                            />
+                        </div>
+
+                        <div>
+                            <div class="text-xs font-semibold text-slate-600">Expired Date <span class="text-rose-600">*</span></div>
+                            <input
+                                v-model="form.expired_date"
+                                type="date"
+                                required
+                                class="mt-1 h-9 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
+                            />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex flex-col gap-4 lg:col-span-4">
+                <div class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+                    <div class="text-sm font-semibold text-slate-900">Status</div>
+                    <div class="mt-2 text-sm text-slate-600">Fill in the required fields and save to generate/update an admit card configuration.</div>
                 </div>
 
-                <div class="lg:col-span-3">
-                    <div class="text-xs font-semibold text-slate-600">Academic Level <span class="text-rose-600">*</span></div>
-                    <select v-model="form.academic_qualification_id" required class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
-                        <option value="">Select</option>
-                        <option v-for="q in qualifications" :key="'q-' + q.id" :value="String(q.id)">{{ q.name }}</option>
-                    </select>
-                </div>
+                <div class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+                    <div class="text-sm font-semibold text-slate-900">Actions</div>
 
-                <div class="lg:col-span-3">
-                    <div class="text-xs font-semibold text-slate-600">Department/Group</div>
-                    <select v-model="form.department_id" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
-                        <option value="">Select</option>
-                        <option v-for="d in filteredDepartments" :key="'d-' + d.id" :value="String(d.id)">{{ d.name }}</option>
-                    </select>
-                </div>
-
-                <div class="lg:col-span-3">
-                    <div class="text-xs font-semibold text-slate-600">Class <span class="text-rose-600">*</span></div>
-                    <select v-model="form.academic_class_id" required class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
-                        <option value="">Select</option>
-                        <option v-for="c in filteredClasses" :key="'c-' + c.id" :value="String(c.id)">{{ c.name }}</option>
-                    </select>
-                </div>
-
-                <div class="lg:col-span-4">
-                    <div class="text-xs font-semibold text-slate-600">Exam <span class="text-rose-600">*</span></div>
-                    <select v-model="form.exam_id" required class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
-                        <option value="">Select</option>
-                        <option v-for="e in exams" :key="'ex-' + e.id" :value="String(e.id)">{{ e.name }}</option>
-                    </select>
-                </div>
-
-                <div class="lg:col-span-4">
-                    <div class="text-xs font-semibold text-slate-600">Admit Card Name <span class="text-rose-600">*</span></div>
-                    <input v-model="form.name" type="text" required class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
-                </div>
-
-                <div class="lg:col-span-2">
-                    <div class="text-xs font-semibold text-slate-600">Issue Date <span class="text-rose-600">*</span></div>
-                    <input v-model="form.issue_date" type="date" required class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
-                </div>
-
-                <div class="lg:col-span-2">
-                    <div class="text-xs font-semibold text-slate-600">Expired Date <span class="text-rose-600">*</span></div>
-                    <input v-model="form.expired_date" type="date" required class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
+                    <div class="mt-4 flex flex-col gap-2">
+                        <button
+                            type="button"
+                            class="w-full rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50"
+                            :disabled="submitting"
+                            @click="goBack"
+                        >
+                            Back
+                        </button>
+                        <button
+                            type="submit"
+                            class="w-full rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-700"
+                            :disabled="submitting"
+                        >
+                            {{ submitting ? 'Processing...' : 'Save' }}
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>

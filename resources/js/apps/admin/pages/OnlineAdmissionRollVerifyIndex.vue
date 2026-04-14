@@ -1,6 +1,6 @@
 <template>
     <div class="flex flex-col gap-4">
-        <div class="rounded-2xl border border-slate-200 bg-white p-5">
+        <div class=" border border-slate-300 bg-white p-5">
             <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <div class="min-w-0">
                     <div class="truncate text-xl font-semibold text-slate-900">Online Admission Roll Verify</div>
@@ -10,7 +10,7 @@
                 <div class="flex flex-wrap items-center gap-2">
                     <button
                         type="button"
-                        class="rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-700"
+                        class="rounded-sm bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-700"
                         @click="goCreate"
                     >
                         Add New
@@ -19,15 +19,15 @@
             </div>
         </div>
 
-        <div v-if="error" class="rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-800">
+        <div v-if="error" class=" border border-red-200 bg-red-50 p-4 text-sm text-red-800">
             {{ error }}
         </div>
 
-        <div class="rounded-2xl border border-slate-200 bg-white p-5">
+        <div class=" border border-slate-300 bg-white p-5">
             <div class="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-12">
                 <div class="xl:col-span-3">
                     <div class="text-xs font-semibold text-slate-600">Session</div>
-                    <select v-model="filters.academic_session_id" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm">
+                    <select v-model="filters.academic_session_id" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm">
                         <option value="">All</option>
                         <option v-for="s in sessionsSorted" :key="'ses-' + s.id" :value="String(s.id)">{{ s.name }}</option>
                     </select>
@@ -35,7 +35,7 @@
 
                 <div class="xl:col-span-3">
                     <div class="text-xs font-semibold text-slate-600">Academic Level</div>
-                    <select v-model="filters.academic_qualification_id" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm">
+                    <select v-model="filters.academic_qualification_id" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm">
                         <option value="">All</option>
                         <option v-for="q in qualifications" :key="'q-' + q.id" :value="String(q.id)">{{ q.name }}</option>
                     </select>
@@ -43,23 +43,23 @@
 
                 <div class="xl:col-span-3">
                     <div class="text-xs font-semibold text-slate-600">Department</div>
-                    <select v-model="filters.department_id" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm">
+                    <select v-model="filters.department_id" :disabled="!filters.academic_qualification_id" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm">
                         <option value="">All</option>
-                        <option v-for="d in departments" :key="'d-' + d.id" :value="String(d.id)">{{ d.name }}</option>
+                        <option v-for="d in filteredDepartments" :key="'d-' + d.id" :value="String(d.id)">{{ d.name }}</option>
                     </select>
                 </div>
 
                 <div class="xl:col-span-2">
                     <div class="text-xs font-semibold text-slate-600">Class</div>
-                    <select v-model="filters.academic_class_id" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm">
+                    <select v-model="filters.academic_class_id" :disabled="!filters.academic_qualification_id" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm">
                         <option value="">All</option>
-                        <option v-for="c in classes" :key="'c-' + c.id" :value="String(c.id)">{{ c.name }}</option>
+                        <option v-for="c in filteredClasses" :key="'c-' + c.id" :value="String(c.id)">{{ c.name }}</option>
                     </select>
                 </div>
 
                 <div class="xl:col-span-1">
                     <div class="text-xs font-semibold text-slate-600">Per Page</div>
-                    <select v-model.number="filters.pagination" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm">
+                    <select v-model.number="filters.pagination" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm">
                         <option :value="10">10</option>
                         <option :value="25">25</option>
                         <option :value="50">50</option>
@@ -69,7 +69,7 @@
                 <div class="xl:col-span-12 flex justify-end">
                     <button
                         type="button"
-                        class="h-9 rounded-lg bg-slate-900 px-5 text-sm font-semibold text-white hover:bg-slate-800"
+                        class="h-9 rounded-sm bg-slate-900 px-5 text-sm font-semibold text-white hover:bg-slate-800"
                         :disabled="loading"
                         @click="search(true)"
                     >
@@ -79,47 +79,50 @@
             </div>
         </div>
 
-        <div class="rounded-2xl border border-slate-200 bg-white p-5">
-            <div class="overflow-x-auto rounded-xl border border-slate-200">
-                <table class="min-w-full divide-y divide-slate-200 text-sm">
-                    <thead class="bg-slate-50">
-                        <tr>
-                            <th class="px-3 py-2 text-left font-semibold text-slate-700">Session</th>
-                            <th class="px-3 py-2 text-left font-semibold text-slate-700">Academic Level</th>
-                            <th class="px-3 py-2 text-left font-semibold text-slate-700">Department</th>
-                            <th class="px-3 py-2 text-left font-semibold text-slate-700">Class</th>
-                            <th class="px-3 py-2 text-right font-semibold text-slate-700">Actions</th>
+        <div class=" border border-slate-300 bg-white p-5">
+            <div class="overflow-x-auto">
+                <table class="min-w-full border-collapse border border-slate-300 text-sm">
+                    <thead class="bg-emerald-100">
+                        <tr class="text-left text-xs font-semibold uppercase tracking-wider text-slate-700">
+                            <th class="border border-slate-300 bg-emerald-100 px-1 py-2 text-slate-700">Session</th>
+                            <th class="border border-slate-300 bg-emerald-100 px-1 py-2 text-slate-700">Academic Level</th>
+                            <th class="border border-slate-300 bg-emerald-100 px-1 py-2 text-slate-700">Department</th>
+                            <th class="border border-slate-300 bg-emerald-100 px-1 py-2 text-slate-700">Class</th>
+                            <th class="border border-slate-300 bg-emerald-100 px-1 py-2 text-center text-slate-700">Actions</th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-slate-200 bg-white">
-                        <tr v-for="row in rows" :key="'row-' + row.id">
-                            <td class="px-3 py-2 text-slate-800">{{ row.academic_session_name || '--' }}</td>
-                            <td class="px-3 py-2 text-slate-800">{{ row.academic_qualification_name || '--' }}</td>
-                            <td class="px-3 py-2 text-slate-800">{{ row.department_name || '--' }}</td>
-                            <td class="px-3 py-2 text-slate-800">{{ row.academic_class_name || '--' }}</td>
-                            <td class="px-3 py-2">
-                                <div class="flex items-center justify-end gap-2">
+                    <tbody class="bg-white">
+                        <tr v-for="(row, idx) in rows" :key="'row-' + row.id" :class="idx % 2 === 0 ? 'bg-white' : 'bg-slate-50'">
+                            <td class="border border-slate-300 px-1 py-1 text-slate-800">{{ row.academic_session_name || '--' }}</td>
+                            <td class="border border-slate-300 px-1 py-1 text-slate-800">{{ row.academic_qualification_name || '--' }}</td>
+                            <td class="border border-slate-300 px-1 py-1 text-slate-800">{{ row.department_name || '--' }}</td>
+                            <td class="border border-slate-300 px-1 py-1 text-slate-800">{{ row.academic_class_name || '--' }}</td>
+                            <td class="border border-slate-300 px-1 py-1 text-center">
+                                <div class="flex items-center justify-center gap-2">
                                     <button
                                         type="button"
-                                        class="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-50"
+                                        class="inline-flex h-8 w-8 items-center justify-center rounded-sm border border-slate-300 bg-white text-slate-700 hover:bg-slate-50"
+                                        title="View"
                                         @click="goView(row.id)"
                                     >
-                                        View
+                                        <i class="fas fa-eye"></i>
                                     </button>
                                     <button
                                         type="button"
-                                        class="rounded-lg border border-red-200 bg-red-50 px-3 py-1.5 text-xs font-semibold text-red-700 hover:bg-red-100"
+                                        class="inline-flex h-8 w-8 items-center justify-center rounded-sm border border-red-200 bg-white text-red-700 hover:bg-red-50"
                                         :disabled="deletingId === row.id"
+                                        title="Delete"
                                         @click="destroyRow(row.id)"
                                     >
-                                        {{ deletingId === row.id ? 'Deleting...' : 'Delete' }}
+                                        <i v-if="deletingId === row.id" class="fas fa-spinner fa-spin"></i>
+                                        <i v-else class="fas fa-trash"></i>
                                     </button>
                                 </div>
                             </td>
                         </tr>
 
                         <tr v-if="!rows.length">
-                            <td colspan="5" class="px-3 py-10 text-center text-sm text-slate-500">
+                            <td colspan="5" class="border border-slate-300 px-4 py-10 text-center text-sm text-slate-500">
                                 {{ loading ? 'Loading...' : 'No data found' }}
                             </td>
                         </tr>
@@ -135,7 +138,7 @@
                 <div class="flex flex-wrap items-center gap-1">
                     <button
                         type="button"
-                        class="h-9 rounded-lg border border-slate-200 bg-white px-3 text-sm font-semibold text-slate-700 hover:bg-slate-50"
+                        class="h-9 rounded-sm border border-slate-300 bg-white px-3 text-sm font-semibold text-slate-700 hover:bg-slate-50"
                         :disabled="filters.page <= 1 || loading"
                         @click="goPage(filters.page - 1)"
                     >
@@ -146,8 +149,8 @@
                         v-for="p in pageNumbers"
                         :key="'p-' + p"
                         type="button"
-                        class="h-9 rounded-lg border px-3 text-sm font-semibold"
-                        :class="p === filters.page ? 'border-emerald-300 bg-emerald-50 text-emerald-700' : 'border-slate-200 bg-white text-slate-700 hover:bg-slate-50'"
+                        class="h-9 rounded-sm border px-3 text-sm font-semibold"
+                        :class="p === filters.page ? 'border-emerald-300 bg-emerald-50 text-emerald-700' : 'border-slate-300 bg-white text-slate-700 hover:bg-slate-50'"
                         :disabled="loading"
                         @click="goPage(p)"
                     >
@@ -156,7 +159,7 @@
 
                     <button
                         type="button"
-                        class="h-9 rounded-lg border border-slate-200 bg-white px-3 text-sm font-semibold text-slate-700 hover:bg-slate-50"
+                        class="h-9 rounded-sm border border-slate-300 bg-white px-3 text-sm font-semibold text-slate-700 hover:bg-slate-50"
                         :disabled="filters.page >= meta.last_page || loading"
                         @click="goPage(filters.page + 1)"
                     >
@@ -183,6 +186,7 @@ export default {
             error: '',
             deletingId: null,
             rows: [],
+            searchTimer: null,
             meta: {
                 current_page: 1,
                 from: 0,
@@ -218,9 +222,24 @@ export default {
             const list = this.systems?.global?.departments
             return Array.isArray(list) ? list : []
         },
+        departmentQualidactions() {
+            const list = this.systems?.global?.department_qualidactions || this.systems?.global?.department_qualifications
+            return Array.isArray(list) ? list : []
+        },
         classes() {
             const list = this.systems?.global?.academic_classes
             return Array.isArray(list) ? list : []
+        },
+        filteredDepartments() {
+            const qid = this.filters?.academic_qualification_id
+            if (!qid) return []
+            const allowed = new Set(this.departmentQualidactions.filter((r) => String(r?.academic_qualification_id) === String(qid)).map((r) => String(r?.department_id)))
+            return this.departments.filter((d) => allowed.has(String(d?.id)))
+        },
+        filteredClasses() {
+            const qid = this.filters?.academic_qualification_id
+            if (!qid) return []
+            return this.classes.filter((c) => String(c?.academic_qualification_id) === String(qid))
         },
         pageNumbers() {
             const cur = Number(this.meta.current_page || 1)
@@ -235,7 +254,34 @@ export default {
     mounted() {
         this.search(true)
     },
+    watch: {
+        'filters.academic_session_id'(next, prev) {
+            if (String(next || '') !== String(prev || '')) this.scheduleSearch(true)
+        },
+        'filters.academic_qualification_id'(next, prev) {
+            if (String(next || '') !== String(prev || '')) {
+                this.filters.department_id = ''
+                this.filters.academic_class_id = ''
+                this.scheduleSearch(true)
+            }
+        },
+        'filters.department_id'(next, prev) {
+            if (String(next || '') !== String(prev || '')) this.scheduleSearch(true)
+        },
+        'filters.academic_class_id'(next, prev) {
+            if (String(next || '') !== String(prev || '')) this.scheduleSearch(true)
+        },
+        'filters.pagination'(next, prev) {
+            if (Number(next || 0) !== Number(prev || 0)) this.scheduleSearch(true)
+        },
+    },
     methods: {
+        scheduleSearch(resetPage) {
+            if (this.searchTimer) clearTimeout(this.searchTimer)
+            this.searchTimer = setTimeout(() => {
+                this.search(resetPage)
+            }, 250)
+        },
         sessionSortKey(s) {
             const name = String(s?.name || '')
             const m = name.match(/(\d{4})\s*[-/]\s*(\d{4})/)

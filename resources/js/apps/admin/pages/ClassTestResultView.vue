@@ -1,6 +1,6 @@
 <template>
     <div class="flex flex-col gap-4">
-        <div class="rounded-2xl border border-slate-200 bg-white p-5">
+        <div class=" border border-slate-300 bg-white p-5">
             <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <div class="min-w-0">
                     <div class="truncate text-xl font-semibold text-slate-900">Class Test Result</div>
@@ -8,20 +8,20 @@
                 </div>
 
                 <div class="flex flex-wrap items-center gap-2">
-                    <button type="button" class="rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50" @click="goBack">Back</button>
-                    <button type="button" class="rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800" :disabled="printing" @click="print">{{ printing ? '...' : 'Print' }}</button>
-                    <button type="button" class="rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-700" :disabled="exporting" @click="exportPdf">{{ exporting ? '...' : 'Export PDF' }}</button>
+                    <button type="button" class="rounded-sm border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50" @click="goBack">Back</button>
+                    <button type="button" class="rounded-sm bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800" :disabled="printing" @click="print">{{ printing ? '...' : 'Print' }}</button>
+                    <button type="button" class="rounded-sm bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-700" :disabled="exporting" @click="exportPdf">{{ exporting ? '...' : 'Export PDF' }}</button>
                 </div>
             </div>
         </div>
 
-        <div v-if="error" class="rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-800">{{ error }}</div>
+        <div v-if="error" class=" border border-red-200 bg-red-50 p-4 text-sm text-red-800">{{ error }}</div>
 
-        <div class="rounded-2xl border border-slate-200 bg-white p-5">
+        <div class=" border border-slate-300 bg-white p-5">
             <div class="grid grid-cols-1 gap-4 lg:grid-cols-12">
                 <div class="lg:col-span-3">
                     <div class="text-xs font-semibold text-slate-600">Type</div>
-                    <select v-model="filters.type" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" @change="load(true)">
+                    <select v-model="filters.type" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" @change="load(true)">
                         <option value="">ALL</option>
                         <option value="merit">Merit</option>
                         <option value="unmerit">Unmerit</option>
@@ -30,7 +30,7 @@
 
                 <div class="lg:col-span-3">
                     <div class="text-xs font-semibold text-slate-600">Search Field</div>
-                    <select v-model="filters.field_name" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" @change="load(true)">
+                    <select v-model="filters.field_name" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" @change="load(true)">
                         <option value="">--Select One--</option>
                         <option value="student_id">Software ID</option>
                         <option value="name">Name</option>
@@ -41,17 +41,17 @@
 
                 <div class="lg:col-span-4">
                     <div class="text-xs font-semibold text-slate-600">Search</div>
-                    <input v-model="filters.value" type="text" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" @keydown.enter.prevent="load(true)" />
+                    <input v-model="filters.value" type="text" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" @keydown.enter.prevent="load(true)" />
                 </div>
 
                 <div class="lg:col-span-2 flex items-end">
-                    <button type="button" class="h-9 w-full rounded-lg bg-slate-900 px-4 text-sm font-semibold text-white hover:bg-slate-800" :disabled="loading" @click="load(true)">{{ loading ? '...' : 'Go' }}</button>
+                    <button type="button" class="h-9 w-full rounded-sm bg-slate-900 px-4 text-sm font-semibold text-white hover:bg-slate-800" :disabled="loading" @click="load(true)">{{ loading ? '...' : 'Go' }}</button>
                 </div>
             </div>
         </div>
 
-        <div class="rounded-2xl border border-slate-200 bg-white p-5">
-            <div class="mb-4 rounded-xl border border-slate-200 bg-slate-50 p-4 text-sm text-slate-700">
+        <div class=" border border-slate-300 bg-white p-5">
+            <div class="mb-4 rounded-xl border border-slate-300 bg-slate-50 p-4 text-sm text-slate-700">
                 <div class="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-5">
                     <div><span class="font-semibold">Session:</span> {{ result?.academic_session?.name || result?.academic_session_name || '--' }}</div>
                     <div><span class="font-semibold">Level:</span> {{ result?.qualification?.name || result?.academic_qualification_name || '--' }}</div>
@@ -61,9 +61,9 @@
                 </div>
             </div>
 
-            <div class="overflow-x-auto rounded-xl border border-slate-200">
+            <div class="overflow-x-auto">
                 <table id="pdf-table" class="min-w-full divide-y divide-slate-200 text-sm">
-                    <thead class="bg-slate-50">
+                    <thead class="bg-emerald-100">
                         <tr>
                             <th class="px-3 py-2 text-left font-semibold text-slate-700">Roll</th>
                             <th class="px-3 py-2 text-left font-semibold text-slate-700">Software ID</th>
@@ -90,14 +90,14 @@
                                 <td class="px-3 py-2 text-slate-800">{{ (std.marks || []).length }}</td>
                                 <td class="px-3 py-2 text-slate-800">
                                     <div class="flex flex-wrap gap-1">
-                                        <span v-for="m in (std.marks || [])" :key="'m-' + std.id + '-' + m.subject_id" class="rounded-md border border-rose-200 bg-rose-50 px-2 py-0.5 text-xs text-rose-700">
+                                        <span v-for="m in (std.marks || [])" :key="'m-' + std.id + '-' + m.subject_id" class="rounded-sm border border-rose-200 bg-rose-50 px-2 py-0.5 text-xs text-rose-700">
                                             {{ m?.subject?.name_en || '' }}
                                         </span>
                                     </div>
                                 </td>
                             </template>
                             <td class="px-3 py-2 text-center">
-                                <button type="button" class="rounded-lg border border-slate-200 bg-white px-3 py-1 text-xs font-semibold text-slate-700 hover:bg-slate-50" @click="goMarksheet(std.id)">
+                                <button type="button" class="rounded-sm border border-slate-300 bg-white px-3 py-1 text-xs font-semibold text-slate-700 hover:bg-slate-50" @click="goMarksheet(std.id)">
                                     Marksheet
                                 </button>
                             </td>

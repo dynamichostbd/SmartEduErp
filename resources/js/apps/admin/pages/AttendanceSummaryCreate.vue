@@ -1,148 +1,238 @@
 <template>
     <form class="flex flex-col gap-4" @submit.prevent="submit">
-        <div class="rounded-2xl border border-slate-200 bg-white p-5">
+        <div class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
             <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <div class="min-w-0">
                     <div class="truncate text-xl font-semibold text-slate-900">{{ isEdit ? 'Edit Attendance Summary' : 'Attendance Summary' }}</div>
                     <div class="mt-1 text-sm text-slate-600">Generate summary from attendance report</div>
                 </div>
-
-                <div class="flex flex-wrap items-center gap-2">
-                    <button type="button" class="rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50" :disabled="submitting" @click="goBack">
-                        Back
-                    </button>
-                    <button type="submit" class="rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-700" :disabled="submitting || !students.length">
-                        {{ submitting ? 'Processing...' : 'Save' }}
-                    </button>
-                </div>
             </div>
         </div>
 
-        <div v-if="message" class="rounded-2xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-900">
+        <div v-if="message" class="rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-900">
             {{ message }}
         </div>
 
-        <div v-if="error" class="rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-800">
+        <div v-if="error" class="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-800">
             {{ error }}
         </div>
 
-        <div class="rounded-2xl border border-slate-200 bg-white p-5">
-            <div class="grid grid-cols-1 gap-4 lg:grid-cols-12">
-                <div class="lg:col-span-2">
-                    <div class="text-xs font-semibold text-slate-600">From Date <span class="text-rose-600">*</span></div>
-                    <input v-model="form.from_date" type="date" required class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
+        <div class="grid grid-cols-1 gap-4 lg:grid-cols-12">
+            <div class="flex flex-col gap-4 lg:col-span-8">
+                <div class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+                    <div class="text-sm font-semibold text-slate-900">Report Filters</div>
+
+                    <div class="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                        <div>
+                            <div class="text-xs font-semibold text-slate-600">From Date <span class="text-rose-600">*</span></div>
+                            <input
+                                v-model="form.from_date"
+                                type="date"
+                                required
+                                class="mt-1 h-9 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
+                            />
+                        </div>
+
+                        <div>
+                            <div class="text-xs font-semibold text-slate-600">To Date <span class="text-rose-600">*</span></div>
+                            <input
+                                v-model="form.to_date"
+                                type="date"
+                                required
+                                class="mt-1 h-9 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
+                            />
+                        </div>
+
+                        <div>
+                            <div class="text-xs font-semibold text-slate-600">Session <span class="text-rose-600">*</span></div>
+                            <select
+                                v-model="form.academic_session_id"
+                                required
+                                class="mt-1 h-9 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
+                            >
+                                <option value="">Select</option>
+                                <option v-for="s in sessionsSorted" :key="'ses-' + s.id" :value="String(s.id)">{{ s.name }}</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <div class="text-xs font-semibold text-slate-600">Academic Level <span class="text-rose-600">*</span></div>
+                            <select
+                                v-model="form.academic_qualification_id"
+                                required
+                                class="mt-1 h-9 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
+                            >
+                                <option value="">Select</option>
+                                <option v-for="q in qualifications" :key="'q-' + q.id" :value="String(q.id)">{{ q.name }}</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <div class="text-xs font-semibold text-slate-600">Department <span class="text-rose-600">*</span></div>
+                            <select
+                                v-model="form.department_id"
+                                required
+                                class="mt-1 h-9 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
+                            >
+                                <option value="">Select</option>
+                                <option v-for="d in filteredDepartments" :key="'d-' + d.id" :value="String(d.id)">{{ d.name }}</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <div class="text-xs font-semibold text-slate-600">Class <span class="text-rose-600">*</span></div>
+                            <select
+                                v-model="form.academic_class_id"
+                                required
+                                class="mt-1 h-9 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
+                            >
+                                <option value="">Select</option>
+                                <option v-for="c in filteredClasses" :key="'c-' + c.id" :value="String(c.id)">{{ c.name }}</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <div class="text-xs font-semibold text-slate-600">Present Percent (%) <span class="text-rose-600">*</span></div>
+                            <input
+                                v-model.number="form.present_percent"
+                                type="number"
+                                min="0"
+                                max="100"
+                                step="0.01"
+                                required
+                                class="mt-1 h-9 w-full rounded-lg border border-slate-300 bg-white px-3 text-center text-sm shadow-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
+                            />
+                        </div>
+
+                        <div>
+                            <div class="text-xs font-semibold text-slate-600">Total Class <span class="text-rose-600">*</span></div>
+                            <input
+                                v-model.number="form.total_class"
+                                type="number"
+                                min="0"
+                                step="1"
+                                required
+                                class="mt-1 h-9 w-full rounded-lg border border-slate-300 bg-white px-3 text-center text-sm shadow-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
+                            />
+                        </div>
+
+                        <div class="sm:col-span-2 lg:col-span-3">
+                            <div class="text-xs font-semibold text-slate-600">Admit Card <span class="text-rose-600">*</span></div>
+                            <select
+                                v-model="form.admit_card_id"
+                                required
+                                class="mt-1 h-9 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
+                            >
+                                <option value="">Select</option>
+                                <option v-for="ac in admitCardsFiltered" :key="'ac-' + ac.id" :value="String(ac.id)">{{ ac.name }}</option>
+                            </select>
+                        </div>
+
+                        <div class="sm:col-span-2 lg:col-span-3 flex justify-end">
+                            <button
+                                type="button"
+                                class="h-9 rounded-lg bg-slate-900 px-5 text-sm font-semibold text-white hover:bg-slate-800"
+                                :disabled="loadingStudents"
+                                @click="loadStudents"
+                            >
+                                {{ loadingStudents ? 'Loading...' : 'Search Students' }}
+                            </button>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="lg:col-span-2">
-                    <div class="text-xs font-semibold text-slate-600">To Date <span class="text-rose-600">*</span></div>
-                    <input v-model="form.to_date" type="date" required class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
-                </div>
+                <div class="rounded-xl border border-slate-200 bg-white shadow-sm">
+                    <div class="border-b border-slate-200 px-5 py-4">
+                        <div class="text-sm font-semibold text-slate-900">Students Attendance Summary</div>
+                    </div>
 
-                <div class="lg:col-span-2">
-                    <div class="text-xs font-semibold text-slate-600">Session <span class="text-rose-600">*</span></div>
-                    <select v-model="form.academic_session_id" required class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
-                        <option value="">Select</option>
-                        <option v-for="s in sessionsSorted" :key="'ses-' + s.id" :value="String(s.id)">{{ s.name }}</option>
-                    </select>
-                </div>
-
-                <div class="lg:col-span-2">
-                    <div class="text-xs font-semibold text-slate-600">Academic Level <span class="text-rose-600">*</span></div>
-                    <select v-model="form.academic_qualification_id" required class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
-                        <option value="">Select</option>
-                        <option v-for="q in qualifications" :key="'q-' + q.id" :value="String(q.id)">{{ q.name }}</option>
-                    </select>
-                </div>
-
-                <div class="lg:col-span-2">
-                    <div class="text-xs font-semibold text-slate-600">Department <span class="text-rose-600">*</span></div>
-                    <select v-model="form.department_id" required class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
-                        <option value="">Select</option>
-                        <option v-for="d in filteredDepartments" :key="'d-' + d.id" :value="String(d.id)">{{ d.name }}</option>
-                    </select>
-                </div>
-
-                <div class="lg:col-span-2">
-                    <div class="text-xs font-semibold text-slate-600">Class <span class="text-rose-600">*</span></div>
-                    <select v-model="form.academic_class_id" required class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
-                        <option value="">Select</option>
-                        <option v-for="c in filteredClasses" :key="'c-' + c.id" :value="String(c.id)">{{ c.name }}</option>
-                    </select>
-                </div>
-
-                <div class="lg:col-span-3">
-                    <div class="text-xs font-semibold text-slate-600">Present Percent (%) <span class="text-rose-600">*</span></div>
-                    <input v-model.number="form.present_percent" type="number" min="0" max="100" step="0.01" required class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm text-center outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
-                </div>
-
-                <div class="lg:col-span-3">
-                    <div class="text-xs font-semibold text-slate-600">Total Class <span class="text-rose-600">*</span></div>
-                    <input v-model.number="form.total_class" type="number" min="0" step="1" required class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm text-center outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
-                </div>
-
-                <div class="lg:col-span-6">
-                    <div class="text-xs font-semibold text-slate-600">Admit Card <span class="text-rose-600">*</span></div>
-                    <select v-model="form.admit_card_id" required class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
-                        <option value="">Select</option>
-                        <option v-for="ac in admitCardsFiltered" :key="'ac-' + ac.id" :value="String(ac.id)">{{ ac.name }}</option>
-                    </select>
-                </div>
-
-                <div class="lg:col-span-6 flex items-end justify-end">
-                    <button type="button" class="h-9 rounded-lg bg-slate-900 px-5 text-sm font-semibold text-white hover:bg-slate-800" :disabled="loadingStudents" @click="loadStudents">
-                        {{ loadingStudents ? 'Loading...' : 'Search Students' }}
-                    </button>
+                    <div class="p-5">
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full divide-y divide-slate-200 text-sm">
+                                <thead class="bg-emerald-100">
+                                    <tr>
+                                        <th class="px-3 py-2 text-center font-semibold text-slate-700">#</th>
+                                        <th class="px-3 py-2 text-left font-semibold text-slate-700">Software ID</th>
+                                        <th class="px-3 py-2 text-left font-semibold text-slate-700">Student Name</th>
+                                        <th class="px-3 py-2 text-left font-semibold text-slate-700">Mobile</th>
+                                        <th class="px-3 py-2 text-left font-semibold text-slate-700">Admission ID</th>
+                                        <th class="px-3 py-2 text-left font-semibold text-slate-700">College Roll</th>
+                                        <th class="px-3 py-2 text-center font-semibold text-slate-700">Total Class</th>
+                                        <th class="px-3 py-2 text-center font-semibold text-slate-700">Total Present</th>
+                                        <th class="px-3 py-2 text-center font-semibold text-slate-700">Total Absent</th>
+                                        <th class="px-3 py-2 text-center font-semibold text-slate-700">Present %</th>
+                                        <th class="px-3 py-2 text-center font-semibold text-slate-700">Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-slate-200 bg-white">
+                                    <tr v-for="(s, idx) in students" :key="'std-' + String(s.student_id) + '-' + idx">
+                                        <td class="px-3 py-2 text-center text-slate-600">{{ idx + 1 }}</td>
+                                        <td class="px-3 py-2 text-slate-800">{{ s.student_id }}</td>
+                                        <td class="px-3 py-2 text-slate-800">{{ s.name }}</td>
+                                        <td class="px-3 py-2 text-slate-800">{{ s.mobile }}</td>
+                                        <td class="px-3 py-2 text-slate-800">{{ s.admission_id }}</td>
+                                        <td class="px-3 py-2 text-slate-800">{{ s.college_roll }}</td>
+                                        <td class="px-3 py-2 text-center text-slate-800"><b>{{ form.total_class }}</b></td>
+                                        <td class="px-3 py-2 text-center text-emerald-700"><b>{{ s.total_present }}</b></td>
+                                        <td class="px-3 py-2 text-center text-rose-700"><b>{{ s.total_absent }}</b></td>
+                                        <td class="px-3 py-2 text-center text-amber-700"><b>{{ s.present_percentage }}%</b></td>
+                                        <td class="px-3 py-2 text-center">
+                                            <div class="inline-flex overflow-hidden rounded-lg border border-slate-300 shadow-sm">
+                                                <button
+                                                    type="button"
+                                                    class="px-3 py-1 text-xs font-semibold"
+                                                    :class="s.status === 'A' ? 'bg-slate-900 text-white' : 'bg-white text-slate-700 hover:bg-slate-50'"
+                                                    @click="setStatus(idx, 'A')"
+                                                >
+                                                    A
+                                                </button>
+                                                <button
+                                                    type="button"
+                                                    class="px-3 py-1 text-xs font-semibold"
+                                                    :class="s.status === 'P' ? 'bg-emerald-600 text-white' : 'bg-white text-slate-700 hover:bg-slate-50'"
+                                                    @click="setStatus(idx, 'P')"
+                                                >
+                                                    P
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr v-if="!students.length">
+                                        <td colspan="11" class="px-3 py-10 text-center text-slate-500">No Students Found</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div class="rounded-2xl border border-slate-200 bg-white">
-            <div class="border-b border-slate-200 px-5 py-4">
-                <div class="text-sm font-semibold text-slate-900">Students Attendance Summary</div>
-            </div>
+            <div class="flex flex-col gap-4 lg:col-span-4">
+                <div class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+                    <div class="text-sm font-semibold text-slate-900">Status</div>
+                    <div class="mt-2 text-sm text-slate-600">Search students for the selected date range, then confirm totals and set each student status before saving.</div>
+                </div>
 
-            <div class="p-5">
-                <div class="overflow-x-auto rounded-xl border border-slate-200">
-                    <table class="min-w-full divide-y divide-slate-200 text-sm">
-                        <thead class="bg-slate-50">
-                            <tr>
-                                <th class="px-3 py-2 text-center font-semibold text-slate-700">#</th>
-                                <th class="px-3 py-2 text-left font-semibold text-slate-700">Software ID</th>
-                                <th class="px-3 py-2 text-left font-semibold text-slate-700">Student Name</th>
-                                <th class="px-3 py-2 text-left font-semibold text-slate-700">Mobile</th>
-                                <th class="px-3 py-2 text-left font-semibold text-slate-700">Admission ID</th>
-                                <th class="px-3 py-2 text-left font-semibold text-slate-700">College Roll</th>
-                                <th class="px-3 py-2 text-center font-semibold text-slate-700">Total Class</th>
-                                <th class="px-3 py-2 text-center font-semibold text-slate-700">Total Present</th>
-                                <th class="px-3 py-2 text-center font-semibold text-slate-700">Total Absent</th>
-                                <th class="px-3 py-2 text-center font-semibold text-slate-700">Present %</th>
-                                <th class="px-3 py-2 text-center font-semibold text-slate-700">Status</th>
-                            </tr>
-                        </thead>
-                        <tbody class="divide-y divide-slate-200 bg-white">
-                            <tr v-for="(s, idx) in students" :key="'std-' + String(s.student_id) + '-' + idx">
-                                <td class="px-3 py-2 text-center text-slate-600">{{ idx + 1 }}</td>
-                                <td class="px-3 py-2 text-slate-800">{{ s.student_id }}</td>
-                                <td class="px-3 py-2 text-slate-800">{{ s.name }}</td>
-                                <td class="px-3 py-2 text-slate-800">{{ s.mobile }}</td>
-                                <td class="px-3 py-2 text-slate-800">{{ s.admission_id }}</td>
-                                <td class="px-3 py-2 text-slate-800">{{ s.college_roll }}</td>
-                                <td class="px-3 py-2 text-center text-slate-800"><b>{{ form.total_class }}</b></td>
-                                <td class="px-3 py-2 text-center text-emerald-700"><b>{{ s.total_present }}</b></td>
-                                <td class="px-3 py-2 text-center text-rose-700"><b>{{ s.total_absent }}</b></td>
-                                <td class="px-3 py-2 text-center text-amber-700"><b>{{ s.present_percentage }}%</b></td>
-                                <td class="px-3 py-2 text-center">
-                                    <div class="inline-flex overflow-hidden rounded-lg border border-slate-200">
-                                        <button type="button" class="px-3 py-1 text-xs font-semibold" :class="s.status === 'A' ? 'bg-slate-900 text-white' : 'bg-white text-slate-700 hover:bg-slate-50'" @click="setStatus(idx, 'A')">A</button>
-                                        <button type="button" class="px-3 py-1 text-xs font-semibold" :class="s.status === 'P' ? 'bg-emerald-600 text-white' : 'bg-white text-slate-700 hover:bg-slate-50'" @click="setStatus(idx, 'P')">P</button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr v-if="!students.length">
-                                <td colspan="11" class="px-3 py-10 text-center text-slate-500">No Students Found</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                <div class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+                    <div class="text-sm font-semibold text-slate-900">Actions</div>
+
+                    <div class="mt-4 flex flex-col gap-2">
+                        <button
+                            type="button"
+                            class="w-full rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50"
+                            :disabled="submitting"
+                            @click="goBack"
+                        >
+                            Back
+                        </button>
+                        <button
+                            type="submit"
+                            class="w-full rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-700"
+                            :disabled="submitting || !students.length"
+                        >
+                            {{ submitting ? 'Processing...' : 'Save' }}
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>

@@ -1,82 +1,113 @@
 <template>
-    <div class="flex flex-col gap-4">
-        <div class="rounded-2xl border border-slate-200 bg-white p-5">
+    <form class="flex flex-col gap-4" @submit.prevent="submit">
+        <div class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
             <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <div class="min-w-0">
                     <div class="truncate text-xl font-semibold text-slate-900">{{ pageHeading }}</div>
                     <div class="mt-1 text-xs text-slate-500">Slug: {{ slug }}</div>
                 </div>
-
-                <div class="flex flex-wrap items-center gap-2">
-                    <button type="button" class="rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50" :disabled="saving" @click="goView">
-                        View
-                    </button>
-                    <button type="button" class="rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-700" :disabled="saving" @click="submit">
-                        {{ saving ? '...' : (hasExisting ? 'Update' : 'Create') }}
-                    </button>
-                </div>
             </div>
         </div>
 
-        <div v-if="error" class="rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-800">{{ error }}</div>
-        <div v-if="success" class="rounded-2xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-800">{{ success }}</div>
+        <div v-if="error" class="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-800">{{ error }}</div>
+        <div v-if="success" class="rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-800">{{ success }}</div>
 
         <div class="grid grid-cols-1 gap-4 lg:grid-cols-12">
-            <div class="lg:col-span-9">
-                <div class="rounded-2xl border border-slate-200 bg-white p-5">
-                    <div class="grid grid-cols-1 gap-4 lg:grid-cols-12">
-                        <div class="lg:col-span-9">
+            <div class="flex flex-col gap-4 lg:col-span-9">
+                <div class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+                    <div class="text-sm font-semibold text-slate-900">Content</div>
+
+                    <div class="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                        <div class="sm:col-span-2 lg:col-span-2">
                             <div class="text-xs font-semibold text-slate-600">Title</div>
-                            <input v-model="form.title" type="text" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
-                        </div>
-                        <div class="lg:col-span-3">
-                            <div class="text-xs font-semibold text-slate-600">Image</div>
-                            <img v-if="imagePreview" :src="imagePreview" class="mt-2 h-16 w-full rounded border border-slate-200 bg-white object-contain" />
-                            <div v-else class="mt-2 flex h-16 items-center justify-center rounded border border-dashed border-slate-200 bg-slate-50 text-xs text-slate-500">No image</div>
-                            <input type="file" accept="image/*" class="mt-2 block w-full text-sm" @change="onImage" />
+                            <input
+                                v-model="form.title"
+                                type="text"
+                                class="mt-1 h-9 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
+                            />
                         </div>
 
-                        <div class="lg:col-span-12">
+                        <div>
+                            <div class="text-xs font-semibold text-slate-600">Image</div>
+                            <img v-if="imagePreview" :src="imagePreview" class="mt-2 h-16 w-full rounded-lg border border-slate-200 bg-white object-contain" />
+                            <div v-else class="mt-2 flex h-16 items-center justify-center rounded-lg border border-dashed border-slate-300 bg-slate-50 text-xs text-slate-500">No image</div>
+                            <input type="file" accept="image/*" class="mt-2 block h-9 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm shadow-sm" @change="onImage" />
+                        </div>
+
+                        <div class="sm:col-span-2 lg:col-span-3">
                             <div class="text-xs font-semibold text-slate-600">Description (HTML allowed)</div>
-                            <textarea v-model="form.description" rows="10" class="mt-1 w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"></textarea>
+                            <textarea
+                                v-model="form.description"
+                                rows="10"
+                                class="mt-1 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm shadow-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
+                            ></textarea>
                         </div>
                     </div>
                 </div>
 
-                <div class="mt-4 rounded-2xl border border-slate-200 bg-white p-5">
+                <div class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
                     <div class="text-sm font-semibold text-slate-900">Meta</div>
-                    <div class="mt-4 grid grid-cols-1 gap-4 lg:grid-cols-12">
-                        <div class="lg:col-span-6">
+                    <div class="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                        <div>
                             <div class="text-xs font-semibold text-slate-600">Meta Title</div>
-                            <input v-model="form.meta_title" type="text" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
+                            <input
+                                v-model="form.meta_title"
+                                type="text"
+                                class="mt-1 h-9 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
+                            />
                         </div>
-                        <div class="lg:col-span-6">
+                        <div class="sm:col-span-2">
                             <div class="text-xs font-semibold text-slate-600">Meta Description</div>
-                            <input v-model="form.meta_description" type="text" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
+                            <input
+                                v-model="form.meta_description"
+                                type="text"
+                                class="mt-1 h-9 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
+                            />
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="lg:col-span-3">
-                <div class="rounded-2xl border border-slate-200 bg-white p-5">
+            <div class="flex flex-col gap-4 lg:col-span-3">
+                <div class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
                     <div class="text-sm font-semibold text-slate-900">Status</div>
-                    <select v-model="form.status" class="mt-3 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
+                    <select
+                        v-model="form.status"
+                        class="mt-3 h-9 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
+                    >
                         <option value="draft">Draft</option>
                         <option value="active">Active</option>
                         <option value="deactive">Deactive</option>
                     </select>
+                </div>
 
+                <div class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+                    <div class="text-sm font-semibold text-slate-900">Actions</div>
                     <div class="mt-4 flex flex-col gap-2">
-                        <button type="button" class="h-9 rounded-lg bg-slate-900 px-4 text-sm font-semibold text-white hover:bg-slate-800" :disabled="saving" @click="submit">
+                        <button
+                            type="button"
+                            class="h-9 w-full rounded-lg border border-slate-300 bg-white px-4 text-sm font-semibold text-slate-700 hover:bg-slate-50"
+                            :disabled="saving"
+                            @click="goView"
+                        >
+                            View
+                        </button>
+                        <button type="submit" class="h-9 w-full rounded-lg bg-emerald-600 px-4 text-sm font-semibold text-white hover:bg-emerald-700" :disabled="saving">
                             {{ saving ? '...' : (hasExisting ? 'Update' : 'Create') }}
                         </button>
-                        <button type="button" class="h-9 rounded-lg border border-slate-200 bg-white px-4 text-sm font-semibold text-slate-700 hover:bg-slate-50" :disabled="saving" @click="goView">Cancel</button>
+                        <button
+                            type="button"
+                            class="h-9 w-full rounded-lg border border-slate-300 bg-white px-4 text-sm font-semibold text-slate-700 hover:bg-slate-50"
+                            :disabled="saving"
+                            @click="goView"
+                        >
+                            Cancel
+                        </button>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    </form>
 </template>
 
 <script>

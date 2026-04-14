@@ -1,6 +1,6 @@
 <template>
     <div class="flex flex-col gap-4">
-        <div class="rounded-2xl border border-slate-200 bg-white p-5">
+        <div class=" border border-slate-300 bg-white p-5">
             <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <div class="min-w-0">
                     <div class="truncate text-xl font-semibold text-slate-900">Certificate Application</div>
@@ -9,13 +9,13 @@
             </div>
         </div>
 
-        <div v-if="error" class="rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-800">{{ error }}</div>
+        <div v-if="error" class=" border border-red-200 bg-red-50 p-4 text-sm text-red-800">{{ error }}</div>
 
-        <div class="rounded-2xl border border-slate-200 bg-white p-5">
+        <div class=" border border-slate-300 bg-white p-5">
             <div class="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-12">
                 <div class="xl:col-span-2">
                     <div class="text-xs font-semibold text-slate-600">Payment Status</div>
-                    <select v-model="filters.payment_status" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm" @change="search(true)">
+                    <select v-model="filters.payment_status" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm">
                         <option value="">All</option>
                         <option value="pending">Dues</option>
                         <option value="success">Paid</option>
@@ -26,7 +26,7 @@
 
                 <div class="xl:col-span-2">
                     <div class="text-xs font-semibold text-slate-600">Application Status</div>
-                    <select v-model="filters.application_status" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm" @change="search(true)">
+                    <select v-model="filters.application_status" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm">
                         <option value="">All</option>
                         <option value="pending">Pending</option>
                         <option value="approved">Approved</option>
@@ -36,7 +36,7 @@
 
                 <div class="xl:col-span-2">
                     <div class="text-xs font-semibold text-slate-600">Session</div>
-                    <select v-model="filters.academic_session_id" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm">
+                    <select v-model="filters.academic_session_id" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm">
                         <option value="">All</option>
                         <option v-for="s in sessionsSorted" :key="'ses-' + s.id" :value="String(s.id)">{{ s.name }}</option>
                     </select>
@@ -44,7 +44,7 @@
 
                 <div class="xl:col-span-2">
                     <div class="text-xs font-semibold text-slate-600">Academic Level</div>
-                    <select v-model="filters.academic_qualification_id" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm">
+                    <select v-model="filters.academic_qualification_id" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm">
                         <option value="">All</option>
                         <option v-for="q in qualifications" :key="'q-' + q.id" :value="String(q.id)">{{ q.name }}</option>
                     </select>
@@ -53,20 +53,20 @@
                 <div class="xl:col-span-3">
                     <div class="text-xs font-semibold text-slate-600">Search</div>
                     <div class="mt-1 flex gap-2">
-                        <select v-model="filters.field_name" class="h-9 w-40 rounded-lg border border-slate-200 bg-white px-2 text-sm">
+                        <select v-model="filters.field_name" class="h-9 w-40 rounded-sm border border-slate-300 bg-white px-2 text-sm">
                             <option value="mobile">Mobile</option>
                             <option value="student_name_en">Student Name</option>
                             <option value="registration_no_en">Reg No</option>
                             <option value="college_roll_en">College Roll</option>
                             <option value="invoice_number">Invoice Number</option>
                         </select>
-                        <input v-model="filters.value" type="text" class="h-9 flex-1 rounded-lg border border-slate-200 bg-white px-3 text-sm" placeholder="Search..." />
+                        <input v-model="filters.value" type="text" class="h-9 flex-1 rounded-sm border border-slate-300 bg-white px-3 text-sm" placeholder="Search..." />
                     </div>
                 </div>
 
                 <div class="xl:col-span-1">
                     <div class="text-xs font-semibold text-slate-600">Per Page</div>
-                    <select v-model.number="filters.pagination" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm">
+                    <select v-model.number="filters.pagination" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm">
                         <option :value="10">10</option>
                         <option :value="25">25</option>
                         <option :value="50">50</option>
@@ -74,93 +74,101 @@
                 </div>
 
                 <div class="xl:col-span-12 flex justify-end">
-                    <button type="button" class="h-9 rounded-lg bg-slate-900 px-5 text-sm font-semibold text-white hover:bg-slate-800" :disabled="loading" @click="search(true)">
+                    <button type="button" class="h-9 rounded-sm bg-slate-900 px-5 text-sm font-semibold text-white hover:bg-slate-800" :disabled="loading" @click="search(true)">
                         {{ loading ? 'Loading...' : 'Search' }}
                     </button>
                 </div>
             </div>
         </div>
 
-        <div class="rounded-2xl border border-slate-200 bg-white p-5">
-            <div class="overflow-x-auto rounded-xl border border-slate-200">
-                <table class="min-w-full divide-y divide-slate-200 text-sm">
-                    <thead class="bg-slate-50">
-                        <tr>
-                            <th class="px-3 py-2 text-left font-semibold text-slate-700">Student Info</th>
-                            <th class="px-3 py-2 text-left font-semibold text-slate-700">College Roll/Reg. No</th>
-                            <th class="px-3 py-2 text-left font-semibold text-slate-700">Academic Info</th>
-                            <th class="px-3 py-2 text-left font-semibold text-slate-700">Application Info</th>
-                            <th class="px-3 py-2 text-left font-semibold text-slate-700">Payment Info</th>
-                            <th class="px-3 py-2 text-center font-semibold text-slate-700">Fees</th>
-                            <th class="px-3 py-2 text-center font-semibold text-slate-700">No. of Print</th>
-                            <th class="px-3 py-2 text-center font-semibold text-slate-700">Pay. Status</th>
-                            <th class="px-3 py-2 text-center font-semibold text-slate-700">App. Status</th>
-                            <th class="px-3 py-2 text-center font-semibold text-slate-700">Action</th>
+        <div class=" border border-slate-300 bg-white p-5">
+            <div class="overflow-x-auto">
+                <table class="min-w-full border-collapse border border-slate-300 text-sm">
+                    <thead class="bg-emerald-100">
+                        <tr class="text-left text-xs font-semibold uppercase tracking-wider text-slate-700">
+                            <th class="border border-slate-300 bg-emerald-100 px-1 py-2 text-slate-700">Student Info</th>
+                            <th class="border border-slate-300 bg-emerald-100 px-1 py-2 text-slate-700">College Roll/Reg. No</th>
+                            <th class="border border-slate-300 bg-emerald-100 px-1 py-2 text-slate-700">Academic Info</th>
+                            <th class="border border-slate-300 bg-emerald-100 px-1 py-2 text-slate-700">Application Info</th>
+                            <th class="border border-slate-300 bg-emerald-100 px-1 py-2 text-slate-700">Payment Info</th>
+                            <th class="border border-slate-300 bg-emerald-100 px-1 py-2 text-center text-slate-700">Fees</th>
+                            <th class="border border-slate-300 bg-emerald-100 px-1 py-2 text-center text-slate-700">No. of Print</th>
+                            <th class="border border-slate-300 bg-emerald-100 px-1 py-2 text-center text-slate-700">Pay. Status</th>
+                            <th class="border border-slate-300 bg-emerald-100 px-1 py-2 text-center text-slate-700">App. Status</th>
+                            <th class="border border-slate-300 bg-emerald-100 px-1 py-2 text-center text-slate-700">Action</th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-slate-200 bg-white">
-                        <tr v-for="row in rows" :key="'a-' + row.id">
-                            <td class="px-3 py-2">
+                    <tbody class="bg-white">
+                        <tr v-for="(row, idx) in rows" :key="'a-' + row.id" :class="idx % 2 === 0 ? 'bg-white' : 'bg-slate-50'">
+                            <td class="border border-slate-300 px-1 py-1">
                                 <div class="text-slate-900">
                                     <div>{{ row.student_name_en || row.student_name_bn || '' }}</div>
                                     <div class="text-xs text-slate-500">{{ row.mobile || '' }}</div>
                                 </div>
                             </td>
-                            <td class="px-3 py-2 text-slate-800">
+                            <td class="border border-slate-300 px-1 py-1 text-slate-800">
                                 <div>{{ row.college_roll_en || row.college_roll_bn || '' }}</div>
                                 <div class="text-xs text-slate-500">{{ row.registration_no_en || row.registration_no_bn || '' }}</div>
                             </td>
-                            <td class="px-3 py-2 text-slate-800">
+                            <td class="border border-slate-300 px-1 py-1 text-slate-800">
                                 <div>{{ row.qualification?.name || '--' }}</div>
                                 <div class="text-xs text-slate-500">({{ row.academic_session?.name || '--' }})</div>
                             </td>
-                            <td class="px-3 py-2 text-slate-800">
+                            <td class="border border-slate-300 px-1 py-1 text-slate-800">
                                 <div>{{ row.application_date || '' }}</div>
                                 <div class="text-xs text-slate-500">{{ row.template?.title || '' }}</div>
                             </td>
-                            <td class="px-3 py-2 text-slate-800">
+                            <td class="border border-slate-300 px-1 py-1 text-slate-800">
                                 <div>{{ row.invoice_number || '' }}</div>
                                 <div class="text-xs text-slate-500">{{ row.invoice_date || '' }}</div>
                             </td>
-                            <td class="px-3 py-2 text-center uppercase">
+                            <td class="border border-slate-300 px-1 py-1 text-center uppercase">
                                 <div>{{ row.certificate_fees || '' }}</div>
                                 <div v-if="String(row.certificate_fees) !== 'no'" class="font-semibold">{{ row.amount }}</div>
                             </td>
-                            <td class="px-3 py-2 text-center">
+                            <td class="border border-slate-300 px-1 py-1 text-center">
                                 <div>{{ row.number_of_print ?? 0 }}</div>
                                 <div class="text-xs text-slate-500">{{ row.print_date || '' }}</div>
                             </td>
-                            <td class="px-3 py-2 text-center">
-                                <span class="inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold uppercase" :class="statusClass(row.payment_status)">
+                            <td class="border border-slate-300 px-1 py-1 text-center">
+                                <span class="inline-flex rounded-full px-3 py-1 text-xs font-semibold uppercase" :class="statusClass(row.payment_status)">
                                     {{ row.payment_status }}
                                 </span>
                             </td>
-                            <td class="px-3 py-2 text-center">
-                                <span class="inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold uppercase" :class="statusClass(row.application_status)">
+                            <td class="border border-slate-300 px-1 py-1 text-center">
+                                <span class="inline-flex rounded-full px-3 py-1 text-xs font-semibold uppercase" :class="statusClass(row.application_status)">
                                     {{ row.application_status }}
                                 </span>
                             </td>
-                            <td class="px-3 py-2 text-center">
+                            <td class="border border-slate-300 px-1 py-1 text-center">
                                 <div class="flex items-center justify-center gap-2">
                                     <button
                                         v-if="String(row.application_status) !== 'approved'"
                                         type="button"
-                                        class="rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-1.5 text-xs font-semibold text-emerald-700 hover:bg-emerald-100"
+                                        class="inline-flex h-8 w-8 items-center justify-center rounded-sm border border-emerald-200 bg-emerald-50 text-emerald-700 hover:bg-emerald-100"
+                                        title="Approve"
                                         :disabled="approvingId === row.id"
                                         @click="approved(row.id)"
                                     >
-                                        {{ approvingId === row.id ? '...' : 'Approve' }}
+                                        <i v-if="approvingId === row.id" class="fas fa-spinner fa-spin"></i>
+                                        <i v-else class="fas fa-check"></i>
                                     </button>
-                                    <button type="button" class="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-50" @click="goView(row.id)">View</button>
-                                    <button type="button" class="rounded-lg border border-sky-200 bg-sky-50 px-3 py-1.5 text-xs font-semibold text-sky-700 hover:bg-sky-100" @click="goEdit(row.id)">Edit</button>
+                                    <button type="button" class="inline-flex h-8 w-8 items-center justify-center rounded-sm border border-slate-300 bg-white text-slate-700 hover:bg-slate-50" title="View" @click="goView(row.id)">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button type="button" class="inline-flex h-8 w-8 items-center justify-center rounded-sm border border-sky-200 bg-sky-50 text-sky-700 hover:bg-sky-100" title="Edit" @click="goEdit(row.id)">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
                                     <button
                                         v-if="String(row.application_status) !== 'approved' && Number(row.number_of_print || 0) === 0"
                                         type="button"
-                                        class="rounded-lg border border-red-200 bg-red-50 px-3 py-1.5 text-xs font-semibold text-red-700 hover:bg-red-100"
+                                        class="inline-flex h-8 w-8 items-center justify-center rounded-sm border border-red-200 bg-red-50 text-red-700 hover:bg-red-100"
+                                        :title="String(row.application_status) === 'pending' ? 'Reject' : 'Delete'"
                                         :disabled="deletingId === row.id"
                                         @click="destroyRow(row)"
                                     >
-                                        {{ deletingId === row.id ? '...' : (String(row.application_status) === 'pending' ? 'Reject' : 'Delete') }}
+                                        <i v-if="deletingId === row.id" class="fas fa-spinner fa-spin"></i>
+                                        <i v-else class="fas fa-trash"></i>
                                     </button>
                                 </div>
                             </td>
@@ -176,9 +184,9 @@
             <div v-if="meta.total" class="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <div class="text-sm text-slate-600">Showing {{ meta.from || 0 }} to {{ meta.to || 0 }} of {{ meta.total || 0 }} entries</div>
                 <div class="flex flex-wrap items-center gap-1">
-                    <button type="button" class="h-9 rounded-lg border border-slate-200 bg-white px-3 text-sm font-semibold text-slate-700 hover:bg-slate-50" :disabled="filters.page <= 1 || loading" @click="goPage(filters.page - 1)">Prev</button>
-                    <button v-for="p in pageNumbers" :key="'p-' + p" type="button" class="h-9 rounded-lg border px-3 text-sm font-semibold" :class="p === filters.page ? 'border-emerald-300 bg-emerald-50 text-emerald-700' : 'border-slate-200 bg-white text-slate-700 hover:bg-slate-50'" :disabled="loading" @click="goPage(p)">{{ p }}</button>
-                    <button type="button" class="h-9 rounded-lg border border-slate-200 bg-white px-3 text-sm font-semibold text-slate-700 hover:bg-slate-50" :disabled="filters.page >= meta.last_page || loading" @click="goPage(filters.page + 1)">Next</button>
+                    <button type="button" class="h-9 rounded-sm border border-slate-300 bg-white px-3 text-sm font-semibold text-slate-700 hover:bg-slate-50" :disabled="filters.page <= 1 || loading" @click="goPage(filters.page - 1)">Prev</button>
+                    <button v-for="p in pageNumbers" :key="'p-' + p" type="button" class="h-9 rounded-sm border px-3 text-sm font-semibold" :class="p === filters.page ? 'border-emerald-300 bg-emerald-50 text-emerald-700' : 'border-slate-300 bg-white text-slate-700 hover:bg-slate-50'" :disabled="loading" @click="goPage(p)">{{ p }}</button>
+                    <button type="button" class="h-9 rounded-sm border border-slate-300 bg-white px-3 text-sm font-semibold text-slate-700 hover:bg-slate-50" :disabled="filters.page >= meta.last_page || loading" @click="goPage(filters.page + 1)">Next</button>
                 </div>
             </div>
         </div>
@@ -201,6 +209,7 @@ export default {
             deletingId: null,
             approvingId: null,
             rows: [],
+            searchTimer: null,
             meta: {
                 current_page: 1,
                 from: 0,
@@ -249,7 +258,36 @@ export default {
     mounted() {
         this.search(true)
     },
+    watch: {
+        'filters.payment_status'(next, prev) {
+            if (String(next || '') !== String(prev || '')) this.scheduleSearch(true)
+        },
+        'filters.application_status'(next, prev) {
+            if (String(next || '') !== String(prev || '')) this.scheduleSearch(true)
+        },
+        'filters.academic_session_id'(next, prev) {
+            if (String(next || '') !== String(prev || '')) this.scheduleSearch(true)
+        },
+        'filters.academic_qualification_id'(next, prev) {
+            if (String(next || '') !== String(prev || '')) this.scheduleSearch(true)
+        },
+        'filters.field_name'(next, prev) {
+            if (String(next || '') !== String(prev || '')) this.scheduleSearch(true)
+        },
+        'filters.value'(next, prev) {
+            if (String(next || '') !== String(prev || '')) this.scheduleSearch(true)
+        },
+        'filters.pagination'(next, prev) {
+            if (Number(next || 0) !== Number(prev || 0)) this.scheduleSearch(true)
+        },
+    },
     methods: {
+        scheduleSearch(resetPage) {
+            if (this.searchTimer) clearTimeout(this.searchTimer)
+            this.searchTimer = setTimeout(() => {
+                this.search(resetPage)
+            }, 250)
+        },
         sessionSortKey(s) {
             const name = String(s?.name || '')
             const m = name.match(/(\d{4})\s*[-/]\s*(\d{4})/)

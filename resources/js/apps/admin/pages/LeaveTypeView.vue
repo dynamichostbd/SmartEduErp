@@ -1,48 +1,48 @@
 <template>
     <div class="flex flex-col gap-4">
-        <div class="rounded-2xl border border-slate-200 bg-white p-5">
+        <div class=" border border-slate-300 bg-white p-5">
             <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <div class="min-w-0">
                     <div class="truncate text-xl font-semibold text-slate-900">Leave Type Details</div>
                 </div>
 
                 <div class="flex flex-wrap items-center gap-2">
-                    <button type="button" class="rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50" :disabled="loading" @click="goIndex">Back</button>
-                    <button type="button" class="rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800" :disabled="loading || !leaveTypeId" @click="goEdit">Edit</button>
+                    <button type="button" class="rounded-sm border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50" :disabled="loading" @click="goIndex">Back</button>
+                    <button type="button" class="rounded-sm bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800" :disabled="loading || !leaveTypeId" @click="goEdit">Edit</button>
                 </div>
             </div>
         </div>
 
-        <div v-if="error" class="rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-800">{{ error }}</div>
+        <div v-if="error" class=" border border-red-200 bg-red-50 p-4 text-sm text-red-800">{{ error }}</div>
 
-        <div class="rounded-2xl border border-slate-200 bg-white p-5">
+        <div class=" border border-slate-300 bg-white p-5">
             <div v-if="loading" class="text-sm text-slate-600">Loading...</div>
             <div v-else class="grid grid-cols-1 gap-3 sm:grid-cols-2">
-                <div class="rounded-xl border border-slate-200 p-4">
+                <div class="rounded-xl border border-slate-300 p-4">
                     <div class="text-xs font-semibold text-slate-500">Name</div>
                     <div class="mt-1 text-sm font-semibold text-slate-900">{{ row.name || '—' }}</div>
                 </div>
-                <div class="rounded-xl border border-slate-200 p-4">
+                <div class="rounded-xl border border-slate-300 p-4">
                     <div class="text-xs font-semibold text-slate-500">Short Name</div>
                     <div class="mt-1 text-sm font-semibold text-slate-900">{{ row.short_name || '—' }}</div>
                 </div>
-                <div class="rounded-xl border border-slate-200 p-4">
+                <div class="rounded-xl border border-slate-300 p-4">
                     <div class="text-xs font-semibold text-slate-500">Allocated Leave Days</div>
                     <div class="mt-1 text-sm font-semibold text-slate-900">{{ row.allocated_leave_days ?? '—' }}</div>
                 </div>
-                <div class="rounded-xl border border-slate-200 p-4">
+                <div class="rounded-xl border border-slate-300 p-4">
                     <div class="text-xs font-semibold text-slate-500">Back Date Select</div>
                     <div class="mt-1 text-sm font-semibold text-slate-900">{{ yesNo(row.back_date_select) }}</div>
                 </div>
-                <div class="rounded-xl border border-slate-200 p-4">
+                <div class="rounded-xl border border-slate-300 p-4">
                     <div class="text-xs font-semibold text-slate-500">Documents Upload</div>
                     <div class="mt-1 text-sm font-semibold text-slate-900">{{ yesNo(row.documents_upload) }}</div>
                 </div>
-                <div class="rounded-xl border border-slate-200 p-4">
+                <div class="rounded-xl border border-slate-300 p-4">
                     <div class="text-xs font-semibold text-slate-500">Reason</div>
                     <div class="mt-1 text-sm font-semibold text-slate-900">{{ yesNo(row.reason) }}</div>
                 </div>
-                <div class="rounded-xl border border-slate-200 p-4">
+                <div class="rounded-xl border border-slate-300 p-4">
                     <div class="text-xs font-semibold text-slate-500">Status</div>
                     <div class="mt-1 text-sm font-semibold text-slate-900">{{ row.status || '—' }}</div>
                 </div>

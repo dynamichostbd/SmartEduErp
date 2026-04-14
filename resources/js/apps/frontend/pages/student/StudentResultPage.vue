@@ -1,5 +1,5 @@
 <template>
-    <div class="mt-3 rounded-md border border-slate-200 bg-white p-4 sm:p-6">
+    <div class="mt-3 rounded-sm border border-slate-300 bg-white p-4 sm:p-6">
         <div class="mx-auto w-full max-w-6xl">
             <div class="grid grid-cols-1 gap-4 lg:grid-cols-12">
                 <div class="lg:col-span-3">
@@ -13,19 +13,19 @@
                 </div>
 
                 <div class="lg:col-span-9">
-                    <div class="rounded-md border border-slate-200 bg-white">
-                        <div class="border-b border-slate-200 bg-slate-50 px-4 py-3 text-sm font-extrabold text-slate-800">RESULT</div>
+                    <div class="rounded-sm border border-slate-300 bg-white">
+                        <div class="border-b border-slate-300 bg-slate-50 px-4 py-3 text-sm font-extrabold text-slate-800">RESULT</div>
                         <div class="p-4">
                             <div v-if="loadingSystems" class="text-sm text-slate-600">Loading...</div>
                             <div v-else>
-                                <div v-if="error" class="mb-4 rounded-md border border-red-200 bg-red-50 p-3 text-sm text-red-800">{{ error }}</div>
+                                <div v-if="error" class="mb-4 rounded-sm border border-red-200 bg-red-50 p-3 text-sm text-red-800">{{ error }}</div>
 
                                 <form class="mx-auto w-full max-w-2xl" @submit.prevent="search">
                                     <div class="grid grid-cols-1 gap-4">
                                         <div class="grid grid-cols-1 items-center gap-2 sm:grid-cols-3">
                                             <div class="text-sm font-semibold text-slate-700">Session <span class="text-red-600">*</span></div>
                                             <div class="sm:col-span-2">
-                                                <select v-model="form.academic_session_id" class="h-10 w-full rounded-md border border-slate-200 bg-white px-3 text-sm outline-none" required>
+                                                <select v-model="form.academic_session_id" class="h-10 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none" required>
                                                     <option value="">--Select Any--</option>
                                                     <option v-for="s in sessions" :key="'rs-' + s.id" :value="String(s.id)">{{ s.name }}</option>
                                                 </select>
@@ -35,7 +35,7 @@
                                         <div class="grid grid-cols-1 items-center gap-2 sm:grid-cols-3">
                                             <div class="text-sm font-semibold text-slate-700">Academic Level <span class="text-red-600">*</span></div>
                                             <div class="sm:col-span-2">
-                                                <select v-model="form.academic_qualification_id" class="h-10 w-full rounded-md border border-slate-200 bg-white px-3 text-sm outline-none" required>
+                                                <select v-model="form.academic_qualification_id" class="h-10 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none" required>
                                                     <option value="">--Select Any--</option>
                                                     <option v-for="q in qualifications" :key="'rq-' + q.id" :value="String(q.id)">{{ q.name }}</option>
                                                 </select>
@@ -45,7 +45,7 @@
                                         <div class="grid grid-cols-1 items-center gap-2 sm:grid-cols-3">
                                             <div class="text-sm font-semibold text-slate-700">Department <span class="text-red-600">*</span></div>
                                             <div class="sm:col-span-2">
-                                                <select v-model="form.department_id" class="h-10 w-full rounded-md border border-slate-200 bg-white px-3 text-sm outline-none" required>
+                                                <select v-model="form.department_id" class="h-10 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none" required>
                                                     <option value="">--Select Any--</option>
                                                     <option v-for="d in filteredDepartments" :key="'rd-' + d.id" :value="String(d.id)">{{ d.name }}</option>
                                                 </select>
@@ -55,7 +55,7 @@
                                         <div class="grid grid-cols-1 items-center gap-2 sm:grid-cols-3">
                                             <div class="text-sm font-semibold text-slate-700">Class <span class="text-red-600">*</span></div>
                                             <div class="sm:col-span-2">
-                                                <select v-model="form.academic_class_id" class="h-10 w-full rounded-md border border-slate-200 bg-white px-3 text-sm outline-none" required>
+                                                <select v-model="form.academic_class_id" class="h-10 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none" required>
                                                     <option value="">--Select Any--</option>
                                                     <option v-for="c in filteredClasses" :key="'rc-' + c.id" :value="String(c.id)">{{ c.name }}</option>
                                                 </select>
@@ -65,7 +65,7 @@
                                         <div class="grid grid-cols-1 items-center gap-2 sm:grid-cols-3">
                                             <div class="text-sm font-semibold text-slate-700">Exam <span class="text-red-600">*</span></div>
                                             <div class="sm:col-span-2">
-                                                <select v-model="form.exam_id" class="h-10 w-full rounded-md border border-slate-200 bg-white px-3 text-sm outline-none" required>
+                                                <select v-model="form.exam_id" class="h-10 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none" required>
                                                     <option value="">--Select Any--</option>
                                                     <option v-for="e in exams" :key="'re-' + e.id" :value="String(e.id)">{{ e.name }}</option>
                                                 </select>
@@ -74,7 +74,7 @@
                                     </div>
 
                                     <div class="pt-8 text-center">
-                                        <button type="submit" class="rounded-md bg-[#0b1d4d] px-10 py-2.5 text-sm font-extrabold text-white hover:bg-[#09163c]" :disabled="submitting">
+                                        <button type="submit" class="rounded-sm bg-[#0b1d4d] px-10 py-2.5 text-sm font-extrabold text-white hover:bg-[#09163c]" :disabled="submitting">
                                             {{ submitting ? 'Processing...' : 'Search' }}
                                         </button>
                                     </div>
@@ -84,25 +84,25 @@
                     </div>
 
                     <div v-if="showModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4" @click.self="closeModal">
-                        <div class="max-h-[92vh] w-full max-w-5xl overflow-hidden rounded-md bg-white shadow-xl">
-                            <div class="flex items-center justify-between gap-3 border-b border-slate-200 bg-slate-50 px-4 py-3">
+                        <div class="max-h-[92vh] w-full max-w-5xl overflow-hidden rounded-sm bg-white shadow-xl">
+                            <div class="flex items-center justify-between gap-3 border-b border-slate-300 bg-slate-50 px-4 py-3">
                                 <div class="text-sm font-extrabold text-slate-800">RESULT SHEET</div>
                                 <div class="flex flex-wrap items-center justify-end gap-2">
-                                    <button type="button" class="rounded-md border border-slate-200 bg-white px-3 py-1.5 text-xs font-extrabold text-slate-700 hover:bg-slate-50" @click="printResult">
+                                    <button type="button" class="rounded-sm border border-slate-300 bg-white px-3 py-1.5 text-xs font-extrabold text-slate-700 hover:bg-slate-50" @click="printResult">
                                         Print
                                     </button>
                                     <button
                                         v-if="canDownload"
                                         type="button"
-                                        class="rounded-md bg-[#2b6cb0] px-3 py-1.5 text-xs font-extrabold text-white hover:bg-[#245a94]"
+                                        class="rounded-sm bg-[#2b6cb0] px-3 py-1.5 text-xs font-extrabold text-white hover:bg-[#245a94]"
                                         @click="downloadMarksheet"
                                     >
                                         Download
                                     </button>
-                                    <button type="button" class="rounded-md bg-emerald-600 px-3 py-1.5 text-xs font-extrabold text-white hover:bg-emerald-700" @click="searchAgain">
+                                    <button type="button" class="rounded-sm bg-emerald-600 px-3 py-1.5 text-xs font-extrabold text-white hover:bg-emerald-700" @click="searchAgain">
                                         Search Again
                                     </button>
-                                    <button type="button" class="rounded-md bg-slate-700 px-3 py-1.5 text-xs font-extrabold text-white hover:bg-slate-800" @click="closeModal">
+                                    <button type="button" class="rounded-sm bg-slate-700 px-3 py-1.5 text-xs font-extrabold text-white hover:bg-slate-800" @click="closeModal">
                                         Close
                                     </button>
                                 </div>
@@ -111,7 +111,7 @@
                             <div class="max-h-[82vh] overflow-y-auto p-4">
                                 <div id="printArea">
                                     <div class="grid grid-cols-1 gap-4">
-                                        <div class="rounded-md border border-slate-200 bg-white p-4">
+                                        <div class="rounded-sm border border-slate-300 bg-white p-4">
                                             <div class="text-sm font-extrabold text-slate-900">Student</div>
                                             <div class="mt-2 grid grid-cols-1 gap-2 text-sm text-slate-700 sm:grid-cols-2">
                                                 <div><span class="font-semibold">Name:</span> {{ resultStudent.name || '' }}</div>
@@ -121,7 +121,7 @@
                                             </div>
                                         </div>
 
-                                        <div v-if="isTerm" class="rounded-md border border-slate-200 bg-white p-4">
+                                        <div v-if="isTerm" class="rounded-sm border border-slate-300 bg-white p-4">
                                             <div class="text-sm font-extrabold text-slate-900">Summary</div>
                                             <div class="mt-2 grid grid-cols-1 gap-2 text-sm text-slate-700 sm:grid-cols-3">
                                                 <div><span class="font-semibold">GPA:</span> {{ resultDetails.gpa ?? '' }}</div>
@@ -130,8 +130,8 @@
                                             </div>
                                         </div>
 
-                                        <div class="rounded-md border border-slate-200 bg-white">
-                                            <div class="border-b border-slate-200 bg-slate-50 px-4 py-2 text-xs font-extrabold text-slate-800">Marks</div>
+                                        <div class="rounded-sm border border-slate-300 bg-white">
+                                            <div class="border-b border-slate-300 bg-slate-50 px-4 py-2 text-xs font-extrabold text-slate-800">Marks</div>
                                             <div class="overflow-x-auto p-4">
                                                 <table class="min-w-full text-sm">
                                                     <thead>

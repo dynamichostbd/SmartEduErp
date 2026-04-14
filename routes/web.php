@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\ResultDetails;
+use App\Models\ResultMarks;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Backend\BankSettlementController;
 use App\Http\Controllers\PublicSiteController;
@@ -16,6 +18,9 @@ use App\Http\Controllers\PublicOnlineAdmissionController;
 use App\Http\Controllers\PublicStudentResultController;
 use App\Http\Controllers\PublicStudentSubjectsController;
 use App\Http\Controllers\PublicStudentChangePasswordController;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
 Route::view('/', 'layouts.frontend_app');
 Route::view('/content/{slug}', 'layouts.frontend_app');
@@ -120,3 +125,39 @@ Route::match(['get', 'post'], '/api/public/online-admission/ipn', [PublicOnlineA
 Route::post('/sslcommerz/settlement', [BankSettlementController::class, 'settlement']);
 
 Route::middleware('web')->prefix('admin')->group(base_path('routes/backend.php'));
+
+
+
+Route::get('/ct-null', function (Request $request) {
+
+    // Step 1: Get detail IDs from result_details where result_id = 50
+    $detailIds = ResultDetails::where('result_id', 50)
+        ->pluck('id')
+        ->toArray();
+
+    if (empty($detailIds)) {
+        return response()->json([
+            'ok' => true,
+            'result_id' => 50,
+            'subject_id' => 18,
+            'detail_ids_count' => 0,
+            'updated_rows' => 0,
+        ]);
+    }
+
+    // Step 2: Update result_marks
+    $updated = ResultMarks::whereIn('result_details_id', $detailIds)
+        ->where('subject_id', 18)
+        ->update([
+            'ct_mark' => null,
+            'updated_at' => now(), // optional but safe
+        ]);
+
+    return response()->json([
+        'ok' => true,
+        'result_id' => 50,
+        'subject_id' => 18,
+        'detail_ids_count' => count($detailIds),
+        'updated_rows' => $updated,
+    ]);
+});

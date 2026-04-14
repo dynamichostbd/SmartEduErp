@@ -1,6 +1,6 @@
 <template>
     <form class="flex flex-col gap-4" @submit.prevent="submit">
-        <div class="rounded-2xl border border-slate-200 bg-white p-5">
+        <div class=" border border-slate-300 bg-white p-5">
             <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <div class="min-w-0">
                     <div class="truncate text-xl font-semibold text-slate-900">Certificate Application</div>
@@ -8,19 +8,19 @@
                 </div>
 
                 <div class="flex flex-wrap items-center gap-2">
-                    <button type="button" class="rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50" :disabled="submitting" @click="goBack">Back</button>
-                    <button type="submit" class="rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-700" :disabled="submitting">
+                    <button type="button" class="rounded-sm border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50" :disabled="submitting" @click="goBack">Back</button>
+                    <button type="submit" class="rounded-sm bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-700" :disabled="submitting">
                         {{ submitting ? 'Processing...' : 'Submit' }}
                     </button>
                 </div>
             </div>
         </div>
 
-        <div v-if="message" class="rounded-2xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-900">{{ message }}</div>
-        <div v-if="error" class="rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-800">{{ error }}</div>
+        <div v-if="message" class=" border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-900">{{ message }}</div>
+        <div v-if="error" class=" border border-red-200 bg-red-50 p-4 text-sm text-red-800">{{ error }}</div>
 
         <div class="grid grid-cols-1 gap-4 lg:grid-cols-12">
-            <div class="lg:col-span-6 rounded-2xl border border-slate-200 bg-white p-5">
+            <div class="lg:col-span-6  border border-slate-300 bg-white p-5">
                 <div class="text-sm font-semibold text-slate-900">English</div>
                 <div class="mt-4 grid grid-cols-1 gap-3">
                     <div>
@@ -34,69 +34,69 @@
 
                     <div>
                         <div class="text-xs font-semibold text-slate-600">Mobile</div>
-                        <input v-model="data.mobile" :disabled="enDisable" type="text" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm" />
+                        <input v-model="data.mobile" :disabled="enDisable" type="text" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm" />
                     </div>
 
                     <div>
                         <div class="text-xs font-semibold text-slate-600">Student name (EN)</div>
-                        <input v-model="data.student_name_en" :disabled="enDisable" type="text" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm" />
+                        <input v-model="data.student_name_en" :disabled="enDisable" type="text" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm" />
                     </div>
                     <div>
                         <div class="text-xs font-semibold text-slate-600">Father's name (EN)</div>
-                        <input v-model="data.fathers_name_en" :disabled="enDisable" type="text" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm" />
+                        <input v-model="data.fathers_name_en" :disabled="enDisable" type="text" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm" />
                     </div>
                     <div>
                         <div class="text-xs font-semibold text-slate-600">Mother's name (EN)</div>
-                        <input v-model="data.mothers_name_en" :disabled="enDisable" type="text" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm" />
+                        <input v-model="data.mothers_name_en" :disabled="enDisable" type="text" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm" />
                     </div>
                     <div>
                         <div class="text-xs font-semibold text-slate-600">Academic year (EN)</div>
-                        <input v-model="data.academic_year_en" :disabled="enDisable" type="text" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm" />
+                        <input v-model="data.academic_year_en" :disabled="enDisable" type="text" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm" />
                     </div>
                     <div>
                         <div class="text-xs font-semibold text-slate-600">Registration no (EN)</div>
-                        <input v-model="data.registration_no_en" :disabled="enDisable" type="text" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm" />
+                        <input v-model="data.registration_no_en" :disabled="enDisable" type="text" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm" />
                     </div>
                     <div>
                         <div class="text-xs font-semibold text-slate-600">Exam roll (EN)</div>
-                        <input v-model="data.exam_roll_en" :disabled="enDisable" type="text" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm" />
+                        <input v-model="data.exam_roll_en" :disabled="enDisable" type="text" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm" />
                     </div>
                     <div>
                         <div class="text-xs font-semibold text-slate-600">Exam year (EN)</div>
-                        <input v-model="data.exam_year_en" :disabled="enDisable" type="text" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm" />
+                        <input v-model="data.exam_year_en" :disabled="enDisable" type="text" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm" />
                     </div>
                     <div>
                         <div class="text-xs font-semibold text-slate-600">GPA (EN)</div>
-                        <input v-model="data.gpa_en" :disabled="enDisable" type="text" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm" />
+                        <input v-model="data.gpa_en" :disabled="enDisable" type="text" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm" />
                     </div>
                     <div>
                         <div class="text-xs font-semibold text-slate-600">College Roll (EN)</div>
-                        <input v-model="data.college_roll_en" :disabled="enDisable" type="text" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm" />
+                        <input v-model="data.college_roll_en" :disabled="enDisable" type="text" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm" />
                     </div>
                     <div>
                         <div class="text-xs font-semibold text-slate-600">Address (EN)</div>
-                        <textarea v-model="data.address_en" :disabled="enDisable" rows="3" class="mt-1 w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm"></textarea>
+                        <textarea v-model="data.address_en" :disabled="enDisable" rows="3" class="mt-1 w-full rounded-sm border border-slate-300 bg-white px-3 py-2 text-sm"></textarea>
                     </div>
                     <div>
                         <div class="text-xs font-semibold text-slate-600">Division (EN)</div>
-                        <input v-model="data.division_en" :disabled="enDisable" type="text" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm" />
+                        <input v-model="data.division_en" :disabled="enDisable" type="text" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm" />
                     </div>
                 </div>
             </div>
 
-            <div class="lg:col-span-6 rounded-2xl border border-slate-200 bg-white p-5">
+            <div class="lg:col-span-6  border border-slate-300 bg-white p-5">
                 <div class="text-sm font-semibold text-slate-900">Bangla</div>
                 <div class="mt-4 grid grid-cols-1 gap-3">
                     <div>
                         <div class="text-xs font-semibold text-slate-600">Session</div>
-                        <select v-model="data.academic_session_id" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm">
+                        <select v-model="data.academic_session_id" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm">
                             <option value="">Select</option>
                             <option v-for="s in sessionsSorted" :key="'ses-' + s.id" :value="String(s.id)">{{ s.name }}</option>
                         </select>
                     </div>
                     <div>
                         <div class="text-xs font-semibold text-slate-600">Academic Level</div>
-                        <select v-model="data.academic_qualification_id" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm">
+                        <select v-model="data.academic_qualification_id" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm">
                             <option value="">Select</option>
                             <option v-for="q in qualifications" :key="'q-' + q.id" :value="String(q.id)">{{ q.name }}</option>
                         </select>
@@ -104,7 +104,7 @@
 
                     <div>
                         <div class="text-xs font-semibold text-slate-600">Certificate</div>
-                        <select v-model="data.certificate_template_id" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm">
+                        <select v-model="data.certificate_template_id" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm">
                             <option :value="''">--Select Certificate--</option>
                             <option v-for="t in certificateTemplates" :key="'t-' + t.id" :value="String(t.id)">{{ t.title }}</option>
                         </select>
@@ -112,47 +112,47 @@
 
                     <div>
                         <div class="text-xs font-semibold text-slate-600">Student name (BN)</div>
-                        <input v-model="data.student_name_bn" :disabled="bnDisable" type="text" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm" />
+                        <input v-model="data.student_name_bn" :disabled="bnDisable" type="text" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm" />
                     </div>
                     <div>
                         <div class="text-xs font-semibold text-slate-600">Father's name (BN)</div>
-                        <input v-model="data.fathers_name_bn" :disabled="bnDisable" type="text" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm" />
+                        <input v-model="data.fathers_name_bn" :disabled="bnDisable" type="text" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm" />
                     </div>
                     <div>
                         <div class="text-xs font-semibold text-slate-600">Mother's name (BN)</div>
-                        <input v-model="data.mothers_name_bn" :disabled="bnDisable" type="text" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm" />
+                        <input v-model="data.mothers_name_bn" :disabled="bnDisable" type="text" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm" />
                     </div>
                     <div>
                         <div class="text-xs font-semibold text-slate-600">Academic year (BN)</div>
-                        <input v-model="data.academic_year_bn" :disabled="bnDisable" type="text" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm" />
+                        <input v-model="data.academic_year_bn" :disabled="bnDisable" type="text" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm" />
                     </div>
                     <div>
                         <div class="text-xs font-semibold text-slate-600">Registration no (BN)</div>
-                        <input v-model="data.registration_no_bn" :disabled="bnDisable" type="text" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm" />
+                        <input v-model="data.registration_no_bn" :disabled="bnDisable" type="text" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm" />
                     </div>
                     <div>
                         <div class="text-xs font-semibold text-slate-600">Exam roll (BN)</div>
-                        <input v-model="data.exam_roll_bn" :disabled="bnDisable" type="text" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm" />
+                        <input v-model="data.exam_roll_bn" :disabled="bnDisable" type="text" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm" />
                     </div>
                     <div>
                         <div class="text-xs font-semibold text-slate-600">Exam year (BN)</div>
-                        <input v-model="data.exam_year_bn" :disabled="bnDisable" type="text" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm" />
+                        <input v-model="data.exam_year_bn" :disabled="bnDisable" type="text" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm" />
                     </div>
                     <div>
                         <div class="text-xs font-semibold text-slate-600">GPA (BN)</div>
-                        <input v-model="data.gpa_bn" :disabled="bnDisable" type="text" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm" />
+                        <input v-model="data.gpa_bn" :disabled="bnDisable" type="text" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm" />
                     </div>
                     <div>
                         <div class="text-xs font-semibold text-slate-600">College Roll (BN)</div>
-                        <input v-model="data.college_roll_bn" :disabled="bnDisable" type="text" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm" />
+                        <input v-model="data.college_roll_bn" :disabled="bnDisable" type="text" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm" />
                     </div>
                     <div>
                         <div class="text-xs font-semibold text-slate-600">Address (BN)</div>
-                        <textarea v-model="data.address_bn" :disabled="bnDisable" rows="3" class="mt-1 w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm"></textarea>
+                        <textarea v-model="data.address_bn" :disabled="bnDisable" rows="3" class="mt-1 w-full rounded-sm border border-slate-300 bg-white px-3 py-2 text-sm"></textarea>
                     </div>
                     <div>
                         <div class="text-xs font-semibold text-slate-600">Division (BN)</div>
-                        <input v-model="data.division_bn" :disabled="bnDisable" type="text" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm" />
+                        <input v-model="data.division_bn" :disabled="bnDisable" type="text" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm" />
                     </div>
                 </div>
             </div>

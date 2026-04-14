@@ -1,95 +1,98 @@
 <template>
     <div class="flex flex-col gap-4">
-        <div class="rounded-2xl border border-slate-200 bg-white p-5">
+        <div class=" border border-slate-300 bg-white p-5">
             <div class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
                 <div>
                     <div class="text-xl font-semibold text-slate-900">Notice List</div>
                 </div>
 
                 <div class="flex w-full flex-col gap-2 sm:w-auto sm:flex-row">
-                    <select v-model="filters.type" class="h-9 rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-slate-300 focus:ring-2 focus:ring-slate-200" :disabled="loading" @change="load(1)">
+                    <select v-model="filters.type" class="h-9 rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" :disabled="loading">
                         <option value="">All</option>
                         <option value="public">Public</option>
                         <option value="office">Office</option>
                         <option value="student">Student</option>
                     </select>
 
-                    <select v-model="filters.field_name" class="h-9 rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-slate-300 focus:ring-2 focus:ring-slate-200" :disabled="loading">
+                    <select v-model="filters.field_name" class="h-9 rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" :disabled="loading">
                         <option value="title">Title</option>
                     </select>
 
-                    <input v-model="filters.value" type="text" class="h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-slate-300 focus:ring-2 focus:ring-slate-200 sm:w-72" placeholder="Search..." :disabled="loading" @keyup.enter="load(1)" />
+                    <input v-model="filters.value" type="text" class="h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100 sm:w-72" placeholder="Search..." :disabled="loading" @keyup.enter="load(1)" />
 
                     <div class="flex items-center gap-2">
-                        <button class="inline-flex h-9 w-10 items-center justify-center rounded-lg bg-emerald-600 text-white hover:bg-emerald-700" :disabled="loading" @click="load(1)">
+                        <button class="inline-flex h-9 w-10 items-center justify-center rounded-sm bg-emerald-600 text-white hover:bg-emerald-700" :disabled="loading" @click="load(1)">
                             <span class="sr-only">Search</span>
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-5 w-5">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35m1.35-5.15a7 7 0 11-14 0 7 7 0 0114 0z" />
-                            </svg>
+                            <i v-if="loading" class="fas fa-spinner fa-spin"></i>
+                            <i v-else class="fas fa-search"></i>
                         </button>
 
-                        <button v-if="canCreate" class="h-9 rounded-lg bg-slate-900 px-4 text-sm font-semibold text-white hover:bg-slate-800" :disabled="loading" @click="goCreate">Add Notice</button>
+                        <button v-if="canCreate" class="h-9 rounded-sm bg-slate-900 px-4 text-sm font-semibold text-white hover:bg-slate-800" :disabled="loading" @click="goCreate">
+                            <i class="fas fa-plus mr-2"></i>
+                            Add Notice
+                        </button>
 
-                        <button class="h-9 rounded-lg border border-slate-200 bg-white px-4 text-sm font-semibold text-slate-700 hover:bg-slate-50" :disabled="loading" @click="reset">Reset</button>
+                        <button class="h-9 rounded-sm border border-slate-300 bg-white px-4 text-sm font-semibold text-slate-700 hover:bg-slate-50" :disabled="loading" @click="reset">
+                            <i class="fas fa-redo mr-2"></i>
+                            Reset
+                        </button>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div v-if="error" class="rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-800">{{ error }}</div>
+        <div v-if="error" class=" border border-red-200 bg-red-50 p-4 text-sm text-red-800">{{ error }}</div>
 
-        <div class="overflow-hidden rounded-2xl border border-slate-200 bg-white">
+        <div class="overflow-hidden  border border-slate-300 bg-white">
             <div class="overflow-x-auto">
-                <table class="min-w-full border-collapse border border-slate-200">
-                    <thead class="bg-slate-50">
-                        <tr class="text-left text-xs font-semibold uppercase tracking-wider text-slate-500">
-                            <th class="border border-slate-200 bg-slate-50 px-4 py-3">#</th>
-                            <th class="border border-slate-200 bg-slate-50 px-4 py-3">Date</th>
-                            <th class="border border-slate-200 bg-slate-50 px-4 py-3">Type</th>
-                            <th class="border border-slate-200 bg-slate-50 px-4 py-3">Title</th>
-                            <th class="border border-slate-200 bg-slate-50 px-4 py-3 text-center">File</th>
-                            <th class="border border-slate-200 bg-slate-50 px-4 py-3 text-center">Action</th>
+                <table class="min-w-[700px] w-full border-collapse border border-slate-300">
+                    <thead class="bg-emerald-100">
+                        <tr class="text-left text-xs font-semibold uppercase tracking-wider text-slate-700">
+                            <th class="border border-slate-300 bg-emerald-100 px-1 py-2 text-slate-700">#</th>
+                            <th class="border border-slate-300 bg-emerald-100 px-1 py-2 text-slate-700">Date</th>
+                            <th class="border border-slate-300 bg-emerald-100 px-1 py-2 text-slate-700">Type</th>
+                            <th class="border border-slate-300 bg-emerald-100 px-1 py-2 text-slate-700">Title</th>
+                            <th class="border border-slate-300 bg-emerald-100 px-1 py-2 text-center text-slate-700">File</th>
+                            <th class="border border-slate-300 bg-emerald-100 px-1 py-2 text-center text-slate-700">Action</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr v-if="loading" class="text-sm text-slate-600">
-                            <td class="border border-slate-200 px-4 py-6" colspan="6">Loading...</td>
+                            <td class="border border-slate-300 px-1 py-1" colspan="6">Loading...</td>
                         </tr>
                         <tr v-else-if="rows.length === 0" class="text-sm text-slate-600">
-                            <td class="border border-slate-200 px-4 py-6" colspan="6">No data found.</td>
+                            <td class="border border-slate-300 px-1 py-1" colspan="6">No data found.</td>
                         </tr>
                         <tr v-for="(row, idx) in rows" v-else :key="row.id" class="text-sm text-slate-800" :class="idx % 2 === 0 ? 'bg-white' : 'bg-slate-50'">
-                            <td class="border border-slate-200 px-4 py-3 text-slate-600">{{ rowSerial(idx) }}</td>
-                            <td class="border border-slate-200 px-4 py-3">{{ row.date || '—' }}</td>
-                            <td class="border border-slate-200 px-4 py-3">{{ row.type || '—' }}</td>
-                            <td class="border border-slate-200 px-4 py-3 font-medium text-slate-900">
-                                <a href="#" class="text-emerald-700 hover:underline" @click.prevent="goView(row.id)">{{ row.title || '—' }}</a>
+                            <td class="border border-slate-300 px-1 py-1 text-slate-600">{{ rowSerial(idx) }}</td>
+                            <td class="border border-slate-300 px-1 py-1">{{ row.notice_date || '' }}</td>
+                            <td class="border border-slate-300 px-1 py-1">
+                                <span class="inline-flex rounded-full px-1 py-0.5 text-xs font-semibold" :class="row.notice_type === 'general' ? 'bg-blue-50 text-blue-700' : 'bg-amber-50 text-amber-700'">{{ row.notice_type || '' }}</span>
                             </td>
-                            <td class="border border-slate-200 px-4 py-3 text-center">
-                                <a v-if="row.image" class="text-emerald-700 hover:underline" :href="resolveFile(row.image)" target="_blank">View</a>
-                                <span v-else>—</span>
+                            <td class="border border-slate-300 px-1 py-1">
+                                <div class="font-medium text-slate-900">{{ row.title || '' }}</div>
                             </td>
-                            <td class="border border-slate-200 px-4 py-3 text-center">
+                            <td class="border border-slate-300 px-1 py-1 text-center">
+                                <a v-if="row.file" :href="row.file" target="_blank" class="inline-flex h-8 w-8 items-center justify-center rounded-sm border border-slate-300 bg-white text-slate-700 hover:bg-slate-50" title="Download">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-4 w-4">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" />
+                                        <polyline points="7 10 12 15 17 10" />
+                                        <line x1="12" y1="15" x2="12" y2="3" />
+                                    </svg>
+                                </a>
+                                <span v-else class="text-slate-400">—</span>
+                            </td>
+                            <td class="border border-slate-300 px-1 py-1 text-center">
                                 <div class="flex items-center justify-center gap-2">
-                                    <button type="button" class="inline-flex h-8 w-8 items-center justify-center rounded-md border border-slate-200 bg-white text-slate-700 hover:bg-slate-50" title="View" @click="goView(row.id)">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-4 w-4">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M2.5 12s3.5-7 9.5-7 9.5 7 9.5 7-3.5 7-9.5 7-9.5-7-9.5-7z" />
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 15a3 3 0 100-6 3 3 0 000 6z" />
-                                        </svg>
+                                    <button type="button" class="inline-flex h-8 w-8 items-center justify-center rounded-sm border border-slate-300 bg-white text-slate-700 hover:bg-slate-50" title="View" @click="goView(row.id)">
+                                        <i class="fas fa-eye"></i>
                                     </button>
-                                    <button type="button" class="inline-flex h-8 w-8 items-center justify-center rounded-md border border-slate-200 bg-white text-slate-700 hover:bg-slate-50" title="Edit" :disabled="!canEdit" @click="goEdit(row.id)">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-4 w-4">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 3.487a2.25 2.25 0 013.182 3.182L8.25 18.463 3 21l2.538-5.25L16.862 3.487z" />
-                                        </svg>
+                                    <button type="button" class="inline-flex h-8 w-8 items-center justify-center rounded-sm border border-slate-300 bg-white text-slate-700 hover:bg-slate-50" title="Edit" :disabled="!canEdit" @click="goEdit(row.id)">
+                                        <i class="fas fa-edit"></i>
                                     </button>
-                                    <button type="button" class="inline-flex h-8 w-8 items-center justify-center rounded-md border border-red-200 bg-white text-red-700 hover:bg-red-50" title="Delete" :disabled="!canDelete || deletingId === row.id" @click="destroy(row.id)">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-4 w-4">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 7h12" />
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 7V5a1 1 0 011-1h4a1 1 0 011 1v2" />
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M10 11v6" />
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M14 11v6" />
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M7 7l1 14h8l1-14" />
-                                        </svg>
+                                    <button type="button" class="inline-flex h-8 w-8 items-center justify-center rounded-sm border border-red-200 bg-white text-red-700 hover:bg-red-50" title="Delete" :disabled="!canDelete || deletingId === row.id" @click="destroy(row.id)">
+                                        <i v-if="deletingId === row.id" class="fas fa-spinner fa-spin"></i>
+                                        <i v-else class="fas fa-trash"></i>
                                     </button>
                                 </div>
                             </td>
@@ -98,12 +101,16 @@
                 </table>
             </div>
 
-            <div class="flex flex-col gap-3 border-t border-slate-200 px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
+            <div class="flex flex-col gap-3 border-t border-slate-300 px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
                 <div class="text-xs text-slate-600">Showing {{ meta.from || 0 }} to {{ meta.to || 0 }} of {{ meta.total || 0 }} entries</div>
 
                 <div class="flex items-center justify-end gap-1 overflow-x-auto">
-                    <button type="button" class="inline-flex h-8 w-8 items-center justify-center rounded-md border border-slate-200 bg-white text-xs font-semibold text-slate-700 hover:bg-slate-50" :disabled="loading || meta.current_page <= 1" @click="load(meta.current_page - 1)">«</button>
-                    <button type="button" class="inline-flex h-8 w-8 items-center justify-center rounded-md border border-slate-200 bg-white text-xs font-semibold text-slate-700 hover:bg-slate-50" :disabled="loading || meta.current_page >= meta.last_page" @click="load(meta.current_page + 1)">»</button>
+                    <button type="button" class="inline-flex h-8 w-8 items-center justify-center rounded-sm border border-slate-300 bg-white text-xs font-semibold text-slate-700 hover:bg-slate-50" :disabled="loading || meta.current_page <= 1" @click="load(meta.current_page - 1)">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <button type="button" class="inline-flex h-8 w-8 items-center justify-center rounded-sm border border-slate-300 bg-white text-xs font-semibold text-slate-700 hover:bg-slate-50" :disabled="loading || meta.current_page >= meta.last_page" @click="load(meta.current_page + 1)">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
                 </div>
             </div>
         </div>
@@ -125,6 +132,7 @@ export default {
             deletingId: null,
             error: '',
             rows: [],
+            searchTimer: null,
             filters: {
                 pagination: 10,
                 field_name: 'title',
@@ -158,7 +166,28 @@ export default {
     created() {
         this.load(1)
     },
+    watch: {
+        'filters.type'(next, prev) {
+            if (String(next || '') !== String(prev || '')) this.scheduleLoad(true)
+        },
+        'filters.field_name'(next, prev) {
+            if (String(next || '') !== String(prev || '')) this.scheduleLoad(true)
+        },
+        'filters.value'(next, prev) {
+            if (String(next || '') !== String(prev || '')) this.scheduleLoad(true)
+        },
+        'filters.pagination'(next, prev) {
+            if (Number(next || 0) !== Number(prev || 0)) this.scheduleLoad(true)
+        },
+    },
     methods: {
+        scheduleLoad(resetPage) {
+            if (this.searchTimer) clearTimeout(this.searchTimer)
+            this.searchTimer = setTimeout(() => {
+                const page = resetPage ? 1 : Number(this.meta?.current_page || 1)
+                this.load(page)
+            }, 250)
+        },
         toast(message, type = 'success') {
             window.dispatchEvent(new CustomEvent('app-toast', { detail: { message, type } }))
         },

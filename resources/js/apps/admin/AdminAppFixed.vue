@@ -5,11 +5,11 @@
                 v-for="t in toasts"
                 :key="t.id"
                 class="pointer-events-auto rounded-xl border p-3 shadow-xl"
-                :class="t.type === 'success' ? 'border-emerald-200 bg-emerald-50 text-emerald-900' : t.type === 'error' ? 'border-rose-200 bg-rose-50 text-rose-900' : 'border-slate-200 bg-white text-slate-900'"
+                :class="t.type === 'success' ? 'border-emerald-200 bg-emerald-50 text-emerald-900' : t.type === 'error' ? 'border-rose-200 bg-rose-50 text-rose-900' : 'border-slate-300 bg-white text-slate-900'"
             >
                 <div class="flex items-start justify-between gap-3">
                     <div class="min-w-0 flex-1 text-sm font-semibold">{{ t.message }}</div>
-                    <button type="button" class="-mr-1 -mt-1 rounded-md px-2 py-1 text-xs font-semibold hover:bg-black/5" @click="removeToast(t.id)">✕</button>
+                    <button type="button" class="-mr-1 -mt-1 rounded-sm px-2 py-1 text-xs font-semibold hover:bg-black/5" @click="removeToast(t.id)">✕</button>
                 </div>
             </div>
         </div>
@@ -17,24 +17,24 @@
         <div ref="adminHeader" class="sticky top-0 z-30 w-full border-b border-emerald-200 bg-white relative">
             <div class="mx-auto flex h-[70px] w-full items-center justify-between gap-3 px-4 sm:px-6">
                 <div class="flex items-center gap-3 min-w-0">
-                    <button class="rounded-md border border-slate-200 bg-white px-3 py-2 text-xs font-medium text-slate-700 hover:bg-slate-50 lg:hidden" @click="sidebarOpen = true">Menu</button>
+                    <button class="rounded-sm border border-slate-300 bg-white px-3 py-2 text-xs font-medium text-slate-700 hover:bg-slate-50 lg:hidden" @click="sidebarOpen = true">Menu</button>
                     <img
                         v-if="collegeLogo"
                         :src="collegeLogo"
-                        class="h-9 w-9 rounded border border-slate-200 bg-white object-contain"
+                        class="h-9 w-9 rounded border border-slate-300 bg-white object-contain hidden lg:block"
                         alt="logo"
                     />
-                    <div class="min-w-0">
+                    <div class="min-w-0 hidden lg:block">
                         <a href="#" class="truncate text-xl font-semibold text-slate-900" @click.prevent.stop="goDashboard">{{ collegeName }}</a>
                     </div>
                 </div>
 
                 <div class="relative" @keydown.esc.stop.prevent="userMenuOpen = false">
-                    <button type="button" class="flex items-center gap-3 rounded-lg px-2 py-1 hover:bg-slate-100" @click="userMenuOpen = !userMenuOpen">
+                    <button type="button" class="flex items-center gap-3 rounded-sm px-2 py-1 hover:bg-slate-100" @click="userMenuOpen = !userMenuOpen">
                         <img
                             v-if="profileImage"
                             :src="profileImage"
-                            class="h-9 w-9 rounded-full border border-slate-200 object-cover"
+                            class="h-9 w-9 rounded-full border border-slate-300 object-cover"
                             alt="user avatar"
                         />
                         <div v-else class="flex h-9 w-9 items-center justify-center rounded-full bg-slate-900 text-xs font-semibold text-white">{{ profileInitials }}</div>
@@ -44,61 +44,61 @@
                         </div>
                     </button>
 
-                    <div v-if="userMenuOpen" class="absolute right-0 mt-2 w-56 rounded-xl border border-slate-200 bg-white py-2 shadow-xl" @click.stop>
-                        <button
+                    <div v-if="userMenuOpen" class="absolute right-0 mt-2 w-56 rounded-xl border border-slate-300 bg-white py-2 shadow-xl" @click.stop>
+                        <a
                             v-if="hasPermission('admin.show')"
-                            type="button"
+                            :href="systems?.global?.auth_user?.id ? `/admin/admin/${systems.global.auth_user.id}` : '/admin/admin'"
                             class="flex w-full items-center gap-2 px-4 py-2 text-left text-sm text-slate-700 hover:bg-slate-50"
-                            @click="goUserMenu('profile')"
+                            @click="userMenuOpen = false"
                         >
                             <span class="text-slate-500">👤</span>
                             <span>Profile</span>
-                        </button>
-                        <button
+                        </a>
+                        <a
                             v-if="hasPermission('admin.index')"
-                            type="button"
+                            href="/admin/admin"
                             class="flex w-full items-center gap-2 px-4 py-2 text-left text-sm text-slate-700 hover:bg-slate-50"
-                            @click="goUserMenu('admin')"
+                            @click="userMenuOpen = false"
                         >
                             <span class="text-slate-500">🧑</span>
                             <span>Admin</span>
-                        </button>
-                        <button
+                        </a>
+                        <a
                             v-if="hasPermission('role.index')"
-                            type="button"
+                            href="/admin/role"
                             class="flex w-full items-center gap-2 px-4 py-2 text-left text-sm text-slate-700 hover:bg-slate-50"
-                            @click="goUserMenu('role')"
+                            @click="userMenuOpen = false"
                         >
                             <span class="text-slate-500">🔑</span>
                             <span>Role</span>
-                        </button>
-                        <button
+                        </a>
+                        <a
                             v-if="hasPermission('siteSetting.index')"
-                            type="button"
+                            href="/admin/siteSetting"
                             class="flex w-full items-center gap-2 px-4 py-2 text-left text-sm text-slate-700 hover:bg-slate-50"
-                            @click="goUserMenu('siteSettings')"
+                            @click="userMenuOpen = false"
                         >
                             <span class="text-slate-500">⚙️</span>
                             <span>Site Settings</span>
-                        </button>
-                        <button
+                        </a>
+                        <a
                             v-if="hasPermission('menu.index')"
-                            type="button"
+                            href="/admin/menu"
                             class="flex w-full items-center gap-2 px-4 py-2 text-left text-sm text-slate-700 hover:bg-slate-50"
-                            @click="goUserMenu('menuList')"
+                            @click="userMenuOpen = false"
                         >
                             <span class="text-slate-500">📋</span>
                             <span>Menu List</span>
-                        </button>
-                        <button
+                        </a>
+                        <a
                             v-if="hasPermission('activityLog.index')"
-                            type="button"
+                            href="/admin/activityLog"
                             class="flex w-full items-center gap-2 px-4 py-2 text-left text-sm text-slate-700 hover:bg-slate-50"
-                            @click="goUserMenu('activityLog')"
+                            @click="userMenuOpen = false"
                         >
                             <span class="text-slate-500">📊</span>
                             <span>Activity Log</span>
-                        </button>
+                        </a>
 
                         <div class="my-2 border-t border-slate-100"></div>
 
@@ -110,13 +110,13 @@
                 </div>
             </div>
 
-            <div class="w-full border-t border-emerald-200 bg-emerald-50" @click.stop>
+            <div class="w-full border-t border-emerald-200 bg-emerald-100 hidden lg:block" @click.stop>
                 <div class="mx-auto flex h-[60px] w-full items-center justify-between gap-1 overflow-x-auto px-2 sm:px-4">
                     <button
                         v-for="item in menuTree"
                         :key="'top-' + item.id"
                         type="button"
-                        class="flex h-9 shrink-0 items-center gap-2 rounded-lg px-2 text-sm font-medium text-slate-700 hover:bg-emerald-100"
+                        class="flex h-9 shrink-0 items-center gap-2 rounded-sm px-2 text-sm font-medium text-slate-700 hover:bg-emerald-100"
                         :class="activeTopMenuId === item.id && megaMenuOpen ? 'bg-emerald-100 text-emerald-900' : ''"
                         @mouseenter="openMegaMenu(item, $event)"
                         @mouseleave="scheduleMegaClose"
@@ -127,32 +127,34 @@
                     </button>
                 </div>
 
-                <div v-if="megaMenuOpen && activeTopMenu" class="absolute top-full z-40" :style="megaPanelStyle">
-                    <div ref="megaPanel" class="px-2" @click.stop @mouseenter="cancelMegaClose" @mouseleave="scheduleMegaClose">
+                <div v-if="megaMenuOpen && activeTopMenu" class="absolute top-full z-40 left-0 right-0 sm:left-auto sm:right-auto hidden lg:block" :style="megaPanelStyle">
+                    <div ref="megaPanel" class="px-2 max-h-[70vh] overflow-y-auto" @click.stop @mouseenter="cancelMegaClose" @mouseleave="scheduleMegaClose">
                         <div class="rounded-xl border border-emerald-600 bg-white/95 p-3 shadow-xl backdrop-blur">
                             <div v-if="megaMenuSimple" class="space-y-1">
                                 <a
                                     v-for="leaf in getChildren(activeTopMenu)"
                                     :key="'mega-simple-' + leaf.id"
                                     :href="menuHref(leaf)"
-                                    class="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-emerald-100"
+                                    class="flex items-center gap-2 rounded-sm px-3 py-2 text-sm text-slate-700 hover:bg-emerald-100"
                                     @click="handleMenuClick(leaf, $event)"
+                                    @contextmenu="handleMenuClick(leaf, $event)"
                                 >
                                     <span class="text-emerald-700" v-html="menuIcon(leaf, 'child')"></span>
                                     <span class="min-w-0 whitespace-normal">{{ leaf.menu_name || leaf.name || leaf.title || 'Item' }}</span>
                                 </a>
                             </div>
 
-                            <div v-else class="grid gap-6" :style="megaGridStyle">
+                            <div v-else class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3" :style="megaGridStyle">
                                 <div v-for="child in getChildren(activeTopMenu)" :key="'mega-' + child.id" class="min-w-0">
-                                    <div class="mb-2 text-xs font-semibold uppercase tracking-wider text-slate-500">{{ child.menu_name || child.name || child.title || 'Section' }}</div>
+                                    <div class="mb-2 text-xs font-semibold uppercase tracking-wider text-slate-700">{{ child.menu_name || child.name || child.title || 'Section' }}</div>
                                     <div class="space-y-1">
                                         <a
                                             v-for="grand in (getChildren(child).length ? getChildren(child) : [child])"
                                             :key="'mega-item-' + grand.id"
                                             :href="menuHref(grand)"
-                                            class="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-emerald-900 hover:bg-emerald-100"
+                                            class="flex items-center gap-2 rounded-sm px-3 py-2 text-sm text-emerald-900 hover:bg-emerald-100"
                                             @click="handleMenuClick(grand, $event)"
+                                            @contextmenu="handleMenuClick(grand, $event)"
                                         >
                                             <span class="text-emerald-700" v-html="menuIcon(grand, 'child')"></span>
                                             <span class="min-w-0 whitespace-normal">{{ grand.menu_name || grand.name || grand.title || 'Item' }}</span>
@@ -174,25 +176,29 @@
                         <div class="truncate text-sm font-semibold">{{ collegeName }}</div>
                         <div class="text-[11px] text-slate-300">Admin Panel</div>
                     </div>
-                    <button class="rounded-md bg-white/10 px-2 py-1 text-xs hover:bg-white/15" @click="sidebarOpen = false">Close</button>
+                    <button class="rounded-sm bg-white/10 px-2 py-1 text-xs hover:bg-white/15" @click="sidebarOpen = false">Close</button>
                 </div>
                 <nav class="h-[calc(100vh-56px)] overflow-y-auto px-3 py-3">
                     <div v-if="loading" class="px-2 py-2 text-sm text-slate-300">Loading menus...</div>
-                    <div v-else>
-                        <div v-for="item in menuTree" :key="'side-' + item.id" class="mb-1">
-                            <button class="flex w-full items-center justify-between rounded-lg px-3 py-2 text-left text-sm hover:bg-white/10" @click="toggleSection(item.id)">
+                    <div v-else class="space-y-2">
+                        <div v-for="item in menuTree" :key="'side-' + item.id" class="mb-2">
+                            <button 
+                                class="flex w-full items-center justify-between rounded-sm px-3 py-3 text-left text-sm font-medium bg-white/5 hover:bg-white/10 transition-colors" 
+                                @click="toggleSection(item.id)"
+                            >
                                 <span class="min-w-0 truncate font-medium">{{ item.menu_name || item.name || item.title || 'Menu' }}</span>
-                                <span v-if="getChildren(item).length" class="text-xs text-slate-300">{{ openSections[item.id] ? '−' : '+' }}</span>
+                                <span v-if="getChildren(item).length" class="text-xs text-slate-300 ml-2">{{ openSections[item.id] ? '−' : '+' }}</span>
                             </button>
-                            <div v-if="openSections[item.id]" class="ml-3 mt-1 space-y-1">
+                            <div v-if="openSections[item.id]" class="ml-3 mt-2 space-y-1 border-l border-white/10 pl-3">
                                 <a
                                     v-for="child in flattenLeafChildren(item)"
                                     :key="'side-leaf-' + child.id"
                                     :href="menuHref(child)"
-                                    class="block rounded-lg px-3 py-2 text-sm text-slate-200 hover:bg-white/10"
+                                    class="block rounded-sm px-3 py-2 text-sm text-slate-200 hover:bg-white/10 transition-colors"
                                     @click="handleMenuClick(child, $event)"
+                                    @contextmenu="handleMenuClick(child, $event)"
                                 >
-                                    {{ child.menu_name || child.name || child.title || 'Item' }}
+                                    <span class="block truncate">{{ child.menu_name || child.name || child.title || 'Item' }}</span>
                                 </a>
                             </div>
                         </div>
@@ -202,7 +208,7 @@
         </div>
 
         <main class="mx-auto w-full p-4 sm:p-6">
-            <div v-if="error" class="mb-4 rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-800">{{ error }}</div>
+            <div v-if="error" class="mb-4  border border-red-200 bg-red-50 p-4 text-sm text-red-800">{{ error }}</div>
             <component :is="resolvedComponent" v-bind="resolvedProps" />
         </main>
     </div>
@@ -252,7 +258,55 @@ export default {
     },
     computed: {
         menuTree() {
-            return Array.isArray(this.systems?.menus) ? this.systems.menus : []
+            const base = Array.isArray(this.systems?.menus) ? this.systems.menus : []
+
+            const hasRoute = (list, routeName) => {
+                const want = String(routeName || '')
+                if (!want) return false
+                const walk = (arr) => {
+                    if (!Array.isArray(arr)) return false
+                    for (const n of arr) {
+                        if (String(n?.route_name || '') === want) return true
+                        if (walk(this.getChildren(n))) return true
+                    }
+                    return false
+                }
+                return walk(list)
+            }
+
+            const fallbackItems = [
+                { id: 'fallback-hostel-fee-generate', menu_name: 'Hostel Fee Generate', route_name: 'hostelFeeGenerate.index' },
+                { id: 'fallback-hostel-fee-setup', menu_name: 'Hostel Fee Setup', route_name: 'hostelFeeSetup.index' },
+                { id: 'fallback-hostel-payment-discount', menu_name: 'Hostel Payment Discount', route_name: 'hostelPayment.discount' },
+            ].filter((x) => this.hasPermission(x.route_name))
+
+            const missing = fallbackItems.filter((x) => !hasRoute(base, x.route_name))
+            if (!missing.length) return base
+
+            const isHostelGroup = (n) => {
+                const t = String(n?.menu_name || n?.name || n?.title || '').toLowerCase()
+                return t.includes('hostel')
+            }
+
+            const idx = base.findIndex(isHostelGroup)
+            if (idx >= 0) {
+                const parent = { ...(base[idx] || {}) }
+                const kids = [...this.getChildren(base[idx]), ...missing.map((m) => ({ ...m, childMenus: [] }))]
+                parent.childMenus = kids
+                const out = [...base]
+                out[idx] = parent
+                return out
+            }
+
+            return [
+                ...base,
+                {
+                    id: 'fallback-hostel-group',
+                    menu_name: 'Hostel',
+                    route_name: '',
+                    childMenus: missing.map((m) => ({ ...m, childMenus: [] })),
+                },
+            ]
         },
         activeTopMenu() {
             const id = this.activeTopMenuId
@@ -296,11 +350,15 @@ export default {
             return `/${v}`
         },
         collegeLogo() {
-            const raw = this.systems?.site?.college_logo || this.systems?.site?.logo || this.systems?.site?.logo_small || ''
+            const raw = this.systems?.site?.logo || this.systems?.site?.logo_small || ''
             return this.resolveAssetUrl(raw)
         },
         collegeName() {
-            return this.systems?.site?.college_name || this.systems?.site?.title || (window.laravel?.app_name || 'ERP')
+            const fromSite = String(this.systems?.site?.college_name || '').trim()
+            if (fromSite) return fromSite
+            const fromTitle = String(this.systems?.site?.title || '').trim()
+            if (fromTitle) return fromTitle
+            return window.laravel?.app_name || 'ERP'
         },
         pageTitle() {
             return this.currentPath || ''
@@ -402,6 +460,20 @@ export default {
             if (p.match(/^\/admin\/hostel\/[0-9]+\/edit$/)) return { file: './pages/HostelManage.vue', props: { systems: this.systems, hostelId: this.numericId('/admin/hostel/') } }
             if (p.match(/^\/admin\/hostel\/[0-9]+$/)) return { file: './pages/HostelView.vue', props: { hostelId: this.numericId('/admin/hostel/') } }
 
+            // Hostel Fee Generate
+            if (p === '/admin/hostelFeeGenerate') return { file: './pages/HostelFeeGenerateIndex.vue', props: { systems: this.systems } }
+            if (p === '/admin/hostelFeeGenerate/create') return { file: './pages/HostelFeeGenerateManage.vue', props: { systems: this.systems } }
+            if (p.match(/^\/admin\/hostelFeeGenerate\/[0-9]+\/edit$/)) return { file: './pages/HostelFeeGenerateManage.vue', props: { systems: this.systems, generateId: this.numericId('/admin/hostelFeeGenerate/') } }
+            if (p.match(/^\/admin\/hostelFeeGenerate\/[0-9]+$/)) return { file: './pages/HostelFeeGenerateView.vue', props: { generateId: this.numericId('/admin/hostelFeeGenerate/') } }
+
+            // Hostel Payment
+            if (p === '/admin/hostelPayment') return { file: './pages/HostelPaymentIndex.vue', props: { systems: this.systems } }
+            if (p.match(/^\/admin\/hostelPayment\/[0-9]+$/)) return { file: './pages/HostelPaymentView.vue', props: { systems: this.systems, hostelPaymentId: this.numericId('/admin/hostelPayment/') } }
+            if (p === '/admin/hostelPayment-monthly') return { file: './pages/HostelPaymentMonthly.vue', props: { systems: this.systems } }
+            if (p === '/admin/hostelPayment-dues') return { file: './pages/HostelPaymentDues.vue', props: { systems: this.systems } }
+            if (p === '/admin/hostelFeeSetup') return { file: './pages/HostelFeeSetup.vue', props: { systems: this.systems } }
+            if (p === '/admin/hostelPayment-discount') return { file: './pages/HostelPaymentDiscount.vue', props: { systems: this.systems } }
+
             // Payment Gateway
             if (p === '/admin/paymentGateway') return { file: './pages/PaymentGatewayIndex.vue', props: { systems: this.systems } }
             if (p === '/admin/paymentGateway/create') return { file: './pages/PaymentGatewayManage.vue', props: { systems: this.systems } }
@@ -433,7 +505,7 @@ export default {
             if (p.match(/^\/admin\/role\/[0-9]+$/)) return { file: './pages/RoleShow.vue', props: { systems: this.systems, roleId: this.numericId('/admin/role/') } }
 
             // Site Setting
-            if (p === '/admin/siteSetting') return { file: './pages/SiteSettingEdit.vue', props: { systems: this.systems, settingId: 1 } }
+            if (p === '/admin/siteSetting') return { file: './pages/SiteSettingIndex.vue', props: { systems: this.systems } }
             if (p.match(/^\/admin\/siteSetting\/[0-9]+\/edit$/)) return { file: './pages/SiteSettingEdit.vue', props: { systems: this.systems, settingId: this.numericId('/admin/siteSetting/') } }
 
             // Menu
@@ -455,6 +527,7 @@ export default {
 
             if (p === '/admin/studentPromotion/create') return { file: './pages/StudentPromotionCreate.vue', props: { systems: this.systems } }
             if (p === '/admin/idcard') return { file: './pages/StudentIDCard.vue', props: { systems: this.systems } }
+            if (p === '/admin/teacher-idcard') return { file: './pages/TeacherIDCard.vue', props: { systems: this.systems } }
             if (p === '/admin/studentMigrationRollVerify') return { file: './pages/StudentMigrationRollVerifyIndex.vue', props: { systems: this.systems } }
             if (p === '/admin/studentMigrationRollVerify/create') return { file: './pages/StudentMigrationRollVerifyCreate.vue', props: { systems: this.systems } }
             if (p.match(/^\/admin\/studentMigrationRollVerify\/[0-9]+$/)) return { file: './pages/StudentMigrationRollVerifyView.vue', props: { systems: this.systems, groupId: this.numericId('/admin/studentMigrationRollVerify/') } }
@@ -879,6 +952,14 @@ export default {
             if (name === 'smsTransaction.create') return '/admin/smsTransaction/create'
             if (name === 'hostel.index') return '/admin/hostel'
             if (name === 'hostel.create') return '/admin/hostel/create'
+            if (name === 'hostelPayment.index') return '/admin/hostelPayment'
+            if (name === 'hostelPayment.monthly') return '/admin/hostelPayment-monthly'
+            if (name === 'hostelFeeGenerate.index') return '/admin/hostelFeeGenerate'
+            if (name === 'hostelFeeGenerate.create') return '/admin/hostelFeeGenerate/create'
+            if (name === 'hostelPayment.generate') return '/admin/hostelFeeGenerate'
+            if (name === 'hostelPayment.dues') return '/admin/hostelPayment-dues'
+            if (name === 'hostelFeeSetup.index') return '/admin/hostelFeeSetup'
+            if (name === 'hostelPayment.discount') return '/admin/hostelPayment-discount'
             if (name === 'paymentGateway.index') return '/admin/paymentGateway'
             if (name === 'paymentGateway.create') return '/admin/paymentGateway/create'
             if (name === 'accountHead.index') return '/admin/accountHead'
@@ -887,6 +968,8 @@ export default {
             if (name === 'feeSetup.create') return '/admin/feeSetup/create'
             if (name === 'videoSlider.index') return '/admin/videoSlider'
             if (name === 'videoSlider.create') return '/admin/videoSlider/create'
+            if (name === 'slider.index') return '/admin/slider'
+            if (name === 'slider.create') return '/admin/slider/create'
             if (name === 'bus.index') return '/admin/bus'
             if (name === 'bus.create') return '/admin/bus/create'
             if (name === 'calender.index') return '/admin/calender'
@@ -905,12 +988,13 @@ export default {
             if (name === 'student.import') return '/admin/student-import'
             if (name === 'studentPromotion.create') return '/admin/studentPromotion/create'
             if (name === 'idcard.index') return '/admin/idcard'
+            if (name === 'teacher.idcard.index') return '/admin/teacher-idcard'
             if (name === 'studentMigrationRollVerify.index') return '/admin/studentMigrationRollVerify'
             if (name === 'studentMigration.index') return '/admin/studentMigration'
             if (name === 'registrationNoVerify.index') return '/admin/registrationNoVerify'
             if (name === 'certificateApplication.index') return '/admin/certificateApplication'
             if (name === 'certificateTemplate.index') return '/admin/certificateTemplate'
-            if (name === 'approveStudent.index') return '/admin/onlineAdmission'
+            if (name === 'approveStudent.index') return '/admin/approveStudent'
             if (name === 'onlineAdmission.index') return '/admin/onlineAdmission'
             if (name === 'onlineAdmission.rejectedList') return '/admin/onlineAdmission-rejected'
             if (name === 'onlineAdmissionRollVerify.index') return '/admin/onlineAdmissionRollVerify'
@@ -1001,12 +1085,19 @@ export default {
             const path = this.buildMenuPath(item)
             if (!path) return
 
+            // Allow right-clicks to work normally for context menu
+            if (evt && evt.type === 'contextmenu') {
+                return
+            }
+
+            // Allow middle-click or Ctrl/Cmd+Shift+click to open in new tab
             const isNewTabGesture = !!evt && (evt.ctrlKey || evt.metaKey || evt.shiftKey || evt.button === 1)
             if (isNewTabGesture) {
                 return
             }
 
-            if (evt && typeof evt.preventDefault === 'function') {
+            // Only prevent default for left-clicks
+            if (evt && evt.button === 0 && typeof evt.preventDefault === 'function') {
                 evt.preventDefault()
             }
 
@@ -1067,8 +1158,27 @@ export default {
         async initializeSystems() {
             if (!window.axios) throw new Error('Axios is not available.')
 
-            const liteRes = await window.axios.get('/admin/initialize-systems', { params: { lite: 1 } })
-            this.systems = liteRes?.data || {}
+            const res = await window.axios.get('/admin/initialize-systems', {
+                headers: {
+                    Accept: 'application/json',
+                },
+            })
+
+            const data = res?.data
+            if (typeof data === 'string') {
+                const s = data.trim().toLowerCase()
+                if (s.includes('<!doctype html') || s.includes('<html')) {
+                    this.error = 'Session expired. Redirecting to login...'
+                    window.location = `${window.laravel?.baseurl || ''}/admin/loginme`
+                    return
+                }
+            }
+
+            if (!data || typeof data !== 'object' || Array.isArray(data)) {
+                throw new Error('Invalid initialize-systems response.')
+            }
+
+            this.systems = data || {}
 
             const ids = {}
             const collectIds = (list) => {
@@ -1084,23 +1194,6 @@ export default {
             if (!this.activeTopMenuId && Array.isArray(this.menuTree) && this.menuTree.length) {
                 this.activeTopMenuId = this.menuTree[0].id
             }
-
-            // load full
-            window.setTimeout(async () => {
-                try {
-                    const res = await window.axios.get('/admin/initialize-systems')
-                    const full = res?.data || {}
-                    this.systems = {
-                        ...this.systems,
-                        ...full,
-                        global: full.global || this.systems.global,
-                        permissions: full.permissions || this.systems.permissions,
-                        site: full.site || this.systems.site,
-                        menus: full.menus || this.systems.menus,
-                    }
-                } catch {
-                }
-            }, 0)
         },
         async logout() {
             this.loggingOut = true

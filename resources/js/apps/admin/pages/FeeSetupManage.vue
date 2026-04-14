@@ -1,26 +1,26 @@
 <template>
     <div class="flex flex-col gap-4">
-        <div class="rounded-2xl border border-slate-200 bg-white p-5">
+        <div class=" border border-slate-300 bg-white p-5">
             <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <div class="min-w-0">
                     <div class="truncate text-xl font-semibold text-slate-900">{{ isEdit ? 'Edit Fee Setup' : 'Create Fee Setup' }}</div>
                 </div>
 
                 <div class="flex flex-wrap items-center gap-2">
-                    <button type="button" class="rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50" :disabled="submitting" @click="goIndex">Back</button>
-                    <button type="button" class="rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-700" :disabled="submitting || setupExist" @click="submit">{{ submitting ? '...' : 'Save' }}</button>
+                    <button type="button" class="rounded-sm border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50" :disabled="submitting" @click="goIndex">Back</button>
+                    <button type="button" class="rounded-sm bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-700" :disabled="submitting || setupExist" @click="submit">{{ submitting ? '...' : 'Save' }}</button>
                 </div>
             </div>
         </div>
 
-        <div v-if="setupExist" class="rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">Setup already exists for selected Department/Level/Class.</div>
-        <div v-if="error" class="rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-800">{{ error }}</div>
+        <div v-if="setupExist" class=" border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">Setup already exists for selected Department/Level/Class.</div>
+        <div v-if="error" class=" border border-red-200 bg-red-50 p-4 text-sm text-red-800">{{ error }}</div>
 
-        <div class="rounded-2xl border border-slate-200 bg-white p-5">
+        <div class=" border border-slate-300 bg-white p-5">
             <div class="grid grid-cols-1 gap-4 lg:grid-cols-12">
                 <div class="lg:col-span-2">
                     <div class="text-xs font-semibold text-slate-600">Academic Level</div>
-                    <select v-model="form.academic_qualification_id" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none" @change="onQualificationChange">
+                    <select v-model="form.academic_qualification_id" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none" @change="onQualificationChange">
                         <option value="">Select</option>
                         <option v-for="q in qualifications" :key="'q-' + q.id" :value="String(q.id)">{{ q.name }}</option>
                     </select>
@@ -28,7 +28,7 @@
 
                 <div class="lg:col-span-2">
                     <div class="text-xs font-semibold text-slate-600">Department/Group</div>
-                    <select v-model="form.department_id" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none" @change="onDepartmentChange">
+                    <select v-model="form.department_id" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none" @change="onDepartmentChange">
                         <option value="">Select</option>
                         <option v-for="d in departmentsFiltered" :key="'d-' + d.id" :value="String(d.id)">{{ d.name }}</option>
                     </select>
@@ -36,7 +36,7 @@
 
                 <div class="lg:col-span-2">
                     <div class="text-xs font-semibold text-slate-600">Class</div>
-                    <select v-model="form.academic_class_id" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none" @change="checkExist">
+                    <select v-model="form.academic_class_id" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none" @change="checkExist">
                         <option value="">Select</option>
                         <option v-for="c in classOptions" :key="'c-' + c.id" :value="String(c.id)">{{ c.name }}</option>
                     </select>
@@ -44,7 +44,7 @@
 
                 <div class="lg:col-span-4">
                     <div class="text-xs font-semibold text-slate-600">Remarks</div>
-                    <textarea v-model="form.description" rows="2" class="mt-1 w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm outline-none"></textarea>
+                    <textarea v-model="form.description" rows="2" class="mt-1 w-full rounded-sm border border-slate-300 bg-white px-3 py-2 text-sm outline-none"></textarea>
                 </div>
 
                 <div class="lg:col-span-2">
@@ -56,14 +56,14 @@
             </div>
         </div>
 
-        <div class="rounded-2xl border border-slate-200 bg-white">
-            <div class="flex items-center justify-between border-b border-slate-200 p-4">
+        <div class=" border border-slate-300 bg-white">
+            <div class="flex items-center justify-between border-b border-slate-300 p-4">
                 <div class="text-sm font-semibold text-slate-900">Fee Setup Details</div>
                 <div class="text-xs text-slate-500">Drag and drop to reorder items</div>
             </div>
 
             <div class="p-5">
-                <div class="grid grid-cols-12 gap-3 pb-3 text-xs font-semibold uppercase tracking-wider text-slate-500">
+                <div class="grid grid-cols-12 gap-3 pb-3 text-xs font-semibold uppercase tracking-wider text-slate-700">
                     <div class="col-span-12 lg:col-span-2">Account Head</div>
                     <div class="col-span-6 lg:col-span-1">Amount</div>
                     <div class="col-span-6 lg:col-span-2">Gateway Account</div>
@@ -84,17 +84,17 @@
                     >
                         <div class="grid grid-cols-12 gap-3">
                             <div class="col-span-12 lg:col-span-2">
-                                <select v-model.number="d.account_head_id" class="h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none">
+                                <select v-model.number="d.account_head_id" class="h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none">
                                     <option :value="null">--Select Any--</option>
                                     <option v-for="h in accountHeadOptions" :key="'h-' + h.id" :value="h.id">{{ h.name }}</option>
                                 </select>
 
                                 <div class="relative mt-2">
-                                    <button type="button" class="h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-left text-sm font-semibold text-slate-700 hover:bg-slate-50" @click="toggleDependDropdown(idx)">
+                                    <button type="button" class="h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-left text-sm font-semibold text-slate-700 hover:bg-slate-50" @click="toggleDependDropdown(idx)">
                                         Depend On
                                     </button>
-                                    <div v-if="dependOpen[idx]" class="absolute z-20 mt-2 w-full rounded-xl border border-slate-200 bg-white p-3 shadow-xl">
-                                        <input v-model="dependSearch[idx]" type="text" class="h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none" placeholder="Search account heads..." />
+                                    <div v-if="dependOpen[idx]" class="absolute z-20 mt-2 w-full rounded-xl border border-slate-300 bg-white p-3 shadow-xl">
+                                        <input v-model="dependSearch[idx]" type="text" class="h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none" placeholder="Search account heads..." />
                                         <div class="mt-2 max-h-56 overflow-auto">
                                             <label v-for="opt in filteredDependOptions(idx)" :key="'dep-' + idx + '-' + opt.id" class="flex items-center gap-2 py-1 text-sm text-slate-700">
                                                 <input type="checkbox" class="h-4 w-4" :checked="isDependSelected(idx, opt.id)" :disabled="opt.id === d.account_head_id" @change="toggleDepend(idx, opt.id, $event)" />
@@ -102,14 +102,14 @@
                                             </label>
                                         </div>
                                         <div class="mt-2 flex items-center justify-between border-t border-slate-100 pt-2">
-                                            <button type="button" class="h-8 rounded-md bg-slate-900 px-3 text-xs font-semibold text-white" @click="selectAllDepend(idx)">Select All</button>
-                                            <button type="button" class="h-8 rounded-md border border-slate-200 bg-white px-3 text-xs font-semibold text-slate-700" @click="clearAllDepend(idx)">Clear</button>
+                                            <button type="button" class="h-8 rounded-sm bg-slate-900 px-3 text-xs font-semibold text-white" @click="selectAllDepend(idx)">Select All</button>
+                                            <button type="button" class="h-8 rounded-sm border border-slate-300 bg-white px-3 text-xs font-semibold text-slate-700" @click="clearAllDepend(idx)">Clear</button>
                                         </div>
                                     </div>
                                 </div>
 
                                 <div v-if="selectedDependNames(idx).length" class="mt-2 flex flex-wrap gap-2">
-                                    <span v-for="(nm, j) in selectedDependNames(idx)" :key="'tag-' + idx + '-' + j" class="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs font-semibold text-slate-700">
+                                    <span v-for="(nm, j) in selectedDependNames(idx)" :key="'tag-' + idx + '-' + j" class="inline-flex items-center gap-2 rounded-full border border-slate-300 bg-slate-50 px-3 py-1 text-xs font-semibold text-slate-700">
                                         {{ nm }}
                                         <button type="button" class="text-slate-500" @click="removeDepend(idx, j)">x</button>
                                     </span>
@@ -117,25 +117,25 @@
                             </div>
 
                             <div class="col-span-6 lg:col-span-1">
-                                <input v-model.number="d.amount" type="number" min="0" class="h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none" placeholder="Amount" />
+                                <input v-model.number="d.amount" type="number" min="0" class="h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none" placeholder="Amount" />
 
-                                <select v-model="d.payment_duration" class="mt-2 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none">
+                                <select v-model="d.payment_duration" class="mt-2 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none">
                                     <option :value="null">--Durations--</option>
                                     <option v-for="(label, key) in paymentDurations" :key="'pd-' + key" :value="key">{{ label }}</option>
                                 </select>
                             </div>
 
                             <div class="col-span-6 lg:col-span-2 relative">
-                                <select v-model.number="d.payment_gateway_id" class="h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none">
+                                <select v-model.number="d.payment_gateway_id" class="h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none">
                                     <option :value="null">--Select Any--</option>
                                     <option v-for="g in gatewayAccounts" :key="'g-' + g.id" :value="Number(g.id)">{{ g.title || g.store_id }}</option>
                                 </select>
 
-                                <button type="button" class="mt-2 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-left text-sm font-semibold text-slate-700 hover:bg-slate-50" @click="toggleApplicable(idx)">
+                                <button type="button" class="mt-2 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-left text-sm font-semibold text-slate-700 hover:bg-slate-50" @click="toggleApplicable(idx)">
                                     Applicable For
                                 </button>
 
-                                <div v-if="applicableOpen === idx" class="mt-2 rounded-xl border border-slate-200 bg-white p-3">
+                                <div v-if="applicableOpen === idx" class="mt-2 rounded-xl border border-slate-300 bg-white p-3">
                                     <label class="flex items-center gap-2 text-sm text-slate-700"><input v-model.number="d.online_addmission_fees" type="checkbox" class="h-4 w-4" :true-value="1" :false-value="0" /> <span>Online Admission Fee</span></label>
                                     <label class="mt-2 flex items-center gap-2 text-sm text-slate-700"><input v-model.number="d.service_charge" type="checkbox" class="h-4 w-4" :true-value="1" :false-value="0" /> <span>Charge Applicable</span></label>
                                     <label class="mt-2 flex items-center gap-2 text-sm text-slate-700"><input v-model.number="d.college_fee" type="checkbox" class="h-4 w-4" :true-value="1" :false-value="0" /> <span>College Fee</span></label>
@@ -146,27 +146,27 @@
                             </div>
 
                             <div class="col-span-6 lg:col-span-2">
-                                <input v-model="d.start_date" type="datetime-local" step="1" class="h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none" />
+                                <input v-model="d.start_date" type="datetime-local" step="1" class="h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none" />
 
-                                <select v-model.number="d.exam_id" class="mt-2 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none">
+                                <select v-model.number="d.exam_id" class="mt-2 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none">
                                     <option :value="null">--Select Exam--</option>
                                     <option v-for="e in exams" :key="'e-' + e.id" :value="Number(e.id)">{{ e.name }}</option>
                                 </select>
                             </div>
 
                             <div class="col-span-6 lg:col-span-2">
-                                <input v-model="d.expire_date" type="datetime-local" step="1" class="h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none" />
+                                <input v-model="d.expire_date" type="datetime-local" step="1" class="h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none" />
 
-                                <select v-if="d.exam_id" v-model="d.examination_year" class="mt-2 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none">
+                                <select v-if="d.exam_id" v-model="d.examination_year" class="mt-2 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none">
                                     <option :value="null">--Select Exam Year--</option>
                                     <option v-for="y in years" :key="'y-' + y" :value="y">{{ y }}</option>
                                 </select>
                             </div>
 
                             <div class="col-span-6 lg:col-span-2">
-                                <input v-model="d.additional_date" type="datetime-local" step="1" class="h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none" />
+                                <input v-model="d.additional_date" type="datetime-local" step="1" class="h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none" />
 
-                                <select v-if="Number(d.improvement) === 1" v-model.number="d.academic_class_id_improvment" class="mt-2 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none">
+                                <select v-if="Number(d.improvement) === 1" v-model.number="d.academic_class_id_improvment" class="mt-2 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none">
                                     <option :value="null">--Select Class--</option>
                                     <option v-for="c in improvementClassOptions" :key="'ic-' + c.id" :value="Number(c.id)">{{ c.name }}</option>
                                 </select>
@@ -174,11 +174,11 @@
 
                             <div class="col-span-6 lg:col-span-1 flex items-start justify-center gap-2">
                                
-                                <button type="button" class="inline-flex h-9 w-10 items-center justify-center rounded-lg border border-rose-200 bg-white text-rose-700 hover:bg-rose-50" :disabled="form.details.length <= 1" @click="removeDetail(idx)">-</button>
-                                <button type="button" class="inline-flex h-9 w-10 items-center justify-center rounded-lg border border-emerald-200 bg-white text-emerald-700 hover:bg-emerald-50" v-if="idx === form.details.length - 1" @click="addDetail">+</button>
+                                <button type="button" class="inline-flex h-9 w-10 items-center justify-center rounded-sm border border-rose-200 bg-white text-rose-700 hover:bg-rose-50" :disabled="form.details.length <= 1" @click="removeDetail(idx)">-</button>
+                                <button type="button" class="inline-flex h-9 w-10 items-center justify-center rounded-sm border border-emerald-200 bg-white text-emerald-700 hover:bg-emerald-50" v-if="idx === form.details.length - 1" @click="addDetail">+</button>
                             </div>
 
-                            <div class="col-span-12 mt-3 flex flex-wrap items-center justify-center gap-4 border-t border-slate-200 pt-3">
+                            <div class="col-span-12 mt-3 flex flex-wrap items-center justify-center gap-4 border-t border-slate-300 pt-3">
 
                                 <div class="flex flex-wrap items-center gap-4">
                                     <label class="flex items-center gap-2 text-sm font-semibold" :class="d.is_maker == 1 ? 'text-emerald-700' : 'text-slate-700'">
@@ -201,7 +201,7 @@
                                 </div>
                             </div>
 
-                            <div class="col-span-12 mt-3 flex flex-wrap items-center justify-center gap-4 border-t border-slate-200 pt-3">
+                            <div class="col-span-12 mt-3 flex flex-wrap items-center justify-center gap-4 border-t border-slate-300 pt-3">
                                 <label class="flex items-center gap-2 text-sm font-semibold text-slate-700">
                                     <input v-model.number="d.status" type="checkbox" class="h-4 w-4" :true-value="1" :false-value="0" />
                                     <span>{{ Number(d.status) === 1 ? 'Active' : 'Deactive' }}</span>
@@ -209,7 +209,7 @@
 
                                  <button
                                     type="button"
-                                    class="inline-flex h-9 w-10 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-700 hover:bg-slate-50"
+                                    class="inline-flex h-9 w-10 items-center justify-center rounded-sm border border-slate-300 bg-white text-slate-700 hover:bg-slate-50"
                                     draggable="true"
                                     title="Drag"
                                     @dragstart.stop="dragStart(idx)"
@@ -231,12 +231,12 @@
                 </div>
 
                 <div class="pt-4 text-center">
-                    <button type="button" class="h-9 rounded-lg bg-emerald-600 px-6 text-sm font-semibold text-white hover:bg-emerald-700" :disabled="submitting || setupExist" @click="submit">{{ submitting ? 'processing...' : 'Save' }}</button>
+                    <button type="button" class="h-9 rounded-sm bg-emerald-600 px-6 text-sm font-semibold text-white hover:bg-emerald-700" :disabled="submitting || setupExist" @click="submit">{{ submitting ? 'processing...' : 'Save' }}</button>
                 </div>
             </div>
         </div>
 
-        <div v-if="submitting" class="rounded-2xl border border-slate-200 bg-white p-5 text-sm text-slate-600">Saving...</div>
+        <div v-if="submitting" class=" border border-slate-300 bg-white p-5 text-sm text-slate-600">Saving...</div>
     </div>
 </template>
 

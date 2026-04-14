@@ -1,20 +1,20 @@
 <template>
     <div class="flex flex-col gap-4">
-        <div class="rounded-2xl border border-slate-200 bg-white p-5">
+        <div class=" border border-slate-300 bg-white p-5">
             <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <div class="min-w-0">
                     <div class="truncate text-xl font-semibold text-slate-900">Menu View</div>
                 </div>
                 <div class="flex flex-wrap items-center gap-2">
-                    <button type="button" class="rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50" @click="goIndex">Back</button>
-                    <button type="button" class="rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800" @click="goEdit">Edit</button>
+                    <button type="button" class="rounded-sm border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50" @click="goIndex">Back</button>
+                    <button type="button" class="rounded-sm bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800" @click="goEdit">Edit</button>
                 </div>
             </div>
         </div>
 
-        <div v-if="error" class="rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-800">{{ error }}</div>
+        <div v-if="error" class=" border border-red-200 bg-red-50 p-4 text-sm text-red-800">{{ error }}</div>
 
-        <div v-if="menu" class="rounded-2xl border border-slate-200 bg-white p-5">
+        <div v-if="menu" class=" border border-slate-300 bg-white p-5">
             <div class="grid grid-cols-1 gap-4 lg:grid-cols-12">
                 <div class="lg:col-span-6">
                     <div class="text-xs font-semibold text-slate-600">Menu Name</div>
@@ -34,7 +34,7 @@
                 </div>
                 <div class="lg:col-span-12">
                     <div class="text-xs font-semibold text-slate-600">Icon</div>
-                    <div class="mt-1 rounded-lg border border-slate-200 bg-white p-3 text-sm text-slate-900" v-html="menu.icon"></div>
+                    <div class="mt-1 rounded-sm border border-slate-300 bg-white p-3 text-sm text-slate-900" v-html="menu.icon"></div>
                 </div>
             </div>
         </div>

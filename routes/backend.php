@@ -25,6 +25,7 @@ use App\Http\Controllers\Backend\AttendanceController;
 use App\Http\Controllers\Backend\AttendanceSummaryController;
 use App\Http\Controllers\Backend\TeacherController;
 use App\Http\Controllers\Backend\TeacherAttendanceController;
+use App\Http\Controllers\Backend\TeacherIdCardController;
 use App\Http\Controllers\Backend\LeaveApplicationController;
 use App\Http\Controllers\Backend\LibraryBooksInfoController;
 use App\Http\Controllers\Backend\AdmitCardController;
@@ -51,6 +52,9 @@ use App\Http\Controllers\Backend\SMS\SmsTemplateController;
 use App\Http\Controllers\Backend\SMS\SmsHistoryController;
 use App\Http\Controllers\Backend\SMS\SmsTransactionController;
 use App\Http\Controllers\Backend\HostelController;
+use App\Http\Controllers\Backend\HostelFeeGenerateController;
+use App\Http\Controllers\Backend\HostelFeeSetupController;
+use App\Http\Controllers\Backend\HostelPaymentController;
 use App\Http\Controllers\Backend\Website\BusController;
 use App\Http\Controllers\Backend\Website\CalenderController;
 use App\Http\Controllers\Backend\Website\ClassRoutineController;
@@ -319,6 +323,38 @@ Route::middleware(['auth:admin', 'auth.access'])->group(function () {
     Route::put('hostel/{id}', [HostelController::class, 'update'])->name('hostel.update');
     Route::delete('hostel/{id}', [HostelController::class, 'destroy'])->name('hostel.destroy');
 
+    // Hostel Fee Generate
+    Route::get('hostelFeeGenerate', [HostelFeeGenerateController::class, 'index'])->name('hostelFeeGenerate.index');
+    Route::view('hostelFeeGenerate/create', 'layouts.backend_app')->name('hostelFeeGenerate.create');
+    Route::post('hostelFeeGenerate', [HostelFeeGenerateController::class, 'store'])->name('hostelFeeGenerate.store');
+    Route::get('hostelFeeGenerate/{id}', [HostelFeeGenerateController::class, 'show'])->name('hostelFeeGenerate.show');
+    Route::view('hostelFeeGenerate/{id}/edit', 'layouts.backend_app')->name('hostelFeeGenerate.edit');
+    Route::put('hostelFeeGenerate/{id}', [HostelFeeGenerateController::class, 'update'])->name('hostelFeeGenerate.update');
+    Route::delete('hostelFeeGenerate/{id}', [HostelFeeGenerateController::class, 'destroy'])->name('hostelFeeGenerate.destroy');
+
+    // Hostel Payment
+    Route::get('hostelPayment', [HostelPaymentController::class, 'index'])->name('hostelPayment.index');
+    Route::view('hostelPayment/create', 'layouts.backend_app')->name('hostelPayment.create');
+    Route::post('hostelPayment', [HostelPaymentController::class, 'store'])->name('hostelPayment.store');
+    Route::get('hostelPayment/{id}', [HostelPaymentController::class, 'show'])->name('hostelPayment.show');
+    Route::view('hostelPayment/{id}/edit', 'layouts.backend_app')->name('hostelPayment.edit');
+    Route::put('hostelPayment/{id}', [HostelPaymentController::class, 'update'])->name('hostelPayment.update');
+    Route::delete('hostelPayment/{id}', [HostelPaymentController::class, 'destroy'])->name('hostelPayment.destroy');
+    Route::match(['get'], 'hostelPayment-monthly', [HostelPaymentController::class, 'monthly'])->name('hostelPayment.monthly');
+    Route::match(['get'], 'hostelPayment-dues', [HostelPaymentController::class, 'dues'])->name('hostelPayment.dues');
+    Route::match(['get', 'post'], 'hostelPayment-students', [HostelPaymentController::class, 'students'])->name('hostelPayment.students');
+    Route::match(['post'], 'hostelPayment-discount', [HostelPaymentController::class, 'discount'])->name('hostelPayment.discount');
+    Route::match(['get', 'delete'], 'hostel-fees-delete/{id}', [HostelPaymentController::class, 'feesDelete'])->name('hostelPayment.feesDelete');
+
+    // Hostel Fee Setup
+    Route::get('hostelFeeSetup', [HostelFeeSetupController::class, 'index'])->name('hostelFeeSetup.index');
+    Route::view('hostelFeeSetup/create', 'layouts.backend_app')->name('hostelFeeSetup.create');
+    Route::post('hostelFeeSetup', [HostelFeeSetupController::class, 'store'])->name('hostelFeeSetup.store');
+    Route::get('hostelFeeSetup/{id}', [HostelFeeSetupController::class, 'show'])->name('hostelFeeSetup.show');
+    Route::view('hostelFeeSetup/{id}/edit', 'layouts.backend_app')->name('hostelFeeSetup.edit');
+    Route::put('hostelFeeSetup/{id}', [HostelFeeSetupController::class, 'update'])->name('hostelFeeSetup.update');
+    Route::delete('hostelFeeSetup/{id}', [HostelFeeSetupController::class, 'destroy'])->name('hostelFeeSetup.destroy');
+
     // Payment Gateway
     Route::get('paymentGateway', [PaymentGatewayController::class, 'index'])->name('paymentGateway.index');
     Route::view('paymentGateway/create', 'layouts.backend_app')->name('paymentGateway.create');
@@ -339,6 +375,7 @@ Route::middleware(['auth:admin', 'auth.access'])->group(function () {
 
     // Teacher
     Route::get('teacher', [TeacherController::class, 'index'])->name('teacher.index');
+    Route::get('teacher-idcard', [TeacherIdCardController::class, 'index'])->name('teacher.idcard.index');
     Route::view('teacher/create', 'layouts.backend_app')->name('teacher.create');
     Route::post('teacher', [TeacherController::class, 'store'])->name('teacher.store');
     Route::get('teacher/{id}', [TeacherController::class, 'show'])->name('teacher.show');
@@ -389,7 +426,7 @@ Route::middleware(['auth:admin', 'auth.access'])->group(function () {
     Route::put('role/{id}', [RoleController::class, 'update'])->name('role.update');
     Route::delete('role/{id}', [RoleController::class, 'destroy'])->name('role.destroy');
 
-    Route::view('siteSetting', 'layouts.backend_app')->name('siteSetting.index');
+    Route::get('siteSetting', [SiteSettingController::class, 'index'])->name('siteSetting.index');
     Route::view('siteSetting/{id}/edit', 'layouts.backend_app')->name('siteSetting.edit');
     Route::get('siteSetting/{id}', [SiteSettingController::class, 'show'])->name('siteSetting.show');
     Route::put('siteSetting/{id}', [SiteSettingController::class, 'update'])->name('siteSetting.update');
@@ -575,12 +612,6 @@ Route::middleware(['auth:admin', 'auth.access'])->group(function () {
     Route::get('subjectwise-result-data', [ResultController::class, 'subjectwiseResultData']);
     Route::get('tabulation-sheet-data', [ResultController::class, 'tabulationSheetData']);
     Route::get('download-tabulation-sheet', [ResultController::class, 'exportTabulationSheet'])->name('result.exportTabulationSheet');
-    Route::get('tabulation-sheet-ct-data', [ResultController::class, 'tabulationSheetCtData']);
-    Route::get('tabulation-sheet-v2-data', [ResultController::class, 'tabulationSheetV2Data']);
-    Route::get('result-grade-summary-data', [ResultController::class, 'gradeSummaryData']);
-
-    Route::get('student/{id}/details', [StudentController::class, 'details']);
-    Route::put('student/{id}', [StudentController::class, 'update']);
 
     Route::view('student/create', 'layouts.backend_app')->name('student.create');
     Route::view('student-import', 'layouts.backend_app')->name('student.import');

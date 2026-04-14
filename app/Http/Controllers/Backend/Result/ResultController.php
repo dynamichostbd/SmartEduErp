@@ -8,6 +8,7 @@ use App\Exports\TabulationSheetExport;
 use App\Jobs\GenerateBulkMarksheetJob;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Storage;
@@ -881,6 +882,14 @@ class ResultController extends Controller
             return response()->json(null, 404);
         }
 
+        if (!$request->boolean('result_view')) {
+            $cacheKey = 'result_details_' . (int) $id;
+            $cached = Cache::get($cacheKey);
+            if (is_array($cached)) {
+                return response()->json($cached);
+            }
+        }
+
         $row = DB::table('results as r')
             ->leftJoin('academic_sessions as ses', 'ses.id', '=', 'r.academic_session_id')
             ->leftJoin('academic_qualifications as q', 'q.id', '=', 'r.academic_qualification_id')
@@ -907,12 +916,29 @@ class ResultController extends Controller
                 return response()->json(['message' => 'Result module not ready'], 422);
             }
 
+            $cacheKey = 'result_report_view_' . md5(json_encode([
+                'result_id' => (int) $row->id,
+                'type' => (string) ($request->input('type') ?? ''),
+                'failed_subject' => (int) ($request->input('failed_subject') ?? 0),
+                'passed_subject' => (int) ($request->input('passed_subject') ?? 0),
+                'exclude_fourth_subject' => (bool) $request->boolean('exclude_fourth_subject'),
+                'field_name' => (string) ($request->input('field_name') ?? ''),
+                'value' => (string) ($request->input('value') ?? ''),
+            ]));
+
+            $cached = Cache::get($cacheKey);
+            if (is_array($cached)) {
+                return response()->json($cached);
+            }
+
             $searchType = (string) ($request->input('type') ?? '');
             $failedSubject = (int) ($request->input('failed_subject') ?? 0);
             $passedSubject = (int) ($request->input('passed_subject') ?? 0);
             $excludeFourth = $request->boolean('exclude_fourth_subject');
             $field = (string) ($request->input('field_name') ?? '');
             $value = (string) ($request->input('value') ?? '');
+
+            $needAgg = $failedSubject > 0 || $passedSubject > 0 || $searchType === 'unmerit' || $searchType === 'all';
 
             $detailsQuery = DB::table('result_details as d')
                 ->join('students as std', 'std.id', '=', 'd.student_id')
@@ -931,24 +957,49 @@ class ResultController extends Controller
                 ])
                 ->where('d.result_id', $row->id);
 
-            if (Schema::hasTable('result_marks') && Schema::hasTable('subjects')) {
+            if ($needAgg && Schema::hasTable('result_marks') && Schema::hasTable('subjects')) {
                 $deptId = (int) ($row->department_id ?? 0);
                 $classId = (int) ($row->academic_class_id ?? 0);
 
-                $examCountSql = "(SELECT COUNT(DISTINCT rm.subject_id) FROM result_marks rm JOIN subjects sub ON sub.id = rm.subject_id WHERE rm.result_details_id = d.id AND (sub.is_child = 0 OR sub.is_child IS NULL))";
+                $needFourthFilter = $excludeFourth && $searchType === 'unmerit' && Schema::hasTable('student_subject_assigns');
 
-                if ($excludeFourth && $searchType === 'unmerit') {
-                    $failedCountSql = "(SELECT COUNT(DISTINCT rm.subject_id) FROM result_marks rm JOIN subjects sub ON sub.id = rm.subject_id JOIN result_details rd2 ON rd2.id = rm.result_details_id LEFT JOIN student_subject_assigns ssa ON ssa.subject_id = rm.subject_id AND ssa.student_id = rd2.student_id AND ssa.department_id = {$deptId} AND ssa.academic_class_id = {$classId} WHERE rm.result_details_id = d.id AND (rm.letter_grade = 'F' OR rm.is_absent = 1) AND (sub.is_child = 0 OR sub.is_child IS NULL) AND (ssa.main_subject != 0 OR ssa.main_subject IS NULL))";
-                } else {
-                    $failedCountSql = "(SELECT COUNT(DISTINCT rm.subject_id) FROM result_marks rm JOIN subjects sub ON sub.id = rm.subject_id WHERE rm.result_details_id = d.id AND (rm.letter_grade = 'F' OR rm.is_absent = 1) AND (sub.is_child = 0 OR sub.is_child IS NULL))";
+                $agg = DB::table('result_marks as rm')
+                    ->join('subjects as sub', 'sub.id', '=', 'rm.subject_id')
+                    ->join('result_details as d2', 'd2.id', '=', 'rm.result_details_id')
+                    ->where('d2.result_id', $row->id)
+                    ->where(function ($q) {
+                        $q->where('sub.is_child', 0)->orWhereNull('sub.is_child');
+                    });
+
+                if ($needFourthFilter) {
+                    $agg->leftJoin('student_subject_assigns as ssa', function ($join) use ($deptId, $classId) {
+                        $join->on('ssa.subject_id', '=', 'rm.subject_id')
+                            ->on('ssa.student_id', '=', 'd2.student_id')
+                            ->where('ssa.department_id', '=', $deptId)
+                            ->where('ssa.academic_class_id', '=', $classId);
+                    });
                 }
 
-                $passedCountSql = "(SELECT COUNT(DISTINCT rm.subject_id) FROM result_marks rm JOIN subjects sub ON sub.id = rm.subject_id WHERE rm.result_details_id = d.id AND rm.letter_grade != 'F' AND rm.is_absent = 0 AND (sub.is_child = 0 OR sub.is_child IS NULL))";
+                $failedExtra = $needFourthFilter ? " AND (ssa.main_subject != 0 OR ssa.main_subject IS NULL)" : '';
+
+                $agg
+                    ->groupBy('rm.result_details_id')
+                    ->select([
+                        'rm.result_details_id',
+                        DB::raw('COUNT(DISTINCT rm.subject_id) as exam_subject_count'),
+                        DB::raw("COUNT(DISTINCT CASE WHEN (rm.letter_grade = 'F' OR rm.is_absent = 1){$failedExtra} THEN rm.subject_id END) as failed_subject_count"),
+                        DB::raw("COUNT(DISTINCT CASE WHEN (rm.letter_grade != 'F' AND rm.is_absent = 0) THEN rm.subject_id END) as passed_subject_count"),
+                    ]);
 
                 $detailsQuery
-                    ->addSelect(DB::raw("{$examCountSql} as exam_subject_count"))
-                    ->addSelect(DB::raw("{$failedCountSql} as failed_subject_count"))
-                    ->addSelect(DB::raw("{$passedCountSql} as passed_subject_count"));
+                    ->leftJoinSub($agg, 'agg', function ($join) {
+                        $join->on('agg.result_details_id', '=', 'd.id');
+                    })
+                    ->addSelect([
+                        DB::raw('COALESCE(agg.exam_subject_count, 0) as exam_subject_count'),
+                        DB::raw('COALESCE(agg.failed_subject_count, 0) as failed_subject_count'),
+                        DB::raw('COALESCE(agg.passed_subject_count, 0) as passed_subject_count'),
+                    ]);
             }
 
             $allowed = [
@@ -1062,10 +1113,12 @@ class ResultController extends Controller
                 'Exam Name: ' . ($row->exam_name ?? ''),
             ];
 
-            return response()->json([
+            $out = [
                 'result' => $payload,
                 'excel_header' => $excelHeader,
-            ]);
+            ];
+            Cache::put($cacheKey, $out, now()->addMinutes(5));
+            return response()->json($out);
         }
 
         $allowIds = [];
@@ -1076,7 +1129,7 @@ class ResultController extends Controller
             }
         }
 
-        return response()->json([
+        $out = [
             'id' => $row->id,
             'academic_session_id' => $row->academic_session_id,
             'department_id' => $row->department_id,
@@ -1093,7 +1146,11 @@ class ResultController extends Controller
             'department_name' => $row->department_name,
             'academic_class_name' => $row->academic_class_name,
             'exam_name' => $row->exam_name,
-        ]);
+        ];
+
+        $cacheKey = 'result_details_' . (int) $id;
+        Cache::put($cacheKey, $out, now()->addMinutes(5));
+        return response()->json($out);
     }
 
     public function report(Request $request)

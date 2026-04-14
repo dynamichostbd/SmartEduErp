@@ -1,5 +1,5 @@
 <template>
-    <div class="mt-3 rounded-md border border-slate-200 bg-white p-4 sm:p-6">
+    <div class="mt-3 rounded-sm border border-slate-300 bg-white p-4 sm:p-6">
         <div class="mx-auto w-full max-w-6xl">
             <div class="grid grid-cols-1 gap-4 lg:grid-cols-12">
                 <div class="lg:col-span-3">
@@ -14,11 +14,11 @@
 
                 <div class="lg:col-span-9">
                     <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
-                        <div class="rounded-md border border-slate-200 bg-white">
-                            <div class="border-b border-slate-200 bg-slate-50 px-4 py-3 text-sm font-extrabold text-slate-800">COMPULSORY SUBJECTS</div>
+                        <div class="rounded-sm border border-slate-300 bg-white">
+                            <div class="border-b border-slate-300 bg-slate-50 px-4 py-3 text-sm font-extrabold text-slate-800">COMPULSORY SUBJECTS</div>
                             <div class="p-4">
                                 <div v-if="loading" class="text-sm text-slate-600">Loading...</div>
-                                <div v-else-if="error" class="rounded-md border border-red-200 bg-red-50 p-3 text-sm text-red-800">{{ error }}</div>
+                                <div v-else-if="error" class="rounded-sm border border-red-200 bg-red-50 p-3 text-sm text-red-800">{{ error }}</div>
                                 <div v-else>
                                     <div v-if="mainSubjects.length" class="overflow-x-auto">
                                         <table class="min-w-full text-sm">
@@ -36,16 +36,16 @@
                                             </tbody>
                                         </table>
                                     </div>
-                                    <div v-else class="rounded-md border border-slate-200 bg-slate-50 p-4 text-center text-sm text-slate-700">No subjects</div>
+                                    <div v-else class="rounded-sm border border-slate-300 bg-slate-50 p-4 text-center text-sm text-slate-700">No subjects</div>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="rounded-md border border-slate-200 bg-white">
-                            <div class="border-b border-slate-200 bg-slate-50 px-4 py-3 text-sm font-extrabold text-slate-800">4TH / MAIN SUBJECT</div>
+                        <div class="rounded-sm border border-slate-300 bg-white">
+                            <div class="border-b border-slate-300 bg-slate-50 px-4 py-3 text-sm font-extrabold text-slate-800">4TH / MAIN SUBJECT</div>
                             <div class="p-4">
                                 <div v-if="loading" class="text-sm text-slate-600">Loading...</div>
-                                <div v-else-if="error" class="rounded-md border border-red-200 bg-red-50 p-3 text-sm text-red-800">{{ error }}</div>
+                                <div v-else-if="error" class="rounded-sm border border-red-200 bg-red-50 p-3 text-sm text-red-800">{{ error }}</div>
                                 <div v-else>
                                     <div v-if="assignedSubjects.length" class="overflow-x-auto">
                                         <table class="min-w-full text-sm">
@@ -72,11 +72,11 @@
                                     </div>
 
                                     <div v-else>
-                                        <div v-if="subjectAssign?.note" class="mb-3 border-b border-slate-200 pb-2 text-xs font-semibold text-red-600">{{ subjectAssign.note }}</div>
+                                        <div v-if="subjectAssign?.note" class="mb-3 border-b border-slate-300 pb-2 text-xs font-semibold text-red-600">{{ subjectAssign.note }}</div>
 
                                         <div class="mb-4">
                                             <div class="mb-2 text-sm font-semibold text-slate-700">Select 4th Subject</div>
-                                            <select v-model="forthSubjectId" class="h-10 w-full rounded-md border border-slate-200 bg-white px-3 text-sm outline-none">
+                                            <select v-model="forthSubjectId" class="h-10 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none">
                                                 <option value="">--Select 4th Subject--</option>
                                                 <option v-for="s in fourthSubjects" :key="'fs-' + s.subject_id" :value="String(s.subject_id)">{{ subjectName(s) }}</option>
                                             </select>
@@ -113,7 +113,7 @@
                                         <div class="pt-5 text-center">
                                             <button
                                                 type="button"
-                                                class="rounded-md bg-emerald-600 px-10 py-2.5 text-sm font-extrabold text-white hover:bg-emerald-700 disabled:cursor-not-allowed disabled:opacity-60"
+                                                class="rounded-sm bg-emerald-600 px-10 py-2.5 text-sm font-extrabold text-white hover:bg-emerald-700 disabled:cursor-not-allowed disabled:opacity-60"
                                                 :disabled="submitting"
                                                 @click="submitAssign"
                                             >

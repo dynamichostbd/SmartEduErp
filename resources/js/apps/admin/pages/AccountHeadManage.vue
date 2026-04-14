@@ -1,90 +1,106 @@
 <template>
     <div class="flex flex-col gap-4">
-        <div class="rounded-2xl border border-slate-200 bg-white p-5">
+        <div class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
             <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <div class="min-w-0">
                     <div class="truncate text-xl font-semibold text-slate-900">{{ isEdit ? 'Edit Account Head' : 'Create Account Head' }}</div>
+                    <div class="mt-1 text-sm text-slate-600">{{ isEdit ? 'Update account head information' : 'Create a new account head' }}</div>
                 </div>
 
                 <div class="flex flex-wrap items-center gap-2">
-                    <button type="button" class="rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50" :disabled="saving" @click="goIndex">Back</button>
+                    <button type="button" class="rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50" :disabled="saving" @click="goIndex">Back</button>
                     <button type="button" class="rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-700" :disabled="saving" @click="submit">{{ saving ? '...' : isEdit ? 'Update' : 'Create' }}</button>
                 </div>
             </div>
         </div>
 
-        <div v-if="error" class="rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-800">{{ error }}</div>
-        <div v-if="success" class="rounded-2xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-800">{{ success }}</div>
+        <div v-if="error" class="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-800">{{ error }}</div>
+        <div v-if="success" class="rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-800">{{ success }}</div>
 
         <div class="grid grid-cols-1 gap-4 lg:grid-cols-12">
-            <div class="lg:col-span-9">
-                <div class="rounded-2xl border border-slate-200 bg-white p-5">
-                    <div class="grid grid-cols-1 gap-4 lg:grid-cols-12">
-                        <div class="lg:col-span-12">
+            <div class="space-y-4 lg:col-span-8 xl:col-span-9">
+                <div class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+                    <div class="min-w-0">
+                        <div class="text-sm font-semibold text-slate-900">Scope</div>
+                        <div class="mt-1 text-xs text-slate-500">Choose where this account head applies</div>
+                    </div>
+
+                    <div class="mt-4 space-y-4">
+                        <div>
                             <div class="text-xs font-semibold text-slate-600">Academic Level</div>
-                            <div class="mt-2 flex flex-wrap gap-2 rounded-xl border border-slate-200 p-3">
+                            <div class="mt-2 flex flex-wrap gap-2 rounded-xl border border-slate-300 p-3">
                                 <label v-for="q in qualifications" :key="'q-' + q.id" class="flex items-center gap-2 text-sm text-slate-700">
-                                    <input v-model="form.academic_qualification_ids" type="checkbox" class="h-4 w-4" :value="Number(q.id)" />
+                                    <input v-model="form.academic_qualification_ids" type="checkbox" class="h-4 w-4 rounded border-slate-300 shadow-sm" :value="Number(q.id)" />
                                     <span>{{ q.name }}</span>
                                 </label>
                             </div>
                         </div>
 
-                        <div class="lg:col-span-12">
+                        <div>
                             <div class="text-xs font-semibold text-slate-600">Department/Group</div>
-                            <div class="mt-2 flex flex-wrap gap-2 rounded-xl border border-slate-200 p-3">
+                            <div class="mt-2 flex flex-wrap gap-2 rounded-xl border border-slate-300 p-3">
                                 <label v-for="d in departmentsFiltered" :key="'d-' + d.id" class="flex items-center gap-2 text-sm text-slate-700">
-                                    <input v-model="form.department_ids" type="checkbox" class="h-4 w-4" :value="Number(d.id)" />
+                                    <input v-model="form.department_ids" type="checkbox" class="h-4 w-4 rounded border-slate-300 shadow-sm" :value="Number(d.id)" />
                                     <span>{{ d.name }}</span>
                                 </label>
                                 <div v-if="departmentsFiltered.length === 0" class="text-sm text-slate-500">Select academic level first.</div>
                             </div>
                         </div>
 
-                        <div class="lg:col-span-12">
+                        <div>
                             <div class="text-xs font-semibold text-slate-600">Class</div>
-                            <div class="mt-2 flex flex-wrap gap-2 rounded-xl border border-slate-200 p-3">
+                            <div class="mt-2 flex flex-wrap gap-2 rounded-xl border border-slate-300 p-3">
                                 <label v-for="c in classesFiltered" :key="'c-' + c.id" class="flex items-center gap-2 text-sm text-slate-700">
-                                    <input v-model="form.academic_class_ids" type="checkbox" class="h-4 w-4" :value="Number(c.id)" />
+                                    <input v-model="form.academic_class_ids" type="checkbox" class="h-4 w-4 rounded border-slate-300 shadow-sm" :value="Number(c.id)" />
                                     <span>{{ c.name }}</span>
                                 </label>
                                 <div v-if="classesFiltered.length === 0" class="text-sm text-slate-500">Select academic level first.</div>
                             </div>
                         </div>
+                    </div>
+                </div>
 
-                        <div class="lg:col-span-6">
+                <div class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+                    <div class="min-w-0">
+                        <div class="text-sm font-semibold text-slate-900">Account Head Details</div>
+                        <div class="mt-1 text-xs text-slate-500">Naming and type selection</div>
+                    </div>
+
+                    <div class="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                        <div>
                             <div class="text-xs font-semibold text-slate-600">Name</div>
-                            <input v-model="form.name" type="text" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
-                        </div>
-                        <div class="lg:col-span-6">
-                            <div class="text-xs font-semibold text-slate-600">Name (en)</div>
-                            <input v-model="form.name_en" type="text" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
+                            <input v-model="form.name" type="text" class="mt-1 h-9 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
                         </div>
 
-                        <div class="lg:col-span-12">
+                        <div>
+                            <div class="text-xs font-semibold text-slate-600">Name (en)</div>
+                            <input v-model="form.name_en" type="text" class="mt-1 h-9 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
+                        </div>
+
+                        <div class="sm:col-span-2 lg:col-span-3">
                             <div class="text-xs font-semibold text-slate-600">Head Type</div>
                             <div class="mt-2 flex flex-wrap items-center gap-4 text-sm text-slate-700">
-                                <label class="flex items-center gap-2"><input v-model="form.type" type="radio" class="h-4 w-4" value="college" /> <span>College</span></label>
-                                <label class="flex items-center gap-2"><input v-model="form.type" type="radio" class="h-4 w-4" value="admission" /> <span>Application Fee</span></label>
-                                <label class="flex items-center gap-2"><input v-model="form.type" type="radio" class="h-4 w-4" value="hostel" /> <span>Hostel</span></label>
-                                <label class="flex items-center gap-2"><input v-model="form.type" type="radio" class="h-4 w-4" value="certificate" /> <span>Certificate</span></label>
+                                <label class="flex items-center gap-2"><input v-model="form.type" type="radio" class="h-4 w-4 rounded border-slate-300 shadow-sm" value="college" /> <span>College</span></label>
+                                <label class="flex items-center gap-2"><input v-model="form.type" type="radio" class="h-4 w-4 rounded border-slate-300 shadow-sm" value="admission" /> <span>Application Fee</span></label>
+                                <label class="flex items-center gap-2"><input v-model="form.type" type="radio" class="h-4 w-4 rounded border-slate-300 shadow-sm" value="hostel" /> <span>Hostel</span></label>
+                                <label class="flex items-center gap-2"><input v-model="form.type" type="radio" class="h-4 w-4 rounded border-slate-300 shadow-sm" value="certificate" /> <span>Certificate</span></label>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="lg:col-span-3">
-                <div class="rounded-2xl border border-slate-200 bg-white p-5">
+            <div class="space-y-4 lg:col-span-4 xl:col-span-3">
+                <div class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
                     <div class="text-sm font-semibold text-slate-900">Status</div>
-                    <select v-model="form.status" class="mt-2 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none">
+                    <select v-model="form.status" class="mt-2 h-9 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none">
                         <option value="active">Active</option>
                         <option value="deactive">Deactive</option>
                         <option value="draft">Draft</option>
                     </select>
 
                     <button type="button" class="mt-4 h-9 w-full rounded-lg bg-slate-900 px-4 text-sm font-semibold text-white hover:bg-slate-800" :disabled="saving" @click="submit">{{ saving ? '...' : isEdit ? 'Update' : 'Create' }}</button>
-                    <button type="button" class="mt-2 h-9 w-full rounded-lg border border-slate-200 bg-white px-4 text-sm font-semibold text-slate-700 hover:bg-slate-50" :disabled="saving" @click="goIndex">Cancel</button>
+                    <button type="button" class="mt-2 h-9 w-full rounded-lg border border-slate-300 bg-white px-4 text-sm font-semibold text-slate-700 hover:bg-slate-50" :disabled="saving" @click="goIndex">Cancel</button>
                 </div>
             </div>
         </div>

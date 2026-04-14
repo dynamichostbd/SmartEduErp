@@ -8,6 +8,14 @@ use Illuminate\Support\Facades\Schema;
 
 trait DynamicDataTrait
 {
+    protected function dbCacheSuffix(): string
+    {
+        $conn = (string) (config('database.default') ?? 'default');
+        $db = (string) (config("database.connections.{$conn}.database") ?? '');
+        $suffix = $conn . '_' . $db;
+        return preg_replace('/[^A-Za-z0-9_]+/', '_', $suffix) ?: 'default';
+    }
+
     protected function hasTableCached(string $table): bool
     {
         static $cache = [];
@@ -15,7 +23,31 @@ trait DynamicDataTrait
             return $cache[$table];
         }
 
-        return $cache[$table] = Schema::hasTable($table);
+        $key = 'schema_has_table_' . $this->dbCacheSuffix() . '_' . $table;
+        return $cache[$table] = Cache::rememberForever($key, function () use ($table) {
+            return Schema::hasTable($table);
+        });
+    }
+
+    protected function columnsCached(string $table): array
+    {
+        static $cache = [];
+        if (array_key_exists($table, $cache)) {
+            return $cache[$table];
+        }
+
+        $key = 'schema_cols_' . $this->dbCacheSuffix() . '_' . $table;
+        return $cache[$table] = Cache::rememberForever($key, function () use ($table) {
+            if (!Schema::hasTable($table)) {
+                return [];
+            }
+
+            try {
+                return Schema::getColumnListing($table);
+            } catch (\Throwable $e) {
+                return [];
+            }
+        });
     }
 
     protected function hasColumnCached(string $table, string $column): bool
@@ -26,12 +58,16 @@ trait DynamicDataTrait
             return $cache[$key];
         }
 
-        return $cache[$key] = Schema::hasColumn($table, $column);
+        $cols = $this->columnsCached($table);
+        $exists = in_array($column, $cols, true);
+
+        return $cache[$key] = $exists;
     }
 
     protected function dynamicData()
     {
-        return Cache::rememberForever('dynamic_data_cache', function () {
+        $key = 'dynamic_data_cache_v2_' . $this->dbCacheSuffix();
+        return Cache::rememberForever($key, function () {
             $exams = [];
             if ($this->hasTableCached('exams')) {
                 $examCols = ['id', 'name'];
@@ -53,6 +89,15 @@ trait DynamicDataTrait
                     $q->where('status', 'active');
                 }
                 $accountHeads = $q->orderBy('id')->pluck('name', 'id')->toArray();
+            }
+
+            $hostelHeads = [];
+            if ($this->hasTableCached('account_heads') && $this->hasColumnCached('account_heads', 'type')) {
+                $q = DB::table('account_heads')->where('type', 'hostel');
+                if ($this->hasColumnCached('account_heads', 'status')) {
+                    $q->where('status', 'active');
+                }
+                $hostelHeads = $q->orderBy('id')->pluck('name', 'id')->toArray();
             }
 
             $admissionHeads = [];
@@ -198,6 +243,7 @@ trait DynamicDataTrait
                     ->toArray(),
                 'exams' => $exams,
                 'account_heads' => $accountHeads,
+                'hostel_heads' => $hostelHeads,
                 'admission_heads' => $admissionHeads,
                 'accounts_commons' => $accountsCommons,
                 'accounts_admissions' => $accountsAdmissions,

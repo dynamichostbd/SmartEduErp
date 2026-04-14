@@ -1,6 +1,6 @@
 <template>
     <div class="flex flex-col gap-4">
-        <div class="rounded-2xl border border-slate-200 bg-white p-5">
+        <div class=" border border-slate-300 bg-white p-5">
             <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <div class="min-w-0">
                     <div class="truncate text-xl font-semibold text-slate-900">Site Settings</div>
@@ -9,7 +9,7 @@
                 <div class="flex flex-wrap items-center gap-2">
                     <button
                         type="button"
-                        class="rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50"
+                        class="rounded-sm border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50"
                         :disabled="saving"
                         @click="reload"
                     >
@@ -17,7 +17,7 @@
                     </button>
                     <button
                         type="button"
-                        class="rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-700"
+                        class="rounded-sm bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-700"
                         :disabled="saving"
                         @click="save"
                     >
@@ -27,256 +27,256 @@
             </div>
         </div>
 
-        <div v-if="error" class="rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-800">{{ error }}</div>
-        <div v-if="success" class="rounded-2xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-800">{{ success }}</div>
+        <div v-if="error" class=" border border-red-200 bg-red-50 p-4 text-sm text-red-800">{{ error }}</div>
+        <div v-if="success" class=" border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-800">{{ success }}</div>
 
         <div class="grid grid-cols-1 gap-4 lg:grid-cols-12">
             <div class="lg:col-span-6">
-                <div class="rounded-2xl border border-slate-200 bg-white p-5">
+                <div class=" border border-slate-300 bg-white p-5">
                     <div class="text-sm font-semibold text-slate-900">Systems Info</div>
                     <div class="mt-4 grid grid-cols-1 gap-4 lg:grid-cols-12">
                         <div class="lg:col-span-6">
                             <div class="text-xs font-semibold text-slate-600">Title</div>
-                            <input v-model="form.title" type="text" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
+                            <input v-model="form.title" type="text" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
                         </div>
                         <div class="lg:col-span-6">
                             <div class="text-xs font-semibold text-slate-600">Title (en)</div>
-                            <input v-model="form.title_en" type="text" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
+                            <input v-model="form.title_en" type="text" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
                         </div>
                         <div class="lg:col-span-6">
                             <div class="text-xs font-semibold text-slate-600">Short Title</div>
-                            <input v-model="form.short_title" type="text" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
+                            <input v-model="form.short_title" type="text" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
                         </div>
                         <div class="lg:col-span-6">
                             <div class="text-xs font-semibold text-slate-600">Contact Email</div>
-                            <input v-model="form.contact_email" type="email" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
+                            <input v-model="form.contact_email" type="email" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
                         </div>
                         <div class="lg:col-span-6">
                             <div class="text-xs font-semibold text-slate-600">Feedback Email</div>
-                            <input v-model="form.feedback_email" type="email" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
+                            <input v-model="form.feedback_email" type="email" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
                         </div>
                         <div class="lg:col-span-6">
                             <div class="text-xs font-semibold text-slate-600">Mobile One</div>
-                            <input v-model="form.mobile1" type="text" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
+                            <input v-model="form.mobile1" type="text" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
                         </div>
                         <div class="lg:col-span-6">
                             <div class="text-xs font-semibold text-slate-600">Mobile Two</div>
-                            <input v-model="form.mobile2" type="text" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
+                            <input v-model="form.mobile2" type="text" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
                         </div>
                         <div class="lg:col-span-6">
                             <div class="text-xs font-semibold text-slate-600">Web</div>
-                            <input v-model="form.web" type="text" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
+                            <input v-model="form.web" type="text" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
                         </div>
                         <div class="lg:col-span-6">
                             <div class="text-xs font-semibold text-slate-600">Developed By</div>
-                            <input v-model="form.developed_by" type="text" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
+                            <input v-model="form.developed_by" type="text" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
                         </div>
                         <div class="lg:col-span-6">
                             <div class="text-xs font-semibold text-slate-600">Developed By URL</div>
-                            <input v-model="form.developed_by_url" type="url" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
+                            <input v-model="form.developed_by_url" type="url" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
                         </div>
                         <div class="lg:col-span-12">
                             <div class="text-xs font-semibold text-slate-600">Address</div>
-                            <textarea v-model="form.address" rows="3" class="mt-1 w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"></textarea>
+                            <textarea v-model="form.address" rows="3" class="mt-1 w-full rounded-sm border border-slate-300 bg-white px-3 py-2 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"></textarea>
                         </div>
                     </div>
                 </div>
 
-                <div class="mt-4 rounded-2xl border border-slate-200 bg-white p-5">
+                <div class="mt-4  border border-slate-300 bg-white p-5">
                     <div class="text-sm font-semibold text-slate-900">College Info</div>
                     <div class="mt-4 grid grid-cols-1 gap-4 lg:grid-cols-12">
                         <div class="lg:col-span-6">
                             <div class="text-xs font-semibold text-slate-600">College Name</div>
-                            <input v-model="form.college_name" type="text" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
+                            <input v-model="form.college_name" type="text" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
                         </div>
                         <div class="lg:col-span-6">
                             <div class="text-xs font-semibold text-slate-600">Phone</div>
-                            <input v-model="form.college_phone" type="text" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
+                            <input v-model="form.college_phone" type="text" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
                         </div>
                         <div class="lg:col-span-6">
                             <div class="text-xs font-semibold text-slate-600">Email</div>
-                            <input v-model="form.college_email" type="email" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
+                            <input v-model="form.college_email" type="email" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
                         </div>
                         <div class="lg:col-span-6">
                             <div class="text-xs font-semibold text-slate-600">Web</div>
-                            <input v-model="form.college_web" type="text" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
+                            <input v-model="form.college_web" type="text" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
                         </div>
                     </div>
                 </div>
 
-                <div class="mt-4 rounded-2xl border border-slate-200 bg-white p-5">
+                <div class="mt-4  border border-slate-300 bg-white p-5">
                     <div class="text-sm font-semibold text-slate-900">Images</div>
                     <div class="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                        <div class="rounded-xl border border-slate-200 p-4">
+                        <div class="rounded-xl border border-slate-300 p-4">
                             <div class="text-xs font-semibold text-slate-600">Logo</div>
-                            <img :src="previews.logo || resolveImage(form.logo)" class="mt-2 h-20 w-auto max-w-full rounded border border-slate-200 bg-white object-contain" alt="logo" />
-                            <input type="file" accept="image/*" class="mt-2 block w-full text-sm text-slate-700 file:mr-3 file:rounded-md file:border-0 file:bg-emerald-600 file:px-3 file:py-2 file:text-sm file:font-semibold file:text-white hover:file:bg-emerald-700" @change="onFile('logo', $event)" />
+                            <img :src="previews.logo || resolveImage(form.logo)" class="mt-2 h-20 w-auto max-w-full rounded border border-slate-300 bg-white object-contain" alt="logo" />
+                            <input type="file" accept="image/*" class="mt-2 block w-full text-sm text-slate-700 file:mr-3 file:rounded-sm file:border-0 file:bg-emerald-600 file:px-3 file:py-2 file:text-sm file:font-semibold file:text-white hover:file:bg-emerald-700" @change="onFile('logo', $event)" />
                         </div>
-                        <div class="rounded-xl border border-slate-200 p-4">
+                        <div class="rounded-xl border border-slate-300 p-4">
                             <div class="text-xs font-semibold text-slate-600">Logo Small</div>
-                            <img :src="previews.logo_small || resolveImage(form.logo_small)" class="mt-2 h-20 w-auto max-w-full rounded border border-slate-200 bg-white object-contain" alt="logo small" />
-                            <input type="file" accept="image/*" class="mt-2 block w-full text-sm text-slate-700 file:mr-3 file:rounded-md file:border-0 file:bg-emerald-600 file:px-3 file:py-2 file:text-sm file:font-semibold file:text-white hover:file:bg-emerald-700" @change="onFile('logo_small', $event)" />
+                            <img :src="previews.logo_small || resolveImage(form.logo_small)" class="mt-2 h-20 w-auto max-w-full rounded border border-slate-300 bg-white object-contain" alt="logo small" />
+                            <input type="file" accept="image/*" class="mt-2 block w-full text-sm text-slate-700 file:mr-3 file:rounded-sm file:border-0 file:bg-emerald-600 file:px-3 file:py-2 file:text-sm file:font-semibold file:text-white hover:file:bg-emerald-700" @change="onFile('logo_small', $event)" />
                         </div>
-                        <div class="rounded-xl border border-slate-200 p-4">
+                        <div class="rounded-xl border border-slate-300 p-4">
                             <div class="text-xs font-semibold text-slate-600">Favicon Logo</div>
-                            <img :src="previews.favicon || resolveImage(form.favicon)" class="mt-2 h-20 w-20 rounded border border-slate-200 bg-white object-contain" alt="favicon" />
-                            <input type="file" accept="image/*" class="mt-2 block w-full text-sm text-slate-700 file:mr-3 file:rounded-md file:border-0 file:bg-emerald-600 file:px-3 file:py-2 file:text-sm file:font-semibold file:text-white hover:file:bg-emerald-700" @change="onFile('favicon', $event)" />
+                            <img :src="previews.favicon || resolveImage(form.favicon)" class="mt-2 h-20 w-20 rounded border border-slate-300 bg-white object-contain" alt="favicon" />
+                            <input type="file" accept="image/*" class="mt-2 block w-full text-sm text-slate-700 file:mr-3 file:rounded-sm file:border-0 file:bg-emerald-600 file:px-3 file:py-2 file:text-sm file:font-semibold file:text-white hover:file:bg-emerald-700" @change="onFile('favicon', $event)" />
                         </div>
 
-                        <div class="rounded-xl border border-slate-200 p-4">
+                        <div class="rounded-xl border border-slate-300 p-4">
                             <div class="text-xs font-semibold text-slate-600">ID Card Front</div>
-                            <img :src="previews.idcard_front_part || resolveImage(form.idcard_front_part)" class="mt-2 h-24 w-full rounded border border-slate-200 bg-white object-cover" alt="idcard front" />
-                            <input type="file" accept="image/*" class="mt-2 block w-full text-sm text-slate-700 file:mr-3 file:rounded-md file:border-0 file:bg-emerald-600 file:px-3 file:py-2 file:text-sm file:font-semibold file:text-white hover:file:bg-emerald-700" @change="onFile('idcard_front_part', $event)" />
+                            <img :src="previews.idcard_front_part || resolveImage(form.idcard_front_part)" class="mt-2 h-24 w-full rounded border border-slate-300 bg-white object-cover" alt="idcard front" />
+                            <input type="file" accept="image/*" class="mt-2 block w-full text-sm text-slate-700 file:mr-3 file:rounded-sm file:border-0 file:bg-emerald-600 file:px-3 file:py-2 file:text-sm file:font-semibold file:text-white hover:file:bg-emerald-700" @change="onFile('idcard_front_part', $event)" />
                         </div>
-                        <div class="rounded-xl border border-slate-200 p-4">
+                        <div class="rounded-xl border border-slate-300 p-4">
                             <div class="text-xs font-semibold text-slate-600">ID Card Back</div>
-                            <img :src="previews.idcard_back_part || resolveImage(form.idcard_back_part)" class="mt-2 h-24 w-full rounded border border-slate-200 bg-white object-cover" alt="idcard back" />
-                            <input type="file" accept="image/*" class="mt-2 block w-full text-sm text-slate-700 file:mr-3 file:rounded-md file:border-0 file:bg-emerald-600 file:px-3 file:py-2 file:text-sm file:font-semibold file:text-white hover:file:bg-emerald-700" @change="onFile('idcard_back_part', $event)" />
+                            <img :src="previews.idcard_back_part || resolveImage(form.idcard_back_part)" class="mt-2 h-24 w-full rounded border border-slate-300 bg-white object-cover" alt="idcard back" />
+                            <input type="file" accept="image/*" class="mt-2 block w-full text-sm text-slate-700 file:mr-3 file:rounded-sm file:border-0 file:bg-emerald-600 file:px-3 file:py-2 file:text-sm file:font-semibold file:text-white hover:file:bg-emerald-700" @change="onFile('idcard_back_part', $event)" />
                         </div>
-                        <div class="rounded-xl border border-slate-200 p-4">
+                        <div class="rounded-xl border border-slate-300 p-4">
                             <div class="text-xs font-semibold text-slate-600">Admit Card Design</div>
-                            <img :src="previews.admit_card_image || resolveImage(form.admit_card_image)" class="mt-2 h-24 w-full rounded border border-slate-200 bg-white object-cover" alt="admit" />
-                            <input type="file" accept="image/*" class="mt-2 block w-full text-sm text-slate-700 file:mr-3 file:rounded-md file:border-0 file:bg-emerald-600 file:px-3 file:py-2 file:text-sm file:font-semibold file:text-white hover:file:bg-emerald-700" @change="onFile('admit_card_image', $event)" />
+                            <img :src="previews.admit_card_image || resolveImage(form.admit_card_image)" class="mt-2 h-24 w-full rounded border border-slate-300 bg-white object-cover" alt="admit" />
+                            <input type="file" accept="image/*" class="mt-2 block w-full text-sm text-slate-700 file:mr-3 file:rounded-sm file:border-0 file:bg-emerald-600 file:px-3 file:py-2 file:text-sm file:font-semibold file:text-white hover:file:bg-emerald-700" @change="onFile('admit_card_image', $event)" />
                         </div>
-                        <div class="rounded-xl border border-slate-200 p-4">
+                        <div class="rounded-xl border border-slate-300 p-4">
                             <div class="text-xs font-semibold text-slate-600">Marksheet Design</div>
-                            <img :src="previews.marksheet_image || resolveImage(form.marksheet_image)" class="mt-2 h-24 w-full rounded border border-slate-200 bg-white object-cover" alt="marksheet" />
-                            <input type="file" accept="image/*" class="mt-2 block w-full text-sm text-slate-700 file:mr-3 file:rounded-md file:border-0 file:bg-emerald-600 file:px-3 file:py-2 file:text-sm file:font-semibold file:text-white hover:file:bg-emerald-700" @change="onFile('marksheet_image', $event)" />
+                            <img :src="previews.marksheet_image || resolveImage(form.marksheet_image)" class="mt-2 h-24 w-full rounded border border-slate-300 bg-white object-cover" alt="marksheet" />
+                            <input type="file" accept="image/*" class="mt-2 block w-full text-sm text-slate-700 file:mr-3 file:rounded-sm file:border-0 file:bg-emerald-600 file:px-3 file:py-2 file:text-sm file:font-semibold file:text-white hover:file:bg-emerald-700" @change="onFile('marksheet_image', $event)" />
                         </div>
-                        <div class="rounded-xl border border-slate-200 p-4">
+                        <div class="rounded-xl border border-slate-300 p-4">
                             <div class="text-xs font-semibold text-slate-600">Online Admission</div>
-                            <img :src="previews.online_admission_form_image || resolveImage(form.online_admission_form_image)" class="mt-2 h-24 w-full rounded border border-slate-200 bg-white object-cover" alt="online admission" />
-                            <input type="file" accept="image/*" class="mt-2 block w-full text-sm text-slate-700 file:mr-3 file:rounded-md file:border-0 file:bg-emerald-600 file:px-3 file:py-2 file:text-sm file:font-semibold file:text-white hover:file:bg-emerald-700" @change="onFile('online_admission_form_image', $event)" />
+                            <img :src="previews.online_admission_form_image || resolveImage(form.online_admission_form_image)" class="mt-2 h-24 w-full rounded border border-slate-300 bg-white object-cover" alt="online admission" />
+                            <input type="file" accept="image/*" class="mt-2 block w-full text-sm text-slate-700 file:mr-3 file:rounded-sm file:border-0 file:bg-emerald-600 file:px-3 file:py-2 file:text-sm file:font-semibold file:text-white hover:file:bg-emerald-700" @change="onFile('online_admission_form_image', $event)" />
                         </div>
-                        <div class="rounded-xl border border-slate-200 p-4">
+                        <div class="rounded-xl border border-slate-300 p-4">
                             <div class="text-xs font-semibold text-slate-600">Teacher ID Card Front</div>
-                            <img :src="previews.teacher_id_card_front || resolveImage(form.teacher_id_card_front)" class="mt-2 h-24 w-full rounded border border-slate-200 bg-white object-cover" alt="teacher front" />
-                            <input type="file" accept="image/*" class="mt-2 block w-full text-sm text-slate-700 file:mr-3 file:rounded-md file:border-0 file:bg-emerald-600 file:px-3 file:py-2 file:text-sm file:font-semibold file:text-white hover:file:bg-emerald-700" @change="onFile('teacher_id_card_front', $event)" />
+                            <img :src="previews.teacher_id_card_front || resolveImage(form.teacher_id_card_front)" class="mt-2 h-24 w-full rounded border border-slate-300 bg-white object-cover" alt="teacher front" />
+                            <input type="file" accept="image/*" class="mt-2 block w-full text-sm text-slate-700 file:mr-3 file:rounded-sm file:border-0 file:bg-emerald-600 file:px-3 file:py-2 file:text-sm file:font-semibold file:text-white hover:file:bg-emerald-700" @change="onFile('teacher_id_card_front', $event)" />
                         </div>
-                        <div class="rounded-xl border border-slate-200 p-4">
+                        <div class="rounded-xl border border-slate-300 p-4">
                             <div class="text-xs font-semibold text-slate-600">Teacher ID Card Back</div>
-                            <img :src="previews.teacher_id_card_back || resolveImage(form.teacher_id_card_back)" class="mt-2 h-24 w-full rounded border border-slate-200 bg-white object-cover" alt="teacher back" />
-                            <input type="file" accept="image/*" class="mt-2 block w-full text-sm text-slate-700 file:mr-3 file:rounded-md file:border-0 file:bg-emerald-600 file:px-3 file:py-2 file:text-sm file:font-semibold file:text-white hover:file:bg-emerald-700" @change="onFile('teacher_id_card_back', $event)" />
+                            <img :src="previews.teacher_id_card_back || resolveImage(form.teacher_id_card_back)" class="mt-2 h-24 w-full rounded border border-slate-300 bg-white object-cover" alt="teacher back" />
+                            <input type="file" accept="image/*" class="mt-2 block w-full text-sm text-slate-700 file:mr-3 file:rounded-sm file:border-0 file:bg-emerald-600 file:px-3 file:py-2 file:text-sm file:font-semibold file:text-white hover:file:bg-emerald-700" @change="onFile('teacher_id_card_back', $event)" />
                         </div>
-                        <div class="rounded-xl border border-slate-200 p-4">
+                        <div class="rounded-xl border border-slate-300 p-4">
                             <div class="text-xs font-semibold text-slate-600">Principle Signature</div>
-                            <img :src="previews.principle_signature || resolveImage(form.principle_signature)" class="mt-2 h-24 w-full rounded border border-slate-200 bg-white object-contain" alt="signature" />
-                            <input type="file" accept="image/*" class="mt-2 block w-full text-sm text-slate-700 file:mr-3 file:rounded-md file:border-0 file:bg-emerald-600 file:px-3 file:py-2 file:text-sm file:font-semibold file:text-white hover:file:bg-emerald-700" @change="onFile('principle_signature', $event)" />
+                            <img :src="previews.principle_signature || resolveImage(form.principle_signature)" class="mt-2 h-24 w-full rounded border border-slate-300 bg-white object-contain" alt="signature" />
+                            <input type="file" accept="image/*" class="mt-2 block w-full text-sm text-slate-700 file:mr-3 file:rounded-sm file:border-0 file:bg-emerald-600 file:px-3 file:py-2 file:text-sm file:font-semibold file:text-white hover:file:bg-emerald-700" @change="onFile('principle_signature', $event)" />
                         </div>
-                        <div class="rounded-xl border border-slate-200 p-4">
+                        <div class="rounded-xl border border-slate-300 p-4">
                             <div class="text-xs font-semibold text-slate-600">Admit Card Four In One</div>
-                            <img :src="previews.admin_admit_card || resolveImage(form.admin_admit_card)" class="mt-2 h-24 w-full rounded border border-slate-200 bg-white object-cover" alt="four in one" />
-                            <input type="file" accept="image/*" class="mt-2 block w-full text-sm text-slate-700 file:mr-3 file:rounded-md file:border-0 file:bg-emerald-600 file:px-3 file:py-2 file:text-sm file:font-semibold file:text-white hover:file:bg-emerald-700" @change="onFile('admin_admit_card', $event)" />
+                            <img :src="previews.admin_admit_card || resolveImage(form.admin_admit_card)" class="mt-2 h-24 w-full rounded border border-slate-300 bg-white object-cover" alt="four in one" />
+                            <input type="file" accept="image/*" class="mt-2 block w-full text-sm text-slate-700 file:mr-3 file:rounded-sm file:border-0 file:bg-emerald-600 file:px-3 file:py-2 file:text-sm file:font-semibold file:text-white hover:file:bg-emerald-700" @change="onFile('admin_admit_card', $event)" />
                         </div>
-                        <div class="rounded-xl border border-slate-200 p-4">
+                        <div class="rounded-xl border border-slate-300 p-4">
                             <div class="text-xs font-semibold text-slate-600">Seat Card</div>
-                            <img :src="previews.seat_card || resolveImage(form.seat_card)" class="mt-2 h-24 w-full rounded border border-slate-200 bg-white object-cover" alt="seat card" />
-                            <input type="file" accept="image/*" class="mt-2 block w-full text-sm text-slate-700 file:mr-3 file:rounded-md file:border-0 file:bg-emerald-600 file:px-3 file:py-2 file:text-sm file:font-semibold file:text-white hover:file:bg-emerald-700" @change="onFile('seat_card', $event)" />
+                            <img :src="previews.seat_card || resolveImage(form.seat_card)" class="mt-2 h-24 w-full rounded border border-slate-300 bg-white object-cover" alt="seat card" />
+                            <input type="file" accept="image/*" class="mt-2 block w-full text-sm text-slate-700 file:mr-3 file:rounded-sm file:border-0 file:bg-emerald-600 file:px-3 file:py-2 file:text-sm file:font-semibold file:text-white hover:file:bg-emerald-700" @change="onFile('seat_card', $event)" />
                         </div>
-                        <div class="rounded-xl border border-slate-200 p-4">
+                        <div class="rounded-xl border border-slate-300 p-4">
                             <div class="text-xs font-semibold text-slate-600">Admit Card Two In One (Front)</div>
-                            <img :src="previews.admin_admit_card_front || resolveImage(form.admin_admit_card_front)" class="mt-2 h-24 w-full rounded border border-slate-200 bg-white object-cover" alt="two in one front" />
-                            <input type="file" accept="image/*" class="mt-2 block w-full text-sm text-slate-700 file:mr-3 file:rounded-md file:border-0 file:bg-emerald-600 file:px-3 file:py-2 file:text-sm file:font-semibold file:text-white hover:file:bg-emerald-700" @change="onFile('admin_admit_card_front', $event)" />
+                            <img :src="previews.admin_admit_card_front || resolveImage(form.admin_admit_card_front)" class="mt-2 h-24 w-full rounded border border-slate-300 bg-white object-cover" alt="two in one front" />
+                            <input type="file" accept="image/*" class="mt-2 block w-full text-sm text-slate-700 file:mr-3 file:rounded-sm file:border-0 file:bg-emerald-600 file:px-3 file:py-2 file:text-sm file:font-semibold file:text-white hover:file:bg-emerald-700" @change="onFile('admin_admit_card_front', $event)" />
                         </div>
-                        <div class="rounded-xl border border-slate-200 p-4">
+                        <div class="rounded-xl border border-slate-300 p-4">
                             <div class="text-xs font-semibold text-slate-600">Admit Card Two In One (Back)</div>
-                            <img :src="previews.admin_admit_card_back || resolveImage(form.admin_admit_card_back)" class="mt-2 h-24 w-full rounded border border-slate-200 bg-white object-cover" alt="two in one back" />
-                            <input type="file" accept="image/*" class="mt-2 block w-full text-sm text-slate-700 file:mr-3 file:rounded-md file:border-0 file:bg-emerald-600 file:px-3 file:py-2 file:text-sm file:font-semibold file:text-white hover:file:bg-emerald-700" @change="onFile('admin_admit_card_back', $event)" />
+                            <img :src="previews.admin_admit_card_back || resolveImage(form.admin_admit_card_back)" class="mt-2 h-24 w-full rounded border border-slate-300 bg-white object-cover" alt="two in one back" />
+                            <input type="file" accept="image/*" class="mt-2 block w-full text-sm text-slate-700 file:mr-3 file:rounded-sm file:border-0 file:bg-emerald-600 file:px-3 file:py-2 file:text-sm file:font-semibold file:text-white hover:file:bg-emerald-700" @change="onFile('admin_admit_card_back', $event)" />
                         </div>
                     </div>
                 </div>
             </div>
 
             <div class="lg:col-span-6">
-                <div class="rounded-2xl border border-slate-200 bg-white p-5">
+                <div class=" border border-slate-300 bg-white p-5">
                     <div class="text-sm font-semibold text-slate-900">Application Info</div>
                     <div class="mt-4 grid grid-cols-1 gap-4 lg:grid-cols-12">
                         <div class="lg:col-span-6">
                             <div class="text-xs font-semibold text-slate-600">Registration</div>
-                            <select v-model="form.registration" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
+                            <select v-model="form.registration" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
                                 <option :value="1">OPEN</option>
                                 <option :value="0">CLOSE</option>
                             </select>
                         </div>
                         <div class="lg:col-span-6">
                             <div class="text-xs font-semibold text-slate-600">Login Form</div>
-                            <select v-model="form.login_form" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
+                            <select v-model="form.login_form" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
                                 <option :value="1">OPEN</option>
                                 <option :value="0">CLOSE</option>
                             </select>
                         </div>
                         <div class="lg:col-span-6">
                             <div class="text-xs font-semibold text-slate-600">Apply Fees</div>
-                            <select v-model="form.apply_fees" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
+                            <select v-model="form.apply_fees" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
                                 <option :value="1">OPEN</option>
                                 <option :value="0">CLOSE</option>
                             </select>
                         </div>
                         <div class="lg:col-span-6">
                             <div class="text-xs font-semibold text-slate-600">Apply Fees Roll Generate</div>
-                            <select v-model="form.apply_fees_roll_generate" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
+                            <select v-model="form.apply_fees_roll_generate" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
                                 <option :value="1">YES</option>
                                 <option :value="0">NO</option>
                             </select>
                         </div>
                         <div class="lg:col-span-6">
                             <div class="text-xs font-semibold text-slate-600">Online Admission</div>
-                            <select v-model="form.online_admission" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
+                            <select v-model="form.online_admission" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
                                 <option :value="1">OPEN</option>
                                 <option :value="0">CLOSE</option>
                             </select>
                         </div>
                         <div class="lg:col-span-6">
                             <div class="text-xs font-semibold text-slate-600">Service Balance</div>
-                            <select v-model="form.service_balance" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
+                            <select v-model="form.service_balance" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
                                 <option :value="1">OPEN</option>
                                 <option :value="0">CLOSE</option>
                             </select>
                         </div>
                         <div class="lg:col-span-6">
                             <div class="text-xs font-semibold text-slate-600">App Service Fee</div>
-                            <select v-model="form.app_service_fee" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
+                            <select v-model="form.app_service_fee" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
                                 <option :value="1">OPEN</option>
                                 <option :value="0">CLOSE</option>
                             </select>
                         </div>
                         <div v-if="String(form.app_service_fee) === '1'" class="lg:col-span-6">
                             <div class="text-xs font-semibold text-slate-600">App Service Fee Amount</div>
-                            <input v-model="form.app_service_fee_amount" type="text" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
+                            <input v-model="form.app_service_fee_amount" type="text" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
                         </div>
                     </div>
                 </div>
 
-                <div class="mt-4 rounded-2xl border border-slate-200 bg-white p-5">
+                <div class="mt-4  border border-slate-300 bg-white p-5">
                     <div class="text-sm font-semibold text-slate-900">Payments Info</div>
                     <div class="mt-4 grid grid-cols-1 gap-4 lg:grid-cols-12">
                         <div class="lg:col-span-6">
                             <div class="text-xs font-semibold text-slate-600">SMS Cost</div>
-                            <input v-model="form.sms_cost" type="text" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
+                            <input v-model="form.sms_cost" type="text" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
                         </div>
                         <div class="lg:col-span-6">
                             <div class="text-xs font-semibold text-slate-600">Fine Amount</div>
-                            <input v-model="form.fine_amount" type="text" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
+                            <input v-model="form.fine_amount" type="text" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
                         </div>
                         <div class="lg:col-span-6">
                             <div class="text-xs font-semibold text-slate-600">Service Charge (%)</div>
-                            <input v-model="form.service_charge_percent" type="text" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
+                            <input v-model="form.service_charge_percent" type="text" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
                         </div>
                         <div class="lg:col-span-6">
                             <div class="text-xs font-semibold text-slate-600">Hostel Service Charge (%)</div>
-                            <input v-model="form.hostel_service_charge_percent" type="text" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
+                            <input v-model="form.hostel_service_charge_percent" type="text" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
                         </div>
                         <div class="lg:col-span-6">
                             <div class="text-xs font-semibold text-slate-600">Admission Fee Charge (%)</div>
-                            <input v-model="form.admission_fees_charge_percent" type="text" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
+                            <input v-model="form.admission_fees_charge_percent" type="text" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
                         </div>
                         <div class="lg:col-span-6">
                             <div class="text-xs font-semibold text-slate-600">Admission Fee Gateway (%)</div>
-                            <input v-model="form.admission_fees_gateway_percent" type="text" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
+                            <input v-model="form.admission_fees_gateway_percent" type="text" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
                         </div>
                         <div class="lg:col-span-6">
                             <div class="text-xs font-semibold text-slate-600">Admission Fee College (%)</div>
-                            <input v-model="form.admission_fees_college_percent" type="text" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
+                            <input v-model="form.admission_fees_college_percent" type="text" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
                         </div>
                     </div>
                 </div>
@@ -432,8 +432,6 @@ export default {
                 this.success = m
                 this.toast(m, 'success')
 
-                await this.reload()
-
                 Object.keys(this.previews).forEach((k) => {
                     try {
                         URL.revokeObjectURL(this.previews[k])
@@ -443,6 +441,14 @@ export default {
                 })
                 this.previews = {}
                 this.files = {}
+
+                const path = '/admin/siteSetting'
+                if (`${window.location.pathname || ''}${window.location.search || ''}` !== path) {
+                    window.history.pushState({}, '', path)
+                    window.dispatchEvent(new PopStateEvent('popstate'))
+                }
+
+                return
             } catch (e) {
                 this.error = e?.response?.data?.message || 'Update failed.'
             } finally {

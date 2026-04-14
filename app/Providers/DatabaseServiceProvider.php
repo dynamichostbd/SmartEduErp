@@ -65,7 +65,7 @@ class DatabaseServiceProvider extends ServiceProvider
 
             $key = "premited_menu_arr_role_{$roleId}";
 
-            return Cache::remember($key, 600, function () use ($roleId) {
+            return Cache::rememberForever($key, function () use ($roleId) {
                 return RolePermission::routesForRole($roleId);
             });
         });

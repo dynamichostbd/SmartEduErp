@@ -1,6 +1,6 @@
 <template>
     <div class="flex flex-col gap-4">
-        <div class="rounded-2xl border border-slate-200 bg-white p-5">
+        <div class=" border border-slate-300 bg-white p-5">
             <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <div class="min-w-0">
                     <div class="truncate text-xl font-semibold text-slate-900">Class Test Result Marks Entry</div>
@@ -10,7 +10,7 @@
                 <div class="flex flex-wrap items-center gap-2">
                     <button
                         type="button"
-                        class="rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50"
+                        class="rounded-sm border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50"
                         @click="goBack"
                     >
                         Back
@@ -19,44 +19,44 @@
             </div>
         </div>
 
-        <div v-if="error" class="rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-800">
+        <div v-if="error" class=" border border-red-200 bg-red-50 p-4 text-sm text-red-800">
             {{ error }}
         </div>
 
-        <div class="rounded-2xl border border-slate-200 bg-white p-5">
+        <div class=" border border-slate-300 bg-white p-5">
             <div class="grid grid-cols-1 gap-4 lg:grid-cols-12">
                 <div class="lg:col-span-3">
                     <div class="text-xs font-semibold text-slate-600">Session</div>
-                    <input :value="result.academic_session_name || ''" disabled class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-slate-50 px-3 text-sm" />
+                    <input :value="result.academic_session_name || ''" disabled class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-slate-50 px-3 text-sm" />
                 </div>
                 <div class="lg:col-span-3">
                     <div class="text-xs font-semibold text-slate-600">Academic Level</div>
-                    <input :value="result.academic_qualification_name || ''" disabled class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-slate-50 px-3 text-sm" />
+                    <input :value="result.academic_qualification_name || ''" disabled class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-slate-50 px-3 text-sm" />
                 </div>
                 <div class="lg:col-span-3">
                     <div class="text-xs font-semibold text-slate-600">Department</div>
-                    <input :value="result.department_name || ''" disabled class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-slate-50 px-3 text-sm" />
+                    <input :value="result.department_name || ''" disabled class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-slate-50 px-3 text-sm" />
                 </div>
                 <div class="lg:col-span-3">
                     <div class="text-xs font-semibold text-slate-600">Class</div>
-                    <input :value="result.academic_class_name || ''" disabled class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-slate-50 px-3 text-sm" />
+                    <input :value="result.academic_class_name || ''" disabled class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-slate-50 px-3 text-sm" />
                 </div>
 
                 <div class="lg:col-span-4">
                     <div class="text-xs font-semibold text-slate-600">Exam</div>
-                    <input :value="result.exam_name || ''" disabled class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-slate-50 px-3 text-sm" />
+                    <input :value="result.exam_name || ''" disabled class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-slate-50 px-3 text-sm" />
                 </div>
 
                 <div class="lg:col-span-4">
                     <div class="text-xs font-semibold text-slate-600">Exam Date</div>
-                    <input :value="result.exam_date || ''" disabled class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-slate-50 px-3 text-sm" />
+                    <input :value="result.exam_date || ''" disabled class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-slate-50 px-3 text-sm" />
                 </div>
 
                 <div class="lg:col-span-4">
                     <div class="text-xs font-semibold text-slate-600">Subject <span class="text-rose-600">*</span></div>
                     <select
                         v-model="subjectId"
-                        class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
+                        class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
                         :disabled="isPublished || loadingSubjects"
                         @change="selectSubject"
                     >
@@ -67,7 +67,7 @@
             </div>
         </div>
 
-        <div class="rounded-2xl border border-slate-200 bg-white p-5">
+        <div class=" border border-slate-300 bg-white p-5">
             <div class="flex flex-wrap items-center justify-between gap-2">
                 <div class="text-sm text-slate-600">
                     <span class="font-semibold text-slate-900">Students</span>
@@ -80,9 +80,9 @@
                 </div>
             </div>
 
-            <div class="mt-4 overflow-x-auto rounded-xl border border-slate-200">
+            <div class="mt-4 overflow-x-auto">
                 <table class="min-w-full divide-y divide-slate-200 text-sm">
-                    <thead class="bg-slate-50">
+                    <thead class="bg-emerald-100">
                         <tr>
                             <th class="px-3 py-2 text-left font-semibold text-slate-700">Roll</th>
                             <th class="px-3 py-2 text-left font-semibold text-slate-700">Software ID</th>
@@ -100,7 +100,7 @@
                                     v-model="details[idx].marks[0].mark"
                                     type="number"
                                     step="0.01"
-                                    class="h-9 w-28 rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
+                                    class="h-9 w-28 rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
                                     :disabled="isPublished || !subjectId"
                                     :ref="(el) => setMarkInputRef(el, idx)"
                                     @keydown.enter.prevent="saveAndMove(idx, 1)"

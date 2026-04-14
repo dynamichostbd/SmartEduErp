@@ -169,6 +169,27 @@ class AdminManagementController extends Controller
         $authRoleId = $auth->role_id ?? null;
         $targetId = ((int) $authRoleId === 1) ? (int) $id : (int) $authId;
 
+        $select = [
+            'a.id',
+            'a.name',
+            'a.email',
+            'a.username',
+            'a.type',
+            'a.mobile',
+            'a.emergency_contacts',
+            'a.department_id',
+            'a.role_id',
+            'a.profile',
+            'r.id as role_row_id',
+            'r.name as role_name',
+            'd.id as dept_row_id',
+            'd.name as dept_name',
+        ];
+
+        if (Schema::hasColumn('admins', 'address')) {
+            $select[] = 'a.address';
+        }
+
         $row = DB::table('admins as a')
             ->leftJoin('roles as r', function ($j) {
                 $j->on('r.id', '=', 'a.role_id');
@@ -176,23 +197,7 @@ class AdminManagementController extends Controller
             ->leftJoin('departments as d', function ($j) {
                 $j->on('d.id', '=', 'a.department_id');
             })
-            ->select([
-                'a.id',
-                'a.name',
-                'a.email',
-                'a.username',
-                'a.type',
-                'a.mobile',
-                'a.address',
-                'a.emergency_contacts',
-                'a.department_id',
-                'a.role_id',
-                'a.profile',
-                'r.id as role_row_id',
-                'r.name as role_name',
-                'd.id as dept_row_id',
-                'd.name as dept_name',
-            ])
+            ->select($select)
             ->where('a.id', $targetId)
             ->first();
 
@@ -207,7 +212,6 @@ class AdminManagementController extends Controller
             'username' => $row->username ?? null,
             'type' => $row->type ?? null,
             'mobile' => $row->mobile ?? null,
-            'address' => $row->address ?? null,
             'emergency_contacts' => $row->emergency_contacts ?? null,
             'department_id' => $row->department_id ?? null,
             'role_id' => $row->role_id ?? null,

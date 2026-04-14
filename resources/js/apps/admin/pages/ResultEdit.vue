@@ -1,6 +1,6 @@
 <template>
     <div class="flex flex-col gap-4">
-        <div class="rounded-2xl border border-slate-200 bg-white p-5">
+        <div class=" border border-slate-300 bg-white p-5">
             <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <div class="min-w-0">
                     <div class="truncate text-xl font-semibold text-slate-900">Result Marks Entry</div>
@@ -10,7 +10,7 @@
                 <div class="flex flex-wrap items-center gap-2">
                     <button
                         type="button"
-                        class="rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50"
+                        class="rounded-sm border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50"
                         @click="goBack"
                     >
                         Back
@@ -18,7 +18,7 @@
 
                     <button
                         type="button"
-                        class="rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800"
+                        class="rounded-sm bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800"
                         :disabled="syncing"
                         @click="syncResult"
                     >
@@ -27,7 +27,7 @@
 
                     <button
                         type="button"
-                        class="rounded-lg bg-rose-600 px-4 py-2 text-sm font-semibold text-white hover:bg-rose-700"
+                        class="rounded-sm bg-rose-600 px-4 py-2 text-sm font-semibold text-white hover:bg-rose-700"
                         :disabled="syncingSubject"
                         @click="syncSubject"
                     >
@@ -37,32 +37,32 @@
             </div>
         </div>
 
-        <div v-if="error" class="rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-800">
+        <div v-if="error" class=" border border-red-200 bg-red-50 p-4 text-sm text-red-800">
             {{ error }}
         </div>
 
-        <div class="rounded-2xl border border-slate-200 bg-white p-5">
+        <div class=" border border-slate-300 bg-white p-5">
             <div class="grid grid-cols-1 gap-4 lg:grid-cols-12">
                 <div class="lg:col-span-3">
                     <div class="text-xs font-semibold text-slate-600">Session</div>
-                    <input :value="result.academic_session_name || ''" disabled class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-slate-50 px-3 text-sm" />
+                    <input :value="result.academic_session_name || ''" disabled class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-slate-50 px-3 text-sm" />
                 </div>
                 <div class="lg:col-span-3">
                     <div class="text-xs font-semibold text-slate-600">Academic Level</div>
-                    <input :value="result.academic_qualification_name || ''" disabled class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-slate-50 px-3 text-sm" />
+                    <input :value="result.academic_qualification_name || ''" disabled class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-slate-50 px-3 text-sm" />
                 </div>
                 <div class="lg:col-span-3">
                     <div class="text-xs font-semibold text-slate-600">Department</div>
-                    <input :value="result.department_name || ''" disabled class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-slate-50 px-3 text-sm" />
+                    <input :value="result.department_name || ''" disabled class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-slate-50 px-3 text-sm" />
                 </div>
                 <div class="lg:col-span-3">
                     <div class="text-xs font-semibold text-slate-600">Class</div>
-                    <input :value="result.academic_class_name || ''" disabled class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-slate-50 px-3 text-sm" />
+                    <input :value="result.academic_class_name || ''" disabled class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-slate-50 px-3 text-sm" />
                 </div>
 
                 <div class="lg:col-span-4">
                     <div class="text-xs font-semibold text-slate-600">Exam</div>
-                    <input :value="result.exam_name || ''" disabled class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-slate-50 px-3 text-sm" />
+                    <input :value="result.exam_name || ''" disabled class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-slate-50 px-3 text-sm" />
                 </div>
 
                 <div class="lg:col-span-3">
@@ -71,7 +71,7 @@
                         v-model.number="totalExamSubjects"
                         type="number"
                         min="1"
-                        class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
+                        class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
                         :disabled="isPublished"
                         @change="saveTotalExamSubjects"
                     />
@@ -81,7 +81,7 @@
                     <div class="text-xs font-semibold text-slate-600">Convert Mark</div>
                     <select
                         v-model.number="convertMark"
-                        class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
+                        class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
                         :disabled="isPublished"
                     >
                         <option :value="0">No</option>
@@ -93,7 +93,7 @@
                     <div class="text-xs font-semibold text-slate-600">Subject <span class="text-rose-600">*</span></div>
                     <select
                         v-model="subjectId"
-                        class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
+                        class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
                         :disabled="isPublished || loadingSubjects"
                         @change="selectSubject"
                     >
@@ -106,7 +106,7 @@
                     <div class="text-xs font-semibold text-slate-600">Paper</div>
                     <select
                         v-model="childSubjectId"
-                        class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
+                        class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
                         :disabled="isPublished || !subjectId"
                         @change="filterChildSubject"
                     >
@@ -119,7 +119,7 @@
                 <div class="lg:col-span-12 flex flex-wrap items-end gap-2">
                     <button
                         type="button"
-                        class="h-9 rounded-lg bg-slate-900 px-4 text-sm font-semibold text-white hover:bg-slate-800"
+                        class="h-9 rounded-sm bg-slate-900 px-4 text-sm font-semibold text-white hover:bg-slate-800"
                         :disabled="loading || !subjectId"
                         @click="loadStudents"
                     >
@@ -128,7 +128,7 @@
 
                     <button
                         type="button"
-                        class="h-9 rounded-lg bg-emerald-600 px-4 text-sm font-semibold text-white hover:bg-emerald-700"
+                        class="h-9 rounded-sm bg-emerald-600 px-4 text-sm font-semibold text-white hover:bg-emerald-700"
                         :disabled="savingAll || isPublished || !subjectId"
                         @click="saveAll"
                     >
@@ -138,7 +138,7 @@
             </div>
         </div>
 
-        <div class="rounded-2xl border border-slate-200 bg-white p-5">
+        <div class=" border border-slate-300 bg-white p-5">
             <div class="flex flex-wrap items-center justify-between gap-2">
                 <div class="text-sm text-slate-600">
                     <span class="font-semibold text-slate-900">Students</span>
@@ -156,36 +156,36 @@
                 </div>
             </div>
 
-            <div class="mt-4 overflow-x-auto rounded-xl border border-slate-200">
-                <table class="min-w-full divide-y divide-slate-200 text-sm">
-                    <thead class="bg-slate-50">
-                        <tr>
-                            <th class="px-3 py-2 text-left font-semibold text-slate-700">Roll</th>
-                            <th class="px-3 py-2 text-left font-semibold text-slate-700">Software ID</th>
-                            <th class="px-3 py-2 text-left font-semibold text-slate-700">Student</th>
+            <div class="mt-4 overflow-x-auto">
+                <table class="min-w-full border-collapse border border-slate-300 text-sm">
+                    <thead class="bg-emerald-100">
+                        <tr class="text-left text-xs font-semibold uppercase tracking-wider text-slate-700">
+                            <th class="border border-slate-300 bg-emerald-100 px-1 py-2 text-slate-700">Roll</th>
+                            <th class="border border-slate-300 bg-emerald-100 px-1 py-2 text-slate-700">Software ID</th>
+                            <th class="border border-slate-300 bg-emerald-100 px-1 py-2 text-slate-700">Student</th>
 
-                            <th class="px-3 py-2 text-center font-semibold text-slate-700">CT</th>
-                            <th class="px-3 py-2 text-center font-semibold text-slate-700" v-if="showCq">CQ</th>
-                            <th class="px-3 py-2 text-center font-semibold text-slate-700" v-if="showMcq">MCQ</th>
-                            <th class="px-3 py-2 text-center font-semibold text-slate-700" v-if="showPractical">Practical</th>
-                            <th class="px-3 py-2 text-center font-semibold text-slate-700">Absent</th>
+                            <th class="border border-slate-300 bg-emerald-100 px-1 py-2 text-center text-slate-700">CT</th>
+                            <th class="border border-slate-300 bg-emerald-100 px-1 py-2 text-center text-slate-700" v-if="showCq">CQ</th>
+                            <th class="border border-slate-300 bg-emerald-100 px-1 py-2 text-center text-slate-700" v-if="showMcq">MCQ</th>
+                            <th class="border border-slate-300 bg-emerald-100 px-1 py-2 text-center text-slate-700" v-if="showPractical">Practical</th>
+                            <th class="border border-slate-300 bg-emerald-100 px-1 py-2 text-center text-slate-700">Absent</th>
 
-                            <th class="px-3 py-2 text-center font-semibold text-slate-700">Obtained</th>
-                            <th class="px-3 py-2 text-center font-semibold text-slate-700">Total</th>
+                            <th class="border border-slate-300 bg-emerald-100 px-1 py-2 text-center text-slate-700">Obtained</th>
+                            <th class="border border-slate-300 bg-emerald-100 px-1 py-2 text-center text-slate-700">Total</th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-slate-200 bg-white">
-                        <tr v-for="(d, idx) in details" :key="'d-' + idx">
-                            <td class="px-3 py-2 text-slate-800">{{ d?.student?.college_roll || '' }}</td>
-                            <td class="px-3 py-2 text-slate-800">{{ d?.student?.student_id || '' }}</td>
-                            <td class="px-3 py-2 text-slate-800">{{ d?.student?.name || '' }}</td>
+                    <tbody class="bg-white">
+                        <tr v-for="(d, idx) in details" :key="'d-' + idx" :class="idx % 2 === 0 ? 'bg-white' : 'bg-slate-50'">
+                            <td class="border border-slate-300 px-1 py-1 text-slate-800">{{ d?.student?.college_roll || '' }}</td>
+                            <td class="border border-slate-300 px-1 py-1 text-slate-800">{{ d?.student?.student_id || '' }}</td>
+                            <td class="border border-slate-300 px-1 py-1 text-slate-800">{{ d?.student?.name || '' }}</td>
 
-                            <td class="px-3 py-2">
+                            <td class="border border-slate-300 px-1 py-1">
                                 <input
                                     v-model="details[idx].marks[0].ct_mark"
                                     type="number"
                                     step="0.01"
-                                    class="h-9 w-24 rounded-lg border border-slate-200 bg-white px-2 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
+                                    class="h-9 w-24 rounded-sm border border-slate-300 bg-white px-2 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
                                     :disabled="isPublished || !subjectId"
                                     :ref="(el) => setInputRef(el, idx, 'ct')"
                                     @keyup="recalcRow(idx)"
@@ -194,12 +194,12 @@
                                 />
                             </td>
 
-                            <td class="px-3 py-2" v-if="showCq">
+                            <td class="border border-slate-300 px-3 py-2" v-if="showCq">
                                 <input
                                     v-model="details[idx].marks[0].cq_mark"
                                     type="number"
                                     step="0.01"
-                                    class="h-9 w-24 rounded-lg border border-slate-200 bg-white px-2 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
+                                    class="h-9 w-24 rounded-sm border border-slate-300 bg-white px-2 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
                                     :disabled="isPublished || !subjectId"
                                     :ref="(el) => setInputRef(el, idx, 'cq')"
                                     @keyup="recalcRow(idx)"
@@ -208,12 +208,12 @@
                                 />
                             </td>
 
-                            <td class="px-3 py-2" v-if="showMcq">
+                            <td class="px-3 py-2 border border-slate-300" v-if="showMcq">
                                 <input
                                     v-model="details[idx].marks[0].mcq_mark"
                                     type="number"
                                     step="0.01"
-                                    class="h-9 w-24 rounded-lg border border-slate-200 bg-white px-2 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
+                                    class="h-9 w-24 rounded-sm border border-slate-300 bg-white px-2 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
                                     :disabled="isPublished || !subjectId"
                                     :ref="(el) => setInputRef(el, idx, 'mcq')"
                                     @keyup="recalcRow(idx)"
@@ -222,12 +222,12 @@
                                 />
                             </td>
 
-                            <td class="px-3 py-2" v-if="showPractical">
+                            <td class="px-3 py-2 border border-slate-300" v-if="showPractical">
                                 <input
                                     v-model="details[idx].marks[0].practical_mark"
                                     type="number"
                                     step="0.01"
-                                    class="h-9 w-24 rounded-lg border border-slate-200 bg-white px-2 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
+                                    class="h-9 w-24 rounded-sm border border-slate-300 bg-white px-2 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
                                     :disabled="isPublished || !subjectId"
                                     :ref="(el) => setInputRef(el, idx, 'practical')"
                                     @keyup="recalcRow(idx)"
@@ -236,7 +236,7 @@
                                 />
                             </td>
 
-                            <td class="px-3 py-2 text-center">
+                            <td class="px-3 py-2 text-center border border-slate-300">
                                 <input
                                     v-model="details[idx].marks[0].is_absent"
                                     type="checkbox"
@@ -246,8 +246,8 @@
                                 />
                             </td>
 
-                            <td class="px-3 py-2 text-center text-slate-800">{{ details[idx].marks[0].obtained_mark ?? '' }}</td>
-                            <td class="px-3 py-2 text-center text-slate-800">{{ details[idx].marks[0].total_mark ?? '' }}</td>
+                            <td class="px-3 py-2 text-center text-slate-800 border border-slate-300">{{ details[idx].marks[0].obtained_mark ?? '' }}</td>
+                            <td class="px-3 py-2 text-center text-slate-800 border border-slate-300">{{ details[idx].marks[0].total_mark ?? '' }}</td>
                         </tr>
 
                         <tr v-if="!details.length">
@@ -366,11 +366,21 @@ export default {
             this.loading = true
             this.error = ''
             try {
+                console.log('Loading result with ID:', this.resultId)
                 const res = await window.axios.get(`/admin/result/${this.resultId}/details`)
                 const r = res?.data || {}
+                console.log('Result data loaded:', r)
                 this.result = { ...this.result, ...r, id: r?.id || this.resultId }
                 this.totalExamSubjects = Number(r?.total_exam_subjects || 7)
+                
+                // Check if all required fields are present
+                const requiredFields = ['id', 'academic_session_id', 'academic_qualification_id', 'department_id', 'academic_class_id', 'exam_id']
+                const missingFields = requiredFields.filter(field => !this.result[field])
+                if (missingFields.length > 0) {
+                    console.warn('Missing result fields:', missingFields, this.result)
+                }
             } catch (e) {
+                console.error('Error loading result:', e)
                 this.error = e?.response?.data?.message || 'Failed to load result.'
             } finally {
                 this.loading = false
@@ -395,12 +405,19 @@ export default {
             }
         },
         selectSubject() {
+            console.log('Subject selected:', this.subjectId)
             const s = (this.subjects || []).find((x) => String(x?.subject_id) === String(this.subjectId))
+            console.log('Found subject:', s)
             this.subject = s || null
             this.childSubjectId = ''
             this.details = []
             this.childEnabled = false
             this.childSubjects = []
+            
+            // Auto-load students when subject is selected
+            if (this.subjectId && this.result.id) {
+                this.loadStudents()
+            }
         },
         filterChildSubject() {
             // handled server-side by fetching students again; keep here so UI matches legacy
@@ -415,7 +432,41 @@ export default {
             this.error = ''
             this.inputRefs = {}
 
-            if (!this.subjectId) return
+            if (!this.subjectId) {
+                this.error = 'Please select a subject first'
+                return
+            }
+
+            // Debug: Log the entire result object
+            console.log('Complete result object:', this.result)
+            console.log('Result ID:', this.result.id)
+            console.log('Academic Session ID:', this.result.academic_session_id)
+            console.log('Academic Qualification ID:', this.result.academic_qualification_id)
+            console.log('Department ID:', this.result.department_id)
+            console.log('Academic Class ID:', this.result.academic_class_id)
+            console.log('Exam ID:', this.result.exam_id)
+            console.log('Subject ID:', this.subjectId)
+
+            // Validate required fields before making API call
+            const requiredFields = {
+                result_id: this.result.id,
+                academic_session_id: this.result.academic_session_id,
+                academic_class_id: this.result.academic_class_id,
+                department_id: this.result.department_id,
+                academic_qualification_id: this.result.academic_qualification_id,
+                subject_id: this.subjectId,
+                exam_id: this.result.exam_id,
+            }
+
+            const missingFields = Object.entries(requiredFields)
+                .filter(([key, value]) => !value || value === '' || value === '0' || value === 0)
+                .map(([key]) => key)
+
+            if (missingFields.length > 0) {
+                this.error = `Missing required fields: ${missingFields.join(', ')}`
+                console.error('Missing fields:', missingFields, requiredFields)
+                return
+            }
 
             try {
                 const selectedStudent = Number(this.subject?.main_subject || 0) || Number(this.subject?.fourth_subject || 0) ? 1 : 0
@@ -432,7 +483,9 @@ export default {
                     total_exam_subjects: this.totalExamSubjects,
                 }
 
+                console.log('Loading students with params:', params)
                 const res = await window.axios.get('/admin/students-for-marks-entry', { params })
+                console.log('Students response:', res?.data)
 
                 const payload = res?.data || {}
                 this.details = Array.isArray(payload?.details) ? payload.details : []
@@ -457,6 +510,8 @@ export default {
 
                 this.$nextTick(() => this.focusRow(0))
             } catch (e) {
+                console.error('Error loading students:', e)
+                console.error('Error response:', e?.response?.data)
                 this.error = e?.response?.data?.message || 'Failed to load students.'
             }
         },

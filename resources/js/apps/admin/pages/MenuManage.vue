@@ -1,13 +1,14 @@
 <template>
     <div class="flex flex-col gap-4">
-        <div class="rounded-2xl border border-slate-200 bg-white p-5">
+        <div class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
             <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <div class="min-w-0">
                     <div class="truncate text-xl font-semibold text-slate-900">{{ isEdit ? 'Edit Menu' : 'Create Menu' }}</div>
+                    <div class="mt-1 text-sm text-slate-600">{{ isEdit ? 'Update menu details and routing' : 'Create a new menu item and set its routing' }}</div>
                 </div>
 
                 <div class="flex flex-wrap items-center gap-2">
-                    <button type="button" class="rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50" :disabled="saving" @click="goIndex">
+                    <button type="button" class="rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50" :disabled="saving" @click="goIndex">
                         Back
                     </button>
                     <button type="button" class="rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-700" :disabled="saving" @click="submit">
@@ -17,43 +18,46 @@
             </div>
         </div>
 
-        <div v-if="error" class="rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-800">{{ error }}</div>
-        <div v-if="success" class="rounded-2xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-800">{{ success }}</div>
+        <div v-if="error" class="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-800">{{ error }}</div>
+        <div v-if="success" class="rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-800">{{ success }}</div>
 
         <div class="grid grid-cols-1 gap-4 lg:grid-cols-12">
-            <div class="lg:col-span-9">
-                <div class="rounded-2xl border border-slate-200 bg-white p-5">
-                    <div class="grid grid-cols-1 gap-4 lg:grid-cols-12">
-                        <div class="lg:col-span-6">
+            <div class="space-y-4 lg:col-span-8 xl:col-span-9">
+                <div class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+                    <div class="text-sm font-semibold text-slate-900">Menu Details</div>
+                    <div class="mt-1 text-xs text-slate-500">Basic menu configuration</div>
+
+                    <div class="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                        <div>
                             <div class="text-xs font-semibold text-slate-600">Parent Menu</div>
-                            <select v-model="form.parent_id" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
+                            <select v-model="form.parent_id" class="mt-1 h-9 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
                                 <option :value="null">--Select Any--</option>
                                 <option v-for="(label, id) in allMenus" :key="'pm-' + id" :value="Number(id)">{{ label }}</option>
                             </select>
                         </div>
 
-                        <div class="lg:col-span-6">
+                        <div>
                             <div class="text-xs font-semibold text-slate-600">Menu Name</div>
-                            <input v-model="form.menu_name" type="text" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
+                            <input v-model="form.menu_name" type="text" class="mt-1 h-9 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
                         </div>
 
-                        <div class="lg:col-span-6">
+                        <div>
                             <div class="text-xs font-semibold text-slate-600">Menu Icon</div>
-                            <input v-model="form.icon" type="text" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
+                            <input v-model="form.icon" type="text" class="mt-1 h-9 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
                         </div>
 
-                        <div class="lg:col-span-6">
+                        <div>
                             <div class="text-xs font-semibold text-slate-600">Sorting</div>
-                            <input v-model="form.sorting" type="number" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
+                            <input v-model="form.sorting" type="number" class="mt-1 h-9 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
                         </div>
 
-                        <div class="lg:col-span-6">
+                        <div class="sm:col-span-2">
                             <div class="text-xs font-semibold text-slate-600">Route Name</div>
                             <input
                                 v-model="form.route_name"
                                 list="routeOptionsList"
                                 type="text"
-                                class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
+                                class="mt-1 h-9 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
                                 placeholder="Type or select route name"
                             />
                             <datalist id="routeOptionsList">
@@ -61,22 +65,22 @@
                             </datalist>
                         </div>
 
-                        <div class="lg:col-span-6">
+                        <div>
                             <div class="text-xs font-semibold text-slate-600">Menu Look Type</div>
-                            <select v-model="form.menu_look_type" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
+                            <select v-model="form.menu_look_type" class="mt-1 h-9 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
                                 <option value="normal">Normal</option>
                                 <option value="mega">Mega</option>
                             </select>
                         </div>
 
-                        <div class="lg:col-span-6">
+                        <div>
                             <div class="text-xs font-semibold text-slate-600">Params</div>
-                            <input v-model="form.params" type="text" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
+                            <input v-model="form.params" type="text" class="mt-1 h-9 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
                         </div>
 
-                        <div class="lg:col-span-6">
+                        <div>
                             <div class="text-xs font-semibold text-slate-600">Show Dashboard</div>
-                            <select v-model="form.show_dasboard" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
+                            <select v-model="form.show_dasboard" class="mt-1 h-9 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
                                 <option :value="1">Yes</option>
                                 <option :value="0">No</option>
                             </select>
@@ -85,14 +89,14 @@
                 </div>
             </div>
 
-            <div class="lg:col-span-3">
-                <div class="rounded-2xl border border-slate-200 bg-white p-5">
+            <div class="space-y-4 lg:col-span-4 xl:col-span-3">
+                <div class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
                     <div class="text-sm font-semibold text-slate-900">Actions</div>
                     <div class="mt-3 flex flex-col gap-2">
                         <button type="button" class="h-9 rounded-lg bg-slate-900 px-4 text-sm font-semibold text-white hover:bg-slate-800" :disabled="saving" @click="submit">
                             {{ saving ? '...' : (isEdit ? 'Update' : 'Create') }}
                         </button>
-                        <button type="button" class="h-9 rounded-lg border border-slate-200 bg-white px-4 text-sm font-semibold text-slate-700 hover:bg-slate-50" :disabled="saving" @click="goIndex">Cancel</button>
+                        <button type="button" class="h-9 rounded-lg border border-slate-300 bg-white px-4 text-sm font-semibold text-slate-700 hover:bg-slate-50" :disabled="saving" @click="goIndex">Cancel</button>
                     </div>
                 </div>
             </div>

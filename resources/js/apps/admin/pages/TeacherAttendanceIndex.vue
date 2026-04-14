@@ -1,64 +1,64 @@
 <template>
     <div class="flex flex-col gap-4">
-        <div class="rounded-2xl border border-slate-200 bg-white p-5">
+        <div class=" border border-slate-300 bg-white p-5">
             <div class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
                 <div>
                     <div class="text-xl font-semibold text-slate-900">Teacher Attendance</div>
                 </div>
 
                 <div class="flex w-full flex-col gap-2 sm:w-auto sm:flex-row">
-                    <input v-model="filters.from_date" type="date" class="h-10 rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-slate-300 focus:ring-2 focus:ring-slate-200" :disabled="loading" />
-                    <input v-model="filters.to_date" type="date" class="h-10 rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-slate-300 focus:ring-2 focus:ring-slate-200" :disabled="loading" />
+                    <input v-model="filters.from_date" type="date" class="h-10 rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" :disabled="loading" />
+                    <input v-model="filters.to_date" type="date" class="h-10 rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" :disabled="loading" />
 
                     <div class="flex items-center gap-2">
-                        <button class="inline-flex h-10 w-10 items-center justify-center rounded-lg bg-emerald-600 text-white hover:bg-emerald-700" :disabled="loading" @click="load(1)">
+                        <button class="inline-flex h-10 w-10 items-center justify-center rounded-sm bg-emerald-600 text-white hover:bg-emerald-700" :disabled="loading" @click="load(1)">
                             <span class="sr-only">Search</span>
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-5 w-5">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35m1.35-5.15a7 7 0 11-14 0 7 7 0 0114 0z" />
                             </svg>
                         </button>
-                        <button class="h-10 rounded-lg border border-slate-200 bg-white px-4 text-sm font-semibold text-slate-700 hover:bg-slate-50" :disabled="loading" @click="reset">Reset</button>
+                        <button class="h-10 rounded-sm border border-slate-300 bg-white px-4 text-sm font-semibold text-slate-700 hover:bg-slate-50" :disabled="loading" @click="reset">Reset</button>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div v-if="error" class="rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-800">{{ error }}</div>
+        <div v-if="error" class=" border border-red-200 bg-red-50 p-4 text-sm text-red-800">{{ error }}</div>
 
-        <div class="overflow-hidden rounded-2xl border border-slate-200 bg-white">
+        <div class="overflow-hidden  border border-slate-300 bg-white">
             <div class="overflow-x-auto">
-                <table class="min-w-full border-collapse border border-slate-200">
-                    <thead class="bg-slate-50">
-                        <tr class="text-left text-xs font-semibold uppercase tracking-wider text-slate-500">
-                            <th class="border border-slate-200 bg-slate-50 px-4 py-3">#</th>
-                            <th class="border border-slate-200 bg-slate-50 px-4 py-3">Date</th>
-                            <th class="border border-slate-200 bg-slate-50 px-4 py-3 text-center">Total Teacher</th>
-                            <th class="border border-slate-200 bg-slate-50 px-4 py-3 text-center">Total Present</th>
+                <table class="min-w-full border-collapse border border-slate-300">
+                    <thead class="bg-emerald-100">
+                        <tr class="text-left text-xs font-semibold uppercase tracking-wider text-slate-700">
+                            <th class="border border-slate-300 bg-emerald-100 px-1 py-2 text-slate-700">#</th>
+                            <th class="border border-slate-300 bg-emerald-100 px-1 py-2 text-slate-700">Date</th>
+                            <th class="border border-slate-300 bg-emerald-100 px-1 py-2 text-center text-slate-700">Total Teacher</th>
+                            <th class="border border-slate-300 bg-emerald-100 px-1 py-2 text-center text-slate-700">Total Present</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr v-if="loading" class="text-sm text-slate-600">
-                            <td class="border border-slate-200 px-4 py-6" colspan="4">Loading...</td>
+                            <td class="border border-slate-300 px-1 py-1" colspan="4">Loading...</td>
                         </tr>
                         <tr v-else-if="rows.length === 0" class="text-sm text-slate-600">
-                            <td class="border border-slate-200 px-4 py-6" colspan="4">No data found.</td>
+                            <td class="border border-slate-300 px-1 py-1" colspan="4">No data found.</td>
                         </tr>
                         <tr v-for="(row, idx) in rows" v-else :key="row.id" class="text-sm text-slate-800" :class="idx % 2 === 0 ? 'bg-white' : 'bg-slate-50'">
-                            <td class="border border-slate-200 px-4 py-3 text-slate-600">{{ rowSerial(idx) }}</td>
-                            <td class="border border-slate-200 px-4 py-3">{{ row.date || '—' }}</td>
-                            <td class="border border-slate-200 px-4 py-3 text-center">{{ row.total_teacher ?? '—' }}</td>
-                            <td class="border border-slate-200 px-4 py-3 text-center">{{ row.total_present ?? '—' }}</td>
+                            <td class="border border-slate-300 px-1 py-1 text-slate-600">{{ rowSerial(idx) }}</td>
+                            <td class="border border-slate-300 px-1 py-1 text-slate-800">{{ row.date || '—' }}</td>
+                            <td class="border border-slate-300 px-1 py-1 text-center">{{ row.total_teacher ?? '—' }}</td>
+                            <td class="border border-slate-300 px-1 py-1 text-center">{{ row.total_present ?? '—' }}</td>
                         </tr>
                     </tbody>
                 </table>
             </div>
 
-            <div class="flex flex-col gap-3 border-t border-slate-200 px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
+            <div class="flex flex-col gap-3 border-t border-slate-300 px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
                 <div class="text-xs text-slate-600">Showing {{ meta.from || 0 }} to {{ meta.to || 0 }} of {{ meta.total || 0 }} entries</div>
 
                 <div class="flex items-center justify-end gap-1 overflow-x-auto">
-                    <button type="button" class="inline-flex h-8 w-8 items-center justify-center rounded-md border border-slate-200 bg-white text-xs font-semibold text-slate-700 hover:bg-slate-50" :disabled="loading || meta.current_page <= 1" @click="load(meta.current_page - 1)">«</button>
-                    <button type="button" class="inline-flex h-8 w-8 items-center justify-center rounded-md border border-slate-200 bg-white text-xs font-semibold text-slate-700 hover:bg-slate-50" :disabled="loading || meta.current_page >= meta.last_page" @click="load(meta.current_page + 1)">»</button>
+                    <button type="button" class="inline-flex h-8 w-8 items-center justify-center rounded-sm border border-slate-300 bg-white text-xs font-semibold text-slate-700 hover:bg-slate-50" :disabled="loading || meta.current_page <= 1" @click="load(meta.current_page - 1)">«</button>
+                    <button type="button" class="inline-flex h-8 w-8 items-center justify-center rounded-sm border border-slate-300 bg-white text-xs font-semibold text-slate-700 hover:bg-slate-50" :disabled="loading || meta.current_page >= meta.last_page" @click="load(meta.current_page + 1)">»</button>
                 </div>
             </div>
         </div>
@@ -73,6 +73,7 @@ export default {
             loading: false,
             error: '',
             rows: [],
+            searchTimer: null,
             filters: {
                 pagination: 10,
                 from_date: '',
@@ -91,7 +92,25 @@ export default {
     created() {
         this.load(1)
     },
+    watch: {
+        'filters.from_date'(next, prev) {
+            if (String(next || '') !== String(prev || '')) this.scheduleLoad(true)
+        },
+        'filters.to_date'(next, prev) {
+            if (String(next || '') !== String(prev || '')) this.scheduleLoad(true)
+        },
+        'filters.pagination'(next, prev) {
+            if (Number(next || 0) !== Number(prev || 0)) this.scheduleLoad(true)
+        },
+    },
     methods: {
+        scheduleLoad(resetPage) {
+            if (this.searchTimer) clearTimeout(this.searchTimer)
+            this.searchTimer = setTimeout(() => {
+                const page = resetPage ? 1 : Number(this.meta?.current_page || 1)
+                this.load(page)
+            }, 250)
+        },
         rowSerial(idx) {
             const from = Number(this.meta.from || 0)
             return from + idx

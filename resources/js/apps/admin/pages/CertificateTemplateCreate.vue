@@ -1,94 +1,149 @@
 <template>
     <form class="flex flex-col gap-4" @submit.prevent="submit">
-        <div class="rounded-2xl border border-slate-200 bg-white p-5">
+        <div class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
             <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <div class="min-w-0">
                     <div class="truncate text-xl font-semibold text-slate-900">Certificate Template</div>
                     <div class="mt-1 text-sm text-slate-600">Create new certificate template</div>
                 </div>
-
-                <div class="flex flex-wrap items-center gap-2">
-                    <button type="button" class="rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50" :disabled="submitting" @click="goBack">Back</button>
-                    <button type="submit" class="rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-700" :disabled="submitting">
-                        {{ submitting ? 'Processing...' : 'Submit' }}
-                    </button>
-                </div>
             </div>
         </div>
 
-        <div v-if="message" class="rounded-2xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-900">{{ message }}</div>
-        <div v-if="error" class="rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-800">{{ error }}</div>
+        <div v-if="message" class="rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-900">{{ message }}</div>
+        <div v-if="error" class="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-800">{{ error }}</div>
 
-        <div class="rounded-2xl border border-slate-200 bg-white p-5">
-            <div class="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-12">
-                <div class="xl:col-span-3">
-                    <div class="text-xs font-semibold text-slate-600">Academic Level <span class="text-red-600">*</span></div>
-                    <select v-model="form.academic_qualification_id" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" required>
-                        <option value="">Select</option>
-                        <option v-for="q in qualifications" :key="'q-' + q.id" :value="String(q.id)">{{ q.name }}</option>
-                    </select>
-                </div>
+        <div class="grid grid-cols-1 gap-4 lg:grid-cols-12">
+            <div class="flex flex-col gap-4 lg:col-span-8">
+                <div class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+                    <div class="text-sm font-semibold text-slate-900">Template Details</div>
 
-                <div class="xl:col-span-3">
-                    <div class="text-xs font-semibold text-slate-600">Account Head <span class="text-red-600">*</span></div>
-                    <select v-model="form.account_head_id" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" required>
-                        <option value="">Select</option>
-                        <option v-for="h in accountHeads" :key="'h-' + h.id" :value="String(h.id)">{{ h.name }}</option>
-                    </select>
-                </div>
+                    <div class="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                        <div>
+                            <div class="text-xs font-semibold text-slate-600">Academic Level <span class="text-red-600">*</span></div>
+                            <select
+                                v-model="form.academic_qualification_id"
+                                class="mt-1 h-9 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
+                                required
+                            >
+                                <option value="">Select</option>
+                                <option v-for="q in qualifications" :key="'q-' + q.id" :value="String(q.id)">{{ q.name }}</option>
+                            </select>
+                        </div>
 
-                <div class="xl:col-span-6">
-                    <div class="text-xs font-semibold text-slate-600">Title <span class="text-red-600">*</span></div>
-                    <input v-model="form.title" type="text" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" required />
-                </div>
+                        <div>
+                            <div class="text-xs font-semibold text-slate-600">Account Head <span class="text-red-600">*</span></div>
+                            <select
+                                v-model="form.account_head_id"
+                                class="mt-1 h-9 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
+                                required
+                            >
+                                <option value="">Select</option>
+                                <option v-for="h in accountHeads" :key="'h-' + h.id" :value="String(h.id)">{{ h.name }}</option>
+                            </select>
+                        </div>
 
-                <div class="xl:col-span-3">
-                    <div class="text-xs font-semibold text-slate-600">Certificate Fees <span class="text-red-600">*</span></div>
-                    <div class="mt-2 flex items-center gap-4 text-sm">
-                        <label class="inline-flex items-center gap-2"><input v-model="form.certificate_fees" type="radio" value="single" /> Single</label>
-                        <label class="inline-flex items-center gap-2"><input v-model="form.certificate_fees" type="radio" value="double" /> Double</label>
-                        <label class="inline-flex items-center gap-2"><input v-model="form.certificate_fees" type="radio" value="no" /> N/A</label>
+                        <div class="sm:col-span-2 lg:col-span-1">
+                            <div class="text-xs font-semibold text-slate-600">Amount <span class="text-red-600">*</span></div>
+                            <input
+                                v-model="form.amount"
+                                type="number"
+                                step="0.01"
+                                class="mt-1 h-9 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
+                                required
+                            />
+                        </div>
+
+                        <div class="sm:col-span-2 lg:col-span-3">
+                            <div class="text-xs font-semibold text-slate-600">Title <span class="text-red-600">*</span></div>
+                            <input
+                                v-model="form.title"
+                                type="text"
+                                class="mt-1 h-9 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
+                                required
+                            />
+                        </div>
+
+                        <div>
+                            <div class="text-xs font-semibold text-slate-600">Status <span class="text-red-600">*</span></div>
+                            <select
+                                v-model="form.status"
+                                class="mt-1 h-9 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
+                                required
+                            >
+                                <option value="draft">Draft</option>
+                                <option value="active">Active</option>
+                                <option value="deactive">Deactive</option>
+                            </select>
+                        </div>
+
+                        <div class="sm:col-span-2">
+                            <div class="text-xs font-semibold text-slate-600">Payment Gateway <span class="text-red-600">*</span></div>
+                            <select
+                                v-model="form.payment_gateway_id"
+                                class="mt-1 h-9 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
+                                required
+                            >
+                                <option value="">Select</option>
+                                <option v-for="g in gateways" :key="'g-' + g.id" :value="String(g.id)">{{ g.account_no }}</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <div class="text-xs font-semibold text-slate-600">Certificate Fees <span class="text-red-600">*</span></div>
+                            <div class="mt-2 flex flex-wrap items-center gap-4 text-sm text-slate-700">
+                                <label class="inline-flex items-center gap-2"><input v-model="form.certificate_fees" type="radio" value="single" /> Single</label>
+                                <label class="inline-flex items-center gap-2"><input v-model="form.certificate_fees" type="radio" value="double" /> Double</label>
+                                <label class="inline-flex items-center gap-2"><input v-model="form.certificate_fees" type="radio" value="no" /> N/A</label>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="text-xs font-semibold text-slate-600">Print Layout <span class="text-red-600">*</span></div>
+                            <div class="mt-2 flex flex-wrap items-center gap-4 text-sm text-slate-700">
+                                <label class="inline-flex items-center gap-2"><input v-model="form.print_layout" type="radio" value="portrait" /> Portrait</label>
+                                <label class="inline-flex items-center gap-2"><input v-model="form.print_layout" type="radio" value="landscape" /> Landscape</label>
+                            </div>
+                        </div>
+
+                        <div class="sm:col-span-2 lg:col-span-3">
+                            <div class="text-xs font-semibold text-slate-600">Background Image (EN) <span class="text-red-600">*</span></div>
+                            <input
+                                type="file"
+                                accept="image/*"
+                                class="mt-1 block h-9 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm shadow-sm"
+                                @change="onPickFile($event, 'bg_en_image')"
+                                required
+                            />
+                        </div>
+
+                        <div class="sm:col-span-2 lg:col-span-3">
+                            <div class="text-xs font-semibold text-slate-600">Background Image (BN) <span class="text-red-600">*</span></div>
+                            <input
+                                type="file"
+                                accept="image/*"
+                                class="mt-1 block h-9 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm shadow-sm"
+                                @change="onPickFile($event, 'bg_bn_image')"
+                                required
+                            />
+                        </div>
                     </div>
                 </div>
+            </div>
 
-                <div class="xl:col-span-3">
-                    <div class="text-xs font-semibold text-slate-600">Print Layout <span class="text-red-600">*</span></div>
-                    <div class="mt-2 flex items-center gap-4 text-sm">
-                        <label class="inline-flex items-center gap-2"><input v-model="form.print_layout" type="radio" value="portrait" /> Portrait</label>
-                        <label class="inline-flex items-center gap-2"><input v-model="form.print_layout" type="radio" value="landscape" /> Landscape</label>
+            <div class="flex flex-col gap-4 lg:col-span-4">
+                <div class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+                    <div class="text-sm font-semibold text-slate-900">Status</div>
+                    <div class="mt-2 text-sm text-slate-600">Upload backgrounds, set fees and layout, then submit.</div>
+                </div>
+
+                <div class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+                    <div class="text-sm font-semibold text-slate-900">Actions</div>
+                    <div class="mt-4 flex flex-col gap-2">
+                        <button type="button" class="w-full rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50" :disabled="submitting" @click="goBack">Back</button>
+                        <button type="submit" class="w-full rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-700" :disabled="submitting">
+                            {{ submitting ? 'Processing...' : 'Submit' }}
+                        </button>
                     </div>
-                </div>
-
-                <div class="xl:col-span-6">
-                    <div class="text-xs font-semibold text-slate-600">Payment Gateway <span class="text-red-600">*</span></div>
-                    <select v-model="form.payment_gateway_id" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" required>
-                        <option value="">Select</option>
-                        <option v-for="g in gateways" :key="'g-' + g.id" :value="String(g.id)">{{ g.account_no }}</option>
-                    </select>
-                </div>
-
-                <div class="xl:col-span-3">
-                    <div class="text-xs font-semibold text-slate-600">Amount <span class="text-red-600">*</span></div>
-                    <input v-model="form.amount" type="number" step="0.01" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" required />
-                </div>
-
-                <div class="xl:col-span-3">
-                    <div class="text-xs font-semibold text-slate-600">Status <span class="text-red-600">*</span></div>
-                    <select v-model="form.status" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" required>
-                        <option value="draft">Draft</option>
-                        <option value="active">Active</option>
-                        <option value="deactive">Deactive</option>
-                    </select>
-                </div>
-
-                <div class="xl:col-span-6">
-                    <div class="text-xs font-semibold text-slate-600">Background Image (EN) <span class="text-red-600">*</span></div>
-                    <input type="file" accept="image/*" class="mt-1 block h-9 w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm" @change="onPickFile($event, 'bg_en_image')" required />
-                </div>
-
-                <div class="xl:col-span-6">
-                    <div class="text-xs font-semibold text-slate-600">Background Image (BN) <span class="text-red-600">*</span></div>
-                    <input type="file" accept="image/*" class="mt-1 block h-9 w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm" @change="onPickFile($event, 'bg_bn_image')" required />
                 </div>
             </div>
         </div>

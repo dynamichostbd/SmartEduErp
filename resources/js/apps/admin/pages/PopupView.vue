@@ -1,22 +1,22 @@
 <template>
     <div class="flex flex-col gap-4">
-        <div class="rounded-2xl border border-slate-200 bg-white p-5">
+        <div class=" border border-slate-300 bg-white p-5">
             <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <div class="min-w-0">
                     <div class="truncate text-xl font-semibold text-slate-900">Popup Details</div>
                 </div>
 
                 <div class="flex flex-wrap items-center gap-2">
-                    <button type="button" class="rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50" @click="goIndex">Back</button>
-                    <button type="button" class="rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50" @click="reload">Reload</button>
-                    <button type="button" class="rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-700" @click="goEdit">Edit</button>
+                    <button type="button" class="rounded-sm border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50" @click="goIndex">Back</button>
+                    <button type="button" class="rounded-sm border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50" @click="reload">Reload</button>
+                    <button type="button" class="rounded-sm bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-700" @click="goEdit">Edit</button>
                 </div>
             </div>
         </div>
 
-        <div v-if="error" class="rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-800">{{ error }}</div>
+        <div v-if="error" class=" border border-red-200 bg-red-50 p-4 text-sm text-red-800">{{ error }}</div>
 
-        <div class="rounded-2xl border border-slate-200 bg-white p-5">
+        <div class=" border border-slate-300 bg-white p-5">
             <div class="text-lg font-semibold text-slate-900">{{ data.title || '—' }}</div>
             <div class="mt-1 text-xs text-slate-500">Type: {{ data.type || '—' }} | Status: {{ data.status || '—' }}</div>
 
@@ -25,8 +25,8 @@
                     <div class="prose max-w-none text-sm" v-html="data.description || ''"></div>
                 </div>
                 <div class="lg:col-span-4">
-                    <img v-if="data.image" :src="resolveImage(data.image)" class="h-56 w-full rounded border border-slate-200 bg-white object-contain" />
-                    <div v-else class="flex h-56 items-center justify-center rounded border border-dashed border-slate-200 bg-slate-50 text-xs text-slate-500">No image</div>
+                    <img v-if="data.image" :src="resolveImage(data.image)" class="h-56 w-full rounded border border-slate-300 bg-white object-contain" />
+                    <div v-else class="flex h-56 items-center justify-center rounded border border-dashed border-slate-300 bg-slate-50 text-xs text-slate-500">No image</div>
                 </div>
             </div>
         </div>

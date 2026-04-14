@@ -1,6 +1,6 @@
 <template>
     <div class="flex flex-col gap-4">
-        <div class="rounded-2xl border border-slate-200 bg-white p-5">
+        <div class=" border border-slate-300 bg-white p-5">
             <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <div class="min-w-0">
                     <div class="truncate text-xl font-semibold text-slate-900">Student ID Card</div>
@@ -10,7 +10,7 @@
                 <div class="flex flex-wrap items-center gap-2">
                     <button
                         type="button"
-                        class="rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50"
+                        class="rounded-sm border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50"
                         :disabled="loading"
                         @click="goBack"
                     >
@@ -18,7 +18,7 @@
                     </button>
                     <button
                         type="button"
-                        class="rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-700"
+                        class="rounded-sm bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-700"
                         :disabled="loading || students.length === 0"
                         @click="printCards"
                     >
@@ -28,11 +28,11 @@
             </div>
         </div>
 
-        <div v-if="error" class="rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-800">
+        <div v-if="error" class=" border border-red-200 bg-red-50 p-4 text-sm text-red-800">
             {{ error }}
         </div>
 
-        <div class="rounded-2xl border border-slate-200 bg-white p-5">
+        <div class=" border border-slate-300 bg-white p-5">
             <div class="text-sm font-semibold text-slate-900">Search Students</div>
 
             <div class="mt-4 grid grid-cols-1 gap-4 lg:grid-cols-12">
@@ -53,7 +53,7 @@
                 <div v-if="search.custom_rolls" class="lg:col-span-12">
                     <textarea
                         v-model="search.roll_lists"
-                        class="w-full rounded-lg border border-slate-200 bg-white p-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
+                        class="w-full rounded-sm border border-slate-300 bg-white p-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
                         placeholder="ex: 111111,111112,111113 (max-input - 100)"
                         rows="2"
                     ></textarea>
@@ -62,7 +62,7 @@
                 <div v-if="search.custom_mobiles" class="lg:col-span-12">
                     <textarea
                         v-model="search.mobile_lists"
-                        class="w-full rounded-lg border border-slate-200 bg-white p-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
+                        class="w-full rounded-sm border border-slate-300 bg-white p-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
                         placeholder="ex: 01712345678,01812345678 (max-input - 100)"
                         rows="2"
                     ></textarea>
@@ -70,7 +70,7 @@
 
                 <div class="lg:col-span-2">
                     <div class="text-xs font-semibold text-slate-600">Session <span class="text-red-600">*</span></div>
-                    <select v-model="search.academic_session_id" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
+                    <select v-model="search.academic_session_id" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
                         <option value="">Select</option>
                         <option v-for="s in sessionsSorted" :key="'ses-' + s.id" :value="String(s.id)">{{ s.name }}</option>
                     </select>
@@ -78,7 +78,7 @@
 
                 <div class="lg:col-span-2">
                     <div class="text-xs font-semibold text-slate-600">Academic Level <span class="text-red-600">*</span></div>
-                    <select v-model="search.academic_qualification_id" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
+                    <select v-model="search.academic_qualification_id" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
                         <option value="">Select</option>
                         <option v-for="q in qualifications" :key="'q-' + q.id" :value="String(q.id)">{{ q.name }}</option>
                     </select>
@@ -86,7 +86,7 @@
 
                 <div class="lg:col-span-2">
                     <div class="text-xs font-semibold text-slate-600">Department <span class="text-red-600">*</span></div>
-                    <select v-model="search.department_id" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
+                    <select v-model="search.department_id" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
                         <option value="">Select</option>
                         <option v-for="d in filteredDepartments" :key="'d-' + d.id" :value="String(d.id)">{{ d.name }}</option>
                     </select>
@@ -94,7 +94,7 @@
 
                 <div class="lg:col-span-2">
                     <div class="text-xs font-semibold text-slate-600">Class <span class="text-red-600">*</span></div>
-                    <select v-model="search.academic_class_id" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
+                    <select v-model="search.academic_class_id" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
                         <option value="">Select</option>
                         <option v-for="c in filteredClasses" :key="'c-' + c.id" :value="String(c.id)">{{ c.name }}</option>
                     </select>
@@ -102,12 +102,12 @@
 
                 <div class="lg:col-span-2">
                     <div class="text-xs font-semibold text-slate-600">Validity Date</div>
-                    <input v-model="expiredDate" type="date" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
+                    <input v-model="expiredDate" type="date" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
                 </div>
 
                 <div class="lg:col-span-2">
                     <div class="text-xs font-semibold text-slate-600">Skip</div>
-                    <select v-model.number="search.skip" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
+                    <select v-model.number="search.skip" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
                         <option :value="0">100</option>
                         <option :value="100">200</option>
                         <option :value="200">300</option>
@@ -133,7 +133,7 @@
 
                 <div class="lg:col-span-2">
                     <div class="text-xs font-semibold text-slate-600">Order</div>
-                    <select v-model="search.order_by" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
+                    <select v-model="search.order_by" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
                         <option value="asc">ASC</option>
                         <option value="desc">DESC</option>
                     </select>
@@ -141,12 +141,12 @@
 
                 <div class="lg:col-span-2">
                     <div class="text-xs font-semibold text-slate-600">Take</div>
-                    <input v-model="search.take" type="text" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" placeholder="Take" />
+                    <input v-model="search.take" type="text" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" placeholder="Take" />
                 </div>
 
                 <div class="lg:col-span-2">
                     <div class="text-xs font-semibold text-slate-600">Field</div>
-                    <select v-model="search.field_name" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
+                    <select v-model="search.field_name" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
                         <option value="0">Select One</option>
                         <option value="student_id">Software ID</option>
                         <option value="name">Name</option>
@@ -158,13 +158,13 @@
 
                 <div class="lg:col-span-2">
                     <div class="text-xs font-semibold text-slate-600">Value</div>
-                    <input v-model="search.value" type="text" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" placeholder="Type your text" />
+                    <input v-model="search.value" type="text" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" placeholder="Type your text" />
                 </div>
 
                 <div class="lg:col-span-2 flex items-end">
                     <button
                         type="button"
-                        class="h-9 w-full rounded-lg bg-slate-900 px-4 text-sm font-semibold text-white hover:bg-slate-800"
+                        class="h-9 w-full rounded-sm bg-slate-900 px-4 text-sm font-semibold text-white hover:bg-slate-800"
                         :disabled="loading"
                         @click="searchClick"
                     >
@@ -174,7 +174,7 @@
             </div>
         </div>
 
-        <div class="rounded-2xl border border-slate-200 bg-white p-5">
+        <div class=" border border-slate-300 bg-white p-5">
             <div class="text-sm font-semibold text-slate-900">Student List</div>
 
             <div class="mt-4" id="id-card">
@@ -228,7 +228,7 @@
                 </div>
             </div>
 
-            <div v-if="!students.length" class="mt-4 rounded-xl border border-dashed border-slate-200 bg-slate-50 p-5 text-sm text-slate-600">
+            <div v-if="!students.length" class="mt-4 rounded-xl border border-dashed border-slate-300 bg-slate-50 p-5 text-sm text-slate-600">
                 No students loaded
             </div>
         </div>

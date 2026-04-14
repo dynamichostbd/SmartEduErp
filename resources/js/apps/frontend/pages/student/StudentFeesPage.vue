@@ -1,5 +1,5 @@
 <template>
-    <div class="mt-3 rounded-md border border-slate-200 bg-white p-4 sm:p-6">
+    <div class="mt-3 rounded-sm border border-slate-300 bg-white p-4 sm:p-6">
         <div class="mx-auto w-full max-w-6xl">
             <div class="grid grid-cols-1 gap-4 lg:grid-cols-12">
                 <div class="lg:col-span-3">
@@ -13,11 +13,11 @@
                 </div>
 
                 <div class="lg:col-span-9">
-                    <div class="rounded-md border border-slate-200 bg-white">
-                        <div class="border-b border-slate-200 bg-slate-50 px-4 py-3 text-sm font-extrabold text-slate-800">FEES LIST</div>
+                    <div class="rounded-sm border border-slate-300 bg-white">
+                        <div class="border-b border-slate-300 bg-slate-50 px-4 py-3 text-sm font-extrabold text-slate-800">FEES LIST</div>
                         <div class="p-4">
                             <div v-if="loading" class="text-sm text-slate-600">Loading...</div>
-                            <div v-else-if="error" class="rounded-md border border-red-200 bg-red-50 p-3 text-sm text-red-800">{{ error }}</div>
+                            <div v-else-if="error" class="rounded-sm border border-red-200 bg-red-50 p-3 text-sm text-red-800">{{ error }}</div>
                             <div v-else>
                                 <div class="mb-3 flex items-center justify-end gap-2 text-sm font-extrabold text-red-600">
                                     <span>TOTAL AMOUNT :</span>
@@ -53,7 +53,7 @@
                                         </tfoot>
                                     </table>
                                 </div>
-                                <div v-else class="rounded-md border border-slate-200 bg-slate-50 p-4 text-center text-sm text-slate-700">No fees found.</div>
+                                <div v-else class="rounded-sm border border-slate-300 bg-slate-50 p-4 text-center text-sm text-slate-700">No fees found.</div>
                             </div>
                         </div>
                     </div>

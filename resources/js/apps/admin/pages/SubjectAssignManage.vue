@@ -1,232 +1,247 @@
 <template>
     <div class="flex flex-col gap-4">
-        <div class="rounded-2xl border border-slate-200 bg-white p-5">
+        <div class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
             <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <div class="min-w-0">
                     <div class="truncate text-xl font-semibold text-slate-900">{{ isEdit ? 'Edit Subject Assign' : 'Create Subject Assign' }}</div>
+                    <div class="mt-1 text-sm text-slate-600">{{ isEdit ? 'Update subject assign information' : 'Create a new subject assign' }}</div>
                 </div>
 
                 <div class="flex flex-wrap items-center gap-2">
-                    <button type="button" class="rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50" :disabled="saving" @click="goIndex">Back</button>
-                    <button type="button" class="rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-700" :disabled="saving" @click="submit">{{ saving ? '...' : isEdit ? 'Update' : 'Create' }}</button>
+                    <button type="button" class="rounded-sm border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50" :disabled="saving" @click="goIndex">Back</button>
+                    <button type="button" class="rounded-sm bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-700" :disabled="saving" @click="submit">{{ saving ? '...' : isEdit ? 'Update' : 'Create' }}</button>
                 </div>
             </div>
         </div>
 
-        <div v-if="error" class="rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-800">{{ error }}</div>
-        <div v-if="success" class="rounded-2xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-800">{{ success }}</div>
+        <div v-if="error" class="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-800">{{ error }}</div>
+        <div v-if="success" class="rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-800">{{ success }}</div>
 
-        <div class="rounded-2xl border border-slate-200 bg-white p-5">
-            <div class="grid grid-cols-1 gap-4 lg:grid-cols-12">
-                <div class="lg:col-span-3">
-                    <div class="text-xs font-semibold text-slate-600">Academic Level</div>
-                    <select v-model="form.academic_qualification_id" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" @change="onQualChange">
-                        <option value="">Select</option>
-                        <option v-for="q in qualifications" :key="'q-' + q.id" :value="String(q.id)">{{ q.name }}</option>
+        <div class="grid grid-cols-1 gap-4 lg:grid-cols-12">
+            <div class="space-y-4 lg:col-span-8 xl:col-span-9">
+                <div class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+                    <div class="min-w-0">
+                        <div class="text-sm font-semibold text-slate-900">Filters</div>
+                        <div class="mt-1 text-xs text-slate-500">Select academic level, department/group and class</div>
+                    </div>
+
+                    <div class="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                        <div>
+                            <div class="text-xs font-semibold text-slate-600">Academic Level</div>
+                            <select v-model="form.academic_qualification_id" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" @change="onQualChange">
+                                <option value="">Select</option>
+                                <option v-for="q in qualifications" :key="'q-' + q.id" :value="String(q.id)">{{ q.name }}</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <div class="text-xs font-semibold text-slate-600">Department/Group</div>
+                            <select v-model="form.department_id" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
+                                <option value="">Select</option>
+                                <option v-for="d in departmentsFiltered" :key="'d-' + d.id" :value="String(d.id)">{{ d.name }}</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <div class="text-xs font-semibold text-slate-600">Class</div>
+                            <select v-model="form.academic_class_id" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
+                                <option value="">Select</option>
+                                <option v-for="c in classesFiltered" :key="'c-' + c.id" :value="String(c.id)">{{ c.name }}</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <div class="text-xs font-semibold text-slate-600">Main Subject</div>
+                            <input v-model.number="form.main_subject" type="number" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
+                        </div>
+
+                        <div class="sm:col-span-2 lg:col-span-3">
+                            <div class="text-xs font-semibold text-slate-600">Note</div>
+                            <textarea v-model="form.note" rows="3" class="mt-1 w-full rounded-sm border border-slate-300 bg-white px-3 py-2 text-sm shadow-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+                    <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                        <div class="flex items-end gap-1 border-b border-slate-200">
+                            <button
+                                type="button"
+                                class="rounded-t-lg border border-b-0 px-4 py-2 text-sm font-semibold"
+                                :class="activeTab === 'parent' ? 'border-slate-200 bg-white text-slate-900' : 'border-transparent bg-slate-50 text-slate-600 hover:text-slate-900'"
+                                @click="activeTab = 'parent'"
+                            >
+                                Parent Subject Assign
+                            </button>
+                            <button
+                                type="button"
+                                class="rounded-t-lg border border-b-0 px-4 py-2 text-sm font-semibold"
+                                :class="activeTab === 'child' ? 'border-slate-200 bg-white text-slate-900' : 'border-transparent bg-slate-50 text-slate-600 hover:text-slate-900'"
+                                @click="activeTab = 'child'"
+                            >
+                                Child Subject Assign
+                            </button>
+                        </div>
+
+                        <button
+                            v-if="activeTab === 'parent'"
+                            type="button"
+                            class="rounded-sm bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800"
+                            @click="addRow"
+                        >
+                            Add Row
+                        </button>
+                        <button
+                            v-else
+                            type="button"
+                            class="rounded-sm bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800"
+                            @click="addChildRow"
+                        >
+                            Add Row
+                        </button>
+                    </div>
+
+                    <div v-if="activeTab === 'parent'" class="mt-4">
+                        <div class="overflow-x-auto">
+                            <table class="min-w-[1400px] w-full table-fixed border-collapse border border-slate-300">
+                            <thead class="bg-emerald-100">
+                                <tr class="text-left text-xs font-semibold uppercase tracking-wider text-slate-700">
+                                    <th class="w-[420px] min-w-[420px] border border-slate-300 px-3 py-2">Subject</th>
+                                    <th class="w-[72px] border border-slate-300 px-2 py-2 text-center">4th</th>
+                                    <th class="w-[72px] border border-slate-300 px-2 py-2 text-center">Main</th>
+                                    <th class="w-[64px] border border-slate-300 px-2 py-2 text-center">CT M.</th>
+                                    <th class="w-[76px] border border-slate-300 px-2 py-2 text-center">CT Pass</th>
+                                    <th class="w-[64px] border border-slate-300 px-2 py-2 text-center">CQ M.</th>
+                                    <th class="w-[76px] border border-slate-300 px-2 py-2 text-center">CQ Pass</th>
+                                    <th class="w-[64px] border border-slate-300 px-2 py-2 text-center">MCQ M.</th>
+                                    <th class="w-[76px] border border-slate-300 px-2 py-2 text-center">MCQ Pass</th>
+                                    <th class="w-[70px] border border-slate-300 px-2 py-2 text-center">Prac. M.</th>
+                                    <th class="w-[76px] border border-slate-300 px-2 py-2 text-center">Prac. Pass</th>
+                                    <th class="w-[70px] border border-slate-300 px-2 py-2 text-center">Total</th>
+                                    <th class="w-[70px] border border-slate-300 px-2 py-2 text-center">Sorting</th>
+                                    <th class="w-[70px] border border-slate-300 px-2 py-2 text-center">Amount</th>
+                                    <th class="w-[64px] border border-slate-300 px-2 py-2 text-center">Act</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="(d, idx) in form.details" :key="'d-' + idx" class="text-sm text-slate-800" :class="idx % 2 === 0 ? 'bg-white' : 'bg-slate-50'">
+                                    <td class="border border-slate-300 px-3 py-2 align-top">
+                                        <select v-model="d.subject_id" class="h-8 w-full rounded-sm border border-slate-300 bg-white px-2 text-sm shadow-sm outline-none">
+                                            <option value="">Select</option>
+                                            <option v-for="s in parentSubjects" :key="'s-' + s.id" :value="String(s.id)">{{ s.name_bn || s.name_en || s.name }}</option>
+                                        </select>
+
+                                        <select v-if="Number(d.fourth_subject) === 1 || Number(d.main_subject) === 1" v-model="d.except_subject_id" class="mt-2 h-8 w-full rounded-sm border border-slate-300 bg-white px-2 text-sm shadow-sm outline-none">
+                                            <option value="">Select Except Subject</option>
+                                            <option v-for="s in parentSubjects" :key="'es-' + s.id" :value="String(s.id)">{{ s.name_bn || s.name_en || s.name }}</option>
+                                        </select>
+                                    </td>
+                                    <td class="border border-slate-300 px-2 py-2 text-center">
+                                        <select v-model.number="d.fourth_subject" class="h-8 w-full rounded-sm border border-slate-300 bg-white px-2 text-sm shadow-sm outline-none">
+                                            <option :value="0">No</option>
+                                            <option :value="1">Yes</option>
+                                        </select>
+                                    </td>
+                                    <td class="border border-slate-300 px-2 py-2 text-center">
+                                        <select v-model.number="d.main_subject" class="h-8 w-full rounded-sm border border-slate-300 bg-white px-2 text-sm shadow-sm outline-none">
+                                            <option :value="0">No</option>
+                                            <option :value="1">Yes</option>
+                                        </select>
+                                    </td>
+                                    <td class="border border-slate-300 px-2 py-2"><input v-model.number="d.ct_mark" type="number" class="h-8 w-full rounded-sm border border-slate-300 bg-white px-2 text-sm text-center shadow-sm outline-none" /></td>
+                                    <td class="border border-slate-300 px-2 py-2"><input v-model.number="d.ct_pass_mark" type="number" class="h-8 w-full rounded-sm border border-slate-300 bg-white px-2 text-sm text-center shadow-sm outline-none" /></td>
+                                    <td class="border border-slate-300 px-2 py-2"><input v-model.number="d.cq_mark" type="number" class="h-8 w-full rounded-sm border border-slate-300 bg-white px-2 text-sm text-center shadow-sm outline-none" /></td>
+                                    <td class="border border-slate-300 px-2 py-2"><input v-model.number="d.cq_pass_mark" type="number" class="h-8 w-full rounded-sm border border-slate-300 bg-white px-2 text-sm text-center shadow-sm outline-none" /></td>
+                                    <td class="border border-slate-300 px-2 py-2"><input v-model.number="d.mcq_mark" type="number" class="h-8 w-full rounded-sm border border-slate-300 bg-white px-2 text-sm text-center shadow-sm outline-none" /></td>
+                                    <td class="border border-slate-300 px-2 py-2"><input v-model.number="d.mcq_pass_mark" type="number" class="h-8 w-full rounded-sm border border-slate-300 bg-white px-2 text-sm text-center shadow-sm outline-none" /></td>
+                                    <td class="border border-slate-300 px-2 py-2"><input v-model.number="d.practical_mark" type="number" class="h-8 w-full rounded-sm border border-slate-300 bg-white px-2 text-sm text-center shadow-sm outline-none" /></td>
+                                    <td class="border border-slate-300 px-2 py-2"><input v-model.number="d.practical_pass_mark" type="number" class="h-8 w-full rounded-sm border border-slate-300 bg-white px-2 text-sm text-center shadow-sm outline-none" /></td>
+                                    <td class="border border-slate-300 px-2 py-2"><input v-model.number="d.total_mark" type="number" class="h-8 w-full rounded-sm border border-slate-300 bg-white px-2 text-sm text-center shadow-sm outline-none" /></td>
+                                    <td class="border border-slate-300 px-2 py-2"><input v-model.number="d.sorting" type="number" class="h-8 w-full rounded-sm border border-slate-300 bg-white px-2 text-sm text-center shadow-sm outline-none" /></td>
+                                    <td class="border border-slate-300 px-2 py-2"><input v-model.number="d.amount" type="number" class="h-8 w-full rounded-sm border border-slate-300 bg-white px-2 text-sm text-center shadow-sm outline-none" /></td>
+                                    <td class="border border-slate-300 px-2 py-2 text-center">
+                                        <button type="button" class="inline-flex h-8 w-8 items-center justify-center rounded-sm border border-red-200 bg-white text-red-700 hover:bg-red-50" :disabled="form.details.length <= 1" @click="removeRow(idx)">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-4 w-4">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 12h12" />
+                                            </svg>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div v-else class="mt-4">
+                        <div class="overflow-x-auto">
+                            <table class="min-w-[1100px] w-full table-fixed border-collapse border border-slate-300">
+                            <thead class="bg-emerald-100">
+                                <tr class="text-left text-xs font-semibold uppercase tracking-wider text-slate-700">
+                                    <th class="w-[360px] min-w-[360px] border border-slate-300 px-3 py-2">Parent Subject</th>
+                                    <th class="w-[360px] min-w-[360px] border border-slate-300 px-3 py-2">Child Subject</th>
+                                    <th class="w-[64px] border border-slate-300 px-2 py-2 text-center">CT M.</th>
+                                    <th class="w-[76px] border border-slate-300 px-2 py-2 text-center">CT Pass</th>
+                                    <th class="w-[64px] border border-slate-300 px-2 py-2 text-center">CQ M.</th>
+                                    <th class="w-[76px] border border-slate-300 px-2 py-2 text-center">CQ Pass</th>
+                                    <th class="w-[64px] border border-slate-300 px-2 py-2 text-center">MCQ M.</th>
+                                    <th class="w-[76px] border border-slate-300 px-2 py-2 text-center">MCQ Pass</th>
+                                    <th class="w-[70px] border border-slate-300 px-2 py-2 text-center">Prac. M.</th>
+                                    <th class="w-[76px] border border-slate-300 px-2 py-2 text-center">Prac. Pass</th>
+                                    <th class="w-[70px] border border-slate-300 px-2 py-2 text-center">Total</th>
+                                    <th class="w-[64px] border border-slate-300 px-2 py-2 text-center">Act</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="(c, idx) in form.child_details" :key="'c-' + idx" class="text-sm text-slate-800" :class="idx % 2 === 0 ? 'bg-white' : 'bg-slate-50'">
+                                    <td class="border border-slate-300 px-3 py-2">
+                                        <select v-model="c.parent_subject_id" class="h-8 w-full rounded-sm border border-slate-300 bg-white px-2 text-sm shadow-sm outline-none" @change="c.subject_id = ''">
+                                            <option value="">Select</option>
+                                            <option v-for="s in childParentOptions" :key="'ps-' + s.id" :value="String(s.id)">{{ s.name_bn || s.name_en || s.name }}</option>
+                                        </select>
+                                    </td>
+                                    <td class="border border-slate-300 px-3 py-2">
+                                        <select v-model="c.subject_id" class="h-8 w-full rounded-sm border border-slate-300 bg-white px-2 text-sm shadow-sm outline-none" :disabled="!c.parent_subject_id">
+                                            <option value="">Select</option>
+                                            <option v-for="s in getChildSubjects(c.parent_subject_id)" :key="'cs-' + s.id" :value="String(s.id)">{{ s.name_bn || s.name_en || s.name }}</option>
+                                        </select>
+                                    </td>
+                                    <td class="border border-slate-300 px-2 py-2"><input v-model.number="c.ct_mark" type="number" class="h-8 w-full rounded-sm border border-slate-300 bg-white px-2 text-sm text-center shadow-sm outline-none" /></td>
+                                    <td class="border border-slate-300 px-2 py-2"><input v-model.number="c.ct_pass_mark" type="number" class="h-8 w-full rounded-sm border border-slate-300 bg-white px-2 text-sm text-center shadow-sm outline-none" /></td>
+                                    <td class="border border-slate-300 px-2 py-2"><input v-model.number="c.cq_mark" type="number" class="h-8 w-full rounded-sm border border-slate-300 bg-white px-2 text-sm text-center shadow-sm outline-none" /></td>
+                                    <td class="border border-slate-300 px-2 py-2"><input v-model.number="c.cq_pass_mark" type="number" class="h-8 w-full rounded-sm border border-slate-300 bg-white px-2 text-sm text-center shadow-sm outline-none" /></td>
+                                    <td class="border border-slate-300 px-2 py-2"><input v-model.number="c.mcq_mark" type="number" class="h-8 w-full rounded-sm border border-slate-300 bg-white px-2 text-sm text-center shadow-sm outline-none" /></td>
+                                    <td class="border border-slate-300 px-2 py-2"><input v-model.number="c.mcq_pass_mark" type="number" class="h-8 w-full rounded-sm border border-slate-300 bg-white px-2 text-sm text-center shadow-sm outline-none" /></td>
+                                    <td class="border border-slate-300 px-2 py-2"><input v-model.number="c.practical_mark" type="number" class="h-8 w-full rounded-sm border border-slate-300 bg-white px-2 text-sm text-center shadow-sm outline-none" /></td>
+                                    <td class="border border-slate-300 px-2 py-2"><input v-model.number="c.practical_pass_mark" type="number" class="h-8 w-full rounded-sm border border-slate-300 bg-white px-2 text-sm text-center shadow-sm outline-none" /></td>
+                                    <td class="border border-slate-300 px-2 py-2"><input v-model.number="c.total_mark" type="number" class="h-8 w-full rounded-sm border border-slate-300 bg-white px-2 text-sm text-center shadow-sm outline-none" /></td>
+                                    <td class="border border-slate-300 px-2 py-2 text-center">
+                                        <button type="button" class="inline-flex h-8 w-8 items-center justify-center rounded-sm border border-red-200 bg-white text-red-700 hover:bg-red-50" :disabled="form.child_details.length <= 1" @click="removeChildRow(idx)">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-4 w-4">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 12h12" />
+                                            </svg>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="space-y-4 lg:col-span-4 xl:col-span-3">
+                <div class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+                    <div class="text-sm font-semibold text-slate-900">Status</div>
+                    <select v-model="form.status" class="mt-2 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
+                        <option value="active">Active</option>
+                        <option value="deactive">Deactive</option>
+                        <option value="draft">Draft</option>
                     </select>
-                </div>
 
-                <div class="lg:col-span-3">
-                    <div class="text-xs font-semibold text-slate-600">Department/Group</div>
-                    <select v-model="form.department_id" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
-                        <option value="">Select</option>
-                        <option v-for="d in departmentsFiltered" :key="'d-' + d.id" :value="String(d.id)">{{ d.name }}</option>
-                    </select>
-                </div>
-
-                <div class="lg:col-span-3">
-                    <div class="text-xs font-semibold text-slate-600">Class</div>
-                    <select v-model="form.academic_class_id" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
-                        <option value="">Select</option>
-                        <option v-for="c in classesFiltered" :key="'c-' + c.id" :value="String(c.id)">{{ c.name }}</option>
-                    </select>
-                </div>
-
-                <div class="lg:col-span-3">
-                    <div class="text-xs font-semibold text-slate-600">Main Subject</div>
-                    <input v-model.number="form.main_subject" type="number" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
-                </div>
-
-                <div class="lg:col-span-12">
-                    <div class="text-xs font-semibold text-slate-600">Note</div>
-                    <textarea v-model="form.note" rows="3" class="mt-1 w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"></textarea>
+                    <button type="button" class="mt-4 h-9 w-full rounded-sm bg-slate-900 px-4 text-sm font-semibold text-white hover:bg-slate-800" :disabled="saving" @click="submit">{{ saving ? '...' : isEdit ? 'Update' : 'Create' }}</button>
+                    <button type="button" class="mt-2 h-9 w-full rounded-sm border border-slate-300 bg-white px-4 text-sm font-semibold text-slate-700 hover:bg-slate-50" :disabled="saving" @click="goIndex">Cancel</button>
                 </div>
             </div>
-        </div>
-
-        <div class="rounded-2xl border border-slate-200 bg-white p-5">
-            <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                <div class="flex items-end gap-1 border-b border-slate-200">
-                    <button
-                        type="button"
-                        class="rounded-t-lg border border-b-0 px-4 py-2 text-sm font-semibold"
-                        :class="activeTab === 'parent' ? 'border-slate-200 bg-white text-slate-900' : 'border-transparent bg-slate-50 text-slate-600 hover:text-slate-900'"
-                        @click="activeTab = 'parent'"
-                    >
-                        Parent Subject Assign
-                    </button>
-                    <button
-                        type="button"
-                        class="rounded-t-lg border border-b-0 px-4 py-2 text-sm font-semibold"
-                        :class="activeTab === 'child' ? 'border-slate-200 bg-white text-slate-900' : 'border-transparent bg-slate-50 text-slate-600 hover:text-slate-900'"
-                        @click="activeTab = 'child'"
-                    >
-                        Child Subject Assign
-                    </button>
-                </div>
-
-                <button
-                    v-if="activeTab === 'parent'"
-                    type="button"
-                    class="rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800"
-                    @click="addRow"
-                >
-                    Add Row
-                </button>
-                <button
-                    v-else
-                    type="button"
-                    class="rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800"
-                    @click="addChildRow"
-                >
-                    Add Row
-                </button>
-            </div>
-
-            <div v-if="activeTab === 'parent'" class="mt-4">
-                <div class="overflow-x-auto">
-                    <table class="min-w-[1400px] w-full table-fixed border-collapse border border-slate-200">
-                    <thead class="bg-slate-50">
-                        <tr class="text-left text-xs font-semibold uppercase tracking-wider text-slate-500">
-                            <th class="w-[420px] min-w-[420px] border border-slate-200 px-3 py-2">Subject</th>
-                            <th class="w-[72px] border border-slate-200 px-2 py-2 text-center">4th</th>
-                            <th class="w-[72px] border border-slate-200 px-2 py-2 text-center">Main</th>
-                            <th class="w-[64px] border border-slate-200 px-2 py-2 text-center">CT M.</th>
-                            <th class="w-[76px] border border-slate-200 px-2 py-2 text-center">CT Pass</th>
-                            <th class="w-[64px] border border-slate-200 px-2 py-2 text-center">CQ M.</th>
-                            <th class="w-[76px] border border-slate-200 px-2 py-2 text-center">CQ Pass</th>
-                            <th class="w-[64px] border border-slate-200 px-2 py-2 text-center">MCQ M.</th>
-                            <th class="w-[76px] border border-slate-200 px-2 py-2 text-center">MCQ Pass</th>
-                            <th class="w-[70px] border border-slate-200 px-2 py-2 text-center">Prac. M.</th>
-                            <th class="w-[76px] border border-slate-200 px-2 py-2 text-center">Prac. Pass</th>
-                            <th class="w-[70px] border border-slate-200 px-2 py-2 text-center">Total</th>
-                            <th class="w-[70px] border border-slate-200 px-2 py-2 text-center">Sorting</th>
-                            <th class="w-[70px] border border-slate-200 px-2 py-2 text-center">Amount</th>
-                            <th class="w-[64px] border border-slate-200 px-2 py-2 text-center">Act</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr v-for="(d, idx) in form.details" :key="'d-' + idx" class="text-sm text-slate-800" :class="idx % 2 === 0 ? 'bg-white' : 'bg-slate-50'">
-                            <td class="border border-slate-200 px-3 py-2 align-top">
-                                <select v-model="d.subject_id" class="h-8 w-full rounded-md border border-slate-200 bg-white px-2 text-sm outline-none">
-                                    <option value="">Select</option>
-                                    <option v-for="s in parentSubjects" :key="'s-' + s.id" :value="String(s.id)">{{ s.name_bn || s.name_en || s.name }}</option>
-                                </select>
-
-                                <select v-if="Number(d.fourth_subject) === 1 || Number(d.main_subject) === 1" v-model="d.except_subject_id" class="mt-2 h-8 w-full rounded-md border border-slate-200 bg-white px-2 text-sm outline-none">
-                                    <option value="">Select Except Subject</option>
-                                    <option v-for="s in parentSubjects" :key="'es-' + s.id" :value="String(s.id)">{{ s.name_bn || s.name_en || s.name }}</option>
-                                </select>
-                            </td>
-                            <td class="border border-slate-200 px-2 py-2 text-center">
-                                <select v-model.number="d.fourth_subject" class="h-8 w-full rounded-md border border-slate-200 bg-white px-2 text-sm outline-none">
-                                    <option :value="0">No</option>
-                                    <option :value="1">Yes</option>
-                                </select>
-                            </td>
-                            <td class="border border-slate-200 px-2 py-2 text-center">
-                                <select v-model.number="d.main_subject" class="h-8 w-full rounded-md border border-slate-200 bg-white px-2 text-sm outline-none">
-                                    <option :value="0">No</option>
-                                    <option :value="1">Yes</option>
-                                </select>
-                            </td>
-                            <td class="border border-slate-200 px-2 py-2"><input v-model.number="d.ct_mark" type="number" class="h-8 w-full rounded-md border border-slate-200 bg-white px-2 text-sm text-center outline-none" /></td>
-                            <td class="border border-slate-200 px-2 py-2"><input v-model.number="d.ct_pass_mark" type="number" class="h-8 w-full rounded-md border border-slate-200 bg-white px-2 text-sm text-center outline-none" /></td>
-                            <td class="border border-slate-200 px-2 py-2"><input v-model.number="d.cq_mark" type="number" class="h-8 w-full rounded-md border border-slate-200 bg-white px-2 text-sm text-center outline-none" /></td>
-                            <td class="border border-slate-200 px-2 py-2"><input v-model.number="d.cq_pass_mark" type="number" class="h-8 w-full rounded-md border border-slate-200 bg-white px-2 text-sm text-center outline-none" /></td>
-                            <td class="border border-slate-200 px-2 py-2"><input v-model.number="d.mcq_mark" type="number" class="h-8 w-full rounded-md border border-slate-200 bg-white px-2 text-sm text-center outline-none" /></td>
-                            <td class="border border-slate-200 px-2 py-2"><input v-model.number="d.mcq_pass_mark" type="number" class="h-8 w-full rounded-md border border-slate-200 bg-white px-2 text-sm text-center outline-none" /></td>
-                            <td class="border border-slate-200 px-2 py-2"><input v-model.number="d.practical_mark" type="number" class="h-8 w-full rounded-md border border-slate-200 bg-white px-2 text-sm text-center outline-none" /></td>
-                            <td class="border border-slate-200 px-2 py-2"><input v-model.number="d.practical_pass_mark" type="number" class="h-8 w-full rounded-md border border-slate-200 bg-white px-2 text-sm text-center outline-none" /></td>
-                            <td class="border border-slate-200 px-2 py-2"><input v-model.number="d.total_mark" type="number" class="h-8 w-full rounded-md border border-slate-200 bg-white px-2 text-sm text-center outline-none" /></td>
-                            <td class="border border-slate-200 px-2 py-2"><input v-model.number="d.sorting" type="number" class="h-8 w-full rounded-md border border-slate-200 bg-white px-2 text-sm text-center outline-none" /></td>
-                            <td class="border border-slate-200 px-2 py-2"><input v-model.number="d.amount" type="number" class="h-8 w-full rounded-md border border-slate-200 bg-white px-2 text-sm text-center outline-none" /></td>
-                            <td class="border border-slate-200 px-2 py-2 text-center">
-                                <button type="button" class="inline-flex h-8 w-8 items-center justify-center rounded-md border border-red-200 bg-white text-red-700 hover:bg-red-50" :disabled="form.details.length <= 1" @click="removeRow(idx)">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-4 w-4">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 12h12" />
-                                    </svg>
-                                </button>
-                            </td>
-                        </tr>
-                    </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <div v-else class="mt-4">
-                <div class="overflow-x-auto">
-                    <table class="min-w-[1100px] w-full table-fixed border-collapse border border-slate-200">
-                    <thead class="bg-slate-50">
-                        <tr class="text-left text-xs font-semibold uppercase tracking-wider text-slate-500">
-                            <th class="w-[360px] min-w-[360px] border border-slate-200 px-3 py-2">Parent Subject</th>
-                            <th class="w-[360px] min-w-[360px] border border-slate-200 px-3 py-2">Child Subject</th>
-                            <th class="w-[64px] border border-slate-200 px-2 py-2 text-center">CT M.</th>
-                            <th class="w-[76px] border border-slate-200 px-2 py-2 text-center">CT Pass</th>
-                            <th class="w-[64px] border border-slate-200 px-2 py-2 text-center">CQ M.</th>
-                            <th class="w-[76px] border border-slate-200 px-2 py-2 text-center">CQ Pass</th>
-                            <th class="w-[64px] border border-slate-200 px-2 py-2 text-center">MCQ M.</th>
-                            <th class="w-[76px] border border-slate-200 px-2 py-2 text-center">MCQ Pass</th>
-                            <th class="w-[70px] border border-slate-200 px-2 py-2 text-center">Prac. M.</th>
-                            <th class="w-[76px] border border-slate-200 px-2 py-2 text-center">Prac. Pass</th>
-                            <th class="w-[70px] border border-slate-200 px-2 py-2 text-center">Total</th>
-                            <th class="w-[64px] border border-slate-200 px-2 py-2 text-center">Act</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr v-for="(c, idx) in form.child_details" :key="'c-' + idx" class="text-sm text-slate-800" :class="idx % 2 === 0 ? 'bg-white' : 'bg-slate-50'">
-                            <td class="border border-slate-200 px-3 py-2">
-                                <select v-model="c.parent_subject_id" class="h-8 w-full rounded-md border border-slate-200 bg-white px-2 text-sm outline-none" @change="c.subject_id = ''">
-                                    <option value="">Select</option>
-                                    <option v-for="s in childParentOptions" :key="'ps-' + s.id" :value="String(s.id)">{{ s.name_bn || s.name_en || s.name }}</option>
-                                </select>
-                            </td>
-                            <td class="border border-slate-200 px-3 py-2">
-                                <select v-model="c.subject_id" class="h-8 w-full rounded-md border border-slate-200 bg-white px-2 text-sm outline-none" :disabled="!c.parent_subject_id">
-                                    <option value="">Select</option>
-                                    <option v-for="s in getChildSubjects(c.parent_subject_id)" :key="'cs-' + s.id" :value="String(s.id)">{{ s.name_bn || s.name_en || s.name }}</option>
-                                </select>
-                            </td>
-                            <td class="border border-slate-200 px-2 py-2"><input v-model.number="c.ct_mark" type="number" class="h-8 w-full rounded-md border border-slate-200 bg-white px-2 text-sm text-center outline-none" /></td>
-                            <td class="border border-slate-200 px-2 py-2"><input v-model.number="c.ct_pass_mark" type="number" class="h-8 w-full rounded-md border border-slate-200 bg-white px-2 text-sm text-center outline-none" /></td>
-                            <td class="border border-slate-200 px-2 py-2"><input v-model.number="c.cq_mark" type="number" class="h-8 w-full rounded-md border border-slate-200 bg-white px-2 text-sm text-center outline-none" /></td>
-                            <td class="border border-slate-200 px-2 py-2"><input v-model.number="c.cq_pass_mark" type="number" class="h-8 w-full rounded-md border border-slate-200 bg-white px-2 text-sm text-center outline-none" /></td>
-                            <td class="border border-slate-200 px-2 py-2"><input v-model.number="c.mcq_mark" type="number" class="h-8 w-full rounded-md border border-slate-200 bg-white px-2 text-sm text-center outline-none" /></td>
-                            <td class="border border-slate-200 px-2 py-2"><input v-model.number="c.mcq_pass_mark" type="number" class="h-8 w-full rounded-md border border-slate-200 bg-white px-2 text-sm text-center outline-none" /></td>
-                            <td class="border border-slate-200 px-2 py-2"><input v-model.number="c.practical_mark" type="number" class="h-8 w-full rounded-md border border-slate-200 bg-white px-2 text-sm text-center outline-none" /></td>
-                            <td class="border border-slate-200 px-2 py-2"><input v-model.number="c.practical_pass_mark" type="number" class="h-8 w-full rounded-md border border-slate-200 bg-white px-2 text-sm text-center outline-none" /></td>
-                            <td class="border border-slate-200 px-2 py-2"><input v-model.number="c.total_mark" type="number" class="h-8 w-full rounded-md border border-slate-200 bg-white px-2 text-sm text-center outline-none" /></td>
-                            <td class="border border-slate-200 px-2 py-2 text-center">
-                                <button type="button" class="inline-flex h-8 w-8 items-center justify-center rounded-md border border-red-200 bg-white text-red-700 hover:bg-red-50" :disabled="form.child_details.length <= 1" @click="removeChildRow(idx)">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-4 w-4">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 12h12" />
-                                    </svg>
-                                </button>
-                            </td>
-                        </tr>
-                    </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-
-        <div class="rounded-2xl border border-slate-200 bg-white p-5">
-            <div class="text-sm font-semibold text-slate-900">Status</div>
-            <select v-model="form.status" class="mt-2 h-9 w-full max-w-xs rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
-                <option value="active">Active</option>
-                <option value="deactive">Deactive</option>
-                <option value="draft">Draft</option>
-            </select>
         </div>
     </div>
 </template>

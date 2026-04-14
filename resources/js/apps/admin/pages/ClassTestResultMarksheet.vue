@@ -1,6 +1,6 @@
 <template>
     <div class="flex flex-col gap-4">
-        <div class="rounded-2xl border border-slate-200 bg-white p-5 print:hidden">
+        <div class=" border border-slate-300 bg-white p-5 print:hidden">
             <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <div class="min-w-0">
                     <div class="truncate text-xl font-semibold text-slate-900">Class Test Marksheet</div>
@@ -8,15 +8,15 @@
                 </div>
 
                 <div class="flex flex-wrap items-center gap-2">
-                    <button type="button" class="rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50" @click="goBack">Back</button>
-                    <button type="button" class="rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800" :disabled="printing" @click="print">{{ printing ? '...' : 'Print' }}</button>
+                    <button type="button" class="rounded-sm border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50" @click="goBack">Back</button>
+                    <button type="button" class="rounded-sm bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800" :disabled="printing" @click="print">{{ printing ? '...' : 'Print' }}</button>
                 </div>
             </div>
         </div>
 
-        <div v-if="error" class="rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-800 print:hidden">{{ error }}</div>
+        <div v-if="error" class=" border border-red-200 bg-red-50 p-4 text-sm text-red-800 print:hidden">{{ error }}</div>
 
-        <div class="rounded-2xl border border-slate-200 bg-white p-6">
+        <div class=" border border-slate-300 bg-white p-6">
             <div class="flex flex-col gap-2">
                 <div class="text-lg font-semibold text-slate-900">Marksheet</div>
 
@@ -31,9 +31,9 @@
                     <div><span class="font-semibold">Exam:</span> {{ data?.class_test_result?.exam?.name || '' }}</div>
                 </div>
 
-                <div class="mt-4 overflow-x-auto rounded-xl border border-slate-200">
+                <div class="mt-4 overflow-x-auto">
                     <table class="min-w-full divide-y divide-slate-200 text-sm">
-                        <thead class="bg-slate-50">
+                        <thead class="bg-emerald-100">
                             <tr>
                                 <th class="px-3 py-2 text-left font-semibold text-slate-700">Subject</th>
                                 <th class="px-3 py-2 text-left font-semibold text-slate-700">Exam Mark</th>

@@ -1,6 +1,6 @@
 <template>
     <div class="flex flex-col gap-4">
-        <div class="rounded-2xl border border-slate-200 bg-white p-5">
+        <div class=" border border-slate-300 bg-white p-5">
             <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <div class="min-w-0">
                     <div class="truncate text-xl font-semibold text-slate-900">Registration No Verify</div>
@@ -8,49 +8,49 @@
                 </div>
 
                 <div class="flex flex-wrap items-center gap-2">
-                    <button type="button" class="rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50" @click="goBack">Back</button>
-                    <button type="button" class="rounded-lg bg-sky-600 px-4 py-2 text-sm font-semibold text-white hover:bg-sky-700" @click="openAdd">Add Roll</button>
+                    <button type="button" class="rounded-sm border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50" @click="goBack">Back</button>
+                    <button type="button" class="rounded-sm bg-sky-600 px-4 py-2 text-sm font-semibold text-white hover:bg-sky-700" @click="openAdd">Add Roll</button>
                 </div>
             </div>
         </div>
 
-        <div v-if="error" class="rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-800">{{ error }}</div>
-        <div v-if="message" class="rounded-2xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-900">{{ message }}</div>
+        <div v-if="error" class=" border border-red-200 bg-red-50 p-4 text-sm text-red-800">{{ error }}</div>
+        <div v-if="message" class=" border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-900">{{ message }}</div>
 
-        <div class="rounded-2xl border border-slate-200 bg-white p-5">
+        <div class=" border border-slate-300 bg-white p-5">
             <div class="grid grid-cols-1 gap-4 lg:grid-cols-12">
                 <div class="lg:col-span-3">
                     <div class="text-xs font-semibold text-slate-600">Academic Session</div>
-                    <div class="mt-1 rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-800">{{ data?.academic_session?.name || '--' }}</div>
+                    <div class="mt-1 rounded-sm border border-slate-300 bg-slate-50 px-3 py-2 text-sm text-slate-800">{{ data?.academic_session?.name || '--' }}</div>
                 </div>
 
                 <div class="lg:col-span-3">
                     <div class="text-xs font-semibold text-slate-600">Academic Level</div>
-                    <div class="mt-1 rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-800">{{ data?.qualification?.name || '--' }}</div>
+                    <div class="mt-1 rounded-sm border border-slate-300 bg-slate-50 px-3 py-2 text-sm text-slate-800">{{ data?.qualification?.name || '--' }}</div>
                 </div>
 
                 <div class="lg:col-span-3">
                     <div class="text-xs font-semibold text-slate-600">Department</div>
-                    <div class="mt-1 rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-800">{{ data?.department?.name || '--' }}</div>
+                    <div class="mt-1 rounded-sm border border-slate-300 bg-slate-50 px-3 py-2 text-sm text-slate-800">{{ data?.department?.name || '--' }}</div>
                 </div>
 
                 <div class="lg:col-span-3">
                     <div class="text-xs font-semibold text-slate-600">Academic Class</div>
-                    <div class="mt-1 rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-800">{{ data?.academic_class?.name || '--' }}</div>
+                    <div class="mt-1 rounded-sm border border-slate-300 bg-slate-50 px-3 py-2 text-sm text-slate-800">{{ data?.academic_class?.name || '--' }}</div>
                 </div>
 
                 <div class="lg:col-span-12">
                     <div class="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                         <div class="text-sm font-semibold text-slate-900">Roll Lists</div>
                         <div class="w-full sm:w-72">
-                            <input v-model="keyword" type="text" class="h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" placeholder="Search by roll..." />
+                            <input v-model="keyword" type="text" class="h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" placeholder="Search by roll..." />
                         </div>
                     </div>
 
-                    <div class="mt-3 rounded-xl border border-slate-200">
+                    <div class="mt-3 rounded-xl border border-slate-300">
                         <div class="max-h-[280px] overflow-y-auto">
                             <table class="min-w-full divide-y divide-slate-200 text-sm">
-                                <thead class="bg-slate-50">
+                                <thead class="bg-emerald-100">
                                     <tr>
                                         <th class="px-3 py-2 text-left font-semibold text-slate-700">Registration No</th>
                                     </tr>
@@ -71,10 +71,10 @@
         </div>
 
         <div v-if="addOpen" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 p-4" @click.self="closeAdd">
-            <div class="w-full max-w-2xl rounded-2xl border border-slate-200 bg-white shadow-xl">
-                <div class="flex items-center justify-between gap-3 border-b border-slate-200 px-5 py-4">
+            <div class="w-full max-w-2xl  border border-slate-300 bg-white shadow-xl">
+                <div class="flex items-center justify-between gap-3 border-b border-slate-300 px-5 py-4">
                     <div class="text-base font-semibold text-slate-900">Added Roll Number</div>
-                    <button type="button" class="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-sm font-semibold text-slate-700 hover:bg-slate-50" @click="closeAdd">Close</button>
+                    <button type="button" class="rounded-sm border border-slate-300 bg-white px-3 py-1.5 text-sm font-semibold text-slate-700 hover:bg-slate-50" @click="closeAdd">Close</button>
                 </div>
 
                 <div class="p-5">
@@ -83,14 +83,14 @@
                             <input
                                 v-model="inputData.registration_no"
                                 type="text"
-                                class="h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
+                                class="h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
                                 placeholder="Registration No"
                             />
                         </div>
                         <div class="col-span-3">
                             <button
                                 type="button"
-                                class="h-9 w-full rounded-lg bg-sky-600 text-sm font-semibold text-white hover:bg-sky-700"
+                                class="h-9 w-full rounded-sm bg-sky-600 text-sm font-semibold text-white hover:bg-sky-700"
                                 :disabled="!inputData.registration_no"
                                 @click="addRegistrationNo"
                             >
@@ -114,7 +114,7 @@
                         <div v-if="formData.registration_no_lists.length" class="col-span-12 mt-4 flex justify-center">
                             <button
                                 type="button"
-                                class="rounded-lg bg-emerald-600 px-5 py-2 text-sm font-semibold text-white hover:bg-emerald-700"
+                                class="rounded-sm bg-emerald-600 px-5 py-2 text-sm font-semibold text-white hover:bg-emerald-700"
                                 :disabled="submitting"
                                 @click="submit"
                             >

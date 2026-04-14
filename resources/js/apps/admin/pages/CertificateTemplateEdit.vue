@@ -4,17 +4,17 @@
             <span class="text-xl">⚙</span>
         </button>
 
-        <div :class="showSidebar ? 'left-0' : '-left-full'" class="fixed top-0 z-[100] h-full w-[90%] max-w-4xl overflow-y-auto border-r border-slate-200 bg-white p-5 shadow-xl transition-all">
+        <div :class="showSidebar ? 'left-0' : '-left-full'" class="fixed top-0 z-[100] h-full w-[90%] max-w-4xl overflow-y-auto border-r border-slate-300 bg-white p-5 shadow-xl transition-all">
             <div class="flex items-center justify-between">
                 <div class="text-sm font-semibold uppercase text-slate-800">Certificate Information</div>
-                <button type="button" class="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-sm font-semibold text-slate-700 hover:bg-slate-50" @click="toggleSidebar">Close</button>
+                <button type="button" class="rounded-sm border border-slate-300 bg-white px-3 py-1.5 text-sm font-semibold text-slate-700 hover:bg-slate-50" @click="toggleSidebar">Close</button>
             </div>
 
-            <div class="mt-4 rounded-xl border border-slate-200 p-4">
+            <div class="mt-4 rounded-xl border border-slate-300 p-4">
                 <div class="grid grid-cols-1 gap-4 md:grid-cols-12">
                     <div class="md:col-span-3">
                         <div class="text-xs font-semibold text-slate-600">Academic Level</div>
-                        <select v-model="data.academic_qualification_id" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" required>
+                        <select v-model="data.academic_qualification_id" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" required>
                             <option value="">Select</option>
                             <option v-for="q in qualifications" :key="'q-' + q.id" :value="String(q.id)">{{ q.name }}</option>
                         </select>
@@ -22,7 +22,7 @@
 
                     <div class="md:col-span-3">
                         <div class="text-xs font-semibold text-slate-600">Account Head</div>
-                        <select v-model="data.account_head_id" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" required>
+                        <select v-model="data.account_head_id" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" required>
                             <option value="">Select</option>
                             <option v-for="h in accountHeads" :key="'h-' + h.id" :value="String(h.id)">{{ h.name }}</option>
                         </select>
@@ -30,17 +30,17 @@
 
                     <div class="md:col-span-6">
                         <div class="text-xs font-semibold text-slate-600">Title</div>
-                        <input v-model="data.title" type="text" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" required />
+                        <input v-model="data.title" type="text" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" required />
                     </div>
 
                     <div class="md:col-span-6">
                         <div class="text-xs font-semibold text-slate-600">Background Image (EN)</div>
-                        <input type="file" accept="image/*" class="mt-1 block h-9 w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm" @change="onPickFile($event, 'bg_en_image')" />
+                        <input type="file" accept="image/*" class="mt-1 block h-9 w-full rounded-sm border border-slate-300 bg-white px-3 py-2 text-sm" @change="onPickFile($event, 'bg_en_image')" />
                     </div>
 
                     <div class="md:col-span-6">
                         <div class="text-xs font-semibold text-slate-600">Background Image (BN)</div>
-                        <input type="file" accept="image/*" class="mt-1 block h-9 w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm" @change="onPickFile($event, 'bg_bn_image')" />
+                        <input type="file" accept="image/*" class="mt-1 block h-9 w-full rounded-sm border border-slate-300 bg-white px-3 py-2 text-sm" @change="onPickFile($event, 'bg_bn_image')" />
                     </div>
 
                     <div class="md:col-span-3">
@@ -62,7 +62,7 @@
 
                     <div class="md:col-span-6">
                         <div class="text-xs font-semibold text-slate-600">Payment Gateway</div>
-                        <select v-model="data.payment_gateway_id" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" required>
+                        <select v-model="data.payment_gateway_id" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" required>
                             <option value="">Select</option>
                             <option v-for="g in gateways" :key="'g-' + g.id" :value="String(g.id)">{{ g.account_no }}</option>
                         </select>
@@ -70,15 +70,15 @@
 
                     <div class="md:col-span-3">
                         <div class="text-xs font-semibold text-slate-600">Amount</div>
-                        <input v-model="data.amount" type="number" step="0.01" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" required />
+                        <input v-model="data.amount" type="number" step="0.01" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" required />
                     </div>
                 </div>
             </div>
 
-            <div class="mt-4 rounded-xl border border-slate-200 p-4">
+            <div class="mt-4 rounded-xl border border-slate-300 p-4">
                 <div class="flex items-center gap-2">
-                    <button type="button" class="rounded-lg px-3 py-2 text-sm font-semibold" :class="activeTab === 'en' ? 'bg-slate-900 text-white' : 'border border-slate-200 bg-white text-slate-700 hover:bg-slate-50'" @click="setTab('en')">TEMPLATE SECTIONS - EN</button>
-                    <button type="button" class="rounded-lg px-3 py-2 text-sm font-semibold" :class="activeTab === 'bn' ? 'bg-slate-900 text-white' : 'border border-slate-200 bg-white text-slate-700 hover:bg-slate-50'" @click="setTab('bn')">TEMPLATE SECTIONS - BN</button>
+                    <button type="button" class="rounded-sm px-3 py-2 text-sm font-semibold" :class="activeTab === 'en' ? 'bg-slate-900 text-white' : 'border border-slate-300 bg-white text-slate-700 hover:bg-slate-50'" @click="setTab('en')">TEMPLATE SECTIONS - EN</button>
+                    <button type="button" class="rounded-sm px-3 py-2 text-sm font-semibold" :class="activeTab === 'bn' ? 'bg-slate-900 text-white' : 'border border-slate-300 bg-white text-slate-700 hover:bg-slate-50'" @click="setTab('bn')">TEMPLATE SECTIONS - BN</button>
                 </div>
 
                 <div class="mt-4">
@@ -95,51 +95,51 @@
                     <div v-for="(item, index) in activeSections" :key="'sec-' + index" class="mt-2 border-b border-emerald-200 pb-3">
                         <div class="grid grid-cols-8 gap-2">
                             <div class="col-span-1">
-                                <select v-model="item.label" class="h-9 w-full rounded-lg border border-slate-200 bg-white px-2 text-xs">
+                                <select v-model="item.label" class="h-9 w-full rounded-sm border border-slate-300 bg-white px-2 text-xs">
                                     <option value="">--Select--</option>
                                     <option v-for="o in labelOptions" :key="o.val" :value="o.val">{{ o.text }}</option>
                                 </select>
                             </div>
                             <div class="col-span-1">
-                                <select v-model.number="item.fornt_size" class="h-9 w-full rounded-lg border border-slate-200 bg-white px-2 text-xs">
+                                <select v-model.number="item.fornt_size" class="h-9 w-full rounded-sm border border-slate-300 bg-white px-2 text-xs">
                                     <option v-for="i in fontSizeRange" :key="'fs-' + i" :value="i">{{ i }}</option>
                                 </select>
                             </div>
-                            <div class="col-span-1"><input v-model="item.section_width" type="text" class="h-9 w-full rounded-lg border border-slate-200 bg-white px-2 text-xs" /></div>
-                            <div class="col-span-1"><input v-model="item.section_height" type="text" class="h-9 w-full rounded-lg border border-slate-200 bg-white px-2 text-xs" /></div>
+                            <div class="col-span-1"><input v-model="item.section_width" type="text" class="h-9 w-full rounded-sm border border-slate-300 bg-white px-2 text-xs" /></div>
+                            <div class="col-span-1"><input v-model="item.section_height" type="text" class="h-9 w-full rounded-sm border border-slate-300 bg-white px-2 text-xs" /></div>
                             <div class="col-span-1">
-                                <select v-model="item.font_weight" class="h-9 w-full rounded-lg border border-slate-200 bg-white px-2 text-xs">
+                                <select v-model="item.font_weight" class="h-9 w-full rounded-sm border border-slate-300 bg-white px-2 text-xs">
                                     <option value="">--Select--</option>
                                     <option value="bold">Bold</option>
                                     <option value="normal">Normal</option>
                                 </select>
                             </div>
                             <div class="col-span-1">
-                                <select v-model="item.text_align" class="h-9 w-full rounded-lg border border-slate-200 bg-white px-2 text-xs">
+                                <select v-model="item.text_align" class="h-9 w-full rounded-sm border border-slate-300 bg-white px-2 text-xs">
                                     <option value="">--Select--</option>
                                     <option value="left">Left</option>
                                     <option value="center">Center</option>
                                     <option value="right">Right</option>
                                 </select>
                             </div>
-                            <div class="col-span-1"><input v-model="item.color" type="color" class="h-9 w-full rounded-lg border border-slate-200 bg-white px-2" /></div>
+                            <div class="col-span-1"><input v-model="item.color" type="color" class="h-9 w-full rounded-sm border border-slate-300 bg-white px-2" /></div>
                             <div class="col-span-1 flex items-center justify-end">
-                                <button type="button" class="rounded-lg border border-red-200 bg-red-50 px-2 py-1 text-xs font-semibold text-red-700 hover:bg-red-100" v-if="activeSections.length > 1" @click="removeSection(index)">X</button>
+                                <button type="button" class="rounded-sm border border-red-200 bg-red-50 px-2 py-1 text-xs font-semibold text-red-700 hover:bg-red-100" v-if="activeSections.length > 1" @click="removeSection(index)">X</button>
                             </div>
                         </div>
 
                         <div v-if="index + 1 === activeSections.length" class="mt-3 flex items-center justify-end gap-2">
-                            <button type="button" class="rounded-lg bg-emerald-600 px-3 py-2 text-sm font-semibold text-white hover:bg-emerald-700" @click="addSection">Add Section</button>
-                            <button type="button" class="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50" @click="toggleSidebar">Close</button>
+                            <button type="button" class="rounded-sm bg-emerald-600 px-3 py-2 text-sm font-semibold text-white hover:bg-emerald-700" @click="addSection">Add Section</button>
+                            <button type="button" class="rounded-sm border border-slate-300 bg-white px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50" @click="toggleSidebar">Close</button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="rounded-2xl border border-slate-200 bg-white">
-            <div class="flex items-center justify-end border-b border-slate-200 p-4">
-                <button type="button" class="rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800" :disabled="submitting" @click="submit">
+        <div class=" border border-slate-300 bg-white">
+            <div class="flex items-center justify-end border-b border-slate-300 p-4">
+                <button type="button" class="rounded-sm bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800" :disabled="submitting" @click="submit">
                     {{ submitting ? 'processing...' : 'Update' }}
                 </button>
             </div>
@@ -165,8 +165,8 @@
             </div>
         </div>
 
-        <div v-if="message" class="rounded-2xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-900">{{ message }}</div>
-        <div v-if="error" class="rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-800">{{ error }}</div>
+        <div v-if="message" class=" border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-900">{{ message }}</div>
+        <div v-if="error" class=" border border-red-200 bg-red-50 p-4 text-sm text-red-800">{{ error }}</div>
     </form>
 </template>
 

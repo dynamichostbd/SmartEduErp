@@ -1,79 +1,93 @@
 <template>
     <div class="flex flex-col gap-4">
-        <div v-if="popup && (popup.title || popup.description || popup.image)" class="print:hidden">
-            <div class="rounded-2xl border border-slate-200 bg-white p-5">
-                <div class="flex items-start justify-between gap-3">
+        <div
+            v-if="popup && (popup.title || popup.description || popup.image)"
+            class="fixed inset-0 z-50 flex items-start justify-center bg-slate-900/50 p-4 print:hidden sm:items-center"
+            @click.self="popup = null"
+        >
+            <div class="w-full max-w-5xl overflow-hidden rounded-sm border border-slate-300 bg-white shadow-xl">
+                <div class="flex items-start justify-between gap-3 border-b border-slate-200 px-5 py-3">
                     <div class="min-w-0">
                         <div class="truncate text-lg font-semibold text-slate-900">{{ popup.title || 'Notice' }}</div>
-                        <div class="mt-2 text-sm text-slate-700" v-html="popup.description"></div>
                     </div>
-                    <button type="button" class="shrink-0 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-50" @click="popup = null">Close</button>
+                    <button
+                        type="button"
+                        class="inline-flex h-9 w-9 items-center justify-center rounded-sm border border-slate-300 bg-white text-slate-700 hover:bg-slate-50"
+                        @click="popup = null"
+                    >
+                        <i class="fas fa-times text-red-600"></i>
+                    </button>
                 </div>
-                <div v-if="popup.image" class="mt-4 flex justify-center">
-                    <img :src="popup.image" class="max-h-[320px] w-auto rounded-xl border border-slate-200" />
+
+                <div class="max-h-[80vh] overflow-auto px-5 py-4">
+                    <div class="text-sm text-slate-700" v-html="popup.description"></div>
+
+                    <div v-if="popup.image" class="mt-4 flex justify-center">
+                        <img :src="popup.image" class="max-h-[520px] w-auto rounded-sm" />
+                    </div>
                 </div>
             </div>
         </div>
 
-        <div v-if="!initialReady && !hasHydratedCache" class="rounded-2xl border border-slate-200 bg-white p-6 text-sm text-slate-600">
+        <div v-if="!initialReady && !hasHydratedCache" class=" border border-slate-300 bg-white p-6 text-sm text-slate-600">
             Loading dashboard...
         </div>
 
         <div v-else class="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
-            <div class="rounded-2xl border-l-4 border-sky-500 bg-white p-5">
+            <div class=" border-l-4 border-sky-500 bg-white p-5">
                 <div class="text-sm text-slate-500">Today’s Payment</div>
                 <div class="mt-2 text-2xl font-semibold text-sky-700">{{ money(info.todays_payment) }}</div>
             </div>
-            <div class="rounded-2xl border-l-4 border-sky-500 bg-white p-5">
+            <div class=" border-l-4 border-sky-500 bg-white p-5">
                 <div class="text-sm text-slate-500">Previous Day Payment</div>
                 <div class="mt-2 text-2xl font-semibold text-sky-700">{{ money(info.prev_day_payment) }}</div>
             </div>
-            <div class="rounded-2xl border-l-4 border-sky-500 bg-white p-5">
+            <div class=" border-l-4 border-sky-500 bg-white p-5">
                 <div class="text-sm text-slate-500">Last 7 Day's Payment</div>
                 <div class="mt-2 text-2xl font-semibold text-sky-700">{{ money(info.prev7_day_payment) }}</div>
             </div>
-            <div class="rounded-2xl border-l-4 border-sky-500 bg-white p-5">
+            <div class=" border-l-4 border-sky-500 bg-white p-5">
                 <div class="text-sm text-slate-500">Last Month Payment</div>
                 <div class="mt-2 text-2xl font-semibold text-sky-700">{{ money(info.previous_month_payment) }}</div>
             </div>
 
-            <div class="rounded-2xl border-l-4 border-sky-500 bg-white p-5">
+            <div class=" border-l-4 border-sky-500 bg-white p-5">
                 <div class="text-sm text-slate-500">This Month Payment</div>
                 <div class="mt-2 text-2xl font-semibold text-sky-700">{{ money(info.current_month_payment) }}</div>
             </div>
-            <div class="rounded-2xl border-l-4 border-sky-500 bg-white p-5">
+            <div class=" border-l-4 border-sky-500 bg-white p-5">
                 <div class="text-sm text-slate-500">Current Year Payment</div>
                 <div class="mt-2 text-2xl font-semibold text-sky-700">{{ money(info.current_year_payment) }}</div>
             </div>
-            <div class="rounded-2xl border-l-4 border-rose-500 bg-white p-5">
+            <div class=" border-l-4 border-rose-500 bg-white p-5">
                 <div class="text-sm text-slate-500">Today’s No. of Transaction</div>
                 <div class="mt-2 text-2xl font-semibold text-rose-700">{{ number(info.todays_trans) }}</div>
             </div>
-            <div class="rounded-2xl border-l-4 border-rose-500 bg-white p-5">
+            <div class=" border-l-4 border-rose-500 bg-white p-5">
                 <div class="text-sm text-slate-500">Prev. Day No. of Transaction</div>
                 <div class="mt-2 text-2xl font-semibold text-rose-700">{{ number(info.prev_day_trans) }}</div>
             </div>
 
-            <div class="rounded-2xl border-l-4 border-amber-500 bg-white p-5">
+            <div class=" border-l-4 border-amber-500 bg-white p-5">
                 <div class="text-sm text-slate-500">Total Department</div>
                 <div class="mt-2 text-2xl font-semibold text-amber-700">{{ number(info.total_dept) }}</div>
             </div>
-            <div class="rounded-2xl border-l-4 border-amber-500 bg-white p-5">
+            <div class=" border-l-4 border-amber-500 bg-white p-5">
                 <div class="text-sm text-slate-500">Total Students</div>
                 <div class="mt-2 text-2xl font-semibold text-amber-700">{{ number(info.total_student) }}</div>
             </div>
 
-            <div class="rounded-2xl border-l-4 border-emerald-500 bg-white p-5">
+            <div class=" border-l-4 border-emerald-500 bg-white p-5">
                 <div class="text-sm text-slate-500">Today's Wallet Recharge</div>
                 <div class="mt-2 text-2xl font-semibold text-emerald-700">{{ money(info.todays_wallet_recharge) }}</div>
             </div>
-            <div class="rounded-2xl border-l-4 border-emerald-500 bg-white p-5">
+            <div class=" border-l-4 border-emerald-500 bg-white p-5">
                 <div class="text-sm text-slate-500">Today's Wallet Transaction</div>
                 <div class="mt-2 text-2xl font-semibold text-emerald-700">{{ number(info.todays_wallet_trans) }}</div>
             </div>
         </div>
 
-        <div v-if="initialReady || hasHydratedCache" class="rounded-2xl border border-slate-200 bg-white p-5">
+        <div v-if="initialReady || hasHydratedCache" class=" border border-slate-300 bg-white p-5">
             <div class="mb-3 flex items-center justify-between gap-3">
                 <div>
                     <div class="text-lg font-semibold text-slate-900">Today's Payments</div>
@@ -81,14 +95,14 @@
                 </div>
 
                 <div class="flex items-center gap-2 print:hidden">
-                    <button type="button" class="rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-700" :disabled="loadingTable" @click="loadPayments(1)">Refresh</button>
-                    <button type="button" class="rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50" @click="goInvoices">Invoices</button>
+                    <button type="button" class="rounded-sm bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-700" :disabled="loadingTable" @click="loadPayments(1)">Refresh</button>
+                    <button type="button" class="rounded-sm border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50" @click="goInvoices">Invoices</button>
                 </div>
             </div>
 
-            <div class="overflow-x-auto rounded-xl border border-slate-200">
+            <div class="overflow-x-auto">
                 <table class="min-w-full divide-y divide-slate-200 text-sm">
-                    <thead class="bg-slate-50">
+                    <thead class="bg-emerald-100">
                         <tr>
                             <th class="px-3 py-2 text-left font-semibold text-slate-700">Software ID</th>
                             <th class="px-3 py-2 text-left font-semibold text-slate-700">Admission ID</th>
@@ -153,11 +167,11 @@
                 <div class="text-sm text-slate-600">Showing {{ meta.from }} to {{ meta.to }} of {{ meta.total }} entries</div>
 
                 <div class="flex items-center gap-2">
-                    <button type="button" class="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-sm font-semibold text-slate-700 hover:bg-slate-50" :disabled="meta.current_page <= 1" @click="loadPayments(meta.current_page - 1)">
+                    <button type="button" class="rounded-sm border border-slate-300 bg-white px-3 py-1.5 text-sm font-semibold text-slate-700 hover:bg-slate-50" :disabled="meta.current_page <= 1" @click="loadPayments(meta.current_page - 1)">
                         Prev
                     </button>
                     <div class="text-sm font-semibold text-slate-700">{{ meta.current_page }} / {{ meta.last_page }}</div>
-                    <button type="button" class="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-sm font-semibold text-slate-700 hover:bg-slate-50" :disabled="meta.current_page >= meta.last_page" @click="loadPayments(meta.current_page + 1)">
+                    <button type="button" class="rounded-sm border border-slate-300 bg-white px-3 py-1.5 text-sm font-semibold text-slate-700 hover:bg-slate-50" :disabled="meta.current_page >= meta.last_page" @click="loadPayments(meta.current_page + 1)">
                         Next
                     </button>
                 </div>

@@ -1,6 +1,6 @@
 <template>
     <div class="flex flex-col gap-4">
-        <div class="rounded-2xl border border-slate-200 bg-white p-5">
+        <div class=" border border-slate-300 bg-white p-5">
             <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <div class="min-w-0">
                     <div class="truncate text-xl font-semibold text-slate-900">Migration Roll Verify</div>
@@ -10,7 +10,7 @@
                 <div class="flex flex-wrap items-center gap-2">
                     <button
                         type="button"
-                        class="rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50"
+                        class="rounded-sm border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50"
                         @click="goBack"
                     >
                         Back
@@ -19,36 +19,36 @@
             </div>
         </div>
 
-        <div v-if="error" class="rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-800">
+        <div v-if="error" class=" border border-red-200 bg-red-50 p-4 text-sm text-red-800">
             {{ error }}
         </div>
 
-        <div class="rounded-2xl border border-slate-200 bg-white p-5">
+        <div class=" border border-slate-300 bg-white p-5">
             <div class="grid grid-cols-1 gap-4 lg:grid-cols-12">
                 <div class="lg:col-span-4">
                     <div class="text-xs font-semibold text-slate-600">Academic Session</div>
-                    <div class="mt-1 rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-800">
+                    <div class="mt-1 rounded-sm border border-slate-300 bg-slate-50 px-3 py-2 text-sm text-slate-800">
                         {{ item?.academic_session?.name || '--' }}
                     </div>
                 </div>
 
                 <div class="lg:col-span-4">
                     <div class="text-xs font-semibold text-slate-600">Migrate Department</div>
-                    <div class="mt-1 rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-800">
+                    <div class="mt-1 rounded-sm border border-slate-300 bg-slate-50 px-3 py-2 text-sm text-slate-800">
                         {{ item?.department?.name || '--' }}
                     </div>
                 </div>
 
                 <div class="lg:col-span-4">
                     <div class="text-xs font-semibold text-slate-600">Search</div>
-                    <input v-model="keyword" type="text" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" placeholder="Search..." />
+                    <input v-model="keyword" type="text" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" placeholder="Search..." />
                 </div>
             </div>
 
-            <div class="mt-4 rounded-xl border border-slate-200">
+            <div class="mt-4 rounded-xl border border-slate-300">
                 <div class="max-h-[280px] overflow-y-auto">
                     <table class="min-w-full divide-y divide-slate-200 text-sm">
-                        <thead class="bg-slate-50">
+                        <thead class="bg-emerald-100">
                             <tr>
                                 <th class="px-3 py-2 text-left font-semibold text-slate-700">Admission Roll</th>
                             </tr>

@@ -1,6 +1,6 @@
 <template>
     <div class="flex flex-col gap-4">
-        <div class="rounded-2xl border border-slate-200 bg-white p-5">
+        <div class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
             <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <div class="min-w-0">
                     <div class="truncate text-xl font-semibold text-slate-900">Student Promotion</div>
@@ -10,7 +10,7 @@
                 <div class="flex flex-wrap items-center gap-2">
                     <button
                         type="button"
-                        class="rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50"
+                        class="rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50"
                         :disabled="loading || promoting"
                         @click="goBack"
                     >
@@ -28,157 +28,192 @@
             </div>
         </div>
 
-        <div v-if="message" class="rounded-2xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-900">
+        <div v-if="message" class="rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-900">
             {{ message }}
         </div>
 
-        <div v-if="error" class="rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-800">
+        <div v-if="error" class="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-800">
             {{ error }}
         </div>
 
-        <div class="rounded-2xl border border-slate-200 bg-white p-5">
-            <div class="text-sm font-semibold text-slate-900">Search Promoted Class</div>
+        <div class="grid grid-cols-1 gap-4 lg:grid-cols-12">
+            <div class="space-y-4 lg:col-span-8 xl:col-span-9">
+                <div class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+                    <div class="text-sm font-semibold text-slate-900">Search Promoted Class</div>
+                    <div class="mt-1 text-xs text-slate-500">Select current criteria to find students</div>
 
-            <div class="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-6">
-                <div>
-                    <div class="text-xs font-semibold text-slate-600">Academic Session <span class="text-red-600">*</span></div>
-                    <select v-model="search.academic_session_id" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" required>
-                        <option value="">Select</option>
-                        <option v-for="s in sessionsSorted" :key="'ses-' + s.id" :value="String(s.id)">{{ s.name }}</option>
-                    </select>
+                    <div class="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                        <div>
+                            <div class="text-xs font-semibold text-slate-600">Academic Session <span class="text-red-600">*</span></div>
+                            <select v-model="search.academic_session_id" class="mt-1 h-9 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" required>
+                                <option value="">Select</option>
+                                <option v-for="s in sessionsSorted" :key="'ses-' + s.id" :value="String(s.id)">{{ s.name }}</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <div class="text-xs font-semibold text-slate-600">Academic Level <span class="text-red-600">*</span></div>
+                            <select v-model="search.academic_qualification_id" class="mt-1 h-9 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" required>
+                                <option value="">Select</option>
+                                <option v-for="q in qualifications" :key="'q-' + q.id" :value="String(q.id)">{{ q.name }}</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <div class="text-xs font-semibold text-slate-600">Department/Group <span class="text-red-600">*</span></div>
+                            <select v-model="search.department_id" class="mt-1 h-9 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" required>
+                                <option value="">Select</option>
+                                <option v-for="d in searchFilteredDepartments" :key="'d-' + d.id" :value="String(d.id)">{{ d.name }}</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <div class="text-xs font-semibold text-slate-600">Academic Class <span class="text-red-600">*</span></div>
+                            <select v-model="search.academic_class_id" class="mt-1 h-9 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" required>
+                                <option value="">Select</option>
+                                <option v-for="c in searchFilteredClasses" :key="'c-' + c.id" :value="String(c.id)">{{ c.name }}</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <div class="text-xs font-semibold text-slate-600">Student Type <span class="text-red-600">*</span></div>
+                            <select v-model="search.student_type" class="mt-1 h-9 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" required>
+                                <option value="">Select</option>
+                                <option v-for="t in studentTypes" :key="'t-' + t" :value="t">{{ t }}</option>
+                            </select>
+                        </div>
+
+                        <div class="flex items-end">
+                            <button
+                                type="button"
+                                class="h-9 w-full rounded-lg bg-slate-900 px-4 text-sm font-semibold text-white hover:bg-slate-800"
+                                :disabled="loading"
+                                @click="searchStudents"
+                            >
+                                {{ loading ? 'Searching...' : 'Search' }}
+                            </button>
+                        </div>
+                    </div>
                 </div>
 
-                <div>
-                    <div class="text-xs font-semibold text-slate-600">Academic Level <span class="text-red-600">*</span></div>
-                    <select v-model="search.academic_qualification_id" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" required>
-                        <option value="">Select</option>
-                        <option v-for="q in qualifications" :key="'q-' + q.id" :value="String(q.id)">{{ q.name }}</option>
-                    </select>
-                </div>
+                <div class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+                    <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+                        <div class="text-sm font-semibold text-slate-900">Student List</div>
+                        <div v-if="students.length" class="text-xs text-slate-500">Selected: {{ selectedCount }}/{{ students.length }}</div>
+                    </div>
 
-                <div>
-                    <div class="text-xs font-semibold text-slate-600">Department/Group <span class="text-red-600">*</span></div>
-                    <select v-model="search.department_id" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" required>
-                        <option value="">Select</option>
-                        <option v-for="d in searchFilteredDepartments" :key="'d-' + d.id" :value="String(d.id)">{{ d.name }}</option>
-                    </select>
-                </div>
+                    <div v-if="students.length" class="mt-4">
+                        <div class="rounded-xl border border-slate-200 bg-slate-50/40 p-4">
+                            <div class="text-sm font-semibold text-slate-900">Promotion Criteria</div>
+                            <div class="mt-1 text-xs text-slate-500">Select new session, level, department/group and class</div>
 
-                <div>
-                    <div class="text-xs font-semibold text-slate-600">Academic Class <span class="text-red-600">*</span></div>
-                    <select v-model="search.academic_class_id" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" required>
-                        <option value="">Select</option>
-                        <option v-for="c in searchFilteredClasses" :key="'c-' + c.id" :value="String(c.id)">{{ c.name }}</option>
-                    </select>
-                </div>
+                            <div class="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                                <div>
+                                    <div class="text-xs font-semibold text-slate-600">New Academic Session <span class="text-red-600">*</span></div>
+                                    <select v-model="promotion.academic_session_id" class="mt-1 h-9 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" required>
+                                        <option value="">Select</option>
+                                        <option v-for="s in sessionsSorted" :key="'nses-' + s.id" :value="String(s.id)">{{ s.name }}</option>
+                                    </select>
+                                </div>
 
-                <div>
-                    <div class="text-xs font-semibold text-slate-600">Student Type <span class="text-red-600">*</span></div>
-                    <select v-model="search.student_type" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" required>
-                        <option value="">Select</option>
-                        <option v-for="t in studentTypes" :key="'t-' + t" :value="t">{{ t }}</option>
-                    </select>
-                </div>
+                                <div>
+                                    <div class="text-xs font-semibold text-slate-600">New Academic Level <span class="text-red-600">*</span></div>
+                                    <select v-model="promotion.academic_qualification_id" class="mt-1 h-9 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" required>
+                                        <option value="">Select</option>
+                                        <option v-for="q in qualifications" :key="'nq-' + q.id" :value="String(q.id)">{{ q.name }}</option>
+                                    </select>
+                                </div>
 
-                <div class="flex items-end">
+                                <div>
+                                    <div class="text-xs font-semibold text-slate-600">New Department/Group <span class="text-red-600">*</span></div>
+                                    <select v-model="promotion.department_id" class="mt-1 h-9 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" required>
+                                        <option value="">Select</option>
+                                        <option v-for="d in promoFilteredDepartments" :key="'nd-' + d.id" :value="String(d.id)">{{ d.name }}</option>
+                                    </select>
+                                </div>
+
+                                <div>
+                                    <div class="text-xs font-semibold text-slate-600">New Class <span class="text-red-600">*</span></div>
+                                    <select v-model="promotion.academic_class_id" class="mt-1 h-9 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" required>
+                                        <option value="">Select</option>
+                                        <option v-for="c in promoFilteredClasses" :key="'nc-' + c.id" :value="String(c.id)">{{ c.name }}</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-4 overflow-x-auto rounded-xl border border-slate-200">
+                            <table class="min-w-full divide-y divide-slate-200 text-sm">
+                                <thead class="bg-emerald-100">
+                                    <tr>
+                                        <th class="px-3 py-2 text-left">
+                                            <input type="checkbox" v-model="checkAll" class="h-4 w-4 rounded border-slate-300 shadow-sm" />
+                                        </th>
+                                        <th class="px-3 py-2 text-left font-semibold text-slate-700">Student</th>
+                                        <th class="px-3 py-2 text-left font-semibold text-slate-700">Software ID</th>
+                                        <th class="px-3 py-2 text-left font-semibold text-slate-700">Admission ID</th>
+                                        <th class="px-3 py-2 text-left font-semibold text-slate-700">College Roll</th>
+                                        <th class="px-3 py-2 text-left font-semibold text-slate-700">Reg No.</th>
+                                        <th class="px-3 py-2 text-left font-semibold text-slate-700">New Admission ID</th>
+                                        <th class="px-3 py-2 text-left font-semibold text-slate-700">New Reg No.</th>
+                                        <th class="px-3 py-2 text-left font-semibold text-slate-700">New Student Type</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-slate-200 bg-white">
+                                    <tr v-for="s in students" :key="'std-' + s.id" :class="s.check ? '' : 'bg-slate-50'">
+                                        <td class="px-3 py-2"><input type="checkbox" v-model="s.check" class="h-4 w-4 rounded border-slate-300 shadow-sm" /></td>
+                                        <td class="px-3 py-2 text-slate-900">{{ s.name }}</td>
+                                        <td class="px-3 py-2 text-slate-700">{{ s.student_id }}</td>
+                                        <td class="px-3 py-2 text-slate-700">{{ s.admission_id }}</td>
+                                        <td class="px-3 py-2 text-slate-700">{{ s.college_roll }}</td>
+                                        <td class="px-3 py-2 text-slate-700">{{ s.reg_no }}</td>
+                                        <td class="px-3 py-2">
+                                            <input v-model="s.new_admission_id" type="text" class="h-9 w-44 rounded-lg border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" placeholder="New Admission ID" />
+                                        </td>
+                                        <td class="px-3 py-2">
+                                            <input v-model="s.new_reg_no" type="text" class="h-9 w-44 rounded-lg border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" placeholder="New Reg No." />
+                                        </td>
+                                        <td class="px-3 py-2">
+                                            <select v-model="s.student_type" class="h-9 w-44 rounded-lg border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
+                                                <option value="">Select</option>
+                                                <option v-for="t in studentTypes" :key="'st-' + t" :value="t">{{ t }}</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div v-else class="mt-4 rounded-xl border border-dashed border-slate-300 bg-slate-50 p-5 text-sm text-slate-600">
+                        {{ loading ? 'Loading...' : 'No students found' }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="space-y-4 lg:col-span-4 xl:col-span-3">
+                <div class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+                    <div class="text-sm font-semibold text-slate-900">Actions</div>
+                    <div v-if="students.length" class="mt-2 text-xs text-slate-500">Selected: {{ selectedCount }}/{{ students.length }}</div>
+
                     <button
                         type="button"
-                        class="h-9 w-full rounded-lg bg-slate-900 px-4 text-sm font-semibold text-white hover:bg-slate-800"
-                        :disabled="loading"
-                        @click="searchStudents"
+                        class="mt-4 h-9 w-full rounded-lg bg-slate-900 px-4 text-sm font-semibold text-white hover:bg-slate-800"
+                        :disabled="loading || promoting"
+                        @click="promote"
                     >
-                        {{ loading ? 'Searching...' : 'Search' }}
+                        {{ promoting ? 'Processing...' : 'Promote' }}
+                    </button>
+
+                    <button
+                        type="button"
+                        class="mt-2 h-9 w-full rounded-lg border border-slate-300 bg-white px-4 text-sm font-semibold text-slate-700 hover:bg-slate-50"
+                        :disabled="loading || promoting"
+                        @click="goBack"
+                    >
+                        Back
                     </button>
                 </div>
-            </div>
-        </div>
-
-        <div class="rounded-2xl border border-slate-200 bg-white p-5">
-            <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-                <div class="text-sm font-semibold text-slate-900">Student List</div>
-                <div v-if="students.length" class="text-xs text-slate-500">Selected: {{ selectedCount }}/{{ students.length }}</div>
-            </div>
-
-            <div v-if="students.length" class="mt-4">
-                <div class="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
-                    <div>
-                        <div class="text-xs font-semibold text-slate-600">New Academic Session <span class="text-red-600">*</span></div>
-                        <select v-model="promotion.academic_session_id" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" required>
-                            <option value="">Select</option>
-                            <option v-for="s in sessionsSorted" :key="'nses-' + s.id" :value="String(s.id)">{{ s.name }}</option>
-                        </select>
-                    </div>
-
-                    <div>
-                        <div class="text-xs font-semibold text-slate-600">New Academic Level <span class="text-red-600">*</span></div>
-                        <select v-model="promotion.academic_qualification_id" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" required>
-                            <option value="">Select</option>
-                            <option v-for="q in qualifications" :key="'nq-' + q.id" :value="String(q.id)">{{ q.name }}</option>
-                        </select>
-                    </div>
-
-                    <div>
-                        <div class="text-xs font-semibold text-slate-600">New Department/Group <span class="text-red-600">*</span></div>
-                        <select v-model="promotion.department_id" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" required>
-                            <option value="">Select</option>
-                            <option v-for="d in promoFilteredDepartments" :key="'nd-' + d.id" :value="String(d.id)">{{ d.name }}</option>
-                        </select>
-                    </div>
-
-                    <div>
-                        <div class="text-xs font-semibold text-slate-600">New Class <span class="text-red-600">*</span></div>
-                        <select v-model="promotion.academic_class_id" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" required>
-                            <option value="">Select</option>
-                            <option v-for="c in promoFilteredClasses" :key="'nc-' + c.id" :value="String(c.id)">{{ c.name }}</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="mt-4 overflow-x-auto rounded-xl border border-slate-200">
-                    <table class="min-w-full divide-y divide-slate-200 text-sm">
-                        <thead class="bg-slate-50">
-                            <tr>
-                                <th class="px-3 py-2 text-left">
-                                    <input type="checkbox" v-model="checkAll" />
-                                </th>
-                                <th class="px-3 py-2 text-left font-semibold text-slate-700">Student</th>
-                                <th class="px-3 py-2 text-left font-semibold text-slate-700">Software ID</th>
-                                <th class="px-3 py-2 text-left font-semibold text-slate-700">Admission ID</th>
-                                <th class="px-3 py-2 text-left font-semibold text-slate-700">College Roll</th>
-                                <th class="px-3 py-2 text-left font-semibold text-slate-700">Reg No.</th>
-                                <th class="px-3 py-2 text-left font-semibold text-slate-700">New Admission ID</th>
-                                <th class="px-3 py-2 text-left font-semibold text-slate-700">New Reg No.</th>
-                                <th class="px-3 py-2 text-left font-semibold text-slate-700">New Student Type</th>
-                            </tr>
-                        </thead>
-                        <tbody class="divide-y divide-slate-200 bg-white">
-                            <tr v-for="s in students" :key="'std-' + s.id" :class="s.check ? '' : 'bg-slate-50'">
-                                <td class="px-3 py-2"><input type="checkbox" v-model="s.check" /></td>
-                                <td class="px-3 py-2 text-slate-900">{{ s.name }}</td>
-                                <td class="px-3 py-2 text-slate-700">{{ s.student_id }}</td>
-                                <td class="px-3 py-2 text-slate-700">{{ s.admission_id }}</td>
-                                <td class="px-3 py-2 text-slate-700">{{ s.college_roll }}</td>
-                                <td class="px-3 py-2 text-slate-700">{{ s.reg_no }}</td>
-                                <td class="px-3 py-2">
-                                    <input v-model="s.new_admission_id" type="text" class="h-9 w-44 rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" placeholder="New Admission ID" />
-                                </td>
-                                <td class="px-3 py-2">
-                                    <input v-model="s.new_reg_no" type="text" class="h-9 w-44 rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" placeholder="New Reg No." />
-                                </td>
-                                <td class="px-3 py-2">
-                                    <select v-model="s.student_type" class="h-9 w-44 rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
-                                        <option value="">Select</option>
-                                        <option v-for="t in studentTypes" :key="'st-' + t" :value="t">{{ t }}</option>
-                                    </select>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <div v-else class="mt-4 rounded-xl border border-dashed border-slate-200 bg-slate-50 p-5 text-sm text-slate-600">
-                {{ loading ? 'Loading...' : 'No students found' }}
             </div>
         </div>
     </div>

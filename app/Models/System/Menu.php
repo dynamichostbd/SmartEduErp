@@ -13,6 +13,27 @@ class Menu extends Model
 {
     protected $guarded = ['id'];
 
+    protected static function columnsCached(string $table): array
+    {
+        static $cache = [];
+        if (array_key_exists($table, $cache)) {
+            return $cache[$table];
+        }
+
+        $key = 'schema_cols_' . $table;
+        return $cache[$table] = Cache::rememberForever($key, function () use ($table) {
+            if (!Schema::hasTable($table)) {
+                return [];
+            }
+
+            try {
+                return Schema::getColumnListing($table);
+            } catch (\Throwable $e) {
+                return [];
+            }
+        });
+    }
+
     public function parent()
     {
         return $this->belongsTo(Menu::class);
@@ -85,12 +106,10 @@ class Menu extends Model
         return Cache::rememberForever($cacheKey, function () use ($allowed) {
             $select = ['id', 'parent_id', 'menu_name', 'route_name'];
 
-            $hasCol = function (string $col): bool {
-                static $cache = [];
-                if (array_key_exists($col, $cache)) {
-                    return $cache[$col];
-                }
-                return $cache[$col] = Schema::hasColumn('menus', $col);
+            $cols = self::columnsCached('menus');
+            $colSet = !empty($cols) ? array_fill_keys($cols, true) : [];
+            $hasCol = function (string $col) use ($colSet): bool {
+                return !empty($colSet) && isset($colSet[$col]);
             };
 
             if ($hasCol('sorting')) $select[] = 'sorting';

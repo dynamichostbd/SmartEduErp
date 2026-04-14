@@ -1,6 +1,6 @@
 <template>
     <div class="flex flex-col gap-4">
-        <div class="rounded-2xl border border-slate-200 bg-white p-5">
+        <div class=" border border-slate-300 bg-white p-5">
             <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <div class="min-w-0">
                     <div class="truncate text-xl font-semibold text-slate-900">Result Report</div>
@@ -8,11 +8,11 @@
                 </div>
 
                 <div class="flex flex-wrap items-center gap-2">
-                    <button type="button" class="rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50" @click="goBack">Back</button>
+                    <button type="button" class="rounded-sm border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50" @click="goBack">Back</button>
                     <button
                         v-if="(result?.details || []).length"
                         type="button"
-                        class="rounded-lg bg-sky-600 px-4 py-2 text-sm font-semibold text-white hover:bg-sky-700"
+                        class="rounded-sm bg-sky-600 px-4 py-2 text-sm font-semibold text-white hover:bg-sky-700"
                         :disabled="downloadingSingle || bulkExportStatus === 'pending' || bulkExportStatus === 'processing'"
                         @click="downloadMarksheet"
                     >
@@ -24,7 +24,7 @@
                     <button
                         v-if="(result?.details || []).length"
                         type="button"
-                        class="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-700"
+                        class="rounded-sm bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-700"
                         :disabled="downloadingAll"
                         @click="downloadAllMarksheet"
                     >
@@ -33,56 +33,66 @@
                     <button
                         v-if="(result?.details || []).length"
                         type="button"
-                        class="rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-700"
+                        class="rounded-sm bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-700"
                         :disabled="exportingExcel"
                         @click="exportExcel"
                     >
                         {{ exportingExcel ? '...' : 'EXCEL' }}
                     </button>
-                    <button type="button" class="rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800" :disabled="printing" @click="print">{{ printing ? '...' : 'PRINT' }}</button>
+                    <button type="button" class="rounded-sm bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800" :disabled="printing" @click="print">{{ printing ? '...' : 'PRINT' }}</button>
                 </div>
             </div>
         </div>
 
-        <div v-if="error" class="rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-800">{{ error }}</div>
+        <div v-if="error" class=" border border-red-200 bg-red-50 p-4 text-sm text-red-800">{{ error }}</div>
 
-        <div class="rounded-2xl border border-slate-200 bg-white p-5">
+        <div class=" border border-slate-300 bg-white p-5">
             <div class="grid grid-cols-1 gap-4 lg:grid-cols-12">
                 <div class="lg:col-span-2">
                     <div class="text-xs font-semibold text-slate-600">Session</div>
-                    <select v-model="filters.academic_session_id" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
+                    <select v-model="filters.academic_session_id" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
                         <option value="">Select</option>
-                        <option v-for="s in sessionsSorted" :key="'ses-' + s.id" :value="String(s.id)">{{ s.name }}</option>
+                        <option v-for="s in sessionsSortedForSelect" :key="'ses-' + s.id" :value="String(s.id)">{{ s.name }}</option>
                     </select>
                 </div>
 
                 <div class="lg:col-span-2">
                     <div class="text-xs font-semibold text-slate-600">Academic Level</div>
-                    <select v-model="filters.academic_qualification_id" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
+                    <select v-model="filters.academic_qualification_id" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
                         <option value="">Select</option>
-                        <option v-for="q in qualifications" :key="'q-' + q.id" :value="String(q.id)">{{ q.name }}</option>
+                        <option v-for="q in qualificationsForSelect" :key="'q-' + q.id" :value="String(q.id)">{{ q.name }}</option>
                     </select>
                 </div>
 
                 <div class="lg:col-span-2">
                     <div class="text-xs font-semibold text-slate-600">Department/Group</div>
-                    <select v-model="filters.department_id" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
+                    <select
+                        v-model="filters.department_id"
+                        :disabled="!filters.academic_qualification_id"
+                        class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
+                        :class="!filters.academic_qualification_id ? 'bg-slate-100 text-slate-500' : ''"
+                    >
                         <option value="">Select</option>
-                        <option v-for="d in filteredDepartments" :key="'d-' + d.id" :value="String(d.id)">{{ d.name }}</option>
+                        <option v-for="d in filteredDepartmentsForSelect" :key="'d-' + d.id" :value="String(d.id)">{{ d.name }}</option>
                     </select>
                 </div>
 
                 <div class="lg:col-span-2">
                     <div class="text-xs font-semibold text-slate-600">Class</div>
-                    <select v-model="filters.academic_class_id" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
+                    <select
+                        v-model="filters.academic_class_id"
+                        :disabled="!filters.academic_qualification_id"
+                        class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
+                        :class="!filters.academic_qualification_id ? 'bg-slate-100 text-slate-500' : ''"
+                    >
                         <option value="">Select</option>
-                        <option v-for="c in filteredClasses" :key="'c-' + c.id" :value="String(c.id)">{{ c.name }}</option>
+                        <option v-for="c in filteredClassesForSelect" :key="'c-' + c.id" :value="String(c.id)">{{ c.name }}</option>
                     </select>
                 </div>
 
                 <div class="lg:col-span-2">
                     <div class="text-xs font-semibold text-slate-600">Exam</div>
-                    <select v-model="filters.exam_id" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
+                    <select v-model="filters.exam_id" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
                         <option value="">Select</option>
                         <option v-for="e in exams" :key="'ex-' + e.id" :value="String(e.id)">{{ e.name }}</option>
                     </select>
@@ -90,7 +100,7 @@
 
                 <div class="lg:col-span-2">
                     <div class="text-xs font-semibold text-slate-600">Type</div>
-                    <select v-model="filters.type" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
+                    <select v-model="filters.type" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
                         <option value="select">Select</option>
                         <option value="all">ALL</option>
                         <option value="merit">Merit</option>
@@ -100,7 +110,7 @@
 
                 <div class="lg:col-span-2" v-if="filters.type === 'unmerit'">
                     <div class="text-xs font-semibold text-slate-600">Failed Subject</div>
-                    <select v-model="filters.failed_subject" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
+                    <select v-model="filters.failed_subject" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
                         <option value="">--Select--</option>
                         <option v-for="i in 10" :key="'f-' + i" :value="String(i)">{{ i }}</option>
                     </select>
@@ -108,7 +118,7 @@
 
                 <div class="lg:col-span-2" v-if="filters.type === 'unmerit' && filters.failed_subject">
                     <div class="text-xs font-semibold text-slate-600">4th Subject</div>
-                    <select v-model="filters.exclude_fourth_subject" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
+                    <select v-model="filters.exclude_fourth_subject" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
                         <option value="">With 4th Subject</option>
                         <option value="1">Without 4th Subject</option>
                     </select>
@@ -116,7 +126,7 @@
 
                 <div class="lg:col-span-2" v-if="filters.type === 'all'">
                     <div class="text-xs font-semibold text-slate-600">Passed Subject</div>
-                    <select v-model="filters.passed_subject" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
+                    <select v-model="filters.passed_subject" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
                         <option value="">--Select--</option>
                         <option v-for="i in 10" :key="'p-' + i" :value="String(i)">{{ i }}</option>
                     </select>
@@ -124,7 +134,7 @@
 
                 <div class="lg:col-span-2">
                     <div class="text-xs font-semibold text-slate-600">Search Field</div>
-                    <select v-model="filters.field_name" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
+                    <select v-model="filters.field_name" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
                         <option value="">--Select One--</option>
                         <option value="student_id">Software ID</option>
                         <option value="name">Name</option>
@@ -135,17 +145,17 @@
 
                 <div class="lg:col-span-3">
                     <div class="text-xs font-semibold text-slate-600">Search</div>
-                    <input v-model="filters.search_keyword" type="text" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" @keydown.enter.prevent="search" />
+                    <input v-model="filters.search_keyword" type="text" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" @keydown.enter.prevent="search" />
                 </div>
 
                 <div class="lg:col-span-1 flex items-end">
-                    <button type="button" class="h-9 w-full rounded-lg bg-emerald-600 px-4 text-sm font-semibold text-white hover:bg-emerald-700" :disabled="loading" @click="search">{{ loading ? '...' : 'Go' }}</button>
+                    <button type="button" class="h-9 w-full rounded-sm bg-emerald-600 px-4 text-sm font-semibold text-white hover:bg-emerald-700" :disabled="loading" @click="search">{{ loading ? '...' : 'Go' }}</button>
                 </div>
             </div>
         </div>
 
-        <div class="rounded-2xl border border-slate-200 bg-white p-5" v-if="result">
-            <div class="mb-4 rounded-xl border border-slate-200 bg-slate-50 p-4 text-sm text-slate-700">
+        <div class=" border border-slate-300 bg-white p-5" v-if="result">
+            <div class="mb-4 rounded-xl border border-slate-300 bg-slate-50 p-4 text-sm text-slate-700">
                 <div class="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-5">
                     <div><span class="font-semibold">Session:</span> {{ result?.academic_session?.name || '--' }}</div>
                     <div><span class="font-semibold">Level:</span> {{ result?.qualification?.name || '--' }}</div>
@@ -155,35 +165,35 @@
                 </div>
             </div>
 
-            <div class="overflow-x-auto rounded-xl border border-slate-200">
-                <table id="pdf-table" class="min-w-full divide-y divide-slate-200 text-sm">
-                    <thead class="bg-slate-50">
-                        <tr>
-                            <th class="px-3 py-2 text-left font-semibold text-slate-700">#</th>
-                            <th class="px-3 py-2 text-left font-semibold text-slate-700">Software ID</th>
-                            <th class="px-3 py-2 text-left font-semibold text-slate-700">Student Name</th>
-                            <th class="px-3 py-2 text-left font-semibold text-slate-700">
+            <div class="overflow-x-auto">
+                <table id="pdf-table" class="min-w-full border-collapse border border-slate-300 text-sm">
+                    <thead class="bg-emerald-100">
+                        <tr class="text-left text-xs font-semibold uppercase tracking-wider text-slate-700">
+                            <th class="border border-slate-300 bg-emerald-100 px-1 py-2 text-slate-700">#</th>
+                            <th class="border border-slate-300 bg-emerald-100 px-1 py-2 text-slate-700">Software ID</th>
+                            <th class="border border-slate-300 bg-emerald-100 px-1 py-2 text-slate-700">Student Name</th>
+                            <th class="border border-slate-300 bg-emerald-100 px-1 py-2 text-slate-700">
                                 <button type="button" class="inline-flex items-center gap-1 hover:underline" @click="sortBy('college_roll')">
                                     College Roll
                                     <span v-if="sortField === 'college_roll'">{{ sortOrder === 'asc' ? '↑' : '↓' }}</span>
                                 </button>
                             </th>
                             <template v-if="filters.type === 'unmerit'">
-                                <th class="px-3 py-2 text-left font-semibold text-slate-700">Total Failed</th>
-                                <th class="px-3 py-2 text-left font-semibold text-slate-700">Failed Subjects</th>
+                                <th class="border border-slate-300 bg-emerald-100 px-1 py-2 text-slate-700">Total Failed</th>
+                                <th class="border border-slate-300 bg-emerald-100 px-1 py-2 text-slate-700">Failed Subjects</th>
                             </template>
                             <template v-if="filters.type === 'all'">
-                                <th class="px-3 py-2 text-left font-semibold text-slate-700">Total Passed</th>
-                                <th class="px-3 py-2 text-left font-semibold text-slate-700">Passed Subjects</th>
+                                <th class="border border-slate-300 bg-emerald-100 px-1 py-2 text-slate-700">Total Passed</th>
+                                <th class="border border-slate-300 bg-emerald-100 px-1 py-2 text-slate-700">Passed Subjects</th>
                             </template>
-                            <th class="px-3 py-2 text-left font-semibold text-slate-700">
+                            <th class="border border-slate-300 bg-emerald-100 px-1 py-2 text-slate-700">
                                 <button type="button" class="inline-flex items-center gap-1 hover:underline" @click="sortBy('total_mark')">
                                     Total Mark
                                     <span v-if="sortField === 'total_mark'">{{ sortOrder === 'asc' ? '↑' : '↓' }}</span>
                                 </button>
                             </th>
-                            <th class="px-3 py-2 text-left font-semibold text-slate-700">GRADE</th>
-                            <th class="px-3 py-2 text-left font-semibold text-slate-700">
+                            <th class="border border-slate-300 bg-emerald-100 px-1 py-2 text-slate-700">GRADE</th>
+                            <th class="border border-slate-300 bg-emerald-100 px-1 py-2 text-slate-700">
                                 <button type="button" class="inline-flex items-center gap-1 hover:underline" @click="sortBy('gpa')">
                                     GPA
                                     <span v-if="sortField === 'gpa'">{{ sortOrder === 'asc' ? '↑' : '↓' }}</span>
@@ -192,20 +202,20 @@
                         </tr>
                     </thead>
 
-                    <tbody class="divide-y divide-slate-200 bg-white">
-                        <tr v-for="(std, idx) in (result?.details || [])" :key="'std-' + std.id">
-                            <td class="px-3 py-2 text-slate-800">{{ idx + 1 }}</td>
-                            <td class="px-3 py-2 text-slate-800">
+                    <tbody class="bg-white">
+                        <tr v-for="(std, idx) in (result?.details || [])" :key="'std-' + std.id" :class="idx % 2 === 0 ? 'bg-white' : 'bg-slate-50'">
+                            <td class="border border-slate-300 px-3 py-2 text-slate-800">{{ idx + 1 }}</td>
+                            <td class="border border-slate-300 px-3 py-2 text-slate-800">
                                 <button type="button" class="text-sky-700 hover:underline" @click="goMarksheet(std.id)">{{ std.student_id || '' }}</button>
                             </td>
-                            <td class="px-3 py-2 text-slate-800">{{ std.name || '' }}</td>
-                            <td class="px-3 py-2 text-slate-800">{{ std.college_roll || '' }}</td>
+                            <td class="border border-slate-300 px-3 py-2 text-slate-800">{{ std.name || '' }}</td>
+                            <td class="border border-slate-300 px-3 py-2 text-slate-800">{{ std.college_roll || '' }}</td>
 
                             <template v-if="filters.type === 'unmerit'">
-                                <td class="px-3 py-2 text-slate-800">{{ std.failed_subject_count ?? '' }}</td>
-                                <td class="px-3 py-2 text-slate-800">
+                                <td class="px-3 py-2 text-slate-800 border border-slate-300">{{ std.failed_subject_count ?? '' }}</td>
+                                <td class="px-3 py-2 text-slate-800 border border-slate-300">
                                     <div class="flex flex-wrap gap-1">
-                                        <span v-for="m in (std.marks || [])" :key="'m-f-' + std.id + '-' + m.subject_id" class="rounded-md border border-rose-200 bg-rose-50 px-2 py-0.5 text-xs text-rose-700">
+                                        <span v-for="m in (std.marks || [])" :key="'m-f-' + std.id + '-' + m.subject_id" class="rounded-sm border border-rose-200 bg-rose-50 px-2 py-0.5 text-xs text-rose-700">
                                             {{ m?.subject?.name_en || '' }}
                                         </span>
                                     </div>
@@ -213,19 +223,19 @@
                             </template>
 
                             <template v-if="filters.type === 'all'">
-                                <td class="px-3 py-2 text-slate-800">{{ std.passed_subject_count ?? '' }}</td>
-                                <td class="px-3 py-2 text-slate-800">
+                                <td class="px-3 py-2 text-slate-800 border border-slate-300">{{ std.passed_subject_count ?? '' }}</td>
+                                <td class="px-3 py-2 text-slate-800 border border-slate-300">
                                     <div class="flex flex-wrap gap-1">
-                                        <span v-for="m in (std.marks || [])" :key="'m-p-' + std.id + '-' + m.subject_id" class="rounded-md border border-emerald-200 bg-emerald-50 px-2 py-0.5 text-xs text-emerald-700">
+                                        <span v-for="m in (std.marks || [])" :key="'m-p-' + std.id + '-' + m.subject_id" class="rounded-sm border border-emerald-200 bg-emerald-50 px-2 py-0.5 text-xs text-emerald-700">
                                             {{ m?.subject?.name_en || '' }}
                                         </span>
                                     </div>
                                 </td>
                             </template>
 
-                            <td class="px-3 py-2 text-slate-800">{{ std.total_mark ?? '' }}</td>
-                            <td class="px-3 py-2 text-slate-800">{{ std.letter_grade ?? '' }}</td>
-                            <td class="px-3 py-2 text-slate-800">{{ std.gpa ?? '' }}</td>
+                            <td class="px-3 py-2 text-slate-800 border border-slate-300">{{ std.total_mark ?? '' }}</td>
+                            <td class="px-3 py-2 text-slate-800 border border-slate-300">{{ std.letter_grade ?? '' }}</td>
+                            <td class="px-3 py-2 text-slate-800 border border-slate-300">{{ std.gpa ?? '' }}</td>
                         </tr>
 
                         <tr v-if="!(result?.details || []).length">
@@ -239,6 +249,8 @@
 </template>
 
 <script>
+import { nextTick } from 'vue'
+
 export default {
     name: 'ResultReport',
     props: {
@@ -250,7 +262,8 @@ export default {
     data() {
         return {
             loading: false,
-            error: '',
+            bootstrapping: false,
+            bootstrapInfo: null,
             printing: false,
             exportingExcel: false,
             downloadingSingle: false,
@@ -259,7 +272,9 @@ export default {
             bulkExportStatus: null,
             bulkExportMessage: '',
             bulkPollTimer: null,
+            searchTimer: null,
             result: null,
+            examsList: [],
             excelHeader: [],
             sortField: '',
             sortOrder: 'asc',
@@ -293,9 +308,39 @@ export default {
             }
             return list.sort((a, b) => sortKey(b) - sortKey(a))
         },
+        sessionsSortedForSelect() {
+            const base = Array.isArray(this.sessionsSorted) ? this.sessionsSorted : []
+            const id = String(this.filters?.academic_session_id || '')
+            if (!id) return base
+            const has = base.some((s) => String(s?.id) === id)
+            if (has) return base
+
+            const label =
+                this.bootstrapInfo?.academic_session_name ||
+                this.result?.academic_session?.name ||
+                this.result?.academic_session_name ||
+                id
+
+            return [{ id, name: label }, ...base]
+        },
         qualifications() {
             const list = this.systems?.global?.academic_qualifications
             return Array.isArray(list) ? list : []
+        },
+        qualificationsForSelect() {
+            const base = Array.isArray(this.qualifications) ? this.qualifications : []
+            const id = String(this.filters?.academic_qualification_id || '')
+            if (!id) return base
+            const has = base.some((q) => String(q?.id) === id)
+            if (has) return base
+
+            const label =
+                this.bootstrapInfo?.academic_qualification_name ||
+                this.result?.qualification?.name ||
+                this.result?.academic_qualification_name ||
+                id
+
+            return [{ id, name: label }, ...base]
         },
         classes() {
             const list = this.systems?.global?.academic_classes
@@ -311,7 +356,7 @@ export default {
         },
         filteredDepartments() {
             const qid = this.filters?.academic_qualification_id
-            if (!qid) return this.departments
+            if (!qid) return []
             const allowed = new Set(
                 this.departmentQualifications
                     .filter((r) => String(r.academic_qualification_id) === String(qid))
@@ -319,14 +364,39 @@ export default {
             )
             return this.departments.filter((d) => allowed.has(String(d.id)))
         },
+        filteredDepartmentsForSelect() {
+            const base = Array.isArray(this.filteredDepartments) ? this.filteredDepartments : []
+            const id = String(this.filters?.department_id || '')
+            if (!id) return base
+            const has = base.some((d) => String(d?.id) === id)
+            if (has) return base
+
+            const label = this.bootstrapInfo?.department_name || this.result?.department?.name || this.result?.department_name || id
+            return [{ id, name: label }, ...base]
+        },
         filteredClasses() {
             const qid = this.filters?.academic_qualification_id
-            if (!qid) return this.classes
+            if (!qid) return []
             return this.classes.filter((c) => String(c.academic_qualification_id) === String(qid))
         },
+        filteredClassesForSelect() {
+            const base = Array.isArray(this.filteredClasses) ? this.filteredClasses : []
+            const id = String(this.filters?.academic_class_id || '')
+            if (!id) return base
+            const has = base.some((c) => String(c?.id) === id)
+            if (has) return base
+
+            const label = this.bootstrapInfo?.academic_class_name || this.result?.academic_class?.name || this.result?.academic_class_name || id
+            return [{ id, name: label }, ...base]
+        },
         exams() {
-            const list = this.systems?.global?.exams
-            return Array.isArray(list) ? list : []
+            const list = Array.isArray(this.examsList) && this.examsList.length ? this.examsList : this.systems?.global?.exams
+            const items = Array.isArray(list) ? list : []
+            return items.filter((e) => {
+                const t = String(e?.exam_type || '')
+                if (!t) return true
+                return t === 'term'
+            })
         },
         tableColspan() {
             let n = 0
@@ -338,14 +408,88 @@ export default {
         },
     },
     async mounted() {
+        await this.loadExamsTerm()
         const p = new URLSearchParams(window.location.search || '')
         const resultId = p.get('result_id')
         if (resultId) {
             this.filters.result_id = String(resultId)
             await this.bootstrapResultById(String(resultId))
+            await this.search()
         }
     },
+    watch: {
+        'filters.academic_qualification_id'(next, prev) {
+            if (this.bootstrapping) return
+            if (String(next || '') !== String(prev || '')) {
+                this.filters.department_id = ''
+                this.filters.academic_class_id = ''
+                this.scheduleSearch()
+            }
+        },
+        'filters.academic_session_id'(next, prev) {
+            if (this.bootstrapping) return
+            if (String(next || '') !== String(prev || '')) this.scheduleSearch()
+        },
+        'filters.department_id'(next, prev) {
+            if (this.bootstrapping) return
+            if (String(next || '') !== String(prev || '')) this.scheduleSearch()
+        },
+        'filters.academic_class_id'(next, prev) {
+            if (this.bootstrapping) return
+            if (String(next || '') !== String(prev || '')) this.scheduleSearch()
+        },
+        'filters.exam_id'(next, prev) {
+            if (this.bootstrapping) return
+            if (String(next || '') !== String(prev || '')) this.scheduleSearch()
+        },
+        'filters.type'(next, prev) {
+            if (this.bootstrapping) return
+            if (String(next || '') !== String(prev || '')) {
+                this.filters.failed_subject = ''
+                this.filters.passed_subject = ''
+                this.filters.exclude_fourth_subject = ''
+                this.scheduleSearch()
+            }
+        },
+        'filters.failed_subject'(next, prev) {
+            if (this.bootstrapping) return
+            if (String(next || '') !== String(prev || '')) {
+                if (!next) this.filters.exclude_fourth_subject = ''
+                this.scheduleSearch()
+            }
+        },
+        'filters.exclude_fourth_subject'(next, prev) {
+            if (this.bootstrapping) return
+            if (String(next || '') !== String(prev || '')) this.scheduleSearch()
+        },
+        'filters.passed_subject'(next, prev) {
+            if (this.bootstrapping) return
+            if (String(next || '') !== String(prev || '')) this.scheduleSearch()
+        },
+        'filters.field_name'(next, prev) {
+            if (this.bootstrapping) return
+            if (String(next || '') !== String(prev || '')) this.scheduleSearch()
+        },
+        'filters.search_keyword'(next, prev) {
+            if (this.bootstrapping) return
+            if (String(next || '') !== String(prev || '')) this.scheduleSearch()
+        },
+    },
     methods: {
+        async loadExamsTerm() {
+            try {
+                const res = await window.axios.get('/admin/get-exam', { params: { allData: true, exam_type: 'term' } })
+                this.examsList = Array.isArray(res?.data) ? res.data : Array.isArray(res?.data?.data) ? res.data.data : []
+            } catch {
+                this.examsList = []
+            }
+        },
+        scheduleSearch() {
+            if (this.searchTimer) clearTimeout(this.searchTimer)
+            this.searchTimer = setTimeout(() => {
+                this.search()
+            }, 250)
+        },
         triggerDownload(url) {
             try {
                 const iframe = document.createElement('iframe')
@@ -573,20 +717,24 @@ export default {
         async bootstrapResultById(resultId) {
             this.loading = true
             this.error = ''
+            this.bootstrapping = true
             try {
                 const res = await window.axios.get(`/admin/result/${resultId}/details`)
                 const r = res?.data || null
                 if (r) {
+                    this.bootstrapInfo = r
                     this.filters.academic_session_id = String(r.academic_session_id || '')
                     this.filters.academic_qualification_id = String(r.academic_qualification_id || '')
                     this.filters.department_id = String(r.department_id || '')
                     this.filters.academic_class_id = String(r.academic_class_id || '')
                     this.filters.exam_id = String(r.exam_id || '')
                 }
+                await nextTick()
                 this.result = null
             } catch (e) {
                 this.error = e?.response?.data?.message || 'Failed to load result.'
             } finally {
+                this.bootstrapping = false
                 this.loading = false
             }
         },
@@ -623,6 +771,10 @@ export default {
         },
     },
     beforeUnmount() {
+        if (this.searchTimer) {
+            clearTimeout(this.searchTimer)
+            this.searchTimer = null
+        }
         this.clearBulkPollTimer()
     },
 }

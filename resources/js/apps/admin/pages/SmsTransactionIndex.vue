@@ -1,6 +1,6 @@
 <template>
     <div class="flex flex-col gap-4">
-        <div class="rounded-2xl border border-slate-200 bg-white p-5">
+        <div class=" border border-slate-300 bg-white p-5">
             <div class="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
                 <div>
                     <div class="text-xl font-semibold text-slate-900">SMS Transaction</div>
@@ -11,58 +11,58 @@
                 </div>
 
                 <div class="flex w-full flex-col gap-2 sm:w-auto sm:flex-row">
-                    <select v-model="filters.field_name" class="h-9 rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none" :disabled="loading">
+                    <select v-model="filters.field_name" class="h-9 rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none" :disabled="loading">
                         <option value="invoice_number">Invoice Number</option>
                     </select>
 
-                    <input v-model="filters.value" type="text" class="h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none sm:w-72" placeholder="Search..." :disabled="loading" @keyup.enter="load(1)" />
+                    <input v-model="filters.value" type="text" class="h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none sm:w-72" placeholder="Search..." :disabled="loading" @keyup.enter="load(1)" />
 
-                    <button class="h-9 rounded-lg bg-slate-900 px-4 text-sm font-semibold text-white hover:bg-slate-800" :disabled="loading" @click="goCreate">Recharge Balance</button>
+                    <button class="h-9 rounded-sm bg-slate-900 px-4 text-sm font-semibold text-white hover:bg-slate-800" :disabled="loading" @click="goCreate">Recharge Balance</button>
                 </div>
             </div>
         </div>
 
-        <div v-if="error" class="rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-800">{{ error }}</div>
+        <div v-if="error" class=" border border-red-200 bg-red-50 p-4 text-sm text-red-800">{{ error }}</div>
 
-        <div class="overflow-hidden rounded-2xl border border-slate-200 bg-white">
+        <div class="overflow-hidden  border border-slate-300 bg-white">
             <div class="overflow-x-auto">
-                <table class="min-w-full border-collapse border border-slate-200">
-                    <thead class="bg-slate-50">
-                        <tr class="text-left text-xs font-semibold uppercase tracking-wider text-slate-500">
-                            <th class="border border-slate-200 bg-slate-50 px-4 py-3">#</th>
-                            <th class="border border-slate-200 bg-slate-50 px-4 py-3">Invoice Date</th>
-                            <th class="border border-slate-200 bg-slate-50 px-4 py-3">Invoice Number</th>
-                            <th class="border border-slate-200 bg-slate-50 px-4 py-3 text-center">Amount</th>
-                            <th class="border border-slate-200 bg-slate-50 px-4 py-3">Payment Date</th>
-                            <th class="border border-slate-200 bg-slate-50 px-4 py-3 text-center">Status</th>
-                            <th class="border border-slate-200 bg-slate-50 px-4 py-3 text-center">Action</th>
+                <table class="min-w-full border-collapse border border-slate-300">
+                    <thead class="bg-emerald-100">
+                        <tr class="text-left text-xs font-semibold uppercase tracking-wider text-slate-700">
+                            <th class="border border-slate-300 bg-emerald-100 px-1 py-2 text-slate-700">#</th>
+                            <th class="border border-slate-300 bg-emerald-100 px-1 py-2 text-slate-700">Invoice Date</th>
+                            <th class="border border-slate-300 bg-emerald-100 px-1 py-2 text-slate-700">Invoice Number</th>
+                            <th class="border border-slate-300 bg-emerald-100 px-1 py-2 text-center text-slate-700">Amount</th>
+                            <th class="border border-slate-300 bg-emerald-100 px-1 py-2 text-slate-700">Payment Date</th>
+                            <th class="border border-slate-300 bg-emerald-100 px-1 py-2 text-center text-slate-700">Status</th>
+                            <th class="border border-slate-300 bg-emerald-100 px-1 py-2 text-center text-slate-700">Action</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr v-if="loading" class="text-sm text-slate-600">
-                            <td class="border border-slate-200 px-4 py-6" colspan="7">Loading...</td>
+                            <td class="border border-slate-300 px-1 py-1" colspan="7">Loading...</td>
                         </tr>
                         <tr v-else-if="rows.length === 0" class="text-sm text-slate-600">
-                            <td class="border border-slate-200 px-4 py-6" colspan="7">No data found.</td>
+                            <td class="border border-slate-300 px-1 py-1" colspan="7">No data found.</td>
                         </tr>
                         <tr v-for="(row, idx) in rows" v-else :key="row.id" class="text-sm text-slate-800" :class="idx % 2 === 0 ? 'bg-white' : 'bg-slate-50'">
-                            <td class="border border-slate-200 px-4 py-3 text-slate-600">{{ rowSerial(idx) }}</td>
-                            <td class="border border-slate-200 px-4 py-3">{{ row.invoice_date || '—' }}</td>
-                            <td class="border border-slate-200 px-4 py-3">
+                            <td class="border border-slate-300 px-1 py-1 text-slate-600">{{ rowSerial(idx) }}</td>
+                            <td class="border border-slate-300 px-1 py-1">{{ row.invoice_date || '—' }}</td>
+                            <td class="border border-slate-300 px-1 py-1">
                                 <a href="#" class="text-emerald-700 hover:underline" @click.prevent="goView(row.id)">{{ row.invoice_number || '—' }}</a>
                             </td>
-                            <td class="border border-slate-200 px-4 py-3 text-center">{{ money(row.amount) }}</td>
-                            <td class="border border-slate-200 px-4 py-3">{{ row.payment_date || '—' }}</td>
-                            <td class="border border-slate-200 px-4 py-3 text-center">{{ row.status || '—' }}</td>
-                            <td class="border border-slate-200 px-4 py-3 text-center">
+                            <td class="border border-slate-300 px-1 py-1 text-center">{{ money(row.amount) }}</td>
+                            <td class="border border-slate-300 px-1 py-1">{{ row.payment_date || '—' }}</td>
+                            <td class="border border-slate-300 px-1 py-1 text-center">{{ row.status || '—' }}</td>
+                            <td class="border border-slate-300 px-1 py-1 text-center">
                                 <div class="flex items-center justify-center gap-2">
-                                    <button type="button" class="inline-flex h-8 w-8 items-center justify-center rounded-md border border-slate-200 bg-white text-slate-700 hover:bg-slate-50" title="View" @click="goView(row.id)">
+                                    <button type="button" class="inline-flex h-8 w-8 items-center justify-center rounded-sm border border-slate-300 bg-white text-slate-700 hover:bg-slate-50" title="View" @click="goView(row.id)">
                                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-4 w-4">
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M2.5 12s3.5-7 9.5-7 9.5 7 9.5 7-3.5 7-9.5 7-9.5-7-9.5-7z" />
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M12 15a3 3 0 100-6 3 3 0 000 6z" />
                                         </svg>
                                     </button>
-                                    <button type="button" class="inline-flex h-8 w-8 items-center justify-center rounded-md border border-red-200 bg-white text-red-700 hover:bg-red-50" title="Delete" :disabled="deletingId === row.id || row.status === 'success'" @click="destroy(row.id)">
+                                    <button type="button" class="inline-flex h-8 w-8 items-center justify-center rounded-sm border border-red-200 bg-white text-red-700 hover:bg-red-50" title="Delete" :disabled="deletingId === row.id || row.status === 'success'" @click="destroy(row.id)">
                                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-4 w-4">
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M6 7h12" />
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M9 7V5a1 1 0 011-1h4a1 1 0 011 1v2" />
@@ -78,12 +78,12 @@
                 </table>
             </div>
 
-            <div class="flex flex-col gap-3 border-t border-slate-200 px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
+            <div class="flex flex-col gap-3 border-t border-slate-300 px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
                 <div class="text-xs text-slate-600">Showing {{ meta.from || 0 }} to {{ meta.to || 0 }} of {{ meta.total || 0 }} entries</div>
 
                 <div class="flex items-center justify-end gap-1 overflow-x-auto">
-                    <button type="button" class="inline-flex h-8 w-8 items-center justify-center rounded-md border border-slate-200 bg-white text-xs font-semibold text-slate-700 hover:bg-slate-50" :disabled="loading || meta.current_page <= 1" @click="load(meta.current_page - 1)">«</button>
-                    <button type="button" class="inline-flex h-8 w-8 items-center justify-center rounded-md border border-slate-200 bg-white text-xs font-semibold text-slate-700 hover:bg-slate-50" :disabled="loading || meta.current_page >= meta.last_page" @click="load(meta.current_page + 1)">»</button>
+                    <button type="button" class="inline-flex h-8 w-8 items-center justify-center rounded-sm border border-slate-300 bg-white text-xs font-semibold text-slate-700 hover:bg-slate-50" :disabled="loading || meta.current_page <= 1" @click="load(meta.current_page - 1)">«</button>
+                    <button type="button" class="inline-flex h-8 w-8 items-center justify-center rounded-sm border border-slate-300 bg-white text-xs font-semibold text-slate-700 hover:bg-slate-50" :disabled="loading || meta.current_page >= meta.last_page" @click="load(meta.current_page + 1)">»</button>
                 </div>
             </div>
         </div>
@@ -105,6 +105,7 @@ export default {
             deletingId: null,
             error: '',
             rows: [],
+            searchTimer: null,
             filters: {
                 pagination: 10,
                 field_name: 'invoice_number',
@@ -131,7 +132,25 @@ export default {
     created() {
         this.load(1)
     },
+    watch: {
+        'filters.field_name'(next, prev) {
+            if (String(next || '') !== String(prev || '')) this.scheduleLoad(true)
+        },
+        'filters.value'(next, prev) {
+            if (String(next || '') !== String(prev || '')) this.scheduleLoad(true)
+        },
+        'filters.pagination'(next, prev) {
+            if (Number(next || 0) !== Number(prev || 0)) this.scheduleLoad(true)
+        },
+    },
     methods: {
+        scheduleLoad(resetPage) {
+            if (this.searchTimer) clearTimeout(this.searchTimer)
+            this.searchTimer = setTimeout(() => {
+                const page = resetPage ? 1 : Number(this.meta?.current_page || 1)
+                this.load(page)
+            }, 250)
+        },
         toast(message, type = 'success') {
             window.dispatchEvent(new CustomEvent('app-toast', { detail: { message, type } }))
         },

@@ -1,5 +1,5 @@
 <template>
-    <div class="mt-3 rounded-md border border-slate-200 bg-white p-4 sm:p-6">
+    <div class="mt-3 rounded-sm border border-slate-300 bg-white p-4 sm:p-6">
         <div class="mx-auto w-full max-w-6xl">
             <div class="grid grid-cols-1 gap-4 lg:grid-cols-12">
                 <div class="lg:col-span-3">
@@ -13,11 +13,11 @@
                 </div>
 
                 <div class="lg:col-span-9">
-                    <div class="rounded-md border border-slate-200 bg-white">
-                        <div class="border-b border-slate-200 bg-slate-50 px-4 py-3 text-sm font-extrabold text-slate-800">ADMIT CARD</div>
+                    <div class="rounded-sm border border-slate-300 bg-white">
+                        <div class="border-b border-slate-300 bg-slate-50 px-4 py-3 text-sm font-extrabold text-slate-800">ADMIT CARD</div>
                         <div class="p-4">
                             <div v-if="loading" class="text-sm text-slate-600">Loading...</div>
-                            <div v-else-if="error" class="rounded-md border border-red-200 bg-red-50 p-3 text-sm text-red-800">{{ error }}</div>
+                            <div v-else-if="error" class="rounded-sm border border-red-200 bg-red-50 p-3 text-sm text-red-800">{{ error }}</div>
                             <div v-else>
                                 <div v-if="cards.length" class="overflow-x-auto">
                                     <table class="min-w-full text-sm">
@@ -47,7 +47,7 @@
                                                 <td class="px-3 py-2">
                                                     <button
                                                         type="button"
-                                                        class="rounded-md bg-[#0b1d4d] px-3 py-1.5 text-xs font-extrabold text-white hover:bg-[#09163c] disabled:cursor-not-allowed disabled:opacity-60"
+                                                        class="rounded-sm bg-[#0b1d4d] px-3 py-1.5 text-xs font-extrabold text-white hover:bg-[#09163c] disabled:cursor-not-allowed disabled:opacity-60"
                                                         :disabled="!eligible(c)"
                                                         @click="download(c)"
                                                     >
@@ -58,7 +58,7 @@
                                         </tbody>
                                     </table>
                                 </div>
-                                <div v-else class="rounded-md border border-slate-200 bg-slate-50 p-4 text-center text-sm text-slate-700">No admit card found.</div>
+                                <div v-else class="rounded-sm border border-slate-300 bg-slate-50 p-4 text-center text-sm text-slate-700">No admit card found.</div>
                             </div>
                         </div>
                     </div>

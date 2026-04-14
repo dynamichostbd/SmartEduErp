@@ -11,6 +11,35 @@ use Illuminate\Support\Facades\Schema;
 
 class InvoiceController extends Controller
 {
+    private function mapRowDashboard($r)
+    {
+        return [
+            'id' => (int) ($r->id ?? 0),
+            'invoice_number' => $r->invoice_number,
+            'invoice_date' => $r->invoice_date,
+            'payment_date' => $r->payment_date,
+            'amount' => $r->amount,
+            'status' => $r->status,
+            'department' => $r->dept_id ? ['id' => (int) $r->dept_id, 'name' => $r->dept_name] : null,
+            'qualification' => $r->q_id ? ['id' => (int) $r->q_id, 'name' => $r->q_name] : null,
+            'academic_class' => $r->cls_id ? ['id' => (int) $r->cls_id, 'name' => $r->cls_name] : null,
+            'head' => $r->ah_id ? ['id' => (int) $r->ah_id, 'name' => $r->ah_name] : null,
+            'student' => $r->student_db_id ? [
+                'id' => (int) $r->student_db_id,
+                'student_id' => $r->student_student_id,
+                'name' => $r->student_name,
+                'mobile' => $r->student_mobile,
+                'admission_id' => $r->student_admission_id,
+            ] : null,
+            'online_admission' => $r->online_admission_db_id ? [
+                'id' => (int) $r->online_admission_db_id,
+                'name' => $r->online_admission_name,
+                'mobile' => $r->online_admission_mobile,
+                'admission_roll' => $r->online_admission_roll,
+            ] : null,
+        ];
+    }
+
     private function invoiceBaseQuery(Request $request)
     {
         $admin = Auth::guard('admin')->user();
@@ -247,15 +276,70 @@ class InvoiceController extends Controller
         $departmentId = $admin->department_id ?? null;
         $deptKey = !empty($departmentId) ? (int) $departmentId : 0;
         $date = date('Y-m-d');
+        $tomorrow = date('Y-m-d', strtotime('+1 day', strtotime($date)));
         $page = (int) ($request->input('page') ?? 1);
         $perPage = (int) ($request->input('pagination') ?? 15);
         $perPage = $perPage > 0 ? min($perPage, 200) : 15;
 
         $cacheKey = "today_payments_{$deptKey}_{$date}_p{$page}_pp{$perPage}";
 
-        $data = Cache::remember($cacheKey, 30, function () use ($request) {
-            $resp = $this->index($request);
-            return method_exists($resp, 'getData') ? $resp->getData(true) : [];
+        $data = Cache::remember($cacheKey, now()->addSeconds(30), function () use ($departmentId, $date, $tomorrow, $perPage) {
+            if (!Schema::hasTable('invoices')) {
+                return DB::table(DB::raw('(select 1) as t'))->paginate($perPage)->toArray();
+            }
+
+            $hasDeptCol = Cache::rememberForever('schema_has_col_invoices_department_id', function () {
+                return Schema::hasColumn('invoices', 'department_id');
+            });
+
+            $q = DB::table('invoices as inv')
+                ->leftJoin('students as std', 'std.id', '=', 'inv.student_id')
+                ->leftJoin('online_admissions as oa', 'oa.id', '=', 'inv.online_admission_id')
+                ->leftJoin('departments as dept', 'dept.id', '=', 'inv.department_id')
+                ->leftJoin('academic_qualifications as aq', 'aq.id', '=', 'inv.academic_qualification_id')
+                ->leftJoin('academic_classes as cls', 'cls.id', '=', 'inv.academic_class_id')
+                ->leftJoin('account_heads as ah', 'ah.id', '=', 'inv.account_head_id')
+                ->where('inv.amount', '!=', 0)
+                ->where('inv.status', 'success')
+                ->where('inv.payment_date', '>=', $date)
+                ->where('inv.payment_date', '<', $tomorrow)
+                ->orderByDesc('inv.id')
+                ->select([
+                    'inv.id',
+                    'inv.invoice_number',
+                    'inv.invoice_date',
+                    'inv.payment_date',
+                    'inv.amount',
+                    'inv.status',
+                    'std.id as student_db_id',
+                    'std.student_id as student_student_id',
+                    'std.name as student_name',
+                    'std.mobile as student_mobile',
+                    'std.admission_id as student_admission_id',
+                    'oa.id as online_admission_db_id',
+                    'oa.name as online_admission_name',
+                    'oa.mobile as online_admission_mobile',
+                    'oa.admission_roll as online_admission_roll',
+                    'dept.id as dept_id',
+                    'dept.name as dept_name',
+                    'aq.id as q_id',
+                    'aq.name as q_name',
+                    'cls.id as cls_id',
+                    'cls.name as cls_name',
+                    'ah.id as ah_id',
+                    'ah.name as ah_name',
+                ]);
+
+            if (!empty($departmentId) && $hasDeptCol) {
+                $q->where('inv.department_id', $departmentId);
+            }
+
+            $datas = $q->paginate($perPage);
+            $datas->getCollection()->transform(function ($r) {
+                return $this->mapRowDashboard($r);
+            });
+
+            return $datas->toArray();
         });
 
         return response()->json($data);

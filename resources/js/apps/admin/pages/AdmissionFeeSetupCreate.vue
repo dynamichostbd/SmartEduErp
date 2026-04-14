@@ -1,109 +1,170 @@
 <template>
-    <div class="flex flex-col gap-4">
-        <div class="rounded-2xl border border-slate-200 bg-white p-5">
+    <form class="flex flex-col gap-4" @submit.prevent="submit">
+        <div class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
             <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <div class="min-w-0">
                     <div class="truncate text-xl font-semibold text-slate-900">Admission Fee Setup</div>
                     <div class="mt-1 text-sm text-slate-600">{{ isEdit ? 'Edit' : 'Create' }}</div>
                 </div>
-
-                <div class="flex flex-wrap items-center gap-2">
-                    <button type="button" class="rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50" @click="goBack">Back</button>
-                    <button type="button" class="rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-700" :disabled="submitting" @click="submit">{{ submitting ? '...' : 'Save' }}</button>
-                </div>
             </div>
         </div>
 
-        <div v-if="error" class="rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-800">{{ error }}</div>
+        <div v-if="error" class="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-800">{{ error }}</div>
 
-        <div class="rounded-2xl border border-slate-200 bg-white p-5">
-            <div class="grid grid-cols-1 gap-4 lg:grid-cols-12">
-                <div class="lg:col-span-3">
-                    <div class="text-xs font-semibold text-slate-600">Purpose</div>
-                    <select v-model="form.account_head_id" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
-                        <option value="">--Select Any--</option>
-                        <option v-for="h in admissionHeads" :key="'h-' + h.id" :value="String(h.id)">{{ h.name }}</option>
-                    </select>
-                </div>
+        <div class="grid grid-cols-1 gap-4 lg:grid-cols-12">
+            <div class="flex flex-col gap-4 lg:col-span-8">
+                <div class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+                    <div class="text-sm font-semibold text-slate-900">Setup Details</div>
 
-                <div class="lg:col-span-3">
-                    <div class="text-xs font-semibold text-slate-600">Amount</div>
-                    <input v-model="form.amount" type="number" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
-                </div>
+                    <div class="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                        <div>
+                            <div class="text-xs font-semibold text-slate-600">Purpose</div>
+                            <select
+                                v-model="form.account_head_id"
+                                class="mt-1 h-9 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
+                            >
+                                <option value="">--Select Any--</option>
+                                <option v-for="h in admissionHeads" :key="'h-' + h.id" :value="String(h.id)">{{ h.name }}</option>
+                            </select>
+                        </div>
 
-                <div class="lg:col-span-3">
-                    <div class="text-xs font-semibold text-slate-600">Store ID</div>
-                    <input v-model="form.store_id" type="text" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
-                </div>
+                        <div>
+                            <div class="text-xs font-semibold text-slate-600">Amount</div>
+                            <input
+                                v-model="form.amount"
+                                type="number"
+                                class="mt-1 h-9 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
+                            />
+                        </div>
 
-                <div class="lg:col-span-3">
-                    <div class="text-xs font-semibold text-slate-600">Store Password</div>
-                    <input v-model="form.store_password" type="text" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
-                </div>
+                        <div>
+                            <div class="text-xs font-semibold text-slate-600">Store ID</div>
+                            <input
+                                v-model="form.store_id"
+                                type="text"
+                                class="mt-1 h-9 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
+                            />
+                        </div>
 
-                <div class="lg:col-span-3">
-                    <div class="text-xs font-semibold text-slate-600">Account No</div>
-                    <input v-model="form.account_no" type="text" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
-                </div>
+                        <div>
+                            <div class="text-xs font-semibold text-slate-600">Store Password</div>
+                            <input
+                                v-model="form.store_password"
+                                type="text"
+                                class="mt-1 h-9 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
+                            />
+                        </div>
 
-                <div class="lg:col-span-3">
-                    <div class="text-xs font-semibold text-slate-600">Timeline</div>
-                    <div class="mt-2 flex items-center gap-2">
-                        <input id="enable_date" v-model="form.enable_date" type="checkbox" class="h-4 w-4" :true-value="1" :false-value="0" />
-                        <label for="enable_date" class="text-sm text-slate-700">Enable Date</label>
+                        <div>
+                            <div class="text-xs font-semibold text-slate-600">Account No</div>
+                            <input
+                                v-model="form.account_no"
+                                type="text"
+                                class="mt-1 h-9 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
+                            />
+                        </div>
+
+                        <div>
+                            <div class="text-xs font-semibold text-slate-600">Timeline</div>
+                            <div class="mt-2 flex items-center gap-2">
+                                <input id="enable_date" v-model="form.enable_date" type="checkbox" class="h-4 w-4" :true-value="1" :false-value="0" />
+                                <label for="enable_date" class="text-sm text-slate-700">Enable Date</label>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="text-xs font-semibold text-slate-600">Roll Validation</div>
+                            <div class="mt-2 flex items-center gap-2">
+                                <input id="enable_roll" v-model="form.enable_roll" type="checkbox" class="h-4 w-4" :true-value="1" :false-value="0" />
+                                <label for="enable_roll" class="text-sm text-slate-700">Enable Roll</label>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="text-xs font-semibold text-slate-600">Session Applicable</div>
+                            <div class="mt-2 flex items-center gap-2">
+                                <input id="session" v-model="form.session" type="checkbox" class="h-4 w-4" :true-value="1" :false-value="0" />
+                                <label for="session" class="text-sm text-slate-700">Session</label>
+                            </div>
+                        </div>
+
+                        <div v-if="form.session" class="sm:col-span-2 lg:col-span-3">
+                            <div class="text-xs font-semibold text-slate-600">Select Sessions</div>
+                            <div class="mt-2 flex flex-wrap gap-2 rounded-xl border border-slate-300 p-3">
+                                <label v-for="s in sessionsSorted" :key="'ss-' + s.id" class="flex items-center gap-2 text-sm text-slate-700">
+                                    <input type="checkbox" :value="Number(s.id)" v-model="form.academic_session_ids" class="h-4 w-4" />
+                                    <span>{{ s.name }}</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div v-if="form.enable_date">
+                            <div class="text-xs font-semibold text-slate-600">Start Date</div>
+                            <input
+                                v-model="form.start_date"
+                                type="datetime-local"
+                                step="1"
+                                class="mt-1 h-9 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
+                            />
+                        </div>
+                        <div v-if="form.enable_date">
+                            <div class="text-xs font-semibold text-slate-600">Expire Date</div>
+                            <input
+                                v-model="form.expire_date"
+                                type="datetime-local"
+                                step="1"
+                                class="mt-1 h-9 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
+                            />
+                        </div>
+                        <div v-if="form.enable_date">
+                            <div class="text-xs font-semibold text-slate-600">Additional Date</div>
+                            <input
+                                v-model="form.additional_date"
+                                type="datetime-local"
+                                step="1"
+                                class="mt-1 h-9 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
+                            />
+                        </div>
+
+                        <div v-if="form.enable_roll">
+                            <div class="text-xs font-semibold text-slate-600">Admission Roll Minimum Value</div>
+                            <input
+                                v-model="form.admission_roll_min_value"
+                                type="number"
+                                class="mt-1 h-9 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
+                            />
+                        </div>
+                        <div v-if="form.enable_roll">
+                            <div class="text-xs font-semibold text-slate-600">Admission Roll Maximum Value</div>
+                            <input
+                                v-model="form.admission_roll_max_value"
+                                type="number"
+                                class="mt-1 h-9 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
+                            />
+                        </div>
                     </div>
                 </div>
+            </div>
 
-                <div class="lg:col-span-3">
-                    <div class="text-xs font-semibold text-slate-600">Roll Validation</div>
-                    <div class="mt-2 flex items-center gap-2">
-                        <input id="enable_roll" v-model="form.enable_roll" type="checkbox" class="h-4 w-4" :true-value="1" :false-value="0" />
-                        <label for="enable_roll" class="text-sm text-slate-700">Enable Roll</label>
+            <div class="flex flex-col gap-4 lg:col-span-4">
+                <div class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+                    <div class="text-sm font-semibold text-slate-900">Status</div>
+                    <div class="mt-2 text-sm text-slate-600">Configure admission fee settings and save to apply.</div>
+                </div>
+
+                <div class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+                    <div class="text-sm font-semibold text-slate-900">Actions</div>
+
+                    <div class="mt-4 flex flex-col gap-2">
+                        <button type="button" class="w-full rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50" @click="goBack">Back</button>
+                        <button type="submit" class="w-full rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-700" :disabled="submitting">
+                            {{ submitting ? '...' : 'Save' }}
+                        </button>
                     </div>
-                </div>
-
-                <div class="lg:col-span-3">
-                    <div class="text-xs font-semibold text-slate-600">Session Applicable</div>
-                    <div class="mt-2 flex items-center gap-2">
-                        <input id="session" v-model="form.session" type="checkbox" class="h-4 w-4" :true-value="1" :false-value="0" />
-                        <label for="session" class="text-sm text-slate-700">Session</label>
-                    </div>
-                </div>
-
-                <div v-if="form.session" class="lg:col-span-12">
-                    <div class="text-xs font-semibold text-slate-600">Select Sessions</div>
-                    <div class="mt-2 flex flex-wrap gap-2 rounded-xl border border-slate-200 p-3">
-                        <label v-for="s in sessionsSorted" :key="'ss-' + s.id" class="flex items-center gap-2 text-sm text-slate-700">
-                            <input type="checkbox" :value="Number(s.id)" v-model="form.academic_session_ids" class="h-4 w-4" />
-                            <span>{{ s.name }}</span>
-                        </label>
-                    </div>
-                </div>
-
-                <div v-if="form.enable_date" class="lg:col-span-4">
-                    <div class="text-xs font-semibold text-slate-600">Start Date</div>
-                    <input v-model="form.start_date" type="datetime-local" step="1" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
-                </div>
-                <div v-if="form.enable_date" class="lg:col-span-4">
-                    <div class="text-xs font-semibold text-slate-600">Expire Date</div>
-                    <input v-model="form.expire_date" type="datetime-local" step="1" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
-                </div>
-                <div v-if="form.enable_date" class="lg:col-span-4">
-                    <div class="text-xs font-semibold text-slate-600">Additional Date</div>
-                    <input v-model="form.additional_date" type="datetime-local" step="1" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
-                </div>
-
-                <div v-if="form.enable_roll" class="lg:col-span-6">
-                    <div class="text-xs font-semibold text-slate-600">Admission Roll Minimum Value</div>
-                    <input v-model="form.admission_roll_min_value" type="number" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
-                </div>
-                <div v-if="form.enable_roll" class="lg:col-span-6">
-                    <div class="text-xs font-semibold text-slate-600">Admission Roll Maximum Value</div>
-                    <input v-model="form.admission_roll_max_value" type="number" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
                 </div>
             </div>
         </div>
-    </div>
+    </form>
 </template>
 
 <script>

@@ -1,5 +1,13 @@
 <?php
 
+$assetUrl = env('ASSET_URL');
+if (is_string($assetUrl)) {
+    $t = strtolower(trim($assetUrl));
+    if ($t === '' || $t === 'null') {
+        $assetUrl = null;
+    }
+}
+
 return [
 
     /*
@@ -53,6 +61,8 @@ return [
     */
 
     'url' => env('APP_URL', 'http://localhost'),
+
+    'asset_url' => $assetUrl,
 
     /*
     |--------------------------------------------------------------------------

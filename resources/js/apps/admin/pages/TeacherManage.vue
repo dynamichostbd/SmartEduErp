@@ -1,148 +1,101 @@
 <template>
     <div class="flex flex-col gap-4">
-        <div class="rounded-2xl border border-slate-200 bg-white p-5">
+        <div class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
             <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <div class="min-w-0">
                     <div class="truncate text-xl font-semibold text-slate-900">{{ isEdit ? 'Edit Teacher' : 'Create Teacher' }}</div>
+                    <div class="mt-1 text-sm text-slate-600">{{ isEdit ? 'Update teacher/staff information' : 'Create new teacher/staff' }}</div>
                 </div>
 
                 <div class="flex flex-wrap items-center gap-2">
-                    <button type="button" class="rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50" :disabled="saving" @click="goIndex">Back</button>
-                    <button type="button" class="rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-700" :disabled="saving" @click="submit">
+                    <button type="button" class="rounded-sm border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50" :disabled="saving" @click="goIndex">Back</button>
+                    <button type="button" class="rounded-sm bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-700" :disabled="saving" @click="submit">
                         {{ saving ? '...' : isEdit ? 'Update' : 'Create' }}
                     </button>
                 </div>
             </div>
         </div>
 
-        <div v-if="error" class="rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-800">{{ error }}</div>
-        <div v-if="success" class="rounded-2xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-800">{{ success }}</div>
+        <div v-if="error" class="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-800">{{ error }}</div>
+        <div v-if="success" class="rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-800">{{ success }}</div>
 
-        <div class="rounded-2xl border border-slate-200 bg-white p-5">
-            <div class="grid grid-cols-1 gap-4 lg:grid-cols-12">
-                <div class="lg:col-span-12">
-                    <div class="text-xs font-semibold text-slate-600">Profile</div>
-                    <div class="mt-2 flex flex-col gap-3 sm:flex-row sm:items-center">
-                        <img :src="previewProfile || form.profile || fallback" class="h-16 w-16 rounded-full border border-slate-200 object-cover" alt="profile" />
-                        <input type="file" accept="image/*" class="block w-full text-sm" @change="onFile" />
+        <div class="grid grid-cols-1 gap-4 lg:grid-cols-12">
+            <div class="space-y-4 lg:col-span-8 xl:col-span-9">
+                <div class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+                    <div class="min-w-0">
+                        <div class="text-sm font-semibold text-slate-900">Basic Information</div>
+                        <div class="mt-1 text-xs text-slate-500">Account, department and contact details</div>
                     </div>
-                </div>
 
-                <div class="lg:col-span-3">
-                    <div class="text-xs font-semibold text-slate-600">Type</div>
-                    <select v-model="form.type" class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none">
-                        <option value="Teacher">Teacher</option>
-                        <option value="Staff">Staff</option>
-                    </select>
-                </div>
+                    <div class="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                        <div>
+                            <div class="text-xs font-semibold text-slate-600">Type</div>
+                            <select v-model="form.type" class="mt-1 h-10 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
+                                <option value="Teacher">Teacher</option>
+                                <option value="Staff">Staff</option>
+                            </select>
+                        </div>
 
-                <div class="lg:col-span-3">
-                    <div class="text-xs font-semibold text-slate-600">Designation</div>
-                    <select v-model="teacher.designation_id" class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none" :disabled="form.type !== 'Teacher'">
-                        <option value="">--Select Any--</option>
-                        <option v-for="d in designations" :key="'des-' + d.id" :value="String(d.id)">{{ d.name }}</option>
-                    </select>
-                </div>
+                        <div>
+                            <div class="text-xs font-semibold text-slate-600">Designation</div>
+                            <select
+                                v-model="teacher.designation_id"
+                                class="mt-1 h-10 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
+                                :disabled="form.type !== 'Teacher'"
+                            >
+                                <option value="">--Select Any--</option>
+                                <option v-for="d in designations" :key="'des-' + d.id" :value="String(d.id)">{{ d.name }}</option>
+                            </select>
+                        </div>
 
-                <div class="lg:col-span-6">
-                    <div class="text-xs font-semibold text-slate-600">Name</div>
-                    <input v-model="form.name" type="text" class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none" />
-                </div>
+                        <div>
+                            <div class="text-xs font-semibold text-slate-600">Name</div>
+                            <input v-model="form.name" type="text" class="mt-1 h-10 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
+                        </div>
 
-                <div class="lg:col-span-4">
-                    <div class="text-xs font-semibold text-slate-600">Email</div>
-                    <input v-model="form.email" type="email" class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none" />
-                </div>
+                        <div>
+                            <div class="text-xs font-semibold text-slate-600">Email</div>
+                            <input v-model="form.email" type="email" class="mt-1 h-10 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
+                        </div>
 
-                <div class="lg:col-span-4">
-                    <div class="text-xs font-semibold text-slate-600">Mobile</div>
-                    <input v-model="form.mobile" type="text" class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none" />
-                </div>
+                        <div>
+                            <div class="text-xs font-semibold text-slate-600">Mobile</div>
+                            <input v-model="form.mobile" type="text" class="mt-1 h-10 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
+                        </div>
 
-                <div class="lg:col-span-4">
-                    <div class="text-xs font-semibold text-slate-600">Emergency Contacts</div>
-                    <input v-model="form.emergency_contacts" type="text" class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none" />
-                </div>
+                        <div>
+                            <div class="text-xs font-semibold text-slate-600">Emergency Contacts</div>
+                            <input v-model="form.emergency_contacts" type="text" class="mt-1 h-10 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
+                        </div>
 
-                <div class="lg:col-span-4">
-                    <div class="text-xs font-semibold text-slate-600">Password</div>
-                    <input v-model="form.password" type="password" class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none" :placeholder="isEdit ? '(keep blank to keep same)' : ''" />
-                </div>
+                        <div>
+                            <div class="text-xs font-semibold text-slate-600">Password</div>
+                            <input
+                                v-model="form.password"
+                                type="password"
+                                class="mt-1 h-10 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
+                                :placeholder="isEdit ? '(keep blank to keep same)' : ''"
+                            />
+                        </div>
 
-                <div class="lg:col-span-4">
-                    <div class="text-xs font-semibold text-slate-600">Department/Group</div>
-                    <select v-model="form.department_id" class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none">
-                        <option value="">--Select Any--</option>
-                        <option v-for="d in departments" :key="'d-' + d.id" :value="String(d.id)">{{ d.name }}</option>
-                    </select>
-                </div>
+                        <div>
+                            <div class="text-xs font-semibold text-slate-600">Department/Group</div>
+                            <select v-model="form.department_id" class="mt-1 h-10 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
+                                <option value="">--Select Any--</option>
+                                <option v-for="d in departments" :key="'d-' + d.id" :value="String(d.id)">{{ d.name }}</option>
+                            </select>
+                        </div>
 
-                <div class="lg:col-span-4">
-                    <div class="text-xs font-semibold text-slate-600">Status</div>
-                    <select v-model="form.status" class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none">
-                        <option value="active">Active</option>
-                        <option value="deactive">Deactive</option>
-                    </select>
-                </div>
-
-                <div class="lg:col-span-4">
-                    <div class="text-xs font-semibold text-slate-600">Index Number</div>
-                    <input v-model="teacher.index_number" type="text" class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none" :disabled="form.type !== 'Teacher'" />
-                </div>
-
-                <div class="lg:col-span-4">
-                    <div class="text-xs font-semibold text-slate-600">BCS Batch</div>
-                    <input v-model="teacher.bcs_batch" type="text" class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none" :disabled="form.type !== 'Teacher'" />
-                </div>
-
-                <div class="lg:col-span-4">
-                    <div class="text-xs font-semibold text-slate-600">Blood Group</div>
-                    <select v-model="teacher.blood_group" class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none" :disabled="form.type !== 'Teacher'">
-                        <option value="">--Select--</option>
-                        <option v-for="b in bloodGroups" :key="'bg-' + b" :value="b">{{ b }}</option>
-                    </select>
-                </div>
-
-                <div class="lg:col-span-4">
-                    <div class="text-xs font-semibold text-slate-600">Date of Birth</div>
-                    <input v-model="teacher.date_of_birth" type="date" class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none" :disabled="form.type !== 'Teacher'" />
-                </div>
-
-                <div class="lg:col-span-4">
-                    <div class="text-xs font-semibold text-slate-600">Joining Date (Lecturer)</div>
-                    <input v-model="teacher.joining_date_lecturer" type="date" class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none" :disabled="form.type !== 'Teacher'" />
-                </div>
-
-                <div class="lg:col-span-4">
-                    <div class="text-xs font-semibold text-slate-600">Joining Date (Present Designation)</div>
-                    <input v-model="teacher.joining_date_present_designation" type="date" class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none" :disabled="form.type !== 'Teacher'" />
-                </div>
-
-                <div class="lg:col-span-4">
-                    <div class="text-xs font-semibold text-slate-600">Joining Date (Work Station)</div>
-                    <input v-model="teacher.joining_date_present_work_station" type="date" class="mt-1 h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none" :disabled="form.type !== 'Teacher'" />
-                </div>
-
-                <div class="lg:col-span-6">
-                    <div class="text-xs font-semibold text-slate-600">Present Address</div>
-                    <textarea v-model="teacher.present_address" rows="2" class="mt-1 w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm outline-none" :disabled="form.type !== 'Teacher'"></textarea>
-                </div>
-
-                <div class="lg:col-span-6">
-                    <div class="text-xs font-semibold text-slate-600">Permanent Address</div>
-                    <textarea v-model="teacher.permanent_address" rows="2" class="mt-1 w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm outline-none" :disabled="form.type !== 'Teacher'"></textarea>
-                </div>
-
-                <div class="lg:col-span-12">
-                    <div class="text-xs font-semibold text-slate-600">Signature</div>
-                    <div class="mt-2 flex flex-col gap-3 sm:flex-row sm:items-center">
-                        <img :src="previewSignature || teacher.signature || ''" class="h-16 w-40 rounded-lg border border-slate-200 object-contain" alt="signature" v-if="previewSignature || teacher.signature" />
-                        <input type="file" accept="image/*" class="block w-full text-sm" :disabled="form.type !== 'Teacher'" @change="onSignature" />
+                        <div>
+                            <div class="text-xs font-semibold text-slate-600">Status</div>
+                            <select v-model="form.status" class="mt-1 h-10 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
+                                <option value="active">Active</option>
+                                <option value="deactive">Deactive</option>
+                            </select>
+                        </div>
                     </div>
-                </div>
 
-                <div class="lg:col-span-12">
-                    <div class="mt-1 flex flex-wrap items-center gap-4">
+                    <div class="mt-4 flex flex-wrap items-center gap-4">
                         <label class="flex items-center gap-2 text-sm font-semibold text-slate-700">
                             <input v-model.number="form.is_two_factor_auth" type="checkbox" class="h-4 w-4" :true-value="1" :false-value="0" />
                             <span>Two Factor Auth</span>
@@ -153,15 +106,137 @@
                         </label>
                     </div>
                 </div>
+
+                <div class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+                    <div class="min-w-0">
+                        <div class="text-sm font-semibold text-slate-900">Teacher Details</div>
+                        <div class="mt-1 text-xs text-slate-500">Personal and professional details (for Teacher type)</div>
+                    </div>
+
+                    <div class="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                        <div>
+                            <div class="text-xs font-semibold text-slate-600">Index Number</div>
+                            <input v-model="teacher.index_number" type="text" class="mt-1 h-10 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" :disabled="form.type !== 'Teacher'" />
+                        </div>
+
+                        <div>
+                            <div class="text-xs font-semibold text-slate-600">BCS Batch</div>
+                            <input v-model="teacher.bcs_batch" type="text" class="mt-1 h-10 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" :disabled="form.type !== 'Teacher'" />
+                        </div>
+
+                        <div>
+                            <div class="text-xs font-semibold text-slate-600">Blood Group</div>
+                            <select v-model="teacher.blood_group" class="mt-1 h-10 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" :disabled="form.type !== 'Teacher'">
+                                <option value="">--Select--</option>
+                                <option v-for="b in bloodGroups" :key="'bg-' + b" :value="b">{{ b }}</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <div class="text-xs font-semibold text-slate-600">Date of Birth</div>
+                            <input v-model="teacher.date_of_birth" type="date" class="mt-1 h-10 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" :disabled="form.type !== 'Teacher'" />
+                        </div>
+
+                        <div>
+                            <div class="text-xs font-semibold text-slate-600">Joining Date (Lecturer)</div>
+                            <input v-model="teacher.joining_date_lecturer" type="date" class="mt-1 h-10 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" :disabled="form.type !== 'Teacher'" />
+                        </div>
+
+                        <div>
+                            <div class="text-xs font-semibold text-slate-600">Joining Date (Present Designation)</div>
+                            <input
+                                v-model="teacher.joining_date_present_designation"
+                                type="date"
+                                class="mt-1 h-10 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
+                                :disabled="form.type !== 'Teacher'"
+                            />
+                        </div>
+
+                        <div>
+                            <div class="text-xs font-semibold text-slate-600">Joining Date (Work Station)</div>
+                            <input
+                                v-model="teacher.joining_date_present_work_station"
+                                type="date"
+                                class="mt-1 h-10 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
+                                :disabled="form.type !== 'Teacher'"
+                            />
+                        </div>
+                    </div>
+
+                    <div class="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
+                        <div>
+                            <div class="text-xs font-semibold text-slate-600">Present Address</div>
+                            <textarea
+                                v-model="teacher.present_address"
+                                rows="2"
+                                class="mt-1 w-full rounded-sm border border-slate-300 bg-white px-3 py-2 text-sm shadow-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
+                                :disabled="form.type !== 'Teacher'"
+                            ></textarea>
+                        </div>
+
+                        <div>
+                            <div class="text-xs font-semibold text-slate-600">Permanent Address</div>
+                            <textarea
+                                v-model="teacher.permanent_address"
+                                rows="2"
+                                class="mt-1 w-full rounded-sm border border-slate-300 bg-white px-3 py-2 text-sm shadow-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
+                                :disabled="form.type !== 'Teacher'"
+                            ></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="space-y-4 lg:col-span-4 xl:col-span-3">
+                <div class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+                    <div class="text-sm font-semibold text-slate-900">Profile</div>
+                    <div class="mt-1 text-xs text-slate-500">Upload profile photo</div>
+
+                    <div class="mt-4 flex items-center gap-4">
+                        <div class="flex h-20 w-20 items-center justify-center overflow-hidden rounded-2xl border border-slate-200 bg-slate-50">
+                            <img :src="previewProfile || form.profile || fallback" class="h-full w-full object-cover" alt="profile" />
+                        </div>
+                        <div class="min-w-0 flex-1">
+                            <input
+                                type="file"
+                                accept="image/*"
+                                class="block w-full text-sm file:mr-3 file:rounded-sm file:border-0 file:bg-slate-900 file:px-3 file:py-2 file:text-xs file:font-semibold file:text-white hover:file:bg-slate-800"
+                                @change="onFile"
+                            />
+                            <div class="mt-2 text-[11px] text-slate-500">JPG/PNG, recommended square image.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+                    <div class="text-sm font-semibold text-slate-900">Signature</div>
+                    <div class="mt-1 text-xs text-slate-500">Upload signature image</div>
+
+                    <div class="mt-4 space-y-3">
+                        <img
+                            v-if="previewSignature || teacher.signature"
+                            :src="previewSignature || teacher.signature || ''"
+                            class="h-16 w-full rounded-sm border border-slate-200 bg-white object-contain"
+                            alt="signature"
+                        />
+                        <input
+                            type="file"
+                            accept="image/*"
+                            class="block w-full text-sm file:mr-3 file:rounded-sm file:border-0 file:bg-slate-900 file:px-3 file:py-2 file:text-xs file:font-semibold file:text-white hover:file:bg-slate-800"
+                            :disabled="form.type !== 'Teacher'"
+                            @change="onSignature"
+                        />
+                    </div>
+                </div>
             </div>
         </div>
 
-        <div class="rounded-2xl border border-slate-200 bg-white p-5" v-if="form.type === 'Teacher'">
+        <div v-if="form.type === 'Teacher'" class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
             <div class="text-sm font-semibold text-slate-900">Subject Assign</div>
             <div class="mt-3 overflow-x-auto">
                 <table class="min-w-full border-collapse border border-slate-200">
-                    <thead class="bg-slate-50">
-                        <tr class="text-left text-xs font-semibold uppercase tracking-wider text-slate-500">
+                    <thead class="bg-emerald-100">
+                        <tr class="text-left text-xs font-semibold uppercase tracking-wider text-slate-700">
                             <th class="border border-slate-200 px-3 py-2">Academic Level</th>
                             <th class="border border-slate-200 px-3 py-2">Department</th>
                             <th class="border border-slate-200 px-3 py-2">Class</th>
@@ -174,45 +249,57 @@
                     <tbody>
                         <tr v-for="(it, idx) in subjectAssigns" :key="'sa-' + idx" class="text-sm text-slate-800">
                             <td class="border border-slate-200 px-3 py-2">
-                                <select v-model="it.academic_qualification_id" class="h-9 w-48 rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none" @change="onAssignQualificationChange(it)">
+                                <select
+                                    v-model="it.academic_qualification_id"
+                                    class="h-9 w-48 rounded-sm border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
+                                    @change="onAssignQualificationChange(it)"
+                                >
                                     <option value="">--Select--</option>
                                     <option v-for="q in qualifications" :key="'q-' + q.id" :value="String(q.id)">{{ q.name }}</option>
                                 </select>
                             </td>
                             <td class="border border-slate-200 px-3 py-2">
-                                <select v-model="it.department_id" class="h-9 w-48 rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none">
+                                <select v-model="it.department_id" class="h-9 w-48 rounded-sm border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
                                     <option value="">--Select--</option>
                                     <option v-for="d in departmentsForQualification(it.academic_qualification_id)" :key="'ad-' + d.id" :value="String(d.id)">{{ d.name }}</option>
                                 </select>
                             </td>
                             <td class="border border-slate-200 px-3 py-2">
-                                <select v-model="it.academic_class_id" class="h-9 w-40 rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none">
+                                <select v-model="it.academic_class_id" class="h-9 w-40 rounded-sm border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
                                     <option value="">--Select--</option>
                                     <option v-for="c in classesForQualification(it.academic_qualification_id)" :key="'ac-' + c.id" :value="String(c.id)">{{ c.name }}</option>
                                 </select>
                             </td>
                             <td class="border border-slate-200 px-3 py-2">
-                                <select v-model="it.subject_id" class="h-9 w-56 rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none" @change="it.child_subject_id = ''">
+                                <select
+                                    v-model="it.subject_id"
+                                    class="h-9 w-56 rounded-sm border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
+                                    @change="it.child_subject_id = ''"
+                                >
                                     <option value="">--Select--</option>
                                     <option v-for="s in subjects" :key="'s-' + s.id" :value="String(s.id)">{{ s.name }}</option>
                                 </select>
                             </td>
                             <td class="border border-slate-200 px-3 py-2">
-                                <select v-model="it.child_subject_id" class="h-9 w-56 rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none" :disabled="childSubjectOptions(it.subject_id).length === 0">
+                                <select
+                                    v-model="it.child_subject_id"
+                                    class="h-9 w-56 rounded-sm border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
+                                    :disabled="childSubjectOptions(it.subject_id).length === 0"
+                                >
                                     <option value="">--Select--</option>
                                     <option v-for="s in childSubjectOptions(it.subject_id)" :key="'cs-' + s.id" :value="String(s.id)">{{ s.name }}</option>
                                 </select>
                             </td>
                             <td class="border border-slate-200 px-3 py-2">
-                                <select v-model="it.status" class="h-9 w-32 rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none">
+                                <select v-model="it.status" class="h-9 w-32 rounded-sm border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
                                     <option value="active">Active</option>
                                     <option value="deactive">Deactive</option>
                                 </select>
                             </td>
                             <td class="border border-slate-200 px-3 py-2">
                                 <div class="flex items-center gap-2">
-                                    <button type="button" class="h-9 w-9 rounded-lg border border-rose-200 bg-white text-rose-700" :disabled="subjectAssigns.length <= 1" @click="removeAssign(idx)">-</button>
-                                    <button type="button" class="h-9 w-9 rounded-lg border border-emerald-200 bg-white text-emerald-700" v-if="idx === subjectAssigns.length - 1" @click="addAssign">+</button>
+                                    <button type="button" class="h-9 w-9 rounded-sm border border-rose-200 bg-white text-rose-700" :disabled="subjectAssigns.length <= 1" @click="removeAssign(idx)">-</button>
+                                    <button type="button" class="h-9 w-9 rounded-sm border border-emerald-200 bg-white text-emerald-700" v-if="idx === subjectAssigns.length - 1" @click="addAssign">+</button>
                                 </div>
                             </td>
                         </tr>

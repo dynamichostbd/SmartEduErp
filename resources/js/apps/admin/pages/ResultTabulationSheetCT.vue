@@ -1,6 +1,6 @@
 <template>
     <div class="flex flex-col gap-4">
-        <div class="rounded-2xl border border-slate-200 bg-white p-5 print:hidden">
+        <div class=" border border-slate-300 bg-white p-5 print:hidden">
             <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <div class="min-w-0">
                     <div class="truncate text-xl font-semibold text-slate-900">Tabulation Sheet</div>
@@ -8,22 +8,22 @@
                 </div>
 
                 <div class="flex flex-wrap items-center gap-2">
-                    <button type="button" class="rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50" @click="goBack">Back</button>
-                    <button type="button" class="rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800" :disabled="printing || !hasRows" @click="print">{{ printing ? '...' : 'PRINT' }}</button>
-                    <button type="button" class="rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50" :disabled="!hasHiddenAnything" @click="toggleActionButtons">
+                    <button type="button" class="rounded-sm border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50" @click="goBack">Back</button>
+                    <button type="button" class="rounded-sm bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800" :disabled="printing || !hasRows" @click="print">{{ printing ? '...' : 'PRINT' }}</button>
+                    <button type="button" class="rounded-sm border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50" :disabled="!hasHiddenAnything" @click="toggleActionButtons">
                         {{ showActionButtons ? 'Hide Buttons' : 'Unhide Buttons' }}
                     </button>
                 </div>
             </div>
         </div>
 
-        <div v-if="error" class="rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-800 print:hidden">{{ error }}</div>
+        <div v-if="error" class=" border border-red-200 bg-red-50 p-4 text-sm text-red-800 print:hidden">{{ error }}</div>
 
-        <div class="rounded-2xl border border-slate-200 bg-white p-5 print:hidden">
+        <div class=" border border-slate-300 bg-white p-5 print:hidden">
             <div class="grid grid-cols-1 gap-4 lg:grid-cols-12">
                 <div class="lg:col-span-2">
                     <div class="text-xs font-semibold text-slate-600">Session</div>
-                    <select v-model="filters.academic_session_id" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
+                    <select v-model="filters.academic_session_id" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
                         <option value="">Select</option>
                         <option v-for="s in sessionsSorted" :key="'ses-' + s.id" :value="String(s.id)">{{ s.name }}</option>
                     </select>
@@ -31,7 +31,7 @@
 
                 <div class="lg:col-span-2">
                     <div class="text-xs font-semibold text-slate-600">Academic Level</div>
-                    <select v-model="filters.academic_qualification_id" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
+                    <select v-model="filters.academic_qualification_id" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
                         <option value="">Select</option>
                         <option v-for="q in qualifications" :key="'q-' + q.id" :value="String(q.id)">{{ q.name }}</option>
                     </select>
@@ -39,7 +39,7 @@
 
                 <div class="lg:col-span-2">
                     <div class="text-xs font-semibold text-slate-600">Department/Group</div>
-                    <select v-model="filters.department_id" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
+                    <select v-model="filters.department_id" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
                         <option value="">Select</option>
                         <option v-for="d in filteredDepartments" :key="'d-' + d.id" :value="String(d.id)">{{ d.name }}</option>
                     </select>
@@ -47,7 +47,7 @@
 
                 <div class="lg:col-span-2">
                     <div class="text-xs font-semibold text-slate-600">Class</div>
-                    <select v-model="filters.academic_class_id" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
+                    <select v-model="filters.academic_class_id" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
                         <option value="">Select</option>
                         <option v-for="c in filteredClasses" :key="'c-' + c.id" :value="String(c.id)">{{ c.name }}</option>
                     </select>
@@ -55,7 +55,7 @@
 
                 <div class="lg:col-span-2">
                     <div class="text-xs font-semibold text-slate-600">Exam</div>
-                    <select v-model="filters.exam_id" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
+                    <select v-model="filters.exam_id" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
                         <option value="">Select</option>
                         <option v-for="e in exams" :key="'ex-' + e.id" :value="String(e.id)">{{ e.name }}</option>
                     </select>
@@ -63,7 +63,7 @@
 
                 <div class="lg:col-span-2">
                     <div class="text-xs font-semibold text-slate-600">Search Field</div>
-                    <select v-model="filters.field_name" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
+                    <select v-model="filters.field_name" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
                         <option value="">--Select One--</option>
                         <option value="student_id">Software ID</option>
                         <option value="name">Name</option>
@@ -74,33 +74,33 @@
 
                 <div class="lg:col-span-3">
                     <div class="text-xs font-semibold text-slate-600">Search</div>
-                    <input v-model="filters.search_keyword" type="text" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" placeholder="Type your text" @keydown.enter.prevent="search" />
+                    <input v-model="filters.search_keyword" type="text" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" placeholder="Type your text" @keydown.enter.prevent="search" />
                 </div>
 
                 <div class="lg:col-span-1 flex items-end">
-                    <button type="button" class="h-9 w-full rounded-lg bg-emerald-600 px-4 text-sm font-semibold text-white hover:bg-emerald-700" :disabled="loading" @click="search">{{ loading ? '...' : 'Go' }}</button>
+                    <button type="button" class="h-9 w-full rounded-sm bg-emerald-600 px-4 text-sm font-semibold text-white hover:bg-emerald-700" :disabled="loading" @click="search">{{ loading ? '...' : 'Go' }}</button>
                 </div>
             </div>
         </div>
 
-        <div class="rounded-2xl border border-slate-200 bg-white p-5" id="printArea">
+        <div class=" border border-slate-300 bg-white p-5" id="printArea">
             <div v-if="showActionButtons && hasHiddenAnything" class="mb-3 flex flex-wrap gap-2 print:hidden">
                 <template v-for="col in hiddenColumnKeys" :key="'hc-' + col">
-                    <button type="button" class="rounded-lg bg-emerald-600 px-3 py-1 text-xs font-semibold text-white hover:bg-emerald-700" @click="hideColumn(col)">
+                    <button type="button" class="rounded-sm bg-emerald-600 px-3 py-1 text-xs font-semibold text-white hover:bg-emerald-700" @click="hideColumn(col)">
                         {{ columnLabel(col) }}
                     </button>
                 </template>
 
                 <template v-for="sub in hiddenSubjectsDetailed" :key="'hs-' + sub.id">
-                    <button type="button" class="rounded-lg bg-emerald-600 px-3 py-1 text-xs font-semibold text-white hover:bg-emerald-700" @click="toggleSubjectHidden(sub.id)">
+                    <button type="button" class="rounded-sm bg-emerald-600 px-3 py-1 text-xs font-semibold text-white hover:bg-emerald-700" @click="toggleSubjectHidden(sub.id)">
                         {{ sub.name }}
                     </button>
                 </template>
             </div>
 
-            <div class="overflow-x-auto rounded-xl border border-slate-200">
+            <div class="overflow-x-auto">
                 <table class="min-w-full border-collapse text-xs">
-                    <thead class="bg-slate-50">
+                    <thead class="bg-emerald-100">
                         <tr>
                             <th :colspan="tableColspan" class="border border-slate-300 p-0">
                                 <table class="w-full border-collapse text-xs">
@@ -133,13 +133,13 @@
                             <th v-if="!isColumnHidden('college_roll')" rowspan="2" class="border border-slate-300 px-2 py-2 text-center font-semibold">
                                 College Roll
                                 <div v-if="showActionButtons" class="mt-1">
-                                    <button type="button" class="rounded border border-slate-200 bg-white px-1 py-0.5 text-[10px] font-semibold text-emerald-700 hover:bg-slate-50" @click="sortByCollegeRoll">Sort</button>
+                                    <button type="button" class="rounded border border-slate-300 bg-white px-1 py-0.5 text-[10px] font-semibold text-emerald-700 hover:bg-slate-50" @click="sortByCollegeRoll">Sort</button>
                                 </div>
                             </th>
                             <th v-if="!isColumnHidden('student_name')" rowspan="2" class="border border-slate-300 px-2 py-2 text-left font-semibold">Student Name</th>
                             <th v-if="!isColumnHidden('mobile')" rowspan="2" class="border border-slate-300 px-2 py-2 text-center font-semibold">
                                 Mobile
-                                <button v-if="showActionButtons" type="button" class="ml-1 rounded border border-slate-200 bg-white px-1 py-0.5 text-[10px] font-semibold text-rose-700 hover:bg-slate-50" @click="hideColumn('mobile')">Hide</button>
+                                <button v-if="showActionButtons" type="button" class="ml-1 rounded border border-slate-300 bg-white px-1 py-0.5 text-[10px] font-semibold text-rose-700 hover:bg-slate-50" @click="hideColumn('mobile')">Hide</button>
                             </th>
 
                             <template v-for="(sub, sbKey) in visibleSubjects" :key="'sub-' + sbKey">
@@ -147,8 +147,8 @@
                                     <div class="flex flex-col items-center gap-1">
                                         <div class="max-w-[72px] break-words">{{ sub.subject ? sub.subject.name_en : '' }}</div>
                                         <div v-if="showActionButtons" class="flex items-center gap-1">
-                                            <button type="button" class="rounded border border-slate-200 bg-white px-1 py-0.5 text-[10px] font-semibold text-emerald-700 hover:bg-slate-50" @click="sortBySubjectCtMark(getSubjectId(sub))">Sort</button>
-                                            <button type="button" class="rounded border border-slate-200 bg-white px-1 py-0.5 text-[10px] font-semibold text-rose-700 hover:bg-slate-50" @click="toggleSubjectHidden(getSubjectId(sub))">Hide</button>
+                                            <button type="button" class="rounded border border-slate-300 bg-white px-1 py-0.5 text-[10px] font-semibold text-emerald-700 hover:bg-slate-50" @click="sortBySubjectCtMark(getSubjectId(sub))">Sort</button>
+                                            <button type="button" class="rounded border border-slate-300 bg-white px-1 py-0.5 text-[10px] font-semibold text-rose-700 hover:bg-slate-50" @click="toggleSubjectHidden(getSubjectId(sub))">Hide</button>
                                         </div>
                                     </div>
                                 </th>
@@ -156,7 +156,7 @@
 
                             <th v-if="!isColumnHidden('total')" rowspan="2" class="border border-slate-300 px-2 py-2 text-center font-semibold">
                                 Total
-                                <button v-if="showActionButtons" type="button" class="ml-1 rounded border border-slate-200 bg-white px-1 py-0.5 text-[10px] font-semibold text-emerald-700 hover:bg-slate-50" @click="sortByTotalmark">Sort</button>
+                                <button v-if="showActionButtons" type="button" class="ml-1 rounded border border-slate-300 bg-white px-1 py-0.5 text-[10px] font-semibold text-emerald-700 hover:bg-slate-50" @click="sortByTotalmark">Sort</button>
                             </th>
                         </tr>
 

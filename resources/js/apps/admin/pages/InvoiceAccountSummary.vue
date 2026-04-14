@@ -1,6 +1,6 @@
 <template>
     <div class="flex flex-col gap-4">
-        <div class="rounded-2xl border border-slate-200 bg-white p-5 print:hidden">
+        <div class=" border border-slate-300 bg-white p-5 print:hidden">
             <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <div class="min-w-0">
                     <div class="truncate text-xl font-semibold text-slate-900">Settlement Summary</div>
@@ -8,10 +8,10 @@
                 </div>
 
                 <div class="flex flex-wrap items-center gap-2">
-                    <button type="button" class="rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50" :disabled="loading" @click="search">
+                    <button type="button" class="rounded-sm border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50" :disabled="loading" @click="search">
                         {{ loading ? '...' : 'Search' }}
                     </button>
-                    <button type="button" class="rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800" :disabled="printing || !hasData" @click="print">
+                    <button type="button" class="rounded-sm bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800" :disabled="printing || !hasData" @click="print">
                         {{ printing ? '...' : 'PRINT' }}
                     </button>
                 </div>
@@ -20,7 +20,7 @@
             <div class="mt-4 grid grid-cols-1 gap-3 lg:grid-cols-12">
                 <div class="lg:col-span-2">
                     <div class="text-xs font-semibold text-slate-600">Report Type</div>
-                    <select v-model="search_data.report_type" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
+                    <select v-model="search_data.report_type" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
                         <option value="">Select</option>
                         <option value="all">All Payments</option>
                         <option value="invoice">Student Payments</option>
@@ -30,17 +30,17 @@
 
                 <div class="lg:col-span-2">
                     <div class="text-xs font-semibold text-slate-600">From Date</div>
-                    <input v-model="search_data.from_date" type="date" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
+                    <input v-model="search_data.from_date" type="date" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
                 </div>
 
                 <div class="lg:col-span-2">
                     <div class="text-xs font-semibold text-slate-600">To Date</div>
-                    <input v-model="search_data.to_date" type="date" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
+                    <input v-model="search_data.to_date" type="date" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
                 </div>
 
                 <div class="lg:col-span-3">
                     <div class="text-xs font-semibold text-slate-600">All Account Head</div>
-                    <select v-model="search_data.account_head_id" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
+                    <select v-model="search_data.account_head_id" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
                         <option value="">All</option>
                         <option v-for="h in accountHeads" :key="'h-' + h.id" :value="String(h.id)">{{ h.name }}</option>
                     </select>
@@ -48,7 +48,7 @@
 
                 <div class="lg:col-span-3">
                     <div class="text-xs font-semibold text-slate-600">All Account</div>
-                    <select v-model="search_data.store_id" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
+                    <select v-model="search_data.store_id" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
                         <option value="">All</option>
                         <option v-for="a in accountStores" :key="'s-' + a.store_id" :value="String(a.store_id)">{{ a.account_no }}</option>
                     </select>
@@ -58,7 +58,7 @@
             <div v-if="error" class="mt-4 rounded-xl border border-red-200 bg-red-50 p-3 text-sm text-red-800">{{ error }}</div>
         </div>
 
-        <div class="rounded-2xl border border-slate-200 bg-white p-5">
+        <div class=" border border-slate-300 bg-white p-5">
             <div id="printArea" class="flex flex-col gap-4">
                 <div v-if="hasData" class="text-center">
                     <div class="text-xl font-bold text-slate-900">{{ systems?.site?.title_en || systems?.site?.title || '' }}</div>
@@ -77,31 +77,31 @@
                         BDT
                     </div>
 
-                    <div class="overflow-x-auto rounded-xl border border-slate-200">
-                        <table class="min-w-full divide-y divide-slate-200 text-sm">
-                            <thead class="bg-slate-50">
-                                <tr>
-                                    <th class="px-3 py-2 text-left font-semibold text-slate-700">Department Name</th>
-                                    <th class="px-3 py-2 text-center font-semibold text-slate-700">Number of Student</th>
-                                    <th class="px-3 py-2 text-center font-semibold text-slate-700">Payment Purpose</th>
-                                    <th class="px-3 py-2 text-center font-semibold text-slate-700">Head Amount</th>
-                                    <th class="px-3 py-2 text-center font-semibold text-slate-700">Total Amount</th>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full border-collapse border border-slate-300 text-sm">
+                            <thead class="bg-emerald-100">
+                                <tr class="text-left text-xs font-semibold uppercase tracking-wider text-slate-700">
+                                    <th class="border border-slate-300 bg-slate-50 px-3 py-2 text-slate-700">Department Name</th>
+                                    <th class="border border-slate-300 bg-slate-50 px-3 py-2 text-center text-slate-700">Number of Student</th>
+                                    <th class="border border-slate-300 bg-slate-50 px-3 py-2 text-center text-slate-700">Payment Purpose</th>
+                                    <th class="border border-slate-300 bg-slate-50 px-3 py-2 text-center text-slate-700">Head Amount</th>
+                                    <th class="border border-slate-300 bg-slate-50 px-3 py-2 text-center text-slate-700">Total Amount</th>
                                 </tr>
                             </thead>
-                            <tbody class="divide-y divide-slate-200 bg-white">
-                                <tr v-for="(row, idx) in rows" :key="'r-' + levelKey + '-' + idx">
-                                    <td class="px-3 py-2">{{ row.dept_name }}</td>
-                                    <td class="px-3 py-2 text-center">{{ number(row.total_student) }}</td>
-                                    <td class="px-3 py-2 text-center">{{ row.head_name_en }}</td>
-                                    <td class="px-3 py-2 text-center">{{ money(row.head_amount) }}</td>
-                                    <td class="px-3 py-2 text-center">{{ money(row.total_amount) }}</td>
+                            <tbody class="bg-white">
+                                <tr v-for="(row, idx) in rows" :key="'r-' + levelKey + '-' + idx" :class="idx % 2 === 0 ? 'bg-white' : 'bg-slate-50'">
+                                    <td class="border border-slate-300 px-3 py-2">{{ row.dept_name }}</td>
+                                    <td class="border border-slate-300 px-3 py-2 text-center">{{ number(row.total_student) }}</td>
+                                    <td class="border border-slate-300 px-3 py-2 text-center">{{ row.head_name_en }}</td>
+                                    <td class="border border-slate-300 px-3 py-2 text-center">{{ money(row.head_amount) }}</td>
+                                    <td class="border border-slate-300 px-3 py-2 text-center">{{ money(row.total_amount) }}</td>
                                 </tr>
                                 <tr>
-                                    <td class="px-3 py-2"></td>
-                                    <td class="px-3 py-2 text-center font-semibold">{{ number(totals(levelKey).total_student) }}</td>
-                                    <td class="px-3 py-2"></td>
-                                    <td class="px-3 py-2 text-right font-semibold">Total =</td>
-                                    <td class="px-3 py-2 text-center font-semibold">{{ money(totals(levelKey).total_amount) }} BDT</td>
+                                    <td class="border border-slate-300 px-3 py-2"></td>
+                                    <td class="border border-slate-300 px-3 py-2 text-center font-semibold">{{ number(totals(levelKey).total_student) }}</td>
+                                    <td class="border border-slate-300 px-3 py-2"></td>
+                                    <td class="border border-slate-300 px-3 py-2 text-right font-semibold">Total =</td>
+                                    <td class="border border-slate-300 px-3 py-2 text-center font-semibold">{{ money(totals(levelKey).total_amount) }} BDT</td>
                                 </tr>
                             </tbody>
                         </table>

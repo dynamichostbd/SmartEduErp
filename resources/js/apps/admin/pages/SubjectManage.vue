@@ -1,70 +1,76 @@
 <template>
     <div class="flex flex-col gap-4">
-        <div class="rounded-2xl border border-slate-200 bg-white p-5">
+        <div class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
             <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <div class="min-w-0">
                     <div class="truncate text-xl font-semibold text-slate-900">{{ isEdit ? 'Edit Subject' : 'Create Subject' }}</div>
+                    <div class="mt-1 text-sm text-slate-600">{{ isEdit ? 'Update subject information' : 'Create a new subject' }}</div>
                 </div>
 
                 <div class="flex flex-wrap items-center gap-2">
-                    <button type="button" class="rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50" :disabled="saving" @click="goIndex">Back</button>
-                    <button type="button" class="rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-700" :disabled="saving" @click="submit">{{ saving ? '...' : isEdit ? 'Update' : 'Create' }}</button>
+                    <button type="button" class="rounded-sm border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50" :disabled="saving" @click="goIndex">Back</button>
+                    <button type="button" class="rounded-sm bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-700" :disabled="saving" @click="submit">{{ saving ? '...' : isEdit ? 'Update' : 'Create' }}</button>
                 </div>
             </div>
         </div>
 
-        <div v-if="error" class="rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-800">{{ error }}</div>
-        <div v-if="success" class="rounded-2xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-800">{{ success }}</div>
+        <div v-if="error" class="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-800">{{ error }}</div>
+        <div v-if="success" class="rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-800">{{ success }}</div>
 
         <div class="grid grid-cols-1 gap-4 lg:grid-cols-12">
-            <div class="lg:col-span-9">
-                <div class="rounded-2xl border border-slate-200 bg-white p-5">
-                    <div class="grid grid-cols-1 gap-4 lg:grid-cols-12">
-                        <div class="lg:col-span-6">
+            <div class="space-y-4 lg:col-span-8 xl:col-span-9">
+                <div class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+                    <div class="min-w-0">
+                        <div class="text-sm font-semibold text-slate-900">Subject Details</div>
+                        <div class="mt-1 text-xs text-slate-500">Names, hierarchy and ordering</div>
+                    </div>
+
+                    <div class="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                        <div>
                             <div class="text-xs font-semibold text-slate-600">Name (en)</div>
-                            <input v-model="form.name_en" type="text" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
+                            <input v-model="form.name_en" type="text" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
                         </div>
 
-                        <div class="lg:col-span-6">
+                        <div>
                             <div class="text-xs font-semibold text-slate-600">Name (bn)</div>
-                            <input v-model="form.name_bn" type="text" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
+                            <input v-model="form.name_bn" type="text" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
                         </div>
 
-                        <div class="lg:col-span-6">
+                        <div>
+                            <div class="text-xs font-semibold text-slate-600">Sorting</div>
+                            <input v-model.number="form.sorting" type="number" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
+                        </div>
+
+                        <div>
                             <div class="text-xs font-semibold text-slate-600">Is Child?</div>
-                            <select v-model="form.is_child" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" @change="onIsChildChange">
+                            <select v-model="form.is_child" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" @change="onIsChildChange">
                                 <option :value="0">No</option>
                                 <option :value="1">Yes</option>
                             </select>
                         </div>
 
-                        <div class="lg:col-span-6">
+                        <div class="sm:col-span-2">
                             <div class="text-xs font-semibold text-slate-600">Parent Subject</div>
-                            <select v-model="form.parent_id" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" :disabled="Number(form.is_child) !== 1">
+                            <select v-model="form.parent_id" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" :disabled="Number(form.is_child) !== 1">
                                 <option value="">Select Parent Subject</option>
                                 <option v-for="s in parentSubjects" :key="'p-' + s.id" :value="String(s.id)">{{ s.name }}</option>
                             </select>
-                        </div>
-
-                        <div class="lg:col-span-3">
-                            <div class="text-xs font-semibold text-slate-600">Sorting</div>
-                            <input v-model.number="form.sorting" type="number" class="mt-1 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100" />
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="lg:col-span-3">
-                <div class="rounded-2xl border border-slate-200 bg-white p-5">
+            <div class="space-y-4 lg:col-span-4 xl:col-span-3">
+                <div class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
                     <div class="text-sm font-semibold text-slate-900">Status</div>
-                    <select v-model="form.status" class="mt-2 h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
+                    <select v-model="form.status" class="mt-2 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100">
                         <option value="active">Active</option>
                         <option value="deactive">Deactive</option>
                         <option value="draft">Draft</option>
                     </select>
 
-                    <button type="button" class="mt-4 h-9 w-full rounded-lg bg-slate-900 px-4 text-sm font-semibold text-white hover:bg-slate-800" :disabled="saving" @click="submit">{{ saving ? '...' : isEdit ? 'Update' : 'Create' }}</button>
-                    <button type="button" class="mt-2 h-9 w-full rounded-lg border border-slate-200 bg-white px-4 text-sm font-semibold text-slate-700 hover:bg-slate-50" :disabled="saving" @click="goIndex">Cancel</button>
+                    <button type="button" class="mt-4 h-9 w-full rounded-sm bg-slate-900 px-4 text-sm font-semibold text-white hover:bg-slate-800" :disabled="saving" @click="submit">{{ saving ? '...' : isEdit ? 'Update' : 'Create' }}</button>
+                    <button type="button" class="mt-2 h-9 w-full rounded-sm border border-slate-300 bg-white px-4 text-sm font-semibold text-slate-700 hover:bg-slate-50" :disabled="saving" @click="goIndex">Cancel</button>
                 </div>
             </div>
         </div>

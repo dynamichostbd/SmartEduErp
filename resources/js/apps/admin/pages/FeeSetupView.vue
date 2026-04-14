@@ -1,6 +1,6 @@
 <template>
     <div class="flex flex-col gap-4">
-        <div class="rounded-2xl border border-slate-200 bg-white p-5">
+        <div class=" border border-slate-300 bg-white p-5">
             <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <div class="min-w-0">
                     <div class="truncate text-xl font-semibold text-slate-900">Fee Setup</div>
@@ -8,30 +8,30 @@
                 </div>
 
                 <div class="flex flex-wrap items-center gap-2">
-                    <button type="button" class="rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50" :disabled="loading" @click="goIndex">Back</button>
+                    <button type="button" class="rounded-sm border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50" :disabled="loading" @click="goIndex">Back</button>
                 </div>
             </div>
         </div>
 
-        <div v-if="error" class="rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-800">{{ error }}</div>
+        <div v-if="error" class=" border border-red-200 bg-red-50 p-4 text-sm text-red-800">{{ error }}</div>
 
-        <div v-if="!loading" class="rounded-2xl border border-slate-200 bg-white">
-            <div class="border-b border-slate-200 p-4 text-sm font-semibold text-slate-900">Academic Information</div>
+        <div v-if="!loading" class=" border border-slate-300 bg-white">
+            <div class="border-b border-slate-300 p-4 text-sm font-semibold text-slate-900">Academic Information</div>
             <div class="p-5">
                 <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
-                    <div class="rounded-xl border border-slate-200 p-4">
+                    <div class="rounded-xl border border-slate-300 p-4">
                         <div class="text-xs font-semibold text-slate-500">Department</div>
                         <div class="mt-1 text-sm font-semibold text-slate-900">{{ department?.name || '—' }}</div>
                     </div>
-                    <div class="rounded-xl border border-slate-200 p-4">
+                    <div class="rounded-xl border border-slate-300 p-4">
                         <div class="text-xs font-semibold text-slate-500">Academic Level</div>
                         <div class="mt-1 text-sm font-semibold text-slate-900">{{ qualification?.name || '—' }}</div>
                     </div>
-                    <div class="rounded-xl border border-slate-200 p-4">
+                    <div class="rounded-xl border border-slate-300 p-4">
                         <div class="text-xs font-semibold text-slate-500">Class</div>
                         <div class="mt-1 text-sm font-semibold text-slate-900">{{ academicClass?.name || '—' }}</div>
                     </div>
-                    <div class="rounded-xl border border-slate-200 p-4">
+                    <div class="rounded-xl border border-slate-300 p-4">
                         <div class="text-xs font-semibold text-slate-500">Remarks</div>
                         <div class="mt-1 whitespace-pre-wrap text-sm font-semibold text-slate-900">{{ feeSetup?.description || '—' }}</div>
                     </div>
@@ -39,38 +39,38 @@
             </div>
         </div>
 
-        <div v-if="!loading" class="rounded-2xl border border-slate-200 bg-white">
-            <div class="border-b border-slate-200 p-4 text-sm font-semibold text-slate-900">Fee Setup Details</div>
+        <div v-if="!loading" class=" border border-slate-300 bg-white">
+            <div class="border-b border-slate-300 p-4 text-sm font-semibold text-slate-900">Fee Setup Details</div>
             <div class="p-5">
                 <div v-if="details.length === 0" class="text-sm text-slate-600">No details found.</div>
                 <div v-else class="overflow-x-auto">
-                    <table class="min-w-full border-collapse border border-slate-200">
-                        <thead class="bg-slate-50">
-                            <tr class="text-left text-xs font-semibold uppercase tracking-wider text-slate-500">
-                                <th class="border border-slate-200 bg-slate-50 px-4 py-3">Account Head</th>
-                                <th class="border border-slate-200 bg-slate-50 px-4 py-3 text-right">Amount</th>
-                                <th class="border border-slate-200 bg-slate-50 px-4 py-3">Gateway Account</th>
-                                <th class="border border-slate-200 bg-slate-50 px-4 py-3">Exam</th>
-                                <th class="border border-slate-200 bg-slate-50 px-4 py-3">Start Date</th>
-                                <th class="border border-slate-200 bg-slate-50 px-4 py-3">Expired Date</th>
-                                <th class="border border-slate-200 bg-slate-50 px-4 py-3">Additional Date</th>
+                    <table class="min-w-full border-collapse border border-slate-300">
+                        <thead class="bg-emerald-100">
+                            <tr class="text-left text-xs font-semibold uppercase tracking-wider text-slate-700">
+                                <th class="border border-slate-300 bg-slate-50 px-4 py-3">Account Head</th>
+                                <th class="border border-slate-300 bg-slate-50 px-4 py-3 text-right">Amount</th>
+                                <th class="border border-slate-300 bg-slate-50 px-4 py-3">Gateway Account</th>
+                                <th class="border border-slate-300 bg-slate-50 px-4 py-3">Exam</th>
+                                <th class="border border-slate-300 bg-slate-50 px-4 py-3">Start Date</th>
+                                <th class="border border-slate-300 bg-slate-50 px-4 py-3">Expired Date</th>
+                                <th class="border border-slate-300 bg-slate-50 px-4 py-3">Additional Date</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr v-for="(d, idx) in details" :key="'d-' + idx" class="text-sm text-slate-800" :class="idx % 2 === 0 ? 'bg-white' : 'bg-slate-50'">
-                                <td class="border border-slate-200 px-4 py-3">{{ d.account_head_name || '—' }}</td>
-                                <td class="border border-slate-200 px-4 py-3 text-right">{{ money(d.amount) }}</td>
-                                <td class="border border-slate-200 px-4 py-3">{{ d.gateway_title || '—' }}</td>
-                                <td class="border border-slate-200 px-4 py-3">
+                                <td class="border border-slate-300 px-4 py-3">{{ d.account_head_name || '—' }}</td>
+                                <td class="border border-slate-300 px-4 py-3 text-right">{{ money(d.amount) }}</td>
+                                <td class="border border-slate-300 px-4 py-3">{{ d.gateway_title || '—' }}</td>
+                                <td class="border border-slate-300 px-4 py-3">
                                     <div v-if="d.exam_name">
                                         <div>{{ d.exam_name }}</div>
                                         <div class="text-xs text-slate-500">{{ d.examination_year || '' }}</div>
                                     </div>
                                     <div v-else>—</div>
                                 </td>
-                                <td class="border border-slate-200 px-4 py-3">{{ d.start_date || '—' }}</td>
-                                <td class="border border-slate-200 px-4 py-3">{{ d.expire_date || '—' }}</td>
-                                <td class="border border-slate-200 px-4 py-3">{{ d.additional_date || '—' }}</td>
+                                <td class="border border-slate-300 px-4 py-3">{{ d.start_date || '—' }}</td>
+                                <td class="border border-slate-300 px-4 py-3">{{ d.expire_date || '—' }}</td>
+                                <td class="border border-slate-300 px-4 py-3">{{ d.additional_date || '—' }}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -78,7 +78,7 @@
             </div>
         </div>
 
-        <div v-if="loading" class="rounded-2xl border border-slate-200 bg-white p-5 text-sm text-slate-600">Loading...</div>
+        <div v-if="loading" class=" border border-slate-300 bg-white p-5 text-sm text-slate-600">Loading...</div>
     </div>
 </template>
 

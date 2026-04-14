@@ -1,6 +1,6 @@
 <template>
     <div class="flex flex-col gap-4">
-        <div class="rounded-2xl border border-slate-200 bg-white p-5">
+        <div class=" border border-slate-300 bg-white p-5">
             <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <div class="min-w-0">
                     <div class="truncate text-xl font-semibold text-slate-900">Content</div>
@@ -8,15 +8,15 @@
                 </div>
 
                 <div class="flex flex-wrap items-center gap-2">
-                    <button type="button" class="rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50" @click="reload">Reload</button>
-                    <button type="button" class="rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-700" @click="goEdit">{{ data?.id ? 'Edit' : 'Create' }}</button>
+                    <button type="button" class="rounded-sm border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50" @click="reload">Reload</button>
+                    <button type="button" class="rounded-sm bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-700" @click="goEdit">{{ data?.id ? 'Edit' : 'Create' }}</button>
                 </div>
             </div>
         </div>
 
-        <div v-if="error" class="rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-800">{{ error }}</div>
+        <div v-if="error" class=" border border-red-200 bg-red-50 p-4 text-sm text-red-800">{{ error }}</div>
 
-        <div class="rounded-2xl border border-slate-200 bg-white p-5">
+        <div class=" border border-slate-300 bg-white p-5">
             <div class="text-lg font-semibold text-slate-900">{{ data.title || '—' }}</div>
 
             <div class="mt-4 grid grid-cols-1 gap-4 lg:grid-cols-12">
@@ -24,10 +24,10 @@
                     <div class="prose max-w-none text-sm" v-html="data.description || ''"></div>
                 </div>
                 <div class="lg:col-span-3">
-                    <img v-if="data.image" :src="resolveImage(data.image)" class="h-40 w-full rounded border border-slate-200 bg-white object-contain" />
-                    <div v-else class="flex h-40 items-center justify-center rounded border border-dashed border-slate-200 bg-slate-50 text-xs text-slate-500">No image</div>
+                    <img v-if="data.image" :src="resolveImage(data.image)" class="h-40 w-full rounded border border-slate-300 bg-white object-contain" />
+                    <div v-else class="flex h-40 items-center justify-center rounded border border-dashed border-slate-300 bg-slate-50 text-xs text-slate-500">No image</div>
 
-                    <div class="mt-3 rounded-xl border border-slate-200 p-3">
+                    <div class="mt-3 rounded-xl border border-slate-300 p-3">
                         <div class="text-xs font-semibold text-slate-600">Status</div>
                         <div class="mt-1 text-sm text-slate-800">{{ data.status || '—' }}</div>
                     </div>
@@ -35,12 +35,12 @@
             </div>
         </div>
 
-        <div v-if="contentFiles.length" class="rounded-2xl border border-slate-200 bg-white p-5">
+        <div v-if="contentFiles.length" class=" border border-slate-300 bg-white p-5">
             <div class="mb-3 text-lg font-semibold text-slate-900">Content Files</div>
 
-            <div class="overflow-x-auto rounded-xl border border-slate-200">
+            <div class="overflow-x-auto">
                 <table class="min-w-full divide-y divide-slate-200 text-sm">
-                    <thead class="bg-slate-50">
+                    <thead class="bg-emerald-100">
                         <tr>
                             <th class="px-3 py-2 text-left font-semibold text-slate-700">#</th>
                             <th class="px-3 py-2 text-left font-semibold text-slate-700">Title</th>
@@ -57,7 +57,7 @@
                                 <span v-else>—</span>
                             </td>
                             <td class="px-3 py-2 text-right">
-                                <button type="button" class="rounded-lg border border-red-200 bg-white px-3 py-1.5 text-xs font-semibold text-red-700 hover:bg-red-50" @click="removeFile(f)">
+                                <button type="button" class="rounded-sm border border-red-200 bg-white px-3 py-1.5 text-xs font-semibold text-red-700 hover:bg-red-50" @click="removeFile(f)">
                                     Delete
                                 </button>
                             </td>

@@ -13,26 +13,99 @@ use Illuminate\Support\Facades\App;
 
 class SiteSettingController extends Controller
 {
+    private function columnsCached(): array
+    {
+        return Cache::rememberForever('schema_cols_site_settings', function () {
+            if (!Schema::hasTable('site_settings')) {
+                return [];
+            }
+
+            try {
+                return Schema::getColumnListing('site_settings');
+            } catch (\Throwable $e) {
+                return [];
+            }
+        });
+    }
+
+    public function index(Request $request)
+    {
+        if (!$request->wantsJson() && $request->getRequestFormat() === 'html') {
+            return view('layouts.backend_app');
+        }
+
+        if (!Schema::hasTable('site_settings')) {
+            $perPage = (int) ($request->input('pagination') ?? 10);
+            $perPage = $perPage > 0 ? min($perPage, 200) : 10;
+
+            $p = new \Illuminate\Pagination\LengthAwarePaginator(
+                [],
+                0,
+                $perPage,
+                1,
+                [
+                    'path' => $request->url(),
+                    'query' => $request->query(),
+                ]
+            );
+
+            return response()->json($p);
+        }
+
+        $perPage = (int) ($request->input('pagination') ?? 10);
+        $perPage = $perPage > 0 ? min($perPage, 200) : 10;
+
+        $cols = $this->columnsCached();
+        $colSet = !empty($cols) ? array_fill_keys($cols, true) : [];
+        $hasCol = function (string $c) use ($colSet): bool {
+            return !empty($colSet) && isset($colSet[$c]);
+        };
+
+        $q = SiteSetting::query()->orderByDesc('id');
+
+        $field = (string) ($request->input('field_name') ?? 'title');
+        $value = trim((string) ($request->input('value') ?? ''));
+        $allowed = ['title', 'short_title', 'contact_email', 'college_name'];
+        if ($value !== '' && in_array($field, $allowed, true) && $hasCol($field)) {
+            $q->where($field, 'like', "%{$value}%");
+        }
+
+        $select = ['id'];
+        foreach (['title', 'short_title', 'logo', 'contact_email'] as $c) {
+            if ($hasCol($c)) {
+                $select[] = $c;
+            }
+        }
+        if (count($select) === 1) {
+            $select = ['*'];
+        }
+
+        return response()->json($q->select($select)->paginate($perPage));
+    }
+
     public function show(Request $request, $id)
     {
         if (!$request->wantsJson() && $request->getRequestFormat() === 'html') {
             return view('layouts.backend_app');
         }
 
-        // Prefer cached site settings for speed (also includes accessor-resolved image URLs)
-        try {
-            $cached = App::make('siteSettingObj');
-            return response()->json(is_array($cached) ? $cached : []);
-        } catch (\Throwable $e) {
-            // fallback below
-        }
-
+        // Always fetch fresh data to ensure correctness
         if (!Schema::hasTable('site_settings')) {
             return response()->json([], 404);
         }
 
         $site = SiteSetting::query()->where('id', (int) $id)->first() ?: SiteSetting::query()->first();
-        return response()->json($site ? $site->toArray() : []);
+        $data = $site ? $site->toArray() : [];
+
+        // Update cache with fresh data
+        try {
+            Cache::forever('site_setting_cache', $data);
+            App::instance('siteSettingObj', $data);
+        } catch (\Throwable $e) {
+            // ignore cache errors
+        }
+
+        return response()->json($data);
     }
 
     public function update(Request $request, $id)

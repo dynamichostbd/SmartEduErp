@@ -1,6 +1,6 @@
 <template>
     <div class="flex flex-col gap-4">
-        <div class="rounded-2xl border border-slate-200 bg-white p-5">
+        <div class="border border-slate-300 bg-white p-5">
             <div class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
                 <div>
                     <div class="text-xl font-semibold text-slate-900">Student List</div>
@@ -9,7 +9,7 @@
                 <div class="flex w-full flex-col gap-2 sm:w-auto sm:flex-row">
                     <select
                         v-model="filters.field_name"
-                        class="h-9 rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-slate-300 focus:ring-2 focus:ring-slate-200"
+                        class="h-9 rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
                         :disabled="loading"
                     >
                         <option value="name">Name</option>
@@ -22,7 +22,7 @@
                     <input
                         v-model="filters.value"
                         type="text"
-                        class="h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-slate-300 focus:ring-2 focus:ring-slate-200 sm:w-72"
+                        class="h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100 sm:w-72"
                         placeholder="Search..."
                         :disabled="loading"
                         @keyup.enter="load(1)"
@@ -30,17 +30,15 @@
 
                     <div class="flex items-center gap-2">
                         <button
-                            class="inline-flex h-9 w-10 items-center justify-center rounded-lg bg-emerald-600 text-white hover:bg-emerald-700"
+                            class="inline-flex h-9 w-10 items-center justify-center rounded-sm bg-emerald-600 text-white hover:bg-emerald-700"
                             :disabled="loading"
                             @click="load(1)"
                         >
-                            <span class="sr-only">Search</span>
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-5 w-5">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35m1.35-5.15a7 7 0 11-14 0 7 7 0 0114 0z" />
-                            </svg>
+                            <i v-if="loading" class="fas fa-spinner fa-spin"></i>
+                            <i v-else class="fas fa-search"></i>
                         </button>
                         <button
-                            class="h-9 rounded-lg border border-slate-200 bg-white px-4 text-sm font-semibold text-slate-700 hover:bg-slate-50"
+                            class="h-9 rounded-sm border border-slate-300 bg-white px-4 text-sm font-semibold text-slate-700 hover:bg-slate-50"
                             :disabled="loading"
                             @click="reset"
                         >
@@ -50,55 +48,55 @@
                         <div class="relative" ref="bulkMenu">
                             <button
                                 type="button"
-                                class="inline-flex h-9 w-10 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-700 hover:bg-slate-50"
+                                class="inline-flex h-9 w-10 items-center justify-center rounded-sm border border-slate-300 bg-white text-slate-700 hover:bg-slate-50"
                                 :disabled="loading"
                                 @click="toggleBulkMenu"
                             >
-                                <span class="sr-only">Bulk Actions</span>
-                                <svg viewBox="0 0 24 24" fill="currentColor" class="h-5 w-5">
-                                    <circle cx="12" cy="5" r="1.8" />
-                                    <circle cx="12" cy="12" r="1.8" />
-                                    <circle cx="12" cy="19" r="1.8" />
-                                </svg>
+                                <i class="fas fa-ellipsis-v"></i>
                             </button>
 
                             <div
                                 v-if="bulkMenuOpen"
-                                class="absolute right-0 z-40 mt-2 w-56 overflow-hidden rounded-xl border border-slate-200 bg-white shadow-lg"
+                                class="absolute right-0 z-40 mt-2 w-56 overflow-hidden rounded-xl border border-slate-300 bg-white shadow-lg"
                             >
                                 <button
                                     type="button"
-                                    class="block w-full px-4 py-2 text-left text-sm text-slate-700 hover:bg-slate-50"
+                                    class="flex w-full items-center px-4 py-2 text-left text-sm text-slate-700 hover:bg-slate-50"
                                     @click="bulkPrint"
                                 >
+                                    <i class="fas fa-print mr-3"></i>
                                     Print
                                 </button>
                                 <button
                                     type="button"
-                                    class="block w-full px-4 py-2 text-left text-sm text-slate-700 hover:bg-slate-50"
+                                    class="flex w-full items-center px-4 py-2 text-left text-sm text-slate-700 hover:bg-slate-50"
                                     @click="bulkDownloadPdf"
                                 >
+                                    <i class="fas fa-file-pdf mr-3"></i>
                                     Download PDF
                                 </button>
                                 <button
                                     type="button"
-                                    class="block w-full px-4 py-2 text-left text-sm text-slate-700 hover:bg-slate-50"
+                                    class="flex w-full items-center px-4 py-2 text-left text-sm text-slate-700 hover:bg-slate-50"
                                     @click="bulkExportExcel"
                                 >
+                                    <i class="fas fa-file-excel mr-3"></i>
                                     Excel
                                 </button>
                                 <button
                                     type="button"
-                                    class="block w-full px-4 py-2 text-left text-sm text-red-700 hover:bg-red-50"
+                                    class="flex w-full items-center px-4 py-2 text-left text-sm text-red-700 hover:bg-red-50"
                                     @click="bulkDeactivate"
                                 >
+                                    <i class="fas fa-trash mr-3"></i>
                                     Bulk Delete
                                 </button>
                                 <button
                                     type="button"
-                                    class="block w-full px-4 py-2 text-left text-sm text-slate-700 hover:bg-slate-50"
+                                    class="flex w-full items-center px-4 py-2 text-left text-sm text-slate-700 hover:bg-slate-50"
                                     @click="bulkDownloadZip"
                                 >
+                                    <i class="fas fa-file-archive mr-3"></i>
                                     Download ZIP Image
                                 </button>
                             </div>
@@ -110,7 +108,7 @@
             <div class="mt-4 grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-6">
                 <select
                     v-model="advanced.status"
-                    class="h-9 rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-slate-300 focus:ring-2 focus:ring-slate-200"
+                    class="h-9 rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
                     :disabled="loading"
                 >
                     <option value="">Status</option>
@@ -119,7 +117,7 @@
                 </select>
                  <select
                     v-model="advanced.academic_session_id"
-                    class="h-9 rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-slate-300 focus:ring-2 focus:ring-slate-200"
+                    class="h-9 rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
                     :disabled="loading"
                 >
                     <option value="">Select Session</option>
@@ -127,7 +125,7 @@
                 </select>
                 <select
                     v-model="advanced.academic_qualification_id"
-                    class="h-9 rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-slate-300 focus:ring-2 focus:ring-slate-200"
+                    class="h-9 rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
                     :disabled="loading"
                 >
                     <option value="">Select Qualification</option>
@@ -136,7 +134,7 @@
 
                 <select
                     v-model="advanced.department_id"
-                    class="h-9 rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-slate-300 focus:ring-2 focus:ring-slate-200"
+                    class="h-9 rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
                     :disabled="loading"
                 >
                     <option value="">Select Department</option>
@@ -145,7 +143,7 @@
 
                 <select
                     v-model="advanced.academic_class_id"
-                    class="h-9 rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-slate-300 focus:ring-2 focus:ring-slate-200"
+                    class="h-9 rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
                     :disabled="loading"
                 >
                     <option value="">Select Class</option>
@@ -154,7 +152,7 @@
 
                 <select
                     v-model="advanced.student_type"
-                    class="h-9 rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-slate-300 focus:ring-2 focus:ring-slate-200"
+                    class="h-9 rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
                     :disabled="loading"
                 >
                     <option value="">Student Type</option>
@@ -163,7 +161,7 @@
 
                 <select
                     v-model="advanced.fourth_subject_id"
-                    class="h-9 rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-slate-300 focus:ring-2 focus:ring-slate-200"
+                    class="h-9 rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
                     :disabled="loading || fourthSubjectOptions.length === 0"
                 >
                     <option value="">4th Subject</option>
@@ -175,7 +173,7 @@
                 <div class="relative" ref="mainSubjectFilter">
                     <button
                         type="button"
-                        class="flex h-9 w-full items-center justify-between rounded-lg border border-slate-200 bg-white px-3 text-sm text-slate-700 outline-none focus:border-slate-300 focus:ring-2 focus:ring-slate-200"
+                        class="flex h-9 w-full items-center justify-between rounded-sm border border-slate-300 bg-white px-3 text-sm text-slate-700 outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
                         :disabled="loading || mainSubjectOptions.length === 0"
                         @click="toggleMainSubjectDropdown"
                     >
@@ -185,12 +183,12 @@
 
                     <div
                         v-if="mainSubjectDropdownOpen"
-                        class="absolute z-30 mt-2 max-h-60 w-full overflow-auto rounded-xl border border-slate-200 bg-white p-2 shadow-lg"
+                        class="absolute z-30 mt-2 max-h-60 w-full overflow-auto rounded-xl border border-slate-300 bg-white p-2 shadow-lg"
                     >
                         <label
                             v-for="s in mainSubjectOptions"
                             :key="'msf-' + s.subject_id"
-                            class="flex cursor-pointer items-center gap-2 rounded-lg px-2 py-1 text-sm text-slate-800 hover:bg-slate-50"
+                            class="flex cursor-pointer items-center gap-2 rounded-sm px-1 py-1 text-sm text-slate-800 hover:bg-slate-50"
                         >
                             <input type="checkbox" class="h-4 w-4" :value="s.subject_id" v-model="advanced.subject_ids" />
                             <span class="truncate">{{ s.subject_name }}</span>
@@ -200,7 +198,7 @@
 
                 <select
                     v-model="advanced.hostel_id"
-                    class="h-9 rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-slate-300 focus:ring-2 focus:ring-slate-200"
+                    class="h-9 rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
                     :disabled="loading"
                 >
                     <option value="">Hostel</option>
@@ -211,7 +209,7 @@
 
                 <select
                     v-model="advanced.gender"
-                    class="h-9 rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-slate-300 focus:ring-2 focus:ring-slate-200"
+                    class="h-9 rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
                     :disabled="loading"
                 >
                     <option value="">Gender</option>
@@ -221,7 +219,7 @@
 
                 <select
                     v-model="pagination"
-                    class="h-9 rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-slate-300 focus:ring-2 focus:ring-slate-200"
+                    class="h-9 rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
                     :disabled="loading"
                 >
                     <option :value="10">10 / page</option>
@@ -232,35 +230,35 @@
             </div>
         </div>
 
-        <div v-if="error" class="rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-800">
+        <div v-if="error" class=" border border-red-200 bg-red-50 p-4 text-sm text-red-800">
             {{ error }}
         </div>
 
-        <div class="overflow-hidden rounded-2xl border border-slate-200 bg-white">
-            <div>
-                <table id="pdf-table" class="min-w-full border-collapse border border-slate-200">
-                    <thead class="bg-slate-50">
-                        <tr class="text-left text-xs font-semibold uppercase tracking-wider text-slate-500">
-                            <th class="border border-slate-200 bg-slate-50 px-4 py-3">#</th>
-                            <th class="border border-slate-200 bg-slate-50 px-4 py-3">Software ID</th>
-                            <th class="border border-slate-200 bg-slate-50 px-4 py-3">Student</th>
-                            <th class="border border-slate-200 bg-slate-50 px-4 py-3">Admission ID</th>
-                            <th class="border border-slate-200 bg-slate-50 px-4 py-3">Roll</th>
-                            <th class="border border-slate-200 bg-slate-50 px-4 py-3">Reg No.</th>
-                            <th class="border border-slate-200 bg-slate-50 px-4 py-3">Session</th>
-                            <th class="border border-slate-200 bg-slate-50 px-4 py-3">Dept. / Group</th>
-                            <th class="border border-slate-200 bg-slate-50 px-4 py-3">Academic Level / Class</th>
-                            <th class="border border-slate-200 bg-slate-50 px-4 py-3">Subjects</th>
-                            <th class="border border-slate-200 bg-slate-50 px-4 py-3">Status</th>
-                            <th class="border border-slate-200 bg-slate-50 px-4 py-3 action">Action</th>
+        <div class="overflow-hidden border border-slate-300 bg-white">
+            <div class="overflow-x-auto">
+                <table id="pdf-table" class="min-w-[800px] w-full border-collapse border border-slate-300">
+                    <thead class="bg-emerald-100">
+                        <tr class="text-left text-xs font-semibold uppercase tracking-wider text-slate-700">
+                            <th class="border border-slate-300 px-1 py-2 text-xs whitespace-nowrap">#</th>
+                            <th class="border border-slate-300 px-1 py-2 text-xs whitespace-nowrap text-center">Software ID</th>
+                            <th class="border border-slate-300 px-1 py-2 text-xs whitespace-nowrap">Student</th>
+                            <th class="border border-slate-300 px-1 py-2 text-xs whitespace-nowrap text-center">Admission ID</th>
+                            <th class="border border-slate-300 px-1 py-2 text-xs whitespace-nowrap text-center">Roll</th>
+                            <th class="border border-slate-300 px-1 py-2 text-xs whitespace-nowrap text-center">Reg No.</th>
+                            <th class="border border-slate-300 px-1 py-2 text-xs whitespace-nowrap">Session</th>
+                            <th class="border border-slate-300 px-1 py-2 text-xs whitespace-nowrap">Dept. / Group</th>
+                            <th class="border border-slate-300 px-1 py-2 text-xs whitespace-nowrap">Academic Level / Class</th>
+                            <th class="border border-slate-300 px-1 py-2 text-xs whitespace-nowrap text-center">Subjects</th>
+                            <th class="border border-slate-300 px-1 py-2 text-xs whitespace-nowrap text-center">Status</th>
+                            <th class="border border-slate-300 px-1 py-2 text-xs whitespace-nowrap text-center action">Action</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr v-if="loading" class="text-sm text-slate-600">
-                            <td class="border border-slate-200 px-4 py-6" colspan="12">Loading students...</td>
+                            <td class="border border-slate-300 px-1 py-6" colspan="12">Loading students...</td>
                         </tr>
                         <tr v-else-if="rows.length === 0" class="text-sm text-slate-600">
-                            <td class="border border-slate-200 px-4 py-6" colspan="12">No students found.</td>
+                            <td class="border border-slate-300 px-1 py-6" colspan="12">No students found.</td>
                         </tr>
                         <tr
                             v-for="(row, idx) in rows"
@@ -268,10 +266,10 @@
                             class="text-sm text-slate-800"
                             :class="idx % 2 === 0 ? 'bg-white' : 'bg-slate-50'"
                         >
-                            <td class="border border-slate-200 px-4 py-3 text-slate-600">{{ rowSerial(idx) }}</td>
-                            <td class="border border-slate-200 px-4 py-3 text-center">
+                            <td class="border border-slate-300 px-1 py-1 text-slate-600">{{ rowSerial(idx) }}</td>
+                            <td class="border border-slate-300 px-1 py-1 text-center">
                                 <div class="flex flex-col items-center gap-1">
-                                    <div class="h-9 w-10 overflow-hidden rounded-md bg-slate-100">
+                                    <div class="h-9 w-10 overflow-hidden rounded-sm bg-slate-100">
                                         <img v-if="row.profile" class="h-full w-full object-cover" :src="row.profile" />
                                         <div v-else class="flex h-full w-full items-center justify-center text-xs font-semibold text-slate-500">
                                             {{ (row.student_id || '').slice(0, 2) || 'NA' }}
@@ -280,82 +278,71 @@
                                     <div class="text-xs font-semibold text-slate-900">{{ row.student_id }}</div>
                                 </div>
                             </td>
-                            <td class="border border-slate-200 px-4 py-3">
+                            <td class="border border-slate-300 px-1 py-1">
                                 <div class="font-medium text-slate-900">{{ row.name }}</div>
                                 <div class="text-xs text-slate-600">{{ row.mobile }}</div>
                                 <div class="text-xs text-slate-600">{{ row.student_type }}</div>
                             </td>
-                            <td class="border border-slate-200 px-4 py-3 text-center">{{ row.admission_id }}</td>
-                            <td class="border border-slate-200 px-4 py-3 text-center">{{ row.college_roll }}</td>
-                            <td class="border border-slate-200 px-4 py-3 text-center">{{ row.reg_no }}</td>
-                            <td class="border border-slate-200 px-4 py-3">{{ row.academic_session_name || '' }}</td>
-                            <td class="border border-slate-200 px-4 py-3">{{ row.department_name || '' }}</td>
-                            <td class="border border-slate-200 px-4 py-3">
+                            <td class="border border-slate-300 px-1 py-1 text-center">{{ row.admission_id }}</td>
+                            <td class="border border-slate-300 px-1 py-1 text-center">{{ row.college_roll }}</td>
+                            <td class="border border-slate-300 px-1 py-1 text-center">{{ row.reg_no }}</td>
+                            <td class="border border-slate-300 px-1 py-1">{{ row.academic_session_name || '' }}</td>
+                            <td class="border border-slate-300 px-1 py-1">{{ row.department_name || '' }}</td>
+                            <td class="border border-slate-300 px-1 py-1">
                                 {{ row.academic_qualification_name || '' }}
                                 <div class="text-xs text-slate-600">({{ row.academic_class_name || '' }})</div>
                             </td>
-                            <td class="border border-slate-200 px-4 py-3 text-center">
+                            <td class="border border-slate-300 px-1 py-1 text-center">
                                 <div class="flex items-center justify-center gap-2">
                                     <span
-                                        class="inline-flex h-6 min-w-8 items-center justify-center rounded-full px-2 text-xs font-semibold"
+                                        class="inline-flex h-6 min-w-8 items-center justify-center rounded-full px-1 text-xs font-semibold"
                                         :class="Number(row.subjects_count || 0) > 0 ? 'bg-emerald-50 text-emerald-700' : 'bg-amber-50 text-amber-700'"
                                     >
                                         {{ row.subjects_count || 0 }}
                                     </span>
                                     <button
-                                        class="rounded-md border border-slate-200 bg-white px-2 py-1 text-xs font-semibold text-slate-700 hover:bg-slate-50"
+                                        class="rounded-sm border border-slate-300 bg-white px-1 py-1 text-xs font-semibold text-slate-700 hover:bg-slate-50"
                                         type="button"
                                         @click="openSubjectModal(row)"
                                     >
-                                        Edit
+                                        <i class="fas fa-edit"></i>
                                     </button>
                                 </div>
                             </td>
-                            <td class="border border-slate-200 px-4 py-3">
+                            <td class="border border-slate-300 px-1 py-1 text-center">
                                 <span
-                                    class="inline-flex rounded-full px-2 py-0.5 text-xs font-semibold"
+                                    class="inline-flex rounded-full px-1 py-0.5 text-xs font-semibold"
                                     :class="row.status === 'active' ? 'bg-emerald-50 text-emerald-700' : 'bg-red-200 text-red-700'"
                                 >
                                     {{ row.status || 'n/a' }}
                                 </span>
                             </td>
 
-                            <td class="border border-slate-200 px-4 py-3 action">
-                                <div class="flex items-center gap-2">
+                            <td class="border border-slate-300 px-1 py-1 action text-center">
+                                <div class="flex items-center justify-center gap-2">
                                     <button
                                         type="button"
-                                        class="inline-flex h-8 w-8 items-center justify-center rounded-md border border-slate-200 bg-white text-slate-700 hover:bg-slate-50"
+                                        class="inline-flex h-8 w-8 items-center justify-center rounded-sm border border-slate-300 bg-white text-slate-700 hover:bg-slate-50"
                                         title="View"
                                         @click="viewStudent(row.id)"
                                     >
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-4 w-4">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M2.5 12s3.5-7 9.5-7 9.5 7 9.5 7-3.5 7-9.5 7-9.5-7-9.5-7z" />
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 15a3 3 0 100-6 3 3 0 000 6z" />
-                                        </svg>
+                                        <i class="fas fa-eye"></i>
                                     </button>
                                     <button
                                         type="button"
-                                        class="inline-flex h-8 w-8 items-center justify-center rounded-md border border-slate-200 bg-white text-slate-700 hover:bg-slate-50"
+                                        class="inline-flex h-8 w-8 items-center justify-center rounded-sm border border-slate-300 bg-white text-slate-700 hover:bg-slate-50"
                                         title="Edit"
                                         @click="editStudent(row.id)"
                                     >
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-4 w-4">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 3.487a2.25 2.25 0 013.182 3.182L8.25 18.463 3 21l2.538-5.25L16.862 3.487z" />
-                                        </svg>
+                                        <i class="fas fa-edit"></i>
                                     </button>
                                     <button
                                         type="button"
-                                        class="inline-flex h-8 w-8 items-center justify-center rounded-md border border-red-200 bg-white text-red-700 hover:bg-red-50"
+                                        class="inline-flex h-8 w-8 items-center justify-center rounded-sm border border-red-200 bg-white text-red-700 hover:bg-red-50"
                                         title="Delete"
                                         @click="deactivateSingle(row.id)"
                                     >
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-4 w-4">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 7h12" />
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 7V5a1 1 0 011-1h4a1 1 0 011 1v2" />
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M10 11v6" />
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M14 11v6" />
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M7 7l1 14h8l1-14" />
-                                        </svg>
+                                        <i class="fas fa-trash"></i>
                                     </button>
                                 </div>
                             </td>
@@ -364,7 +351,7 @@
                 </table>
             </div>
 
-            <div class="flex flex-col gap-3 border-t border-slate-200 px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
+            <div class="flex flex-col gap-3 border-t border-slate-300 px-4 py-1 sm:flex-row sm:items-center sm:justify-between">
                 <div class="text-xs text-slate-600">
                     Showing {{ meta.from || 0 }} to {{ meta.to || 0 }} of {{ meta.total || 0 }} entries
                 </div>
@@ -372,23 +359,23 @@
                 <div class="flex items-center justify-end gap-1 overflow-x-auto">
                     <button
                         type="button"
-                        class="inline-flex h-8 w-8 items-center justify-center rounded-md border border-slate-200 bg-white text-xs font-semibold text-slate-700 hover:bg-slate-50"
+                        class="inline-flex h-8 w-8 items-center justify-center rounded-sm border border-slate-300 bg-white text-xs font-semibold text-slate-700 hover:bg-slate-50"
                         :disabled="loading || meta.current_page <= 1"
                         @click="load(meta.current_page - 1)"
                     >
-                        «
+                        <i class="fas fa-chevron-left"></i>
                     </button>
 
                     <template v-for="p in paginationPages" :key="'p-' + p">
                         <span v-if="p === '...'
-                            " class="inline-flex h-8 min-w-8 items-center justify-center px-2 text-xs font-semibold text-slate-500">
+                            " class="inline-flex h-8 min-w-8 items-center justify-center px-1 text-xs font-semibold text-slate-500">
                             ...
                         </span>
                         <button
                             v-else
                             type="button"
-                            class="inline-flex h-8 min-w-8 items-center justify-center rounded-md border px-2 text-xs font-semibold"
-                            :class="Number(p) === Number(meta.current_page) ? 'border-blue-600 bg-blue-600 text-white' : 'border-slate-200 bg-white text-slate-700 hover:bg-slate-50'"
+                            class="inline-flex h-8 min-w-8 items-center justify-center rounded-sm border px-1 text-xs font-semibold"
+                            :class="Number(p) === Number(meta.current_page) ? 'border-blue-600 bg-blue-600 text-white' : 'border-slate-300 bg-white text-slate-700 hover:bg-slate-50'"
                             :disabled="loading"
                             @click="load(Number(p))"
                         >
@@ -398,11 +385,11 @@
 
                     <button
                         type="button"
-                        class="inline-flex h-8 w-8 items-center justify-center rounded-md border border-slate-200 bg-white text-xs font-semibold text-slate-700 hover:bg-slate-50"
+                        class="inline-flex h-8 w-8 items-center justify-center rounded-sm border border-slate-300 bg-white text-xs font-semibold text-slate-700 hover:bg-slate-50"
                         :disabled="loading || meta.current_page >= meta.last_page"
                         @click="load(meta.current_page + 1)"
                     >
-                        »
+                        <i class="fas fa-chevron-right"></i>
                     </button>
                 </div>
             </div>
@@ -411,15 +398,15 @@
         <div v-if="subjectModal.open" class="fixed inset-0 z-50 flex items-center justify-center p-4">
             <div class="absolute inset-0 bg-slate-900/40" @click="closeSubjectModal"></div>
 
-            <div class="relative w-full max-w-3xl rounded-2xl border border-slate-200 bg-white shadow-xl">
-                <div class="flex items-center justify-between border-b border-slate-200 px-5 py-4">
+            <div class="relative w-full max-w-3xl  border border-slate-300 bg-white shadow-xl">
+                <div class="flex items-center justify-between border-b border-slate-300 px-5 py-4">
                     <div>
                         <div class="text-sm font-semibold text-slate-900">Add / Edit Subject</div>
                         <div class="text-xs text-slate-600">{{ subjectModal.student?.name || '' }}</div>
                     </div>
                     <button
                         type="button"
-                        class="rounded-md border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50"
+                        class="rounded-sm border border-slate-300 bg-white px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50"
                         @click="closeSubjectModal"
                     >
                         Close
@@ -432,11 +419,11 @@
                         No subject configuration found for this student.
                     </div>
                     <div v-else class="space-y-6">
-                        <div v-if="subjectModal.error" class="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800">
+                        <div v-if="subjectModal.error" class="rounded-xl border border-red-200 bg-red-50 px-4 py-1 text-sm text-red-800">
                             {{ subjectModal.error }}
                         </div>
 
-                        <div v-if="subjectModal.note" class="rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">
+                        <div v-if="subjectModal.note" class="rounded-xl border border-amber-200 bg-amber-50 px-4 py-1 text-sm text-amber-900">
                             {{ subjectModal.note }}
                         </div>
 
@@ -446,7 +433,7 @@
                                 <div
                                     v-for="s in modalCompulsorySubjects"
                                     :key="'comp-' + s.subject_id"
-                                    class="flex items-center gap-2 rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-800"
+                                    class="flex items-center gap-2 rounded-sm border border-slate-300 bg-slate-50 px-3 py-2 text-sm text-slate-800"
                                 >
                                     <input type="checkbox" class="h-4 w-4" checked disabled />
                                     <span>{{ s.subject_name }}</span>
@@ -461,7 +448,7 @@
                                 <label
                                     v-for="s in modalFourthSubjects"
                                     :key="'fourth-' + s.subject_id"
-                                    class="flex items-center gap-2 rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-800"
+                                    class="flex items-center gap-2 rounded-sm border border-slate-300 px-3 py-2 text-sm text-slate-800"
                                 >
                                     <input
                                         type="radio"
@@ -486,7 +473,7 @@
                                 <label
                                     v-for="s in modalMainSubjects"
                                     :key="'main-' + s.subject_id"
-                                    class="flex items-center gap-2 rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-800"
+                                    class="flex items-center gap-2 rounded-sm border border-slate-300 px-3 py-2 text-sm text-slate-800"
                                 >
                                     <input
                                         type="checkbox"
@@ -502,10 +489,10 @@
                     </div>
                 </div>
 
-                <div class="flex items-center justify-end gap-2 border-t border-slate-200 px-5 py-4">
+                <div class="flex items-center justify-end gap-2 border-t border-slate-300 px-5 py-4">
                     <button
                         type="button"
-                        class="rounded-md border border-slate-200 bg-white px-4 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50"
+                        class="rounded-sm border border-slate-300 bg-white px-4 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50"
                         :disabled="subjectModal.saving"
                         @click="closeSubjectModal"
                     >
@@ -513,7 +500,7 @@
                     </button>
                     <button
                         type="button"
-                        class="rounded-md bg-slate-900 px-4 py-2 text-xs font-semibold text-white hover:bg-slate-800"
+                        class="rounded-sm bg-slate-900 px-4 py-2 text-xs font-semibold text-white hover:bg-slate-800"
                         :disabled="subjectModal.saving || subjectModal.loading"
                         @click="saveSubjectModal"
                     >
@@ -525,13 +512,13 @@
 
         <div v-if="bulkDeleteModal.open" class="fixed inset-0 z-50">
             <div class="absolute inset-0 bg-slate-900/40" @click="closeBulkDeleteModal"></div>
-            <div class="absolute left-1/2 top-1/2 w-[92vw] max-w-3xl -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-2xl">
-                <div class="flex items-center justify-between border-b border-slate-200 px-5 py-4">
+            <div class="absolute left-1/2 top-1/2 w-[92vw] max-w-3xl -translate-x-1/2 -translate-y-1/2 overflow-hidden  border border-slate-300 bg-white shadow-2xl">
+                <div class="flex items-center justify-between border-b border-slate-300 px-5 py-4">
                     <div>
                         <div class="text-sm font-semibold text-slate-900">Bulk Delete</div>
                         <div class="mt-1 text-xs text-slate-600">Select students from the current search result.</div>
                     </div>
-                    <button class="rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50" @click="closeBulkDeleteModal">
+                    <button class="rounded-sm border border-slate-300 bg-white px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50" @click="closeBulkDeleteModal">
                         Close
                     </button>
                 </div>
@@ -542,14 +529,14 @@
                         <div class="flex items-center gap-2">
                             <button
                                 type="button"
-                                class="rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50"
+                                class="rounded-sm border border-slate-300 bg-white px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50"
                                 @click="bulkDeleteSelectAll"
                             >
                                 Select All
                             </button>
                             <button
                                 type="button"
-                                class="rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50"
+                                class="rounded-sm border border-slate-300 bg-white px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50"
                                 @click="bulkDeleteClear"
                             >
                                 Clear
@@ -557,11 +544,11 @@
                         </div>
                     </div>
 
-                    <div class="mt-4 max-h-[55vh] overflow-auto rounded-xl border border-slate-200">
+                    <div class="mt-4 max-h-[55vh] overflow-auto rounded-xl border border-slate-300">
                         <table class="min-w-full divide-y divide-slate-200">
-                            <thead class="bg-slate-50">
-                                <tr class="text-left text-xs font-semibold uppercase tracking-wider text-slate-500">
-                                    <th class="px-4 py-3 text-center" style="width:48px;">
+                            <thead class="bg-emerald-100">
+                                <tr class="text-left text-xs font-semibold uppercase tracking-wider text-slate-700">
+                                    <th class="px-4 py-1 text-center" style="width:48px;">
                                         <input
                                             type="checkbox"
                                             class="h-4 w-4"
@@ -570,26 +557,26 @@
                                             @change="toggleBulkDeleteAll($event)"
                                         />
                                     </th>
-                                    <th class="px-4 py-3">Software ID</th>
-                                    <th class="px-4 py-3">Student</th>
-                                    <th class="px-4 py-3 text-center">Roll</th>
-                                    <th class="px-4 py-3 text-center">Status</th>
+                                    <th class="px-4 py-1">Software ID</th>
+                                    <th class="px-4 py-1">Student</th>
+                                    <th class="px-4 py-1 text-center">Roll</th>
+                                    <th class="px-4 py-1 text-center">Status</th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-slate-200">
                                 <tr v-for="r in rows" :key="'bd-' + r.id" class="text-sm text-slate-800">
-                                    <td class="px-4 py-3 text-center">
+                                    <td class="px-4 py-1 text-center">
                                         <input type="checkbox" class="h-4 w-4" :value="String(r.id)" v-model="bulkDeleteModal.selectedIds" />
                                     </td>
-                                    <td class="px-4 py-3 text-center">
+                                    <td class="px-4 py-1 text-center">
                                         <div class="text-xs font-semibold text-slate-900">{{ r.student_id }}</div>
                                     </td>
-                                    <td class="px-4 py-3">
+                                    <td class="px-4 py-1">
                                         <div class="font-semibold">{{ r.name }}</div>
                                         <div class="text-xs text-slate-600">{{ r.mobile }}</div>
                                     </td>
-                                    <td class="px-4 py-3 text-center">{{ r.college_roll }}</td>
-                                    <td class="px-4 py-3 text-center">{{ r.status }}</td>
+                                    <td class="px-4 py-1 text-center">{{ r.college_roll }}</td>
+                                    <td class="px-4 py-1 text-center">{{ r.status }}</td>
                                 </tr>
                                 <tr v-if="rows.length === 0">
                                     <td class="px-4 py-6 text-center text-sm text-slate-600" colspan="5">No students found.</td>
@@ -601,14 +588,14 @@
                     <div class="mt-4 flex items-center justify-end gap-2">
                         <button
                             type="button"
-                            class="rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50"
+                            class="rounded-sm border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50"
                             @click="closeBulkDeleteModal"
                         >
                             Cancel
                         </button>
                         <button
                             type="button"
-                            class="rounded-lg bg-red-600 px-4 py-2 text-sm font-semibold text-white hover:bg-red-700 disabled:opacity-60"
+                            class="rounded-sm bg-red-600 px-4 py-2 text-sm font-semibold text-white hover:bg-red-700 disabled:opacity-60"
                             :disabled="bulkDeleteModal.saving || bulkDeleteModal.selectedIds.length === 0"
                             @click="confirmBulkDelete"
                         >
@@ -635,6 +622,7 @@ export default {
             loading: false,
             error: '',
             rows: [],
+            searchTimer: null,
             meta: {
                 current_page: 1,
                 last_page: 1,
@@ -815,6 +803,16 @@ export default {
         },
     },
     watch: {
+        'filters.field_name'(next, prev) {
+            if (String(next || '') !== String(prev || '')) {
+                this.scheduleLoad(true)
+            }
+        },
+        'filters.value'(next, prev) {
+            if (String(next || '') !== String(prev || '')) {
+                this.scheduleLoad(true)
+            }
+        },
         'advanced.academic_qualification_id': {
             handler(next, prev) {
                 const changed = String(next || '') !== String(prev || '')
@@ -844,18 +842,65 @@ export default {
                     this.advanced.department_id = ''
                     this.clearSubjectFilters()
                 }
+
+                if (changed) {
+                    this.scheduleLoad(true)
+                }
             },
+        },
+        'advanced.academic_session_id'(next, prev) {
+            if (String(next || '') !== String(prev || '')) {
+                this.scheduleLoad(true)
+            }
         },
         'advanced.department_id'(next, prev) {
             if (String(next || '') !== String(prev || '')) {
                 this.clearSubjectFilters()
                 this.fetchClasswiseSubjects()
+                this.scheduleLoad(true)
             }
         },
         'advanced.academic_class_id'(next, prev) {
             if (String(next || '') !== String(prev || '')) {
                 this.clearSubjectFilters()
                 this.fetchClasswiseSubjects()
+                this.scheduleLoad(true)
+            }
+        },
+        'advanced.student_type'(next, prev) {
+            if (String(next || '') !== String(prev || '')) {
+                this.scheduleLoad(true)
+            }
+        },
+        'advanced.hostel_id'(next, prev) {
+            if (String(next || '') !== String(prev || '')) {
+                this.scheduleLoad(true)
+            }
+        },
+        'advanced.status'(next, prev) {
+            if (String(next || '') !== String(prev || '')) {
+                this.scheduleLoad(true)
+            }
+        },
+        'advanced.gender'(next, prev) {
+            if (String(next || '') !== String(prev || '')) {
+                this.scheduleLoad(true)
+            }
+        },
+        'advanced.fourth_subject_id'(next, prev) {
+            if (String(next || '') !== String(prev || '')) {
+                this.scheduleLoad(true)
+            }
+        },
+        'advanced.subject_ids': {
+            handler() {
+                this.scheduleLoad(true)
+            },
+            deep: true,
+        },
+        pagination(next, prev) {
+            if (Number(next || 0) !== Number(prev || 0)) {
+                this.scheduleLoad(true)
             }
         },
         'subjectModal.selectedFourth'(next, prev) {
@@ -880,6 +925,13 @@ export default {
         window.removeEventListener('click', this.onWindowClick)
     },
     methods: {
+        scheduleLoad(resetPage) {
+            if (this.searchTimer) clearTimeout(this.searchTimer)
+            this.searchTimer = setTimeout(() => {
+                const page = resetPage ? 1 : Number(this.meta?.current_page || 1)
+                this.load(page)
+            }, 250)
+        },
         rowSerial(idx) {
             const i = Number(idx || 0)
             const from = Number(this.meta?.from ?? 0)
