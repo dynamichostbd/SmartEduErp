@@ -549,10 +549,13 @@ export default {
             // Attendance
             if (p === '/admin/attendance') return { file: './pages/AttendanceIndex.vue', props: { systems: this.systems } }
             if (p === '/admin/attendance/create') return { file: './pages/AttendanceCreate.vue', props: { systems: this.systems } }
+            if (p.match(/^\/admin\/attendance\/[0-9]+\/edit$/)) return { file: './pages/AttendanceCreate.vue', props: { systems: this.systems, attendanceId: this.numericId('/admin/attendance/') } }
+            if (p.match(/^\/admin\/attendance\/[0-9]+$/)) return { file: './pages/AttendanceView.vue', props: { systems: this.systems, attendanceId: this.numericId('/admin/attendance/') } }
             if (p === '/admin/attendance-report') return { file: './pages/AttendanceReport.vue', props: { systems: this.systems } }
             if (p === '/admin/attendance-sheet') return { file: './pages/AttendanceSheet.vue', props: { systems: this.systems } }
             if (p === '/admin/attendanceSummary') return { file: './pages/AttendanceSummaryIndex.vue', props: { systems: this.systems } }
             if (p === '/admin/attendanceSummary/create') return { file: './pages/AttendanceSummaryCreate.vue', props: { systems: this.systems } }
+            if (p.match(/^\/admin\/attendanceSummary\/[0-9]+\/edit$/)) return { file: './pages/AttendanceSummaryCreate.vue', props: { systems: this.systems, summaryId: this.numericId('/admin/attendanceSummary/') } }
             if (p.match(/^\/admin\/attendanceSummary\/[0-9]+$/)) return { file: './pages/AttendanceSummaryView.vue', props: { systems: this.systems, summaryId: this.numericId('/admin/attendanceSummary/') } }
 
             // Teacher

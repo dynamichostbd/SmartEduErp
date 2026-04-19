@@ -127,7 +127,7 @@
         <div class=" border border-slate-300 bg-white p-5">
             <div class="text-sm font-semibold text-slate-900">Teacher List</div>
 
-            <div class="mt-4" id="id-card">
+            <div class="col-12" id="id-card">
                 <div class="id-card">
                     <template v-for="(teacher, key1) in teachers" :key="'t-' + (teacher.id || key1)">
                         <div class="id-bg">
@@ -170,7 +170,7 @@
                             <div class="id-back">
                                 <img v-if="backPart" :src="backPart" />
 
-                                <div class="back-logo" v-if="logo">
+                                <div class="back-logo">
                                     <img :src="logo" alt="" />
                                 </div>
 
@@ -321,33 +321,43 @@ export default {
                 this.loading = false
             }
         },
-        printCards() {
+        async printCards() {
             const el = document.getElementById('id-card')
             if (!el) return
 
-            const html = el.innerHTML
-            const style = `\n<style>\n${this.printCss()}\n</style>\n`
+            try {
+                const imgs = Array.from(el.querySelectorAll('img') || [])
+                await Promise.all(
+                    imgs.map(
+                        (img) =>
+                            new Promise((resolve) => {
+                                if (img.complete) return resolve(true)
+                                img.onload = () => resolve(true)
+                                img.onerror = () => resolve(true)
+                            })
+                    )
+                )
 
-            const w = window.open('', '_blank')
-            if (!w) return
+                if (document.fonts && document.fonts.ready) {
+                    await document.fonts.ready
+                }
+            } catch (e) {
+                // ignore
+            }
 
-            w.document.open()
-            w.document.write(`<!doctype html><html><head><title>ID Card</title>${style}</head><body>${html}</body></html>`)
-            w.document.close()
-
-            setTimeout(() => {
-                w.focus()
-                w.print()
-                w.close()
-            }, 250)
+            window.print()
         },
         printCss() {
             return `
+ html, body { margin: 0; padding: 0; font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif; line-height: 1.5; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+ * { box-sizing: border-box; }
  p { letter-spacing: 0px !important; }
+ .text-danger { color: #dc3545 !important; }
+ .text-success { color: #198754 !important; }
  .id-card { width: 100%; float: left; position: relative; }
  .id-bg { position: relative; height: 658.5px; width: 208.2px; float: left; clear: right; }
  .id-card img { height: 100%; width: 100%; }
- .id-card .id-front { position: relative; padding: 0px; float: left; height: 328.27px; }
+ .id-card .id-front { position: relative; padding: 0px; float: left; height: 328.27px; width: 100%; }
  .id-card .id-front .std-name { position: absolute; top: 186px; text-align: center; margin: auto; width: 100%; font-weight: bold; font-size: 12px; padding: 0px 10px; height: 40px; display: flex; justify-content: center; align-items: center; text-transform: uppercase; color: #0e4c88 !important; }
  .id-card .id-front .front-info { position: absolute; top: 227px; left: 91px; font-size: 10px; color: #000; }
  .id-card .id-front .front-footer { position: absolute; bottom: -4px; font-size: 6px; display: flex; justify-content: center; color: white; width: 100%; }
@@ -357,13 +367,13 @@ export default {
  .id-card .id-front .college-name { font-size: 10px; position: absolute; top: 74px; font-family: Bahnschrift; font-weight: bold; color: rgb(242, 44, 44); text-align: center; width: 100%; }
  .id-card .id-front .front-info .dept-name { font-size: 7px; margin-top: 3px; margin-bottom: 0px !important; }
  .id-card .id-front .profile-image img { position: absolute; height: 88.1px; width: 73.8px; top: 107.1px; left: 66.7px; border-radius: 8px; }
- .id-card .id-back { position: relative; height: 100%; padding: 0px; float: left; height: 328.27px; }
+ .id-card .id-back { position: relative; height: 100%; padding: 0px; float: left; height: 328.27px; width: 100%; }
  .id-card .id-back .back-info { position: absolute; top: 95px; font-size: 9px; color: #000; text-align: center; width: 100%; line-height: 12px; }
  .id-card .id-back .back-footer { position: absolute; bottom: 12px; left: 10px; font-size: 7.5px; color: white; text-align: center; width: 189px; }
  .id-card .id-back .back-footer p { margin-bottom: 0px !important; }
  .id-card .id-back .back-info-text { margin-top: 10px; }
- .id-card .id-back .back-logo { position: absolute; top: 15px; text-align: center; width: 100%; }
- .id-card .id-back .back-logo img { width: 32%; }
+ .id-card .id-back .back-logo { position: absolute; top: 15px; left: 0; right: 0; width: 100%; text-align: center; }
+ .id-card .id-back .back-logo img { width: 32%; display: block; margin: 0 auto; }
  .id-card .id-back .back-info p { margin-bottom: -1px !important; }
  .id-card .id-back .qr-code { position: absolute; left: 65px; bottom: 49px; }
  .id-card .id-back .qr-code img { height: 80px; width: 77px; }
@@ -376,6 +386,18 @@ export default {
 </script>
 
 <style>
+p {
+    letter-spacing: 0px !important;
+}
+
+.text-danger {
+    color: #dc3545 !important;
+}
+
+.text-success {
+    color: #198754 !important;
+}
+
 .id-card {
     width: 100%;
     float: left;
@@ -397,6 +419,7 @@ export default {
     padding: 0px;
     float: left;
     height: 328.27px;
+    width: 100%;
 }
 .id-card .id-front .std-name {
     position: absolute;
@@ -477,6 +500,7 @@ export default {
     padding: 0px;
     float: left;
     height: 328.27px;
+    width: 100%;
 }
 .id-card .id-back .back-info {
     position: absolute;
@@ -505,11 +529,15 @@ export default {
 .id-card .id-back .back-logo {
     position: absolute;
     top: 15px;
-    text-align: center;
+    left: 0;
+    right: 0;
     width: 100%;
+    text-align: center;
 }
 .id-card .id-back .back-logo img {
     width: 32%;
+    display: block;
+    margin: 0 auto;
 }
 .id-card .id-back .back-info p {
     margin-bottom: -1px !important;
@@ -528,6 +556,31 @@ export default {
     font-weight: bold;
 }
 @media print {
+    @page {
+        margin: 0;
+    }
+
+    html,
+    body {
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    body * {
+        visibility: hidden;
+    }
+
+    #id-card,
+    #id-card * {
+        visibility: visible;
+    }
+
+    #id-card {
+        position: absolute;
+        left: 0;
+        top: 0;
+    }
+
     .page-break {
         page-break-after: always;
     }

@@ -386,37 +386,43 @@ export default {
                 this.loading = false
             }
         },
-        printCards() {
+        async printCards() {
             const el = document.getElementById('id-card')
             if (!el) return
 
-            const html = el.innerHTML
-            const style = `\n<style>\n${this.printCss()}\n</style>\n`
+            try {
+                const imgs = Array.from(el.querySelectorAll('img') || [])
+                await Promise.all(
+                    imgs.map(
+                        (img) =>
+                            new Promise((resolve) => {
+                                if (img.complete) return resolve(true)
+                                img.onload = () => resolve(true)
+                                img.onerror = () => resolve(true)
+                            })
+                    )
+                )
 
-            const w = window.open('', '_blank')
-            if (!w) return
+                if (document.fonts && document.fonts.ready) {
+                    await document.fonts.ready
+                }
+            } catch (e) {
+                // ignore
+            }
 
-            w.document.open()
-            w.document.write(`<!doctype html><html><head><title>ID Card</title>${style}</head><body>${html}</body></html>`)
-            w.document.close()
-
-            setTimeout(() => {
-                w.focus()
-                w.print()
-                w.close()
-            }, 250)
+            window.print()
         },
         printCss() {
             return `
 .id-card { width: 100%; float: left; position: relative; }
 .id-bg { position: relative; height: 658.5px; width: 208.2px; float: left; clear: right; }
 .id-card img { height: 100%; width: 100%; }
-.id-card .id-front { position: relative; padding: 0px; float: left; height: 328.27px; }
+.id-card .id-front { position: relative; padding: 0px; float: left; height: 328.27px; width: 100%; }
 .id-card .id-front .std-name { position: absolute; top: 166px; text-align: center; margin: auto; width: 100%; font-weight: bold; font-size: 11px; padding: 0px 10px; height: 40px; display: flex; justify-content: center; align-items: center; }
 .id-card .id-front .front-info { position: absolute; top: 204.3px; left: 91px; font-size: 10px; color: #000; }
 .id-card .id-front .front-info p { margin-bottom: -2.1px !important; }
 .id-card .id-front .profile-image img { position: absolute; height: 88.4px; width: 78px; top: 80.3px; left: 65.7px; border-radius: 7px; }
-.id-card .id-back { position: relative; padding: 0px; float: left; height: 328.27px; }
+.id-card .id-back { position: relative; padding: 0px; float: left; height: 328.27px; width: 100%; }
 .id-card .id-back .back-info { position: absolute; top: 33.5px; left: 81px; font-size: 9px; color: #000; }
 .id-card .id-back .back-info p { margin-bottom: -3px !important; height: 13.2px; }
 .id-card .id-back .qr-code { position: absolute; left: 72px; top: 94px; }
@@ -451,6 +457,7 @@ export default {
     padding: 0px;
     float: left;
     height: 328.27px;
+    width: 100%;
 }
 .id-card .id-front .std-name {
     position: absolute;
@@ -491,6 +498,7 @@ export default {
     padding: 0px;
     float: left;
     height: 328.27px;
+    width: 100%;
 }
 
 .id-card .id-back .back-info {
@@ -521,6 +529,31 @@ export default {
 }
 
 @media print {
+    @page {
+        margin: 0;
+    }
+
+    html,
+    body {
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    body * {
+        visibility: hidden;
+    }
+
+    #id-card,
+    #id-card * {
+        visibility: visible;
+    }
+
+    #id-card {
+        position: absolute;
+        left: 0;
+        top: 0;
+    }
+
     .page-break {
         page-break-after: always;
     }

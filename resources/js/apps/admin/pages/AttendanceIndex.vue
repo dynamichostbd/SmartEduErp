@@ -108,6 +108,9 @@
                             <td class="border border-slate-300 px-1 py-1 text-center text-rose-700">{{ Math.max(0, Number(row.total_student ?? 0) - Number(row.present_student_count ?? 0)) }}</td>
                             <td class="border border-slate-300 px-1 py-1 text-center">
                                 <div class="flex items-center justify-center gap-2">
+                                    <button type="button" class="inline-flex h-8 w-8 items-center justify-center rounded-sm border border-slate-300 bg-white text-emerald-700 hover:bg-emerald-50" title="View" @click="goView(row.id)">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
                                     <button type="button" class="inline-flex h-8 w-8 items-center justify-center rounded-sm border border-slate-300 bg-white text-slate-700 hover:bg-slate-50" title="Edit" @click="goEdit(row.id)">
                                         <i class="fas fa-edit"></i>
                                     </button>
@@ -271,6 +274,9 @@ export default {
         },
         goCreate() {
             window.location.href = '/admin/attendance/create'
+        },
+        goView(id) {
+            window.location.href = `/admin/attendance/${id}`
         },
         goEdit(id) {
             window.location.href = `/admin/attendance/${id}/edit`

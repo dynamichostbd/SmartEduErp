@@ -31,6 +31,56 @@ class PublicRegistrationController extends Controller
         $data['religions'] = $custom['religions'] ?? [];
         $data['blood_groups'] = $custom['blood_groups'] ?? [];
 
+        $data['divisions'] = [];
+        if (Schema::hasTable('divisions')) {
+            $data['divisions'] = DB::table('divisions')
+                ->select('id', 'name')
+                ->orderBy('id')
+                ->get()
+                ->toArray();
+        }
+
+        $data['districts'] = [];
+        if (Schema::hasTable('districts')) {
+            $select = ['id', 'name'];
+            if (Schema::hasColumn('districts', 'division_id')) {
+                $select[] = 'division_id';
+            }
+            $data['districts'] = DB::table('districts')
+                ->select($select)
+                ->orderBy('id')
+                ->get()
+                ->toArray();
+        }
+
+        $data['upazilas'] = [];
+        if (Schema::hasTable('upazilas')) {
+            $select = ['id', 'name'];
+            if (Schema::hasColumn('upazilas', 'district_id')) {
+                $select[] = 'district_id';
+            }
+            $data['upazilas'] = DB::table('upazilas')
+                ->select($select)
+                ->orderBy('id')
+                ->get()
+                ->toArray();
+        }
+
+        $data['unions'] = [];
+        if (Schema::hasTable('unions')) {
+            $select = ['id', 'name'];
+            if (Schema::hasColumn('unions', 'upazilla_id')) {
+                $select[] = 'upazilla_id';
+            } elseif (Schema::hasColumn('unions', 'upazila_id')) {
+                $select[] = 'upazila_id';
+            }
+            $data['unions'] = DB::table('unions')
+                ->select($select)
+                ->orderBy('id')
+                ->get()
+                ->toArray();
+        }
+
         return response()->json(['global' => $data]);
     }
 
@@ -90,8 +140,29 @@ class PublicRegistrationController extends Controller
             'gender' => ['nullable', Rule::in(['Male', 'Female', 'Others'])],
             'blood_group' => ['nullable'],
             'living_type' => ['nullable', Rule::in(['Hostel', 'Others'])],
+            'address' => ['required'],
+            'permanent_address' => ['nullable'],
             'profile' => ['required', 'image'],
         ];
+
+        if (Schema::hasTable('students')) {
+            $locationFields = [
+                'division_id',
+                'district_id',
+                'upazila_id',
+                'union_id',
+                'permanent_division_id',
+                'permanent_district_id',
+                'permanent_upazila_id',
+                'permanent_union_id',
+            ];
+
+            foreach ($locationFields as $field) {
+                if (Schema::hasColumn('students', $field)) {
+                    $rules[$field] = ['nullable'];
+                }
+            }
+        }
 
         $request->validate($rules);
 
@@ -147,6 +218,10 @@ class PublicRegistrationController extends Controller
 
         $fillable = (new Student())->getFillable();
         $fillable = array_values(array_diff($fillable, ['otp']));
+
+        if (Schema::hasTable('students')) {
+            $fillable = array_values(array_filter($fillable, fn ($c) => Schema::hasColumn('students', $c)));
+        }
         $data = $request->only($fillable);
 
         $data['student_id'] = $this->generateStudentId();
@@ -158,6 +233,7 @@ class PublicRegistrationController extends Controller
         $data['fathers_name'] = strtoupper($request->input('fathers_name', ''));
         $data['mothers_name'] = strtoupper($request->input('mothers_name', ''));
         $data['address'] = strtoupper($request->input('address', ''));
+        $data['permanent_address'] = strtoupper($request->input('permanent_address', ''));
 
         $file = $request->file('profile');
         if ($file && $file->isValid()) {

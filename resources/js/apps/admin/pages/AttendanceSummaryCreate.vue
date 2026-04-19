@@ -17,12 +17,12 @@
             {{ error }}
         </div>
 
-        <div class="grid grid-cols-1 gap-4 lg:grid-cols-12">
-            <div class="flex flex-col gap-4 lg:col-span-8">
+        <div class="flex flex-col gap-4">
+            <div class="flex flex-col gap-4">
                 <div class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
                     <div class="text-sm font-semibold text-slate-900">Report Filters</div>
 
-                    <div class="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                    <div class="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
                         <div>
                             <div class="text-xs font-semibold text-slate-600">From Date <span class="text-rose-600">*</span></div>
                             <input
@@ -116,7 +116,7 @@
                             />
                         </div>
 
-                        <div class="sm:col-span-2 lg:col-span-3">
+                        <div class="sm:col-span-2 lg:col-span-4">
                             <div class="text-xs font-semibold text-slate-600">Admit Card <span class="text-rose-600">*</span></div>
                             <select
                                 v-model="form.admit_card_id"
@@ -128,7 +128,7 @@
                             </select>
                         </div>
 
-                        <div class="sm:col-span-2 lg:col-span-3 flex justify-end">
+                        <div class="sm:col-span-2 lg:col-span-4 flex justify-end">
                             <button
                                 type="button"
                                 class="h-9 rounded-lg bg-slate-900 px-5 text-sm font-semibold text-white hover:bg-slate-800"
@@ -207,33 +207,23 @@
                 </div>
             </div>
 
-            <div class="flex flex-col gap-4 lg:col-span-4">
-                <div class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
-                    <div class="text-sm font-semibold text-slate-900">Status</div>
-                    <div class="mt-2 text-sm text-slate-600">Search students for the selected date range, then confirm totals and set each student status before saving.</div>
-                </div>
-
-                <div class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
-                    <div class="text-sm font-semibold text-slate-900">Actions</div>
-
-                    <div class="mt-4 flex flex-col gap-2">
-                        <button
-                            type="button"
-                            class="w-full rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50"
-                            :disabled="submitting"
-                            @click="goBack"
-                        >
-                            Back
-                        </button>
-                        <button
-                            type="submit"
-                            class="w-full rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-700"
-                            :disabled="submitting || !students.length"
-                        >
-                            {{ submitting ? 'Processing...' : 'Save' }}
-                        </button>
-                    </div>
-                </div>
+            <div v-if="students.length" class="flex justify-center mt-4 mb-8 gap-4">
+                <button
+                    type="button"
+                    class="rounded-sm border border-slate-300 bg-white px-8 py-2 text-sm font-bold text-slate-700 hover:bg-slate-50 shadow-sm flex items-center"
+                    :disabled="submitting"
+                    @click="goBack"
+                >
+                    <i class="bx bx-arrow-back mr-1"></i> Back
+                </button>
+                <button
+                    type="submit"
+                    class="rounded-sm bg-emerald-600 px-8 py-2 text-sm font-bold text-white hover:bg-emerald-700 shadow-sm disabled:opacity-70 flex items-center"
+                    :disabled="submitting"
+                >
+                    <span v-if="submitting" class="mr-2 h-4 w-4 rounded-full border-2 border-white/30 border-t-white animate-spin"></span>
+                    <i v-else class="bx bx-save mr-1"></i> Save
+                </button>
             </div>
         </div>
     </form>
@@ -335,6 +325,7 @@ export default {
     },
     watch: {
         'form.academic_qualification_id'(next, prev) {
+            if (this.loading) return
             if (String(next || '') !== String(prev || '')) {
                 this.form.department_id = ''
                 this.form.academic_class_id = ''
@@ -342,16 +333,19 @@ export default {
             }
         },
         'form.academic_session_id'(next, prev) {
+            if (this.loading) return
             if (String(next || '') !== String(prev || '')) {
                 this.form.admit_card_id = ''
             }
         },
         'form.department_id'(next, prev) {
+            if (this.loading) return
             if (String(next || '') !== String(prev || '')) {
                 this.form.admit_card_id = ''
             }
         },
         'form.academic_class_id'(next, prev) {
+            if (this.loading) return
             if (String(next || '') !== String(prev || '')) {
                 this.form.admit_card_id = ''
             }
@@ -442,6 +436,7 @@ export default {
             } catch (e) {
                 this.error = e?.response?.data?.message || 'Failed to load summary.'
             } finally {
+                await this.$nextTick()
                 this.loading = false
             }
         },

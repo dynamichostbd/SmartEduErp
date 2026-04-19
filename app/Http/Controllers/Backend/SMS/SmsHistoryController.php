@@ -8,9 +8,12 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
+use App\Traits\SmsGatewayTrait;
 
 class SmsHistoryController extends Controller
 {
+    use SmsGatewayTrait;
+
     private function table(): ?string
     {
         return Schema::hasTable('sms_histories') ? 'sms_histories' : null;
@@ -145,12 +148,9 @@ class SmsHistoryController extends Controller
             return response()->json(['message' => 'Template not found'], 404);
         }
 
-        $token = (string) env('SMS_API_TOKEN', '');
-        $sid = (string) env('SMS_SID', 'DYNAMICNONMASK');
-        $baseUrl = (string) env('SMS_BASE_URL', 'https://smsplus.sslwireless.com/api/v3/send-sms');
-
-        if ($token === '') {
-            return response()->json(['message' => 'SMS API not configured'], 422);
+        $cfgError = $this->smsGatewayConfigError();
+        if ($cfgError) {
+            return response()->json(['message' => $cfgError], 422);
         }
 
         $commonMessage = (int) ($template->common_message ?? 0) === 1;
@@ -169,7 +169,7 @@ class SmsHistoryController extends Controller
             }
 
             $message = $this->renderTemplate($smsBody, [], null);
-            $this->sendSms(implode(',', $contacts), $message, $token, $sid, $baseUrl);
+            $this->sendSmsViaGateway(implode(',', $contacts), $message);
         } else {
             $status = $sendingType === 'applicants' ? 'approved' : 'active';
             $list = $this->students(new Request(array_merge($request->all(), ['sending_type' => $sendingType, 'status' => $status])))->getData(true);
@@ -188,7 +188,7 @@ class SmsHistoryController extends Controller
             if ($commonMessage) {
                 $contacts = array_values(array_filter(array_map(fn ($s) => (string) ($s['mobile'] ?? $s->mobile ?? ''), $students)));
                 $message = $this->renderTemplate($smsBody, [], null);
-                $this->sendSms(implode(',', $contacts), $message, $token, $sid, $baseUrl);
+                $this->sendSmsViaGateway(implode(',', $contacts), $message);
             } else {
                 foreach ($students as $s) {
                     $mobile = (string) ($s['mobile'] ?? $s->mobile ?? '');
@@ -205,7 +205,7 @@ class SmsHistoryController extends Controller
                     }
 
                     $message = $this->renderTemplate($smsBody, $params, $s);
-                    $this->sendSms($mobile, $message, $token, $sid, $baseUrl);
+                    $this->sendSmsViaGateway($mobile, $message);
                     $contacts[] = $mobile;
                 }
             }
@@ -281,17 +281,6 @@ class SmsHistoryController extends Controller
 
         $ok = DB::table($table)->where('id', (int) $id)->delete();
         return response()->json(['message' => $ok ? 'Delete Successfully!' : 'Delete Unsuccessfully!'], 200);
-    }
-
-    private function sendSms(string $msisdn, string $message, string $token, string $sid, string $baseUrl): void
-    {
-        Http::withHeaders(['Content-Type' => 'application/json'])->post($baseUrl, [
-            'api_token' => $token,
-            'sid' => $sid,
-            'msisdn' => $msisdn,
-            'sms' => $message,
-            'csms_id' => Str::random(8) . time(),
-        ]);
     }
 
     private function renderTemplate(string $smsBody, array $params, $student): string

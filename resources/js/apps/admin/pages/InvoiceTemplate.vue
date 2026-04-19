@@ -1,22 +1,29 @@
 <template>
-    <div class="rounded-xl border border-slate-300 bg-white p-4">
-        <div class="flex items-start justify-between gap-4 border-b border-slate-300 pb-3">
-            <div class="flex items-center gap-3">
-                <img v-if="logo" :src="logo" class="h-[60px] w-auto" />
-                <div>
-                    <div class="text-lg font-semibold text-slate-900">{{ title }}</div>
-                </div>
+    <div class="invoice mb-4 border border-slate-300 bg-white p-4" :style="{ height }">
+        <div class="grid grid-cols-12 gap-4 border-b-2 border-slate-300 pb-2">
+            <div class="col-span-3">
+                <img v-if="logo" :src="logo" class="h-[75px] w-auto object-contain" />
             </div>
+            <div class="col-span-9">
+                <div class="text-lg font-semibold text-slate-900">{{ title }}</div>
 
-            <div class="text-right text-xs text-slate-600">
-                <div v-if="data.payment_date"><span class="font-semibold">PAYMENT:</span> {{ data.payment_date }}</div>
-                <div><span class="font-semibold">CREATED:</span> {{ data.invoice_date }}</div>
-                <div class="mt-1 text-sm font-semibold text-slate-900">{{ data.invoice_number }}</div>
+                <div class="mt-1 text-right text-xs font-semibold text-slate-800">
+                    <template v-if="data.payment_date">
+                        <span class="text-slate-500 underline" style="font-size: 10px">PAYMENT:</span>
+                        <span class="ml-1">{{ data.payment_date }}</span>
+                        <span class="mx-2">|</span>
+                    </template>
+
+                    <span class="text-slate-500 underline" style="font-size: 10px">CREATED:</span>
+                    <span class="ml-1">{{ data.invoice_date }}</span>
+                    <span class="mx-2">|</span>
+                    <span>{{ data.invoice_number }}</span>
+                </div>
             </div>
         </div>
 
-        <div class="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-12">
-            <div class="sm:col-span-8 text-sm text-slate-800">
+        <div class="mt-3 grid grid-cols-12 gap-4">
+            <div class="col-span-7 text-sm text-slate-800">
                 <div v-if="data.student">
                     <div><span class="font-semibold">Name :</span> {{ data.student.name }}</div>
                     <div><span class="font-semibold">Mobile :</span> {{ data.student.mobile }}</div>
@@ -46,13 +53,8 @@
                 </div>
             </div>
 
-            <div class="sm:col-span-4 flex items-center justify-center">
-                <div v-if="String(data.status) === 'success'" class="rounded-xl border border-emerald-200 bg-emerald-50 px-5 py-4 text-center">
-                    <div class="text-lg font-extrabold text-emerald-700">PAID</div>
-                </div>
-                <div v-else class="rounded-xl border border-amber-200 bg-amber-50 px-5 py-4 text-center">
-                    <div class="text-lg font-extrabold text-amber-700">{{ String(data.status || 'PENDING').toUpperCase() }}</div>
-                </div>
+            <div class="col-span-5 flex items-center justify-center">
+                <img v-if="String(data.status) === 'success'" :src="paidStampUrl" class="h-[120px] w-[120px] object-contain" />
             </div>
         </div>
 
@@ -106,6 +108,10 @@ export default {
             type: Boolean,
             default: false,
         },
+        height: {
+            type: String,
+            default: '510px',
+        },
     },
     computed: {
         title() {
@@ -113,6 +119,10 @@ export default {
         },
         logo() {
             return this.systems?.site?.logo || ''
+        },
+        paidStampUrl() {
+            const base = window.laravel?.baseurl || ''
+            return `${base}/images/paid.png`
         },
         inWordsText() {
             const a = Number(this.data?.amount || 0)

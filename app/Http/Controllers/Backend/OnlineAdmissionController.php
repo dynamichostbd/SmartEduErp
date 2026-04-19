@@ -11,9 +11,12 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
+use App\Traits\SmsGatewayTrait;
 
 class OnlineAdmissionController extends Controller
 {
+    use SmsGatewayTrait;
+
     public function index(Request $request)
     {
         $perPage = (int) ($request->input('pagination') ?? 10);
@@ -344,26 +347,15 @@ class OnlineAdmissionController extends Controller
             return response()->json(['message' => 'Student not found'], 404);
         }
 
-        $token = (string) env('SMS_API_TOKEN', '');
-        $sid = (string) env('SMS_SID', 'DYNAMICNONMASK');
-        $baseUrl = (string) env('SMS_BASE_URL', 'https://smsplus.sslwireless.com/api/v3/send-sms');
-
-        if ($token === '') {
-            return response()->json(['message' => 'SMS API not configured'], 422);
+        $cfgError = $this->smsGatewayConfigError();
+        if ($cfgError) {
+            return response()->json(['message' => $cfgError], 422);
         }
 
         $message = $this->smsTemplate('OnlineAdmission', ['password' => $request->input('password')], $student)
             ?: ('Your password is ' . $request->input('password'));
 
-        $res = Http::withHeaders(['Content-Type' => 'application/json'])->post($baseUrl, [
-            'api_token' => $token,
-            'sid' => $sid,
-            'msisdn' => $student->mobile,
-            'sms' => $message,
-            'csms_id' => Str::random(8) . time(),
-        ]);
-
-        if ($res->successful()) {
+        if ($this->sendSmsViaGateway((string) $student->mobile, $message)) {
             return response()->json(['message' => 'SMS sent successfully'], 200);
         }
 

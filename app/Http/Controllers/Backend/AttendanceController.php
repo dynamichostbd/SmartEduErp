@@ -12,9 +12,12 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
+use App\Traits\SmsGatewayTrait;
 
 class AttendanceController extends Controller
 {
+    use SmsGatewayTrait;
+
     public function students(Request $request)
     {
         if (!Schema::hasTable('students')) {
@@ -668,8 +671,8 @@ class AttendanceController extends Controller
 
     protected function sendAbsentSms(string $date, array $contacts): void
     {
-        $token = (string) env('SMS_API_TOKEN', '');
-        if ($token === '') {
+        $cfgError = $this->smsGatewayConfigError();
+        if ($cfgError) {
             return;
         }
 
@@ -678,19 +681,10 @@ class AttendanceController extends Controller
             return;
         }
 
-        $sid = (string) env('SMS_SID', 'DYNAMICNONMASK');
-        $baseUrl = (string) env('SMS_BASE_URL', 'https://smsplus.sslwireless.com/api/v3/send-sms');
-
         $msgDate = date('D, d F Y', strtotime($date));
         $message = $this->smsTemplate('Absent', ['date' => $date]) ?: ('Absent on ' . $msgDate);
 
-        Http::withHeaders(['Content-Type' => 'application/json'])->post($baseUrl, [
-            'api_token' => $token,
-            'sid' => $sid,
-            'msisdn' => implode(',', $contacts),
-            'sms' => $message,
-            'csms_id' => Str::random(8) . time(),
-        ]);
+        $this->sendSmsViaGateway(implode(',', $contacts), $message);
     }
 
     protected function smsTemplate(string $smsType, array $params): string

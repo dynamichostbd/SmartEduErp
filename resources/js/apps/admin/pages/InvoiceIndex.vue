@@ -325,10 +325,12 @@
                             </td>
                             <td class="border border-slate-300 px-1 py-1">{{ row.head ? row.head.name : '' }}</td>
                             <td class="border border-slate-300 px-1 py-1">
-                                <div class="space-y-1">
-                                    <div class="font-semibold text-emerald-700 hover:underline whitespace-nowrap">{{ row.invoice_number }}</div>
-                                    <div class="font-semibold text-emerald-700 whitespace-nowrap">{{ formatDate(row.invoice_date) }}</div>
-                                </div>
+                                <button type="button" class="w-full text-left" @click="openInvoice(row.id)">
+                                    <div class="space-y-1">
+                                        <div class="font-semibold text-emerald-700 hover:underline whitespace-nowrap">{{ row.invoice_number }}</div>
+                                        <div class="font-semibold text-emerald-700 whitespace-nowrap">{{ formatDate(row.payment_date || row.invoice_date) }}</div>
+                                    </div>
+                                </button>
                             </td>
                             <td class="border border-slate-300 px-1 py-1 text-center font-semibold">{{ money(row.amount) }}</td>
                             <td class="border border-slate-300 px-1 py-1 text-center">

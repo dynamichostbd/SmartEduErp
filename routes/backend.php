@@ -642,6 +642,7 @@ Route::middleware(['auth:admin', 'auth.access'])->group(function () {
     Route::view('attendance', 'layouts.backend_app')->name('attendance.index');
     Route::view('attendance/create', 'layouts.backend_app')->name('attendance.create');
     Route::view('attendance/{id}/edit', 'layouts.backend_app')->name('attendance.edit');
+    Route::view('attendance/{id}', 'layouts.backend_app')->name('attendance.show');
 
     Route::view('attendance-report', 'layouts.backend_app')->name('attendance.attendanceReport');
     Route::view('attendance-sheet', 'layouts.backend_app')->name('attendance.attendanceSheet');

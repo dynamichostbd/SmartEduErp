@@ -97,81 +97,85 @@
                             </div>
                         </div>
 
-                        <div class="mt-4 rounded-sm border border-slate-300 bg-white">
-                            <div class="flex items-center justify-between gap-3 border-b border-slate-300 bg-slate-50 px-4 py-3">
-                                <div class="text-sm font-extrabold text-slate-800">CHECK APPLICATION FEES / ADMISSION ROLL / REG NO</div>
+                        <div class="mt-4 rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+                            <div class="mb-4 flex items-center justify-between gap-3 border-b border-slate-100 pb-2">
+                                <div class="text-sm font-semibold text-slate-900">CHECK APPLICATION FEES / ADMISSION ROLL / REG NO</div>
                                 <button
                                     v-if="onlineAdmissionShowForm || onlineAdmissionCheckApplicationFees || onlineAdmissionCheckRollVerify"
                                     type="button"
-                                    class="rounded-full bg-[#d20808] px-4 py-1.5 text-xs font-extrabold text-white hover:bg-[#b60606]"
+                                    class="rounded-full bg-[#d20808] px-4 py-1.5 text-xs font-extrabold text-white shadow-sm hover:bg-[#b60606]"
                                     @click="onlineAdmissionResetForm"
                                 >
                                     RESET FORM
                                 </button>
                             </div>
 
-                            <div v-if="onlineAdmissionLoading" class="p-4 text-sm text-slate-600">Loading...</div>
+                            <div v-if="onlineAdmissionLoading" class="p-4 text-sm font-semibold text-slate-600">Loading...</div>
                             <div v-else>
-                                <div v-if="onlineAdmissionError" class="m-4 rounded-sm border border-red-200 bg-red-50 p-3 text-sm text-red-800">{{ onlineAdmissionError }}</div>
+                                <div v-if="onlineAdmissionError" class="m-4 rounded-sm border border-red-200 bg-red-50 p-3 text-sm font-semibold text-red-800">{{ onlineAdmissionError }}</div>
 
-                                <div v-if="!onlineAdmissionCheckApplicationFees && !onlineAdmissionCheckRollVerify && !onlineAdmissionShowForm" class="p-4">
-                                    <div class="grid grid-cols-1 items-center gap-3 sm:grid-cols-12">
-                                        <div class="sm:col-span-4 sm:text-right">
-                                            <div class="text-sm font-extrabold text-slate-800">Academic Level</div>
-                                        </div>
-                                        <div class="sm:col-span-4">
-                                            <select v-model="onlineAdmissionForm.academic_qualification_id" class="h-10 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10">
+                                <div v-if="!onlineAdmissionCheckApplicationFees && !onlineAdmissionCheckRollVerify && !onlineAdmissionShowForm" class="py-2 flex justify-center">
+                                    <div class="flex w-full max-w-md flex-col items-end gap-4 sm:flex-row sm:justify-center">
+                                        <div class="w-full flex-1">
+                                            <div class="text-xs font-semibold text-slate-600">Academic Level <span class="text-red-600">*</span></div>
+                                            <select v-model="onlineAdmissionForm.academic_qualification_id" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10">
                                                 <option value="">--Select One--</option>
                                                 <option v-for="q in onlineAdmissionQualifications" :key="'oaq-' + q.id" :value="String(q.id)">{{ q.name }}</option>
                                             </select>
                                         </div>
-                                        <div class="sm:col-span-4">
-                                            <button type="button" class="rounded-sm bg-[rgb(39,112,154)] px-8 py-2 text-sm font-extrabold text-white hover:bg-[rgb(32,93,128)]" @click="onlineAdmissionSelectAcademicLevel">NEXT</button>
+                                        <div class="w-full sm:w-auto">
+                                            <button type="button" class="h-9 w-full rounded-sm bg-[#0b1d4d] px-8 text-sm font-extrabold text-white shadow-sm hover:bg-[#09163c]" @click="onlineAdmissionSelectAcademicLevel">NEXT</button>
                                         </div>
                                     </div>
                                 </div>
 
-                                <div v-else-if="onlineAdmissionCheckApplicationFees" class="p-4">
-                                    <div class="grid grid-cols-1 items-center gap-3 sm:grid-cols-12">
+                                <div v-else-if="onlineAdmissionCheckApplicationFees" class="py-2">
+                                    <div class="grid grid-cols-1 items-end gap-4 sm:grid-cols-12">
                                         <div class="sm:col-span-4">
-                                            <input v-model="onlineAdmissionForm.application_invoice_no" type="text" placeholder="Application Fee Invoice No." class="h-10 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10" />
+                                            <div class="text-xs font-semibold text-slate-600">Application Fee Invoice No.</div>
+                                            <input v-model="onlineAdmissionForm.application_invoice_no" type="text" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10" />
                                         </div>
                                         <div class="sm:col-span-4">
-                                            <input v-model="onlineAdmissionForm.admission_roll" type="text" placeholder="Admission Roll" :readonly="onlineAdmissionDisabledFields.includes('admission_roll')" class="h-10 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10" />
+                                            <div class="text-xs font-semibold text-slate-600">Admission Roll</div>
+                                            <input v-model="onlineAdmissionForm.admission_roll" type="text" :readonly="onlineAdmissionDisabledFields.includes('admission_roll')" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10 disabled:bg-slate-50" />
                                         </div>
                                         <div class="sm:col-span-4">
-                                            <button v-if="!onlineAdmissionCheckSpinner" type="button" class="rounded-sm bg-[rgb(39,112,154)] px-6 py-2 text-sm font-extrabold text-white hover:bg-[rgb(32,93,128)]" @click="onlineAdmissionCheckFees">CHECK APPLICATION FEES</button>
-                                            <div v-else class="text-sm text-slate-600">processing..</div>
+                                            <button v-if="!onlineAdmissionCheckSpinner" type="button" class="h-9 rounded-sm bg-[#0b1d4d] px-6 text-sm font-extrabold text-white shadow-sm hover:bg-[#09163c]" @click="onlineAdmissionCheckFees">CHECK APPLICATION FEES</button>
+                                            <div v-else class="text-sm font-semibold text-slate-600">processing..</div>
                                         </div>
                                     </div>
                                 </div>
 
-                                <div v-else-if="onlineAdmissionCheckRollVerify && !onlineAdmissionDoubleVerify" class="p-4">
-                                    <div class="grid grid-cols-1 items-center gap-3 sm:grid-cols-12">
+                                <div v-else-if="onlineAdmissionCheckRollVerify && !onlineAdmissionDoubleVerify" class="py-2">
+                                    <div class="grid grid-cols-1 items-end gap-4 sm:grid-cols-12">
                                         <div class="sm:col-span-3">
-                                            <select v-model="onlineAdmissionVerifyForm.academic_session_id" :disabled="onlineAdmissionDisabledFields.includes('academic_session_id')" class="h-10 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10">
-                                                <option value="">--Academic Session--</option>
+                                            <div class="text-xs font-semibold text-slate-600">Academic Session</div>
+                                            <select v-model="onlineAdmissionVerifyForm.academic_session_id" :disabled="onlineAdmissionDisabledFields.includes('academic_session_id')" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10 disabled:bg-slate-50 disabled:text-slate-500">
+                                                <option value="">--Select--</option>
                                                 <option v-for="s in onlineAdmissionSessions" :key="'oas-' + s.id" :value="String(s.id)">{{ s.name }}</option>
                                             </select>
                                         </div>
                                         <div class="sm:col-span-3">
-                                            <select v-model="onlineAdmissionVerifyForm.department_id" :disabled="onlineAdmissionDisabledFields.includes('department_id')" class="h-10 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10">
-                                                <option value="">--Department/Group--</option>
+                                            <div class="text-xs font-semibold text-slate-600">Department/Group</div>
+                                            <select v-model="onlineAdmissionVerifyForm.department_id" :disabled="onlineAdmissionDisabledFields.includes('department_id')" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10 disabled:bg-slate-50 disabled:text-slate-500">
+                                                <option value="">--Select--</option>
                                                 <option v-for="d in onlineAdmissionFilteredDepartments" :key="'oad-' + d.id" :value="String(d.id)">{{ d.name }}</option>
                                             </select>
                                         </div>
                                         <div class="sm:col-span-3">
-                                            <select v-model="onlineAdmissionVerifyForm.academic_class_id" :disabled="onlineAdmissionDisabledFields.includes('academic_class_id')" class="h-10 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10">
-                                                <option value="">--Class--</option>
+                                            <div class="text-xs font-semibold text-slate-600">Class</div>
+                                            <select v-model="onlineAdmissionVerifyForm.academic_class_id" :disabled="onlineAdmissionDisabledFields.includes('academic_class_id')" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10 disabled:bg-slate-50 disabled:text-slate-500">
+                                                <option value="">--Select--</option>
                                                 <option v-for="c in onlineAdmissionFilteredClasses" :key="'oac-' + c.id" :value="String(c.id)">{{ c.name }}</option>
                                             </select>
                                         </div>
                                         <div class="sm:col-span-3">
-                                            <input v-model="onlineAdmissionVerifyForm.admission_roll" type="text" placeholder="SSC / Admission Roll" :readonly="onlineAdmissionDisabledFields.includes('admission_roll')" class="h-10 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10" />
+                                            <div class="text-xs font-semibold text-slate-600">SSC / Admission Roll</div>
+                                            <input v-model="onlineAdmissionVerifyForm.admission_roll" type="text" :readonly="onlineAdmissionDisabledFields.includes('admission_roll')" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10 disabled:bg-slate-50" />
                                         </div>
-                                        <div class="sm:col-span-12 pt-1">
-                                            <button v-if="!onlineAdmissionCheckSpinner" type="button" class="rounded-sm bg-[rgb(39,112,154)] px-6 py-2 text-sm font-extrabold text-white hover:bg-[rgb(32,93,128)]" @click="onlineAdmissionVerifyRoll">VERIFY ROLL</button>
-                                            <div v-else class="text-sm text-slate-600">processing..</div>
+                                        <div class="sm:col-span-12 pt-2">
+                                            <button v-if="!onlineAdmissionCheckSpinner" type="button" class="h-9 rounded-sm bg-[#0b1d4d] px-6 text-sm font-extrabold text-white shadow-sm hover:bg-[#09163c]" @click="onlineAdmissionVerifyRoll">VERIFY ROLL</button>
+                                            <div v-else class="text-sm font-semibold text-slate-600">processing..</div>
                                         </div>
                                     </div>
                                 </div>
@@ -181,77 +185,115 @@
                         <template v-if="onlineAdmissionShowForm">
                             <div class="mt-4 grid grid-cols-1 gap-4 lg:grid-cols-12">
                                 <div class="lg:col-span-6">
-                                    <div class="rounded-sm border border-slate-300 bg-white">
-                                        <div class="border-b border-slate-300 bg-slate-50 px-4 py-3 text-sm font-extrabold text-slate-800">PERSONAL INFORMATION</div>
-                                        <div class="p-4">
-                                            <div class="space-y-3">
-                                                <input v-model="onlineAdmissionForm.name" type="text" placeholder="Full Name" :readonly="onlineAdmissionDisabledFields.includes('name')" class="h-10 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10" />
-                                                <input v-model="onlineAdmissionForm.fathers_name" type="text" placeholder="Father's Name" class="h-10 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10" />
-                                                <input v-model="onlineAdmissionForm.mothers_name" type="text" placeholder="Mother's Name" class="h-10 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10" />
+                                    <div class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm h-full">
+                                        <div class="mb-4 border-b border-slate-100 pb-2 text-sm font-semibold text-slate-900">PERSONAL INFORMATION</div>
+                                        <div class="grid grid-cols-1 gap-4">
+                                            <div>
+                                                <div class="text-xs font-semibold text-slate-600">Full Name <span class="text-red-600">*</span></div>
+                                                <input v-model="onlineAdmissionForm.name" type="text" :readonly="onlineAdmissionDisabledFields.includes('name')" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10 disabled:bg-slate-50" />
+                                            </div>
+                                            <div>
+                                                <div class="text-xs font-semibold text-slate-600">Father's Name <span class="text-red-600">*</span></div>
+                                                <input v-model="onlineAdmissionForm.fathers_name" type="text" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10" />
+                                            </div>
+                                            <div>
+                                                <div class="text-xs font-semibold text-slate-600">Mother's Name <span class="text-red-600">*</span></div>
+                                                <input v-model="onlineAdmissionForm.mothers_name" type="text" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10" />
+                                            </div>
 
-                                                <div class="grid grid-cols-1 gap-3 sm:grid-cols-12">
-                                                    <div class="sm:col-span-7 flex flex-wrap items-center gap-3">
+                                            <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                                                <div>
+                                                    <div class="text-xs font-semibold text-slate-600">Gender</div>
+                                                    <div class="mt-2 flex flex-wrap items-center gap-4">
                                                         <label class="inline-flex items-center gap-2 text-sm font-semibold text-slate-700">
-                                                            <input type="radio" value="Male" v-model="onlineAdmissionForm.gender" />
+                                                            <input type="radio" value="Male" v-model="onlineAdmissionForm.gender" class="accent-[#0d6b75]" />
                                                             Male
                                                         </label>
                                                         <label class="inline-flex items-center gap-2 text-sm font-semibold text-slate-700">
-                                                            <input type="radio" value="Female" v-model="onlineAdmissionForm.gender" />
+                                                            <input type="radio" value="Female" v-model="onlineAdmissionForm.gender" class="accent-[#0d6b75]" />
                                                             Female
                                                         </label>
                                                         <label class="inline-flex items-center gap-2 text-sm font-semibold text-slate-700">
-                                                            <input type="radio" value="Others" v-model="onlineAdmissionForm.gender" />
+                                                            <input type="radio" value="Others" v-model="onlineAdmissionForm.gender" class="accent-[#0d6b75]" />
                                                             Others
                                                         </label>
                                                     </div>
-                                                    <div class="sm:col-span-5">
-                                                        <input v-model="onlineAdmissionForm.dob" type="date" placeholder="Date of Birth" class="h-10 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10" />
-                                                    </div>
                                                 </div>
+                                                <div>
+                                                    <div class="text-xs font-semibold text-slate-600">Date of Birth <span class="text-red-600">*</span></div>
+                                                    <input v-model="onlineAdmissionForm.dob" type="date" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10" />
+                                                </div>
+                                            </div>
 
-                                                <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
-                                                    <select v-model="onlineAdmissionForm.religion" class="h-10 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10">
-                                                        <option value="">--Religion--</option>
+                                            <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                                                <div>
+                                                    <div class="text-xs font-semibold text-slate-600">Religion</div>
+                                                    <select v-model="onlineAdmissionForm.religion" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10">
+                                                        <option value="">--Select--</option>
                                                         <option v-for="r in onlineAdmissionReligions" :key="'oar-' + r" :value="r">{{ r }}</option>
                                                     </select>
-                                                    <select v-model="onlineAdmissionForm.blood_group" class="h-10 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10">
-                                                        <option value="">--Blood Group--</option>
+                                                </div>
+                                                <div>
+                                                    <div class="text-xs font-semibold text-slate-600">Blood Group</div>
+                                                    <select v-model="onlineAdmissionForm.blood_group" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10">
+                                                        <option value="">--Select--</option>
                                                         <option v-for="b in onlineAdmissionBloodGroups" :key="'oab-' + b" :value="b">{{ b }}</option>
                                                     </select>
                                                 </div>
+                                            </div>
 
-                                                <input v-model="onlineAdmissionForm.nid" type="text" placeholder="NID / Birth Reg No" class="h-10 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10" />
-                                                <input ref="onlineAdmissionProfileInput" type="file" accept="image/*" class="block w-full text-sm text-slate-700 file:mr-3 file:rounded-sm file:border-0 file:bg-emerald-600 file:px-3 file:py-2 file:text-sm file:font-semibold file:text-white hover:file:bg-emerald-700" @change="onPickOnlineAdmissionProfile" />
+                                            <div>
+                                                <div class="text-xs font-semibold text-slate-600">NID / Birth Reg No</div>
+                                                <input v-model="onlineAdmissionForm.nid" type="text" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10" />
+                                            </div>
+                                            <div>
+                                                <div class="text-xs font-semibold text-slate-600">Profile Picture</div>
+                                                <input ref="onlineAdmissionProfileInput" type="file" accept="image/*" class="mt-1 block w-full text-sm text-slate-700 file:mr-3 file:rounded-sm file:border-0 file:bg-[#0d6b75] file:px-3 file:py-2 file:font-semibold file:text-white hover:file:bg-[#0d6b75]/90" @change="onPickOnlineAdmissionProfile" />
                                             </div>
                                         </div>
                                     </div>
                                 </div>
 
                                 <div class="lg:col-span-6">
-                                    <div class="rounded-sm border border-slate-300 bg-white">
-                                        <div class="border-b border-slate-300 bg-slate-50 px-4 py-3 text-sm font-extrabold text-slate-800">ACADEMIC INFORMATION</div>
-                                        <div class="p-4">
-                                            <div class="space-y-3">
-                                                <input v-model="onlineAdmissionForm.admission_roll" type="text" placeholder="Admission Roll / Reg No" :readonly="onlineAdmissionDisabledFields.includes('admission_roll')" class="h-10 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10" />
-                                                <input v-model="onlineAdmissionForm.ssc_gpa" type="text" placeholder="SSC GPA" class="h-10 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10" />
-                                                <input v-model="onlineAdmissionForm.registration_no" type="text" placeholder="Registration No" class="h-10 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10" />
-
-                                                <select v-model="onlineAdmissionForm.academic_session_id" :disabled="onlineAdmissionDisabledFields.includes('academic_session_id')" class="h-10 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10">
-                                                    <option value="">--Academic Session--</option>
+                                    <div class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm h-full">
+                                        <div class="mb-4 border-b border-slate-100 pb-2 text-sm font-semibold text-slate-900">ACADEMIC INFORMATION</div>
+                                        <div class="grid grid-cols-1 gap-4">
+                                            <div>
+                                                <div class="text-xs font-semibold text-slate-600">Admission Roll / Reg No</div>
+                                                <input v-model="onlineAdmissionForm.admission_roll" type="text" :readonly="onlineAdmissionDisabledFields.includes('admission_roll')" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10 disabled:bg-slate-50" />
+                                            </div>
+                                            <div>
+                                                <div class="text-xs font-semibold text-slate-600">SSC GPA</div>
+                                                <input v-model="onlineAdmissionForm.ssc_gpa" type="text" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10" />
+                                            </div>
+                                            <div>
+                                                <div class="text-xs font-semibold text-slate-600">Registration No</div>
+                                                <input v-model="onlineAdmissionForm.registration_no" type="text" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10" />
+                                            </div>
+                                            <div>
+                                                <div class="text-xs font-semibold text-slate-600">Academic Session</div>
+                                                <select v-model="onlineAdmissionForm.academic_session_id" :disabled="onlineAdmissionDisabledFields.includes('academic_session_id')" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10 disabled:bg-slate-50">
+                                                    <option value="">--Select--</option>
                                                     <option v-for="s in onlineAdmissionSessions" :key="'oas2-' + s.id" :value="String(s.id)">{{ s.name }}</option>
                                                 </select>
-
-                                                <div class="rounded-sm border border-emerald-500 bg-emerald-50 px-3 py-2 text-sm font-bold text-emerald-800">
+                                            </div>
+                                            <div>
+                                                <div class="mb-1 text-xs font-semibold text-slate-600">Qualification</div>
+                                                <div class="rounded-sm border border-[#0d6b75]/30 bg-[#0d6b75]/5 px-3 py-1.5 text-sm font-semibold text-[#0d6b75]">
                                                     {{ onlineAdmissionSelectedQualificationName || '—' }}
                                                 </div>
-
-                                                <select v-model="onlineAdmissionForm.department_id" :disabled="onlineAdmissionDisabledFields.includes('department_id')" class="h-10 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10">
-                                                    <option value="">--Department/Group--</option>
+                                            </div>
+                                            <div>
+                                                <div class="text-xs font-semibold text-slate-600">Department/Group</div>
+                                                <select v-model="onlineAdmissionForm.department_id" :disabled="onlineAdmissionDisabledFields.includes('department_id')" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10 disabled:bg-slate-50">
+                                                    <option value="">--Select--</option>
                                                     <option v-for="d in onlineAdmissionFilteredDepartments" :key="'oad2-' + d.id" :value="String(d.id)">{{ d.name }}</option>
                                                 </select>
-
-                                                <select v-model="onlineAdmissionForm.academic_class_id" :disabled="onlineAdmissionDisabledFields.includes('academic_class_id')" class="h-10 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10">
-                                                    <option value="">--Class--</option>
+                                            </div>
+                                            <div>
+                                                <div class="text-xs font-semibold text-slate-600">Class</div>
+                                                <select v-model="onlineAdmissionForm.academic_class_id" :disabled="onlineAdmissionDisabledFields.includes('academic_class_id')" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10 disabled:bg-slate-50">
+                                                    <option value="">--Select--</option>
                                                     <option v-for="c in onlineAdmissionFilteredClasses" :key="'oac2-' + c.id" :value="String(c.id)">{{ c.name }}</option>
                                                 </select>
                                             </div>
@@ -262,46 +304,73 @@
 
                             <div class="mt-4 grid grid-cols-1 gap-4 lg:grid-cols-12">
                                 <div class="lg:col-span-6">
-                                    <div class="rounded-sm border border-slate-300 bg-white">
-                                        <div class="border-b border-slate-300 bg-slate-50 px-4 py-3 text-sm font-extrabold text-slate-800">CONTACT INFORMATION</div>
-                                        <div class="p-4 space-y-3">
-                                            <input v-model="onlineAdmissionForm.mobile" type="text" placeholder="Mobile" :readonly="onlineAdmissionDisabledFields.includes('mobile')" class="h-10 w-full rounded-sm border border-slate-300 bg-[#eaf2ff] px-3 text-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10" />
-                                            <input v-model="onlineAdmissionForm.email" type="email" placeholder="Email" class="h-10 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10" />
-                                            <textarea v-model="onlineAdmissionForm.address" rows="2" placeholder="Present Address - Vill: , Post: , Upozila: , District:" class="w-full rounded-sm border border-slate-300 bg-white px-3 py-2 text-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10"></textarea>
-                                            <textarea v-model="onlineAdmissionForm.permanent_address" rows="2" placeholder="Permanent Address - Vill: , Post: , Upozila: , District:" class="w-full rounded-sm border border-slate-300 bg-white px-3 py-2 text-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10"></textarea>
+                                    <div class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm h-full">
+                                        <div class="mb-4 border-b border-slate-100 pb-2 text-sm font-semibold text-slate-900">CONTACT INFORMATION</div>
+                                        <div class="grid grid-cols-1 gap-4">
+                                            <div>
+                                                <div class="text-xs font-semibold text-slate-600">Mobile <span class="text-red-600">*</span></div>
+                                                <input v-model="onlineAdmissionForm.mobile" type="text" :readonly="onlineAdmissionDisabledFields.includes('mobile')" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10 disabled:bg-slate-50" />
+                                            </div>
+                                            <div>
+                                                <div class="text-xs font-semibold text-slate-600">Email</div>
+                                                <input v-model="onlineAdmissionForm.email" type="email" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10" />
+                                            </div>
+                                            <div>
+                                                <div class="text-xs font-semibold text-slate-600">Present Address</div>
+                                                <textarea v-model="onlineAdmissionForm.address" rows="2" placeholder="Vill: , Post: , Upozila: , District:" class="mt-1 w-full rounded-sm border border-slate-300 bg-white px-3 py-2 text-sm shadow-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10"></textarea>
+                                            </div>
+                                            <div>
+                                                <div class="text-xs font-semibold text-slate-600">Permanent Address</div>
+                                                <textarea v-model="onlineAdmissionForm.permanent_address" rows="2" placeholder="Vill: , Post: , Upozila: , District:" class="mt-1 w-full rounded-sm border border-slate-300 bg-white px-3 py-2 text-sm shadow-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10"></textarea>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
 
                                 <div class="lg:col-span-6">
-                                    <div class="rounded-sm border border-slate-300 bg-white">
-                                        <div class="border-b border-slate-300 bg-slate-50 px-4 py-3 text-sm font-extrabold text-slate-800">GUARDIAN INFORMATION</div>
-                                        <div class="p-4 space-y-3">
-                                            <div class="flex flex-wrap items-center gap-4 text-sm font-semibold text-slate-700">
-                                                <label class="inline-flex items-center gap-2"><input type="radio" value="Father" v-model="onlineAdmissionForm.guardian_type" @change="onOnlineAdmissionGuardianType" />Father</label>
-                                                <label class="inline-flex items-center gap-2"><input type="radio" value="Mother" v-model="onlineAdmissionForm.guardian_type" @change="onOnlineAdmissionGuardianType" />Mother</label>
-                                                <label class="inline-flex items-center gap-2"><input type="radio" value="Other" v-model="onlineAdmissionForm.guardian_type" @change="onOnlineAdmissionGuardianType" />Other</label>
+                                    <div class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm h-full">
+                                        <div class="mb-4 border-b border-slate-100 pb-2 text-sm font-semibold text-slate-900">GUARDIAN INFORMATION</div>
+                                        <div class="grid grid-cols-1 gap-4">
+                                            <div>
+                                                <div class="text-xs font-semibold text-slate-600">Guardian Type</div>
+                                                <div class="mt-2 flex flex-wrap items-center gap-4 text-sm text-slate-700">
+                                                    <label class="inline-flex items-center gap-2"><input type="radio" value="Father" v-model="onlineAdmissionForm.guardian_type" @change="onOnlineAdmissionGuardianType" class="accent-[#0d6b75]" /> Father</label>
+                                                    <label class="inline-flex items-center gap-2"><input type="radio" value="Mother" v-model="onlineAdmissionForm.guardian_type" @change="onOnlineAdmissionGuardianType" class="accent-[#0d6b75]" /> Mother</label>
+                                                    <label class="inline-flex items-center gap-2"><input type="radio" value="Other" v-model="onlineAdmissionForm.guardian_type" @change="onOnlineAdmissionGuardianType" class="accent-[#0d6b75]" /> Other</label>
+                                                </div>
                                             </div>
-                                            <input v-model="onlineAdmissionForm.guardian_name" :readonly="onlineAdmissionRelationReadonly" type="text" placeholder="Guardian Name" class="h-10 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10" />
-                                            <input v-model="onlineAdmissionForm.guardian_mobile" type="text" placeholder="Guardian Mobile" class="h-10 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10" />
-                                            <input v-model="onlineAdmissionForm.guardian_relations" :readonly="onlineAdmissionRelationReadonly" type="text" placeholder="Guardian Relations" class="h-10 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10" />
+                                            <div>
+                                                <div class="text-xs font-semibold text-slate-600">Guardian Name</div>
+                                                <input v-model="onlineAdmissionForm.guardian_name" :readonly="onlineAdmissionRelationReadonly" type="text" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10 disabled:bg-slate-50" />
+                                            </div>
+                                            <div>
+                                                <div class="text-xs font-semibold text-slate-600">Guardian Mobile</div>
+                                                <input v-model="onlineAdmissionForm.guardian_mobile" type="text" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10" />
+                                            </div>
+                                            <div>
+                                                <div class="text-xs font-semibold text-slate-600">Guardian Relations</div>
+                                                <input v-model="onlineAdmissionForm.guardian_relations" :readonly="onlineAdmissionRelationReadonly" type="text" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10 disabled:bg-slate-50" />
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="mt-4 rounded-sm border border-slate-300 bg-white">
-                                <div class="border-b border-slate-300 bg-slate-50 px-4 py-3 text-sm font-extrabold text-slate-800">OTHER'S INFORMATION</div>
-                                <div class="p-4 grid grid-cols-1 gap-3 sm:grid-cols-12">
-                                    <div class="sm:col-span-6">
-                                        <input v-model="onlineAdmissionForm.passing_year" type="text" placeholder="Passing Year" class="h-10 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10" />
+                            <div class="mt-4 rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+                                <div class="mb-4 border-b border-slate-100 pb-2 text-sm font-semibold text-slate-900">OTHER'S INFORMATION</div>
+                                <div class="grid grid-cols-1 gap-4 sm:grid-cols-4">
+                                    <div>
+                                        <div class="text-xs font-semibold text-slate-600">Passing Year</div>
+                                        <input v-model="onlineAdmissionForm.passing_year" type="text" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10" />
                                     </div>
-                                    <div class="sm:col-span-6">
-                                        <input v-model="onlineAdmissionForm.nationality" type="text" placeholder="Nationality" class="h-10 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10" />
+                                    <div>
+                                        <div class="text-xs font-semibold text-slate-600">Nationality</div>
+                                        <input v-model="onlineAdmissionForm.nationality" type="text" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10" />
                                     </div>
-                                    <div class="sm:col-span-6">
-                                        <select v-model="onlineAdmissionForm.extra_curricular_activity" class="h-10 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10">
-                                            <option value="">Select Extra Curricular Activity</option>
+                                    <div>
+                                        <div class="text-xs font-semibold text-slate-600">Extra Curricular Activity</div>
+                                        <select v-model="onlineAdmissionForm.extra_curricular_activity" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10">
+                                            <option value="">--Select--</option>
                                             <option value="Cultural activities">Cultural activities</option>
                                             <option value="Drawing and graffiti">Drawing and graffiti</option>
                                             <option value="Debate and public speaking">Debate and public speaking</option>
@@ -312,58 +381,57 @@
                                             <option value="Others">Others</option>
                                         </select>
                                     </div>
-                                    <div class="sm:col-span-3">
-                                        <div class="text-xs font-extrabold text-slate-700">Quota</div>
-                                        <div class="mt-2 flex flex-wrap items-center gap-4 text-sm font-semibold text-slate-700">
-                                            <label class="inline-flex items-center gap-2"><input type="radio" value="Yes" v-model="onlineAdmissionForm.quota" />Yes</label>
-                                            <label class="inline-flex items-center gap-2"><input type="radio" value="No" v-model="onlineAdmissionForm.quota" />No</label>
+                                    <div>
+                                        <div class="grid grid-cols-2 gap-4">
+                                            <div>
+                                                <div class="text-xs font-semibold text-slate-600">Quota</div>
+                                                <div class="mt-2 flex items-center gap-4 text-sm text-slate-700">
+                                                    <label class="inline-flex items-center gap-2"><input type="radio" value="Yes" v-model="onlineAdmissionForm.quota" class="accent-[#0d6b75]" /> Yes</label>
+                                                    <label class="inline-flex items-center gap-2"><input type="radio" value="No" v-model="onlineAdmissionForm.quota" class="accent-[#0d6b75]" /> No</label>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <div class="text-xs font-semibold text-slate-600">Marital Status</div>
+                                                <div class="mt-2 flex items-center gap-4 text-sm text-slate-700">
+                                                    <label class="inline-flex items-center gap-2"><input type="radio" value="Married" v-model="onlineAdmissionForm.marital_status" class="accent-[#0d6b75]" /> Married</label>
+                                                    <label class="inline-flex items-center gap-2"><input type="radio" value="Unmarried" v-model="onlineAdmissionForm.marital_status" class="accent-[#0d6b75]" /> Unmarried</label>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="sm:col-span-3">
-                                        <div class="text-xs font-extrabold text-slate-700">Marital Status</div>
-                                        <div class="mt-2 flex flex-wrap items-center gap-4 text-sm font-semibold text-slate-700">
-                                            <label class="inline-flex items-center gap-2"><input type="radio" value="Married" v-model="onlineAdmissionForm.marital_status" />Married</label>
-                                            <label class="inline-flex items-center gap-2"><input type="radio" value="Unmarried" v-model="onlineAdmissionForm.marital_status" />Unmarried</label>
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
 
-                            <div v-if="onlineAdmissionUploadDocuments.length" class="mt-4 rounded-sm border border-slate-300 bg-white">
-                                <div class="border-b border-slate-300 bg-slate-50 px-4 py-3 text-sm font-extrabold text-slate-800">UPLOAD DOCUMENTS</div>
-                                <div class="p-4">
-                                    <div class="overflow-x-auto">
-                                        <table class="min-w-full text-sm">
-                                            <tbody>
-                                                <tr v-for="(doc, idx) in onlineAdmissionUploadDocuments" :key="'oadoc-' + idx" class="border-b border-slate-100">
-                                                    <td class="py-2 pr-3">
-                                                        <div class="font-semibold text-slate-800">{{ doc.name_bn }}</div>
-                                                        <div class="text-xs text-red-600">file type ( jpg, jpeg, png )</div>
-                                                        <div v-if="doc.optional" class="text-xs font-extrabold text-red-600">(Optional)</div>
-                                                    </td>
-                                                    <td class="py-2">
-                                                        <input type="file" accept="image/*" class="block w-full text-sm text-slate-700 file:mr-3 file:rounded-sm file:border-0 file:bg-slate-700 file:px-3 file:py-2 file:text-sm file:font-semibold file:text-white hover:file:bg-slate-800" @change="(e) => onlineAdmissionDocumentUpload(e, idx)" />
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
+                            <div v-if="onlineAdmissionUploadDocuments.length" class="mt-4 rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+                                <div class="mb-4 border-b border-slate-100 pb-2 text-sm font-semibold text-slate-900">UPLOAD DOCUMENTS</div>
+                                <div class="overflow-x-auto">
+                                    <table class="min-w-full text-sm">
+                                        <tbody>
+                                            <tr v-for="(doc, idx) in onlineAdmissionUploadDocuments" :key="'oadoc-' + idx" class="border-b border-slate-100 last:border-0 hover:bg-slate-50 transition-colors">
+                                                <td class="py-3 pr-3 align-middle">
+                                                    <div class="font-semibold text-slate-800">{{ doc.name_bn }}</div>
+                                                    <div class="mt-0.5 text-xs text-red-600">File type: jpg, jpeg, png</div>
+                                                    <div v-if="doc.optional" class="mt-0.5 text-xs font-extrabold text-slate-500">(Optional)</div>
+                                                </td>
+                                                <td class="py-3 align-middle w-[300px]">
+                                                    <input type="file" accept="image/*" class="block w-full text-sm text-slate-700 file:mr-3 file:rounded-sm file:border-0 file:bg-[#0d6b75] file:px-3 file:py-2 file:text-sm file:font-semibold file:text-white hover:file:bg-[#0d6b75]/90" @change="(e) => onlineAdmissionDocumentUpload(e, idx)" />
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
 
-                            <div class="mt-4 rounded-sm border border-slate-300 bg-white">
-                                <div class="border-b border-slate-300 bg-slate-50 px-4 py-3 text-sm font-extrabold text-slate-800">AGREE</div>
-                                <div class="p-4">
-                                    <label class="inline-flex items-center gap-2 text-sm font-semibold text-slate-700">
-                                        <input type="checkbox" v-model="onlineAdmissionAgree" />
-                                        I agree with terms & conditions
-                                    </label>
-                                </div>
+                            <div class="mt-4 rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+                                <label class="inline-flex cursor-pointer items-center gap-2 text-sm font-semibold text-slate-700">
+                                    <input type="checkbox" v-model="onlineAdmissionAgree" class="h-4 w-4 rounded border-slate-300 accent-[#0d6b75]" />
+                                    I agree with terms & conditions
+                                </label>
                             </div>
 
-                            <div class="mt-4 text-center">
-                                <div v-if="onlineAdmissionSubmitting" class="text-sm text-slate-600">processing..</div>
-                                <button v-else type="button" class="rounded-sm bg-[#0b1d4d] px-10 py-2.5 text-sm font-extrabold text-white hover:bg-[#09163c]" @click="onlineAdmissionSubmit">SUBMIT</button>
+                            <div class="mt-6 text-center">
+                                <div v-if="onlineAdmissionSubmitting" class="text-sm font-semibold text-slate-600">processing..</div>
+                                <button v-else type="button" class="rounded-sm bg-[#0b1d4d] px-10 py-2.5 text-sm font-extrabold text-white shadow-sm hover:bg-[#09163c]" @click="onlineAdmissionSubmit">SUBMIT APPLICATION</button>
                             </div>
                         </template>
                     </template>
@@ -543,41 +611,55 @@
                         {{ studentAuthError }}
                     </div>
 
-                    <form class="mt-8 space-y-4" @submit.prevent="submitStudentLogin">
-                        <input
-                            v-model="studentLoginForm.login"
-                            type="text"
-                            placeholder="Email or Mobile"
-                            class="h-10 w-full rounded-sm border border-slate-300 bg-[#eaf2ff] px-3 text-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10"
-                            required
-                        />
+                    <form class="mt-8 flex flex-col gap-6" @submit.prevent="submitStudentLogin">
+                        <div class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+                            <div class="min-w-0 mb-4">
+                                <div class="text-sm font-semibold text-slate-900">Account Login</div>
+                                <div class="mt-1 text-xs text-slate-500">Please enter your credentials to login</div>
+                            </div>
+                            
+                            <div class="space-y-4">
+                                <div>
+                                    <div class="text-xs font-semibold text-slate-600">Email or Mobile <span class="text-red-600">*</span></div>
+                                    <input
+                                        v-model="studentLoginForm.login"
+                                        type="text"
+                                        class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-[#eaf2ff] px-3 text-sm shadow-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10"
+                                        required
+                                    />
+                                </div>
 
-                        <input
-                            v-model="studentLoginForm.password"
-                            type="password"
-                            placeholder="Password"
-                            class="h-10 w-full rounded-sm border border-slate-300 bg-[#eaf2ff] px-3 text-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10"
-                            required
-                        />
+                                <div>
+                                    <div class="text-xs font-semibold text-slate-600">Password <span class="text-red-600">*</span></div>
+                                    <input
+                                        v-model="studentLoginForm.password"
+                                        type="password"
+                                        class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-[#eaf2ff] px-3 text-sm shadow-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10"
+                                        required
+                                    />
+                                </div>
 
-                        <div class="flex items-center justify-end">
-                            <button
-                                type="button"
-                                class="rounded-sm border border-red-500 px-3 py-1 text-xs font-bold text-red-600 hover:bg-red-50"
-                                @click="go('/forgot-password')"
-                            >
-                                Forgot password?
-                            </button>
+                                <div class="flex items-center justify-end">
+                                    <button
+                                        type="button"
+                                        class="rounded-sm border border-red-500 px-3 py-1 text-xs font-bold text-red-600 hover:bg-red-50"
+                                        @click="go('/forgot-password')"
+                                    >
+                                        Forgot password?
+                                    </button>
+                                </div>
+                            </div>
                         </div>
 
-                        <div class="pt-2 text-center">
+                        <div class="flex flex-col items-center gap-3">
                             <button
                                 type="submit"
                                 class="rounded-sm bg-[#0b1d4d] px-10 py-2.5 text-sm font-extrabold text-white hover:bg-[#09163c]"
                                 :disabled="studentAuthLoading"
                             >
-                                {{ studentAuthLoading ? 'Logging in...' : 'Login' }}
+                                {{ studentAuthLoading ? 'Logging in...' : 'LOGIN' }}
                             </button>
+                            <button type="button" class="text-sm font-bold text-[#0d6b75] hover:underline" @click="go('/registration')">Not registered? Apply Now</button>
                         </div>
                     </form>
                 </div>
@@ -874,100 +956,272 @@
                             {{ registrationSuccess }}
                         </div>
 
-                        <form class="mt-8" @submit.prevent="submitRegistration">
-                            <div class="grid grid-cols-1 gap-6 md:grid-cols-3">
-                                <div class="space-y-4">
-                                    <input v-model="registrationForm.name" type="text" placeholder="Full Name" class="h-10 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10" required />
-
-                                    <div class="flex flex-wrap items-center gap-4 text-sm text-slate-700">
-                                        <label class="inline-flex items-center gap-2">
-                                            <input v-model="registrationForm.gender" type="radio" name="gender" value="Male" />
-                                            Male
-                                        </label>
-                                        <label class="inline-flex items-center gap-2">
-                                            <input v-model="registrationForm.gender" type="radio" name="gender" value="Female" />
-                                            Female
-                                        </label>
-                                        <label class="inline-flex items-center gap-2">
-                                            <input v-model="registrationForm.gender" type="radio" name="gender" value="Others" />
-                                            Others
-                                        </label>
-                                    </div>
-
-                                    <select v-model="registrationForm.blood_group" class="h-10 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10">
-                                        <option value="">Blood Group</option>
-                                        <option v-for="b in registrationBloodGroups" :key="'bg-' + b" :value="b">{{ b }}</option>
-                                    </select>
-
-                                    <input v-model="registrationForm.fathers_name" type="text" placeholder="Father's Name" class="h-10 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10" />
-                                    <input v-model="registrationForm.mothers_name" type="text" placeholder="Mother's Name" class="h-10 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10" />
-                                    <input v-model="registrationForm.admission_id" type="text" placeholder="Admission Roll (optional)" class="h-10 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10" />
-                                    <input v-model="registrationForm.college_roll" type="text" placeholder="College Roll" class="h-10 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10" />
-                                    <input v-model="registrationForm.reg_no" type="text" placeholder="Registration No" class="h-10 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10" />
+                        <form class="mt-8 flex flex-col gap-6" @submit.prevent="submitRegistration">
+                            <div class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+                                <div class="min-w-0">
+                                    <div class="text-sm font-semibold text-slate-900">Academic Information</div>
+                                    <div class="mt-1 text-xs text-slate-500">Session, level, department and class selection</div>
                                 </div>
 
-                                <div class="space-y-4">
-                                    <select v-model="registrationForm.academic_session_id" class="h-10 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10" required>
-                                        <option value="">Academic Session</option>
-                                        <option v-for="s in registrationSessionsSorted" :key="'ses-' + s.id" :value="String(s.id)">{{ s.name }}</option>
-                                    </select>
+                                <div class="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                                    <div>
+                                        <div class="text-xs font-semibold text-slate-600">Select Session <span class="text-red-600">*</span></div>
+                                        <select v-model="registrationForm.academic_session_id" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10" required>
+                                            <option value="">Select Session</option>
+                                            <option v-for="s in registrationSessionsSorted" :key="'ses-' + s.id" :value="String(s.id)">{{ s.name }}</option>
+                                        </select>
+                                    </div>
 
-                                    <select v-model="registrationForm.academic_qualification_id" class="h-10 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10" required>
-                                        <option value="">Academic Level</option>
-                                        <option v-for="q in registrationQualifications" :key="'q-' + q.id" :value="String(q.id)">{{ q.name }}</option>
-                                    </select>
+                                    <div>
+                                        <div class="text-xs font-semibold text-slate-600">Academic Level <span class="text-red-600">*</span></div>
+                                        <select v-model="registrationForm.academic_qualification_id" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10" required>
+                                            <option value="">Select Level</option>
+                                            <option v-for="q in registrationQualifications" :key="'q-' + q.id" :value="String(q.id)">{{ q.name }}</option>
+                                        </select>
+                                    </div>
 
-                                    <select v-model="registrationForm.department_id" class="h-10 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10" :required="registrationDepartmentRequired">
-                                        <option value="">Department/Group</option>
-                                        <option v-for="d in registrationFilteredDepartments" :key="'d-' + d.id" :value="String(d.id)">{{ d.name }}</option>
-                                    </select>
+                                    <div>
+                                        <div class="text-xs font-semibold text-slate-600">Department/Group <span v-if="registrationDepartmentRequired" class="text-red-600">*</span></div>
+                                        <select v-model="registrationForm.department_id" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10" :required="registrationDepartmentRequired">
+                                            <option value="">Select Department</option>
+                                            <option v-for="d in registrationFilteredDepartments" :key="'d-' + d.id" :value="String(d.id)">{{ d.name }}</option>
+                                        </select>
+                                    </div>
 
-                                    <select v-model="registrationForm.academic_class_id" class="h-10 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10" required>
-                                        <option value="">Class</option>
-                                        <option v-for="c in registrationFilteredClasses" :key="'c-' + c.id" :value="String(c.id)">{{ c.name }}</option>
-                                    </select>
+                                    <div>
+                                        <div class="text-xs font-semibold text-slate-600">Class <span class="text-red-600">*</span></div>
+                                        <select v-model="registrationForm.academic_class_id" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10" required>
+                                            <option value="">Select Class</option>
+                                            <option v-for="c in registrationFilteredClasses" :key="'c-' + c.id" :value="String(c.id)">{{ c.name }}</option>
+                                        </select>
+                                    </div>
 
-                                    <select v-model="registrationForm.student_type" class="h-10 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10" required>
-                                        <option value="">Student Type</option>
-                                        <option v-for="t in registrationStudentTypes" :key="'t-' + t" :value="t">{{ t }}</option>
-                                    </select>
+                                    <div>
+                                        <div class="text-xs font-semibold text-slate-600">Student Type <span class="text-red-600">*</span></div>
+                                        <select v-model="registrationForm.student_type" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10" required>
+                                            <option value="">Select Type</option>
+                                            <option v-for="t in registrationStudentTypes" :key="'t-' + t" :value="t">{{ t }}</option>
+                                        </select>
+                                    </div>
 
-                                    <div class="pt-2">
-                                        <div class="text-sm font-semibold text-slate-800">Living :</div>
-                                        <div class="mt-2 flex flex-wrap items-center gap-5 text-sm text-slate-700">
+                                    <div>
+                                        <div class="text-xs font-semibold text-slate-600">Admission Roll (optional)</div>
+                                        <input v-model="registrationForm.admission_id" type="text" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10" />
+                                    </div>
+
+                                    <div>
+                                        <div class="text-xs font-semibold text-slate-600">College Roll</div>
+                                        <input v-model="registrationForm.college_roll" type="text" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10" />
+                                    </div>
+
+                                    <div>
+                                        <div class="text-xs font-semibold text-slate-600">Registration No</div>
+                                        <input v-model="registrationForm.reg_no" type="text" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+                                <div class="min-w-0">
+                                    <div class="text-sm font-semibold text-slate-900">Personal Information & Family</div>
+                                    <div class="mt-1 text-xs text-slate-500">Identity, personal details and family</div>
+                                </div>
+
+                                <div class="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                                    <div>
+                                        <div class="text-xs font-semibold text-slate-600">Full Name <span class="text-red-600">*</span></div>
+                                        <input v-model="registrationForm.name" type="text" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10" required />
+                                    </div>
+
+                                    <div>
+                                        <div class="text-xs font-semibold text-slate-600">Gender</div>
+                                        <div class="mt-2 flex flex-wrap items-center gap-4 text-sm text-slate-700">
                                             <label class="inline-flex items-center gap-2">
-                                                <input v-model="registrationForm.living_type" type="radio" name="living_type" value="Hostel" />
+                                                <input v-model="registrationForm.gender" class="accent-[#0d6b75]" type="radio" name="gender" value="Male" />
+                                                Male
+                                            </label>
+                                            <label class="inline-flex items-center gap-2">
+                                                <input v-model="registrationForm.gender" class="accent-[#0d6b75]" type="radio" name="gender" value="Female" />
+                                                Female
+                                            </label>
+                                            <label class="inline-flex items-center gap-2">
+                                                <input v-model="registrationForm.gender" class="accent-[#0d6b75]" type="radio" name="gender" value="Others" />
+                                                Others
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <div class="text-xs font-semibold text-slate-600">Blood Group</div>
+                                        <select v-model="registrationForm.blood_group" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10">
+                                            <option value="">Select</option>
+                                            <option v-for="b in registrationBloodGroups" :key="'bg-' + b" :value="b">{{ b }}</option>
+                                        </select>
+                                    </div>
+
+                                    <div>
+                                        <div class="text-xs font-semibold text-slate-600">Father's Name</div>
+                                        <input v-model="registrationForm.fathers_name" type="text" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10" />
+                                    </div>
+
+                                    <div>
+                                        <div class="text-xs font-semibold text-slate-600">Mother's Name</div>
+                                        <input v-model="registrationForm.mothers_name" type="text" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10" />
+                                    </div>
+                                    
+                                    <div>
+                                        <div class="text-xs font-semibold text-slate-600">Living</div>
+                                        <div class="mt-2 flex flex-wrap items-center gap-4 text-sm text-slate-700">
+                                            <label class="inline-flex items-center gap-2">
+                                                <input v-model="registrationForm.living_type" class="accent-[#0d6b75]" type="radio" name="living_type" value="Hostel" />
                                                 Hostel
                                             </label>
                                             <label class="inline-flex items-center gap-2">
-                                                <input v-model="registrationForm.living_type" type="radio" name="living_type" value="Others" />
+                                                <input v-model="registrationForm.living_type" class="accent-[#0d6b75]" type="radio" name="living_type" value="Others" />
                                                 Others
                                             </label>
                                         </div>
                                     </div>
                                 </div>
+                            </div>
 
-                                <div class="space-y-4">
-                                    <input v-model="registrationForm.mobile" type="text" placeholder="Mobile" class="h-10 w-full rounded-sm border border-slate-300 bg-[#eaf2ff] px-3 text-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10" required />
-
-                                    <div class="flex items-center gap-2">
-                                        <input v-model="registrationForm.password" type="password" class="h-10 w-full rounded-sm border border-slate-300 bg-[#eaf2ff] px-3 text-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10" required />
-                                        <button type="button" class="shrink-0 rounded-sm bg-slate-100 px-3 py-2 text-xs font-bold text-slate-700 hover:bg-slate-200" @click="regenPassword">Auto</button>
+                            <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
+                                <div class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+                                    <div class="min-w-0 mb-4">
+                                        <div class="text-sm font-semibold text-slate-900">Present Address</div>
+                                        <div class="mt-1 text-xs text-slate-500">Current living location</div>
                                     </div>
 
-                                    <input v-model="registrationForm.email" type="email" placeholder="Email (optional)" class="h-10 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10" />
+                                    <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                                        <div>
+                                            <div class="text-xs font-semibold text-slate-600">Division</div>
+                                            <select v-model="registrationForm.division_id" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10">
+                                                <option value="">Select Division</option>
+                                                <option v-for="item in registrationDivisions" :key="'r-div-' + item.id" :value="String(item.id)">{{ item.name }}</option>
+                                            </select>
+                                        </div>
 
-                                    <textarea v-model="registrationForm.address" rows="4" placeholder="Vill, Post, Upozila, Dist" class="w-full rounded-sm border border-slate-300 bg-white px-3 py-2 text-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10"></textarea>
+                                        <div>
+                                            <div class="text-xs font-semibold text-slate-600">District</div>
+                                            <select v-model="registrationForm.district_id" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10" :disabled="!registrationForm.division_id">
+                                                <option value="">Select District</option>
+                                                <option v-for="item in registrationDistrictsList" :key="'r-dis-' + item.id" :value="String(item.id)">{{ item.name }}</option>
+                                            </select>
+                                        </div>
 
+                                        <div>
+                                            <div class="text-xs font-semibold text-slate-600">Upazila</div>
+                                            <select v-model="registrationForm.upazila_id" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10" :disabled="!registrationForm.district_id">
+                                                <option value="">Select Upazila</option>
+                                                <option v-for="item in registrationUpazilasList" :key="'r-upa-' + item.id" :value="String(item.id)">{{ item.name }}</option>
+                                            </select>
+                                        </div>
+
+                                        <div>
+                                            <div class="text-xs font-semibold text-slate-600">Union</div>
+                                            <select v-model="registrationForm.union_id" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10" :disabled="!registrationForm.upazila_id">
+                                                <option value="">Select Union</option>
+                                                <option v-for="item in registrationUnionsList" :key="'r-uni-' + item.id" :value="String(item.id)">{{ item.name }}</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="sm:col-span-2">
+                                            <div class="text-xs font-semibold text-slate-600">Address (Vill/Area, Post & Code) <span class="text-red-600">*</span></div>
+                                            <textarea v-model="registrationForm.address" rows="2" class="mt-1 w-full rounded-sm border border-slate-300 bg-white px-3 py-2 text-sm shadow-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10" required></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+                                    <div class="mb-4 flex flex-wrap items-center justify-between gap-3">
+                                        <div class="min-w-0">
+                                            <div class="text-sm font-semibold text-slate-900">Permanent Address</div>
+                                            <div class="mt-1 text-xs text-slate-500">Fixed living location</div>
+                                        </div>
+                                        <label class="inline-flex items-center gap-2 text-xs font-semibold text-slate-600">
+                                            <input v-model="registrationSameAsPresent" type="checkbox" class="h-4 w-4 rounded border-slate-300 text-[#0d6b75] focus:ring-[#0d6b75]" @change="copyRegistrationAddress" />
+                                            Same as present
+                                        </label>
+                                    </div>
+
+                                    <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                                        <div>
+                                            <div class="text-xs font-semibold text-slate-600">Division</div>
+                                            <select v-model="registrationForm.permanent_division_id" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10" :disabled="registrationSameAsPresent">
+                                                <option value="">Select Division</option>
+                                                <option v-for="item in registrationDivisions" :key="'rp-div-' + item.id" :value="String(item.id)">{{ item.name }}</option>
+                                            </select>
+                                        </div>
+
+                                        <div>
+                                            <div class="text-xs font-semibold text-slate-600">District</div>
+                                            <select v-model="registrationForm.permanent_district_id" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10" :disabled="!registrationForm.permanent_division_id || registrationSameAsPresent">
+                                                <option value="">Select District</option>
+                                                <option v-for="item in registrationPermanentDistrictsList" :key="'rp-dis-' + item.id" :value="String(item.id)">{{ item.name }}</option>
+                                            </select>
+                                        </div>
+
+                                        <div>
+                                            <div class="text-xs font-semibold text-slate-600">Upazila</div>
+                                            <select v-model="registrationForm.permanent_upazila_id" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10" :disabled="!registrationForm.permanent_district_id || registrationSameAsPresent">
+                                                <option value="">Select Upazila</option>
+                                                <option v-for="item in registrationPermanentUpazilasList" :key="'rp-upa-' + item.id" :value="String(item.id)">{{ item.name }}</option>
+                                            </select>
+                                        </div>
+
+                                        <div>
+                                            <div class="text-xs font-semibold text-slate-600">Union</div>
+                                            <select v-model="registrationForm.permanent_union_id" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10" :disabled="!registrationForm.permanent_upazila_id || registrationSameAsPresent">
+                                                <option value="">Select Union</option>
+                                                <option v-for="item in registrationPermanentUnionsList" :key="'rp-uni-' + item.id" :value="String(item.id)">{{ item.name }}</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="sm:col-span-2">
+                                            <div class="text-xs font-semibold text-slate-600">Address (Vill/Area, Post & Code)</div>
+                                            <textarea v-model="registrationForm.permanent_address" rows="2" class="mt-1 w-full rounded-sm border border-slate-300 bg-white px-3 py-2 text-sm shadow-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10" :readonly="registrationSameAsPresent"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+                                <div class="min-w-0 mb-4">
+                                    <div class="text-sm font-semibold text-slate-900">Account & Media</div>
+                                    <div class="mt-1 text-xs text-slate-500">Contact details and picture</div>
+                                </div>
+
+                                <div class="grid grid-cols-1 gap-4 lg:grid-cols-2">
+                                    <div class="space-y-4">
+                                        <div>
+                                            <div class="text-xs font-semibold text-slate-600">Mobile <span class="text-red-600">*</span></div>
+                                            <input v-model="registrationForm.mobile" type="text" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-[#eaf2ff] px-3 text-sm shadow-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10" required />
+                                        </div>
+
+                                        <div>
+                                            <div class="text-xs font-semibold text-slate-600">Password <span class="text-red-600">*</span></div>
+                                            <div class="mt-1 flex items-center gap-2">
+                                                <input v-model="registrationForm.password" type="password" class="h-9 w-full rounded-sm border border-slate-300 bg-[#eaf2ff] px-3 text-sm shadow-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10" required />
+                                                <button type="button" class="shrink-0 rounded-sm bg-slate-100 px-3 py-2 text-xs font-bold text-slate-700 hover:bg-slate-200" @click="regenPassword">Auto</button>
+                                            </div>
+                                        </div>
+
+                                        <div>
+                                            <div class="text-xs font-semibold text-slate-600">Email (Optional)</div>
+                                            <input v-model="registrationForm.email" type="email" class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm shadow-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10" />
+                                        </div>
+                                    </div>
+                                    
                                     <div>
-                                        <div class="text-sm font-semibold text-slate-800">Picture <span class="text-xs font-semibold text-red-600">( passport size )</span></div>
-                                        <input ref="registrationProfileInput" type="file" class="mt-2 block w-full text-sm" accept="image/*" required @change="onPickRegistrationProfile" />
+                                        <div class="text-xs font-semibold text-slate-600">Profile Picture <span class="text-red-600">*</span></div>
+                                        <div class="mt-1 text-[11px] text-slate-500">Passport size photo</div>
+                                        <input ref="registrationProfileInput" type="file" class="mt-2 block w-full text-sm file:mr-3 file:rounded-sm file:border-0 file:bg-slate-900 file:px-3 file:py-2 file:text-xs file:font-semibold file:text-white hover:file:bg-slate-800" accept="image/*" required @change="onPickRegistrationProfile" />
                                         <div v-if="!registrationProfileFile" class="mt-1 text-xs font-semibold text-red-600">Picture is required</div>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="mt-10 flex flex-col items-center gap-3">
+                            <div class="mt-6 flex flex-col items-center gap-3">
                                 <button type="submit" class="rounded-sm bg-[#0b1d4d] px-10 py-2.5 text-sm font-extrabold text-white hover:bg-[#09163c]" :disabled="registrationSaving">
                                     {{ registrationSaving ? 'Submitting...' : 'SUBMIT' }}
                                 </button>
@@ -1194,6 +1448,7 @@ export default {
             registrationSaving: false,
             registrationError: '',
             registrationSuccess: '',
+            registrationSameAsPresent: false,
             registrationProfileFile: null,
             registrationForm: {
                 academic_class_id: '',
@@ -1210,7 +1465,16 @@ export default {
                 college_roll: '',
                 gender: 'Male',
                 blood_group: '',
+                division_id: '',
+                district_id: '',
+                upazila_id: '',
+                union_id: '',
                 address: '',
+                permanent_division_id: '',
+                permanent_district_id: '',
+                permanent_upazila_id: '',
+                permanent_union_id: '',
+                permanent_address: '',
                 fathers_name: '',
                 mothers_name: '',
                 living_type: 'Others',
@@ -1519,6 +1783,70 @@ export default {
             const list = this.registrationSystems?.blood_groups
             return Array.isArray(list) ? list : []
         },
+        registrationDivisions() {
+            const list = this.registrationSystems?.divisions
+            return Array.isArray(list) ? list : []
+        },
+        registrationDistrictsAll() {
+            const list = this.registrationSystems?.districts
+            return Array.isArray(list) ? list : []
+        },
+        registrationUpazilasAll() {
+            const list = this.registrationSystems?.upazilas
+            return Array.isArray(list) ? list : []
+        },
+        registrationUnionsAll() {
+            const list = this.registrationSystems?.unions
+            return Array.isArray(list) ? list : []
+        },
+        registrationDistrictsList() {
+            const divisionId = this.registrationForm?.division_id
+            if (!divisionId) return []
+            if (!this.registrationDistrictsAll.some((d) => d && Object.prototype.hasOwnProperty.call(d, 'division_id'))) {
+                return this.registrationDistrictsAll
+            }
+            return this.registrationDistrictsAll.filter((d) => String(d?.division_id) === String(divisionId))
+        },
+        registrationUpazilasList() {
+            const districtId = this.registrationForm?.district_id
+            if (!districtId) return []
+            if (!this.registrationUpazilasAll.some((u) => u && Object.prototype.hasOwnProperty.call(u, 'district_id'))) {
+                return this.registrationUpazilasAll
+            }
+            return this.registrationUpazilasAll.filter((u) => String(u?.district_id) === String(districtId))
+        },
+        registrationUnionsList() {
+            const upazilaId = this.registrationForm?.upazila_id
+            if (!upazilaId) return []
+            if (!this.registrationUnionsAll.some((u) => u && (Object.prototype.hasOwnProperty.call(u, 'upazilla_id') || Object.prototype.hasOwnProperty.call(u, 'upazila_id')))) {
+                return this.registrationUnionsAll
+            }
+            return this.registrationUnionsAll.filter((u) => String(u?.upazilla_id ?? u?.upazila_id) === String(upazilaId))
+        },
+        registrationPermanentDistrictsList() {
+            const divisionId = this.registrationForm?.permanent_division_id
+            if (!divisionId) return []
+            if (!this.registrationDistrictsAll.some((d) => d && Object.prototype.hasOwnProperty.call(d, 'division_id'))) {
+                return this.registrationDistrictsAll
+            }
+            return this.registrationDistrictsAll.filter((d) => String(d?.division_id) === String(divisionId))
+        },
+        registrationPermanentUpazilasList() {
+            const districtId = this.registrationForm?.permanent_district_id
+            if (!districtId) return []
+            if (!this.registrationUpazilasAll.some((u) => u && Object.prototype.hasOwnProperty.call(u, 'district_id'))) {
+                return this.registrationUpazilasAll
+            }
+            return this.registrationUpazilasAll.filter((u) => String(u?.district_id) === String(districtId))
+        },
+        registrationPermanentUnionsList() {
+            const upazilaId = this.registrationForm?.permanent_upazila_id
+            if (!upazilaId) return []
+            if (!this.registrationUnionsAll.some((u) => u && (Object.prototype.hasOwnProperty.call(u, 'upazilla_id') || Object.prototype.hasOwnProperty.call(u, 'upazila_id')))) {
+                return this.registrationUnionsAll
+            }
+            return this.registrationUnionsAll.filter((u) => String(u?.upazilla_id ?? u?.upazila_id) === String(upazilaId))
+        },
         registrationSelectedQualificationName() {
             const id = this.registrationForm?.academic_qualification_id
             const q = (this.registrationQualifications || []).find((x) => String(x?.id) === String(id))
@@ -1769,6 +2097,54 @@ export default {
             return this.onlineAdmissionClasses.filter((c) => String(c.academic_qualification_id) === String(qualificationId))
         },
     },
+    watch: {
+        'registrationForm.division_id': function (val) {
+            this.registrationForm.district_id = ''
+            this.registrationForm.upazila_id = ''
+            this.registrationForm.union_id = ''
+            if (this.registrationSameAsPresent) {
+                this.registrationForm.permanent_division_id = val || ''
+            }
+        },
+        'registrationForm.district_id': function (val) {
+            this.registrationForm.upazila_id = ''
+            this.registrationForm.union_id = ''
+            if (this.registrationSameAsPresent) {
+                this.registrationForm.permanent_district_id = val || ''
+            }
+        },
+        'registrationForm.upazila_id': function (val) {
+            this.registrationForm.union_id = ''
+            if (this.registrationSameAsPresent) {
+                this.registrationForm.permanent_upazila_id = val || ''
+            }
+        },
+        'registrationForm.union_id': function (val) {
+            if (this.registrationSameAsPresent) {
+                this.registrationForm.permanent_union_id = val || ''
+            }
+        },
+        'registrationForm.address': function (val) {
+            if (this.registrationSameAsPresent) {
+                this.registrationForm.permanent_address = val || ''
+            }
+        },
+        'registrationForm.permanent_division_id': function () {
+            if (this.registrationSameAsPresent) return
+            this.registrationForm.permanent_district_id = ''
+            this.registrationForm.permanent_upazila_id = ''
+            this.registrationForm.permanent_union_id = ''
+        },
+        'registrationForm.permanent_district_id': function () {
+            if (this.registrationSameAsPresent) return
+            this.registrationForm.permanent_upazila_id = ''
+            this.registrationForm.permanent_union_id = ''
+        },
+        'registrationForm.permanent_upazila_id': function () {
+            if (this.registrationSameAsPresent) return
+            this.registrationForm.permanent_union_id = ''
+        },
+    },
     async created() {
         this.path = window.location.pathname || '/'
         this.search = window.location.search || ''
@@ -1890,10 +2266,26 @@ export default {
             const n = Math.floor(100000 + Math.random() * 900000)
             this.registrationForm.password = String(n)
         },
+        copyRegistrationAddress() {
+            if (this.registrationSameAsPresent) {
+                this.registrationForm.permanent_division_id = this.registrationForm.division_id || ''
+                this.registrationForm.permanent_district_id = this.registrationForm.district_id || ''
+                this.registrationForm.permanent_upazila_id = this.registrationForm.upazila_id || ''
+                this.registrationForm.permanent_union_id = this.registrationForm.union_id || ''
+                this.registrationForm.permanent_address = this.registrationForm.address || ''
+            } else {
+                this.registrationForm.permanent_division_id = ''
+                this.registrationForm.permanent_district_id = ''
+                this.registrationForm.permanent_upazila_id = ''
+                this.registrationForm.permanent_union_id = ''
+                this.registrationForm.permanent_address = ''
+            }
+        },
         resetRegistrationForm() {
             this.registrationError = ''
             this.registrationSuccess = ''
             this.registrationProfileFile = null
+            this.registrationSameAsPresent = false
             this.registrationForm = {
                 academic_class_id: '',
                 academic_qualification_id: '',
@@ -1909,7 +2301,16 @@ export default {
                 college_roll: '',
                 gender: 'Male',
                 blood_group: '',
+                division_id: '',
+                district_id: '',
+                upazila_id: '',
+                union_id: '',
                 address: '',
+                permanent_division_id: '',
+                permanent_district_id: '',
+                permanent_upazila_id: '',
+                permanent_union_id: '',
+                permanent_address: '',
                 fathers_name: '',
                 mothers_name: '',
                 living_type: 'Others',

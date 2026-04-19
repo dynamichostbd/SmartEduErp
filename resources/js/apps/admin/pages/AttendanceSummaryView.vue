@@ -39,15 +39,15 @@
                             </tr>
                             <tr>
                                 <th class="bg-slate-50 px-3 py-2 text-left font-semibold text-slate-700">Session</th>
-                                <td class="px-3 py-2 text-slate-800">{{ summary.academic_session_name || 'N/A' }}</td>
+                                <td class="px-3 py-2 text-slate-800">{{ sessionName }}</td>
                                 <th class="bg-slate-50 px-3 py-2 text-left font-semibold text-slate-700">Academic Level</th>
-                                <td class="px-3 py-2 text-slate-800">{{ summary.academic_qualification_name || 'N/A' }}</td>
+                                <td class="px-3 py-2 text-slate-800">{{ qualificationName }}</td>
                             </tr>
                             <tr>
                                 <th class="bg-slate-50 px-3 py-2 text-left font-semibold text-slate-700">Department</th>
-                                <td class="px-3 py-2 text-slate-800">{{ summary.department_name || 'N/A' }}</td>
+                                <td class="px-3 py-2 text-slate-800">{{ departmentName }}</td>
                                 <th class="bg-slate-50 px-3 py-2 text-left font-semibold text-slate-700">Class</th>
-                                <td class="px-3 py-2 text-slate-800">{{ summary.academic_class_name || 'N/A' }}</td>
+                                <td class="px-3 py-2 text-slate-800">{{ className }}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -108,6 +108,7 @@
 export default {
     name: 'AttendanceSummaryView',
     props: {
+        systems: { type: Object, default: () => ({}) },
         summaryId: {
             type: [Number, String],
             required: true,
@@ -120,6 +121,32 @@ export default {
             error: '',
             summary: {},
             details: [],
+        }
+    },
+    computed: {
+        sessionName() {
+            if (!this.summary) return 'N/A'
+            if (this.summary.academic_session_name) return this.summary.academic_session_name
+            const s = (this.systems?.global?.academic_sessions || []).find(x => String(x.id) === String(this.summary.academic_session_id))
+            return s?.name || 'N/A'
+        },
+        qualificationName() {
+            if (!this.summary) return 'N/A'
+            if (this.summary.academic_qualification_name) return this.summary.academic_qualification_name
+            const q = (this.systems?.global?.academic_qualifications || []).find(x => String(x.id) === String(this.summary.academic_qualification_id))
+            return q?.name || 'N/A'
+        },
+        departmentName() {
+            if (!this.summary) return 'N/A'
+            if (this.summary.department_name) return this.summary.department_name
+            const d = (this.systems?.global?.departments || []).find(x => String(x.id) === String(this.summary.department_id))
+            return d?.name || 'N/A'
+        },
+        className() {
+            if (!this.summary) return 'N/A'
+            if (this.summary.academic_class_name) return this.summary.academic_class_name
+            const c = (this.systems?.global?.academic_classes || []).find(x => String(x.id) === String(this.summary.academic_class_id))
+            return c?.name || 'N/A'
         }
     },
     async mounted() {
