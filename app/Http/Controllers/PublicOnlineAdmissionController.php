@@ -255,6 +255,11 @@ class PublicOnlineAdmissionController extends Controller
                 'blood_groups' => $custom['blood_groups'] ?? [],
                 'files' => $custom['files'] ?? [],
                 'site' => $this->resolveSiteConfig(),
+                // Geographic data for cascading address dropdowns
+                'divisions' => $dynamic['divisions'] ?? [],
+                'districts' => $dynamic['districts'] ?? [],
+                'upazilas' => $dynamic['upazilas'] ?? [],
+                'unions' => $dynamic['unions'] ?? [],
             ],
         ]);
     }
@@ -500,6 +505,15 @@ class PublicOnlineAdmissionController extends Controller
             'email',
             'address',
             'permanent_address',
+            // Geographic address IDs
+            'division_id',
+            'district_id',
+            'upazila_id',
+            'union_id',
+            'permanent_division_id',
+            'permanent_district_id',
+            'permanent_upazila_id',
+            'permanent_union_id',
             'guardian_type',
             'guardian_name',
             'guardian_mobile',
@@ -842,6 +856,10 @@ class PublicOnlineAdmissionController extends Controller
 
         $q = DB::table('invoices as inv')
             ->leftJoin('account_heads as ah', 'ah.id', '=', 'inv.account_head_id')
+            ->leftJoin('academic_sessions as as', 'as.id', '=', 'inv.academic_session_id')
+            ->leftJoin('academic_qualifications as aq', 'aq.id', '=', 'inv.academic_qualification_id')
+            ->leftJoin('departments as d', 'd.id', '=', 'inv.department_id')
+            ->leftJoin('academic_classes as ac', 'ac.id', '=', 'inv.academic_class_id')
             ->where('inv.online_admission_id', $onlineAdmission->id)
             ->orderByDesc('inv.id')
             ->select([
@@ -853,6 +871,10 @@ class PublicOnlineAdmissionController extends Controller
                 'inv.status',
                 'inv.account_head_id',
                 'ah.name as head_name',
+                'as.name as session_name',
+                'aq.name as qualification_name',
+                'd.name as department_name',
+                'ac.name as class_name',
             ]);
 
         return response()->json($q->get()->map(function ($r) use ($onlineAdmission) {
@@ -863,9 +885,16 @@ class PublicOnlineAdmissionController extends Controller
                 'amount' => (float) ($r->amount ?? 0),
                 'payment_date' => $r->payment_date ?? null,
                 'status' => $r->status ?? 'pending',
-                'head' => [
-                    'name' => $r->head_name ?? '',
-                ],
+                'head_name' => $r->head_name ?? '',
+                'session_name' => $r->session_name ?? '',
+                'qualification_name' => $r->qualification_name ?? '',
+                'department_name' => $r->department_name ?? '',
+                'class_name' => $r->class_name ?? '',
+                // Flatten student info
+                'name' => $onlineAdmission->name ?? '',
+                'mobile' => $onlineAdmission->mobile ?? '',
+                'admission_roll' => $onlineAdmission->admission_roll ?? '',
+                // Keep the original object just in case
                 'online_admission' => $onlineAdmission,
             ];
         })->values()->all());
@@ -931,6 +960,25 @@ class PublicOnlineAdmissionController extends Controller
         $fileName = 'invoice(' . ($invoice->invoice_date ?? date('Y-m-d')) . '__' . ($invoice->invoice_number ?? $id) . ').pdf';
 
         return $pdf->download($fileName);
+    }
+
+    private function base64Image($url): string
+    {
+        if (empty($url)) return '';
+        try {
+            $ctx = stream_context_create([
+                "ssl" => [
+                    "verify_peer" => false,
+                    "verify_peer_name" => false,
+                ],
+            ]);
+            $data = @file_get_contents($url, false, $ctx);
+            if ($data === false) return (string) $url;
+            $ext = pathinfo(parse_url($url, PHP_URL_PATH), PATHINFO_EXTENSION);
+            return 'data:image/' . ($ext ?: 'png') . ';base64,' . base64_encode($data);
+        } catch (\Throwable $e) {
+            return (string) $url;
+        }
     }
 
     public function downloadForm(Request $request)
@@ -1006,12 +1054,21 @@ class PublicOnlineAdmissionController extends Controller
         }
 
         $config = $this->resolveSiteConfig();
+        
+        // Base64 encode images for PDF to ensure rendering in DomPDF
+        $config['online_admission_form_image'] = $this->base64Image($config['online_admission_form_image'] ?? '');
+        $row->profile = $this->base64Image($row->profile ?? '');
 
         $pdf = Pdf::loadView('pdf.online_admission_form', [
             'data' => $row,
             'config' => $config,
             'subjects' => $subjects,
-        ])->setPaper('a4', 'portrait');
+        ])->setPaper('a4', 'portrait')->setOptions([
+            'isRemoteEnabled' => true,
+            'isHtml5ParserEnabled' => false,
+            'defaultFont' => 'sans-serif',
+            'dpi' => 96
+        ]);
 
         $stdName = preg_replace('/[^a-z0-9\-]/i', '-', (string) ($row->name ?? ''));
         $mobile = $row->mobile ?? '';

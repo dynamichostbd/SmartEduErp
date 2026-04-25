@@ -93,6 +93,7 @@ Route::get('/api/public/apply-fees/systems', [PublicApplyFeesController::class, 
 Route::post('/api/public/apply-fees/init', [PublicApplyFeesController::class, 'init']);
 Route::post('/api/public/apply-fees/check-invoice', [PublicApplyFeesController::class, 'checkInvoice']);
 Route::post('/api/public/apply-fees/pay-existing', [PublicApplyFeesController::class, 'payExisting']);
+Route::post('/api/public/apply-fees/check-invoice-by-roll', [PublicApplyFeesController::class, 'checkInvoiceByRoll']);
 Route::match(['get', 'post'], '/api/public/apply-fees/success', [PublicApplyFeesController::class, 'success']);
 Route::match(['get', 'post'], '/api/public/apply-fees/fail', [PublicApplyFeesController::class, 'fail']);
 Route::match(['get', 'post'], '/api/public/apply-fees/cancel', [PublicApplyFeesController::class, 'cancel']);
@@ -101,6 +102,8 @@ Route::match(['get', 'post'], '/api/public/apply-fees/ipn', [PublicApplyFeesCont
 Route::get('/api/public/certificate/systems', [PublicApplyFeesController::class, 'certificateSystems']);
 Route::post('/api/public/certificate/lookup', [PublicApplyFeesController::class, 'certificateLookup']);
 Route::post('/api/public/certificate/init', [PublicApplyFeesController::class, 'certificateInit']);
+Route::post('/api/public/certificate/check-invoice-by-roll', [PublicApplyFeesController::class, 'certificateCheckInvoiceByRoll']);
+Route::post('/api/public/certificate/pay-existing', [PublicApplyFeesController::class, 'certificatePayExisting']);
 Route::match(['get', 'post'], '/api/public/certificate/success', [PublicApplyFeesController::class, 'certificateSuccess']);
 Route::match(['get', 'post'], '/api/public/certificate/fail', [PublicApplyFeesController::class, 'certificateFail']);
 Route::match(['get', 'post'], '/api/public/certificate/cancel', [PublicApplyFeesController::class, 'certificateCancel']);

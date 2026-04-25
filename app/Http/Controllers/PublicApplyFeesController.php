@@ -360,6 +360,259 @@ class PublicApplyFeesController extends Controller
         ], 200);
     }
 
+    /**
+     * Check an application-fee invoice by admission_roll + mobile.
+     * Used by the new "Check Invoice" tab on the Apply Fees page.
+     */
+    public function checkInvoiceByRoll(Request $request)
+    {
+        $request->validate([
+            'admission_roll' => ['required', 'string'],
+            'mobile'         => ['required', 'string'],
+        ]);
+
+        if (!Schema::hasTable('admissions')) {
+            return response()->json(['message' => 'Admission module not ready'], 422);
+        }
+
+        $q = DB::table('admissions')->orderByDesc('id');
+
+        if (Schema::hasColumn('admissions', 'admission_roll')) {
+            $q->where('admission_roll', (string) $request->input('admission_roll'));
+        }
+        if (Schema::hasColumn('admissions', 'mobile')) {
+            $q->where('mobile', (string) $request->input('mobile'));
+        }
+
+        $row = $q->first();
+        if (!$row) {
+            return response()->json(['message' => 'No invoice found for the given details.'], 404);
+        }
+
+        // Resolve related names
+        $headName = '';
+        if (Schema::hasTable('account_heads') && !empty($row->account_head_id ?? null)) {
+            $headName = (string) (DB::table('account_heads')->where('id', (int) $row->account_head_id)->value('name') ?? '');
+        }
+        $sessionName = '';
+        if (Schema::hasTable('academic_sessions') && !empty($row->academic_session_id ?? null)) {
+            $sessionName = (string) (DB::table('academic_sessions')->where('id', (int) $row->academic_session_id)->value('name') ?? '');
+        }
+        $qualificationName = '';
+        if (Schema::hasTable('academic_qualifications') && !empty($row->academic_qualification_id ?? null)) {
+            $qualificationName = (string) (DB::table('academic_qualifications')->where('id', (int) $row->academic_qualification_id)->value('name') ?? '');
+        }
+        $departmentName = '';
+        if (Schema::hasTable('departments') && !empty($row->department_id ?? null)) {
+            $departmentName = (string) (DB::table('departments')->where('id', (int) $row->department_id)->value('name') ?? '');
+        }
+        $className = '';
+        if (Schema::hasTable('academic_classes') && !empty($row->academic_class_id ?? null)) {
+            $className = (string) (DB::table('academic_classes')->where('id', (int) $row->academic_class_id)->value('name') ?? '');
+        }
+
+        return response()->json([
+            'invoice_number'   => $row->invoice_number ?? null,
+            'invoice_date'     => $row->invoice_date ?? null,
+            'amount'           => $row->amount ?? null,
+            'status'           => $row->status ?? null,
+            'payment_date'     => $row->payment_date ?? null,
+            'name'             => $row->name ?? null,
+            'mobile'           => $row->mobile ?? null,
+            'admission_roll'   => $row->admission_roll ?? null,
+            'head_name'        => $headName,
+            'session_name'     => $sessionName,
+            'qualification_name' => $qualificationName,
+            'department_name'  => $departmentName,
+            'class_name'       => $className,
+        ], 200);
+    }
+
+    /**
+     * Check a certificate-fee invoice by admission_roll (application_id) + mobile.
+     */
+    public function certificateCheckInvoiceByRoll(Request $request)
+    {
+        $request->validate([
+            'admission_roll' => ['required', 'string'],
+            'mobile'         => ['required', 'string'],
+        ]);
+
+        if (!Schema::hasTable('certificate_applications')) {
+            return response()->json(['message' => 'Certificate module not ready'], 422);
+        }
+
+        $cols = Schema::getColumnListing('certificate_applications');
+        $q = DB::table('certificate_applications')->orderByDesc('id');
+
+        if (in_array('application_id', $cols, true)) {
+            $q->where('application_id', (string) $request->input('admission_roll'));
+        }
+        if (in_array('mobile', $cols, true)) {
+            $q->where('mobile', (string) $request->input('mobile'));
+        }
+
+        $row = $q->first();
+        if (!$row) {
+            return response()->json(['message' => 'No certificate invoice found for the given details.'], 404);
+        }
+
+        $status = null;
+        if (in_array('payment_status', $cols, true)) {
+            $status = $row->payment_status ?? null;
+        } elseif (in_array('status', $cols, true)) {
+            $status = $row->status ?? null;
+        }
+
+        // Resolve related names
+        $headName = '';
+        if (Schema::hasTable('account_heads') && !empty($row->account_head_id ?? null)) {
+            $headName = (string) (DB::table('account_heads')->where('id', (int) $row->account_head_id)->value('name') ?? '');
+        }
+        $sessionName = '';
+        if (Schema::hasTable('academic_sessions') && !empty($row->academic_session_id ?? null)) {
+            $sessionName = (string) (DB::table('academic_sessions')->where('id', (int) $row->academic_session_id)->value('name') ?? '');
+        }
+        $qualificationName = '';
+        if (Schema::hasTable('academic_qualifications') && !empty($row->academic_qualification_id ?? null)) {
+            $qualificationName = (string) (DB::table('academic_qualifications')->where('id', (int) $row->academic_qualification_id)->value('name') ?? '');
+        }
+        $departmentName = '';
+        if (Schema::hasTable('departments') && !empty($row->department_id ?? null)) {
+            $departmentName = (string) (DB::table('departments')->where('id', (int) $row->department_id)->value('name') ?? '');
+        }
+        $className = '';
+        if (Schema::hasTable('academic_classes') && !empty($row->academic_class_id ?? null)) {
+            $className = (string) (DB::table('academic_classes')->where('id', (int) $row->academic_class_id)->value('name') ?? '');
+        }
+        $studentName = '';
+        if (in_array('student_name_en', $cols, true)) $studentName = (string) ($row->student_name_en ?? '');
+        if ($studentName === '' && in_array('application_id', $cols, true)) $studentName = (string) ($row->application_id ?? '');
+
+        return response()->json([
+            'invoice_number'     => $row->invoice_number ?? null,
+            'invoice_date'       => $row->invoice_date ?? null,
+            'amount'             => $row->amount ?? null,
+            'status'             => $status,
+            'payment_date'       => $row->payment_date ?? null,
+            'name'               => $studentName,
+            'mobile'             => $row->mobile ?? null,
+            'admission_roll'     => $row->application_id ?? null,
+            'head_name'          => $headName,
+            'session_name'       => $sessionName,
+            'qualification_name' => $qualificationName,
+            'department_name'    => $departmentName,
+            'class_name'         => $className,
+        ], 200);
+    }
+
+    /**
+     * Re-initiate payment for an existing certificate invoice.
+     */
+    public function certificatePayExisting(Request $request)
+    {
+        $request->validate([
+            'invoice_number' => ['required', 'string'],
+        ]);
+
+        if (!Schema::hasTable('certificate_applications')) {
+            return response()->json(['message' => 'Certificate module not ready'], 422);
+        }
+
+        $row = DB::table('certificate_applications')
+            ->where('invoice_number', (string) $request->input('invoice_number'))
+            ->first();
+
+        if (!$row) {
+            return response()->json(['message' => 'Invoice not found'], 404);
+        }
+
+        $cols = Schema::getColumnListing('certificate_applications');
+
+        $status = in_array('payment_status', $cols, true) ? ($row->payment_status ?? '') : ($row->status ?? '');
+        if ($status === 'success') {
+            return response()->json(['message' => 'Invoice already paid'], 422);
+        }
+
+        // Resolve gateway credentials from the linked template / payment_gateway
+        $storeId   = null;
+        $storePass = null;
+
+        if (in_array('payment_gateway_id', $cols, true) && Schema::hasTable('payment_gateways')) {
+            $gw = DB::table('payment_gateways')
+                ->where('id', (int) ($row->payment_gateway_id ?? 0))
+                ->first();
+            if ($gw) {
+                $storeId   = $gw->store_id ?? null;
+                $storePass = $gw->store_password ?? null;
+            }
+        }
+
+        // Fallback: try via certificate_template
+        if ((!$storeId || !$storePass) && in_array('certificate_template_id', $cols, true) && Schema::hasTable('certificate_templates')) {
+            $tmpl = DB::table('certificate_templates')
+                ->where('id', (int) ($row->certificate_template_id ?? 0))
+                ->first();
+            if ($tmpl && Schema::hasTable('payment_gateways')) {
+                $gw = DB::table('payment_gateways')
+                    ->where('id', (int) ($tmpl->payment_gateway_id ?? 0))
+                    ->first();
+                if ($gw) {
+                    $storeId   = $storeId   ?: ($gw->store_id       ?? null);
+                    $storePass = $storePass ?: ($gw->store_password  ?? null);
+                }
+            }
+        }
+
+        if (!$storeId || !$storePass) {
+            return response()->json(['message' => 'Payment gateway not configured for this invoice'], 422);
+        }
+
+        $amount = (float) ($row->amount ?? 0);
+        if ($amount <= 0) {
+            return response()->json(['message' => 'Invalid amount'], 422);
+        }
+
+        $productName = 'Certificate Fee';
+        if (in_array('account_head_id', $cols, true) && Schema::hasTable('account_heads')) {
+            $productName = (string) (DB::table('account_heads')
+                ->where('id', (int) ($row->account_head_id ?? 0))
+                ->value('name') ?? $productName);
+        }
+
+        $studentName  = '';
+        if (in_array('student_name_en', $cols, true)) $studentName = (string) ($row->student_name_en ?? '');
+        if ($studentName === '' && in_array('application_id', $cols, true)) $studentName = (string) ($row->application_id ?? 'Student');
+
+        $successUrl = url('/api/public/certificate/success');
+        $failUrl    = url('/api/public/certificate/fail');
+        $cancelUrl  = url('/api/public/certificate/cancel');
+        $ipnUrl     = url('/api/public/certificate/ipn');
+
+        $init = $this->initiateSslCommerz(
+            (string) $storeId,
+            (string) $storePass,
+            $amount,
+            (string) ($row->invoice_number ?? ''),
+            $productName,
+            $studentName ?: 'Student',
+            (string) ($row->mobile ?? ''),
+            $successUrl,
+            $failUrl,
+            $cancelUrl,
+            $ipnUrl
+        );
+
+        if (!($init['ok'] ?? false)) {
+            return response()->json(['message' => (string) ($init['message'] ?? 'Failed to initiate payment gateway')], 422);
+        }
+
+        return response()->json([
+            'invoice_number' => $row->invoice_number ?? null,
+            'gateway_url'    => $init['gateway_url'] ?? null,
+        ], 200);
+    }
+
     private function nextCertificateInvoiceNumber(): string
     {
         $prefix = 'CER-';

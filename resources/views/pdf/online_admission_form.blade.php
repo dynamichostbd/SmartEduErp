@@ -20,6 +20,7 @@
             border: 0px solid;
         }
 
+
         .main-body img {
             height: 100%;
             width: 100%;

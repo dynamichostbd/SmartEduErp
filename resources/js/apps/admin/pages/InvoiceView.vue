@@ -91,18 +91,46 @@ export default {
             }
         },
         print() {
-            this.printing = true
-            const styleEl = document.createElement('style')
-            styleEl.setAttribute('data-print-page-style', 'invoice')
-            styleEl.textContent = '@media print{@page{size:A4;margin:10mm;}}'
-            document.head.appendChild(styleEl)
-            this.$nextTick(() => {
-                window.print()
-                setTimeout(() => {
-                    styleEl.remove()
-                    this.printing = false
-                }, 500)
-            })
+            const el = document.getElementById('printArea')
+            if (!el) return
+            const win = window.open('', '_blank', 'width=900,height=800')
+            win.document.write(`
+                <html>
+                    <head>
+                        <title>Invoice Print</title>
+                        <script src="https://cdn.tailwindcss.com"><\/script>
+                        <style>
+                            @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+                            body { font-family: 'Inter', sans-serif; }
+                            @media print {
+                                @page { margin: 5mm; }
+                                body { margin: 0; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+                            }
+                            /* Ensure grid works in print */
+                            .grid { display: grid !important; }
+                            .grid-cols-12 { grid-template-columns: repeat(12, minmax(0, 1fr)) !important; }
+                            .col-span-3 { grid-column: span 3 / span 3 !important; }
+                            .col-span-9 { grid-column: span 9 / span 9 !important; }
+                            .col-span-7 { grid-column: span 7 / span 7 !important; }
+                            .col-span-5 { grid-column: span 5 / span 5 !important; }
+                        </style>
+                    </head>
+                    <body class="p-6 bg-white">
+                        <div class="w-full max-w-[800px] mx-auto">
+                            ${el.innerHTML}
+                        </div>
+                        <script>
+                            window.onload = function() {
+                                setTimeout(() => {
+                                    window.print();
+                                    window.close();
+                                }, 800);
+                            };
+                        <\/script>
+                    </body>
+                </html>
+            `)
+            win.document.close()
         },
     },
 }

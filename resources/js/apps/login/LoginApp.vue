@@ -46,6 +46,7 @@
                             <input
                                 v-model="form.email"
                                 type="email"
+                                placeholder="Email"
                                 autocomplete="username"
                                 class="mt-2 text-center w-full rounded-sm border border-white/15 bg-white/95 px-3 py-2 text-sm text-slate-900 outline-none transition focus:border-white/40 focus:bg-white"
                                 :disabled="step !== 'credentials' || loading"
@@ -57,6 +58,7 @@
                             <input
                                 v-model="form.password"
                                 type="password"
+                                placeholder="Password"
                                 autocomplete="current-password"
                                 class="mt-2 text-center w-full rounded-sm border border-white/15 bg-white/95 px-3 py-2 text-sm text-slate-900 outline-none transition focus:border-white/40 focus:bg-white"
                                 :disabled="step !== 'credentials' || loading"

@@ -63,7 +63,11 @@ class PublicStudentAuthController extends Controller
         Auth::guard('web')->logout();
 
         $request->session()->invalidate();
-        $request->session()->regenerateToken();
+        // Note: do NOT call regenerateToken() here — it changes the CSRF token
+        // in the new session but the client's XSRF-TOKEN cookie is NOT updated
+        // until the next full page request, so the next POST (e.g. login) gets a 419.
+        // session()->invalidate() already destroys the old session; a fresh token
+        // is generated automatically when the next session starts.
 
         return response()->json(['logged_out' => true], 200);
     }

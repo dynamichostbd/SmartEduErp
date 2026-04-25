@@ -407,6 +407,8 @@ Route::middleware(['auth:admin', 'auth.access'])->group(function () {
     Route::get('libraryBooksInfo', [LibraryBooksInfoController::class, 'index'])->name('libraryBooksInfo.index');
 
     Route::get('student', [StudentController::class, 'index'])->name('student.index');
+    Route::get('student/{id}/details', [StudentController::class, 'details'])->name('student.details');
+    Route::put('student/{id}', [StudentController::class, 'update'])->name('student.update');
 
     Route::get('admin', [AdminManagementController::class, 'index'])->name('admin.index');
     Route::view('admin/create', 'layouts.backend_app')->name('admin.create');

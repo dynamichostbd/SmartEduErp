@@ -723,73 +723,80 @@ class StudentController extends Controller
             'gender' => ['nullable', Rule::in(['Male', 'Female', 'Others'])],
         ]);
 
-        $qualificationId = $request->input('academic_qualification_id');
-        $regNo = $request->input('reg_no');
-        if (!empty($regNo)) {
-            $exists = Student::query()
-                ->where('academic_qualification_id', $qualificationId)
-                ->where('reg_no', $regNo)
-                ->exists();
-            if ($exists) {
-                return response()->json(['error' => 'Already Registered This Reg. No'], 200);
+        try {
+            $qualificationId = $request->input('academic_qualification_id');
+            $regNo = $request->input('reg_no');
+            if (!empty($regNo)) {
+                $exists = Student::query()
+                    ->where('academic_qualification_id', $qualificationId)
+                    ->where('reg_no', $regNo)
+                    ->exists();
+                if ($exists) {
+                    return response()->json(['error' => 'Already Registered This Reg. No'], 200);
+                }
             }
-        }
 
-        $collegeRoll = $request->input('college_roll');
-        if (!empty($collegeRoll)) {
-            $exists = Student::query()
-                ->where('academic_qualification_id', $qualificationId)
-                ->where('college_roll', $collegeRoll)
-                ->exists();
-            if ($exists) {
-                return response()->json(['error' => 'Already Registered This College Roll'], 200);
+            $collegeRoll = $request->input('college_roll');
+            if (!empty($collegeRoll)) {
+                $exists = Student::query()
+                    ->where('academic_qualification_id', $qualificationId)
+                    ->where('college_roll', $collegeRoll)
+                    ->exists();
+                if ($exists) {
+                    return response()->json(['error' => 'Already Registered This College Roll'], 200);
+                }
             }
-        }
 
-        $admin = Auth::guard('admin')->user();
+            $admin = Auth::guard('admin')->user();
 
-        $fillable = (new Student())->getFillable();
-        $fillable = array_values(array_diff($fillable, ['otp']));
-        $data = $request->only($fillable);
+            $fillable = (new Student())->getFillable();
+            $fillable = array_values(array_diff($fillable, ['otp']));
+            $data = $request->only($fillable);
 
-        if (empty($data['department_id'])) {
-            $data['department_id'] = $admin->department_id ?? null;
-        }
-
-        $data['student_id'] = $this->generateStudentId();
-        $data['status'] = $data['status'] ?? 'active';
-
-        $data['name'] = strtoupper($request->input('name', ''));
-        $data['fathers_name'] = strtoupper($request->input('fathers_name', ''));
-        $data['mothers_name'] = strtoupper($request->input('mothers_name', ''));
-        $data['address'] = strtoupper($request->input('address', ''));
-
-        if ($request->hasFile('profile')) {
-            $file = $request->file('profile');
-            if ($file && $file->isValid()) {
-                $path = $file->store('upload/student/student-profile', 'public');
-                $data['profile'] = preg_replace('/^upload\//', '', $path);
+            if (empty($data['department_id'])) {
+                $data['department_id'] = $admin->department_id ?? null;
             }
-        } else {
-            unset($data['profile']);
-        }
 
-        if ($request->has('cluster_subjects') && is_string($request->input('cluster_subjects'))) {
-            $decoded = json_decode($request->input('cluster_subjects'), true);
-            if (json_last_error() === JSON_ERROR_NONE) {
-                $data['cluster_subjects'] = $decoded;
+            $data['student_id'] = $this->generateStudentId();
+            $data['status'] = $data['status'] ?? 'active';
+
+            $data['name'] = strtoupper($request->input('name', ''));
+            $data['fathers_name'] = strtoupper($request->input('fathers_name', ''));
+            $data['mothers_name'] = strtoupper($request->input('mothers_name', ''));
+            $data['address'] = strtoupper($request->input('address', ''));
+
+            if ($request->hasFile('profile')) {
+                $file = $request->file('profile');
+                if ($file && $file->isValid()) {
+                    $path = $file->store('upload/student/student-profile', 'public');
+                    $data['profile'] = preg_replace('/^upload\//', '', $path);
+                }
             } else {
-                unset($data['cluster_subjects']);
+                unset($data['profile']);
             }
+
+            if ($request->has('cluster_subjects') && is_string($request->input('cluster_subjects'))) {
+                $decoded = json_decode($request->input('cluster_subjects'), true);
+                if (json_last_error() === JSON_ERROR_NONE) {
+                    $data['cluster_subjects'] = $decoded;
+                } else {
+                    unset($data['cluster_subjects']);
+                }
+            }
+
+            $student = Student::create($data);
+
+            return response()->json([
+                'created' => true,
+                'id' => $student->id,
+                'message' => 'Registration Successfully!',
+                'student' => $student,
+            ]);
+        } catch (\Throwable $e) {
+            return response()->json([
+                'exception' => $e->getMessage()
+            ], 422);
         }
-
-        $student = Student::create($data);
-
-        return response()->json([
-            'created' => true,
-            'id' => $student->id,
-            'student' => $student,
-        ]);
     }
 
     public function import(Request $request)
@@ -943,46 +950,53 @@ class StudentController extends Controller
             'gender' => ['nullable', Rule::in(['Male', 'Female', 'Others'])],
         ]);
 
-        $fillable = (new Student())->getFillable();
-        $fillable = array_values(array_diff($fillable, ['otp']));
+        try {
+            $fillable = (new Student())->getFillable();
+            $fillable = array_values(array_diff($fillable, ['otp']));
 
-        $data = $request->only($fillable);
+            $data = $request->only($fillable);
 
-        $data['name'] = strtoupper($request->input('name', $student->name ?? ''));
-        $data['fathers_name'] = strtoupper($request->input('fathers_name', $student->fathers_name ?? ''));
-        $data['mothers_name'] = strtoupper($request->input('mothers_name', $student->mothers_name ?? ''));
-        $data['address'] = strtoupper($request->input('address', $student->address ?? ''));
+            $data['name'] = strtoupper($request->input('name', $student->name ?? ''));
+            $data['fathers_name'] = strtoupper($request->input('fathers_name', $student->fathers_name ?? ''));
+            $data['mothers_name'] = strtoupper($request->input('mothers_name', $student->mothers_name ?? ''));
+            $data['address'] = strtoupper($request->input('address', $student->address ?? ''));
 
-        if (!$request->filled('password')) {
-            unset($data['password']);
-        }
-
-        if ($request->hasFile('profile')) {
-            $file = $request->file('profile');
-            if ($file && $file->isValid()) {
-                $path = $file->store('upload/student/student-profile', 'public');
-                $data['profile'] = preg_replace('/^upload\//', '', $path);
+            if (!$request->filled('password')) {
+                unset($data['password']);
             }
-        } else {
-            unset($data['profile']);
-        }
 
-        if ($request->has('cluster_subjects') && is_string($request->input('cluster_subjects'))) {
-            $decoded = json_decode($request->input('cluster_subjects'), true);
-            if (json_last_error() === JSON_ERROR_NONE) {
-                $data['cluster_subjects'] = $decoded;
+            if ($request->hasFile('profile')) {
+                $file = $request->file('profile');
+                if ($file && $file->isValid()) {
+                    $path = $file->store('upload/student/student-profile', 'public');
+                    $data['profile'] = preg_replace('/^upload\//', '', $path);
+                }
             } else {
-                unset($data['cluster_subjects']);
+                unset($data['profile']);
             }
+
+            if ($request->has('cluster_subjects') && is_string($request->input('cluster_subjects'))) {
+                $decoded = json_decode($request->input('cluster_subjects'), true);
+                if (json_last_error() === JSON_ERROR_NONE) {
+                    $data['cluster_subjects'] = $decoded;
+                } else {
+                    unset($data['cluster_subjects']);
+                }
+            }
+
+            $student->fill($data);
+            $student->save();
+
+            return response()->json([
+                'updated' => true,
+                'message' => 'Update Successfully!',
+                'student' => $student->fresh(),
+            ]);
+        } catch (\Throwable $e) {
+            return response()->json([
+                'exception' => $e->getMessage()
+            ], 422);
         }
-
-        $student->fill($data);
-        $student->save();
-
-        return response()->json([
-            'updated' => true,
-            'student' => $student->fresh(),
-        ]);
     }
 
     public function bulkDeactivate(Request $request)

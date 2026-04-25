@@ -52,7 +52,7 @@ class AdminAccess
                 return response(view('layouts.backend_app'));
             }
 
-            $websiteModules = ['slider', 'videoSlider', 'bus', 'calender', 'class', 'examR', 'popup', 'notice'];
+            $websiteModules = ['slider', 'videoSlider', 'bus', 'calender', 'class', 'examR', 'popup', 'notice', 'student'];
             foreach ($websiteModules as $mod) {
                 if (!Str::startsWith($routeName, $mod . '.')) {
                     continue;

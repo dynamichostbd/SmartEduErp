@@ -18,7 +18,7 @@
 
         <div class="border border-slate-300 bg-white p-5">
             <div id="printArea" class="mx-auto flex max-w-3xl flex-col gap-4">
-                <InvoiceTemplate v-if="data" :systems="systems" :data="data" :hostel="true">
+                <InvoiceTemplate v-if="data" :systems="systems" :data="data" :hostel="true" height="auto">
                     <template #account-heads>
                         <tbody v-if="Array.isArray(data.details) && data.details.length" class="bg-white">
                             <tr v-for="(fees, key) in data.details" :key="fees.id">
@@ -45,7 +45,7 @@
                     </template>
                 </InvoiceTemplate>
 
-                <InvoiceTemplate v-if="data" :systems="systems" :data="data" :hostel="true">
+                <InvoiceTemplate v-if="data" :systems="systems" :data="data" :hostel="true" height="auto">
                     <template #account-heads>
                         <tbody v-if="Array.isArray(data.details) && data.details.length" class="bg-white">
                             <tr v-for="(fees, key) in data.details" :key="'2-' + fees.id">
