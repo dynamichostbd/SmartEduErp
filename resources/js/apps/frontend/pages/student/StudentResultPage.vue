@@ -3,78 +3,99 @@
         <div class="mx-auto w-full max-w-6xl">
             <div class="grid grid-cols-1 gap-4 lg:grid-cols-12">
                 <div class="lg:col-span-3">
-                    <StudentSidebar
-                        :studentMe="app.studentMe"
-                        :active="app.studentSidebarActive"
-                        :onNavigate="app.studentSidebarGo"
-                        :onLogout="app.doStudentLogout"
-                        :logoutDisabled="app.studentAuthLoading"
-                    />
+                    <StudentSidebar :studentMe="app.studentMe" :active="app.studentSidebarActive"
+                        :onNavigate="app.studentSidebarGo" :onLogout="app.doStudentLogout"
+                        :logoutDisabled="app.studentAuthLoading" />
                 </div>
 
                 <div class="lg:col-span-9">
                     <div class="rounded-sm border border-slate-300 bg-white">
-                        <div class="border-b border-slate-300 bg-slate-50 px-4 py-3 text-sm font-extrabold text-slate-800">RESULT</div>
+                        <div class="border-b border-slate-300 bg-slate-50 px-4 py-3 text-sm font-bold text-slate-800">
+                            RESULT</div>
                         <div class="p-4">
                             <div v-if="loadingSystems" class="text-sm text-slate-600">Loading...</div>
                             <div v-else>
-                                <div v-if="error" class="mb-4 rounded-sm border border-red-200 bg-red-50 p-3 text-sm text-red-800">{{ error }}</div>
+                                <div v-if="error"
+                                    class="mb-4 rounded-sm border border-red-200 bg-red-50 p-3 text-sm text-red-800">{{
+                                    error }}</div>
 
                                 <form class="mx-auto w-full max-w-2xl" @submit.prevent="search">
                                     <div class="grid grid-cols-1 gap-4">
                                         <div class="grid grid-cols-1 items-center gap-2 sm:grid-cols-3">
-                                            <div class="text-sm font-semibold text-slate-700">Session <span class="text-red-600">*</span></div>
+                                            <div class="text-sm font-semibold text-slate-700">Session <span
+                                                    class="text-red-600">*</span></div>
                                             <div class="sm:col-span-2">
-                                                <select v-model="form.academic_session_id" class="h-10 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none" required>
+                                                <select v-model="form.academic_session_id"
+                                                    class="h-10 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none"
+                                                    required>
                                                     <option value="">--Select Any--</option>
-                                                    <option v-for="s in sessions" :key="'rs-' + s.id" :value="String(s.id)">{{ s.name }}</option>
+                                                    <option v-for="s in sessions" :key="'rs-' + s.id"
+                                                        :value="String(s.id)">{{ s.name }}</option>
                                                 </select>
                                             </div>
                                         </div>
 
                                         <div class="grid grid-cols-1 items-center gap-2 sm:grid-cols-3">
-                                            <div class="text-sm font-semibold text-slate-700">Academic Level <span class="text-red-600">*</span></div>
+                                            <div class="text-sm font-semibold text-slate-700">Academic Level <span
+                                                    class="text-red-600">*</span></div>
                                             <div class="sm:col-span-2">
-                                                <select v-model="form.academic_qualification_id" class="h-10 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none" required>
+                                                <select v-model="form.academic_qualification_id"
+                                                    class="h-10 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none"
+                                                    required>
                                                     <option value="">--Select Any--</option>
-                                                    <option v-for="q in qualifications" :key="'rq-' + q.id" :value="String(q.id)">{{ q.name }}</option>
+                                                    <option v-for="q in qualifications" :key="'rq-' + q.id"
+                                                        :value="String(q.id)">{{ q.name }}</option>
                                                 </select>
                                             </div>
                                         </div>
 
                                         <div class="grid grid-cols-1 items-center gap-2 sm:grid-cols-3">
-                                            <div class="text-sm font-semibold text-slate-700">Department <span class="text-red-600">*</span></div>
+                                            <div class="text-sm font-semibold text-slate-700">Department <span
+                                                    class="text-red-600">*</span></div>
                                             <div class="sm:col-span-2">
-                                                <select v-model="form.department_id" class="h-10 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none" required>
+                                                <select v-model="form.department_id"
+                                                    class="h-10 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none"
+                                                    required>
                                                     <option value="">--Select Any--</option>
-                                                    <option v-for="d in filteredDepartments" :key="'rd-' + d.id" :value="String(d.id)">{{ d.name }}</option>
+                                                    <option v-for="d in filteredDepartments" :key="'rd-' + d.id"
+                                                        :value="String(d.id)">{{ d.name }}</option>
                                                 </select>
                                             </div>
                                         </div>
 
                                         <div class="grid grid-cols-1 items-center gap-2 sm:grid-cols-3">
-                                            <div class="text-sm font-semibold text-slate-700">Class <span class="text-red-600">*</span></div>
+                                            <div class="text-sm font-semibold text-slate-700">Class <span
+                                                    class="text-red-600">*</span></div>
                                             <div class="sm:col-span-2">
-                                                <select v-model="form.academic_class_id" class="h-10 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none" required>
+                                                <select v-model="form.academic_class_id"
+                                                    class="h-10 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none"
+                                                    required>
                                                     <option value="">--Select Any--</option>
-                                                    <option v-for="c in filteredClasses" :key="'rc-' + c.id" :value="String(c.id)">{{ c.name }}</option>
+                                                    <option v-for="c in filteredClasses" :key="'rc-' + c.id"
+                                                        :value="String(c.id)">{{ c.name }}</option>
                                                 </select>
                                             </div>
                                         </div>
 
                                         <div class="grid grid-cols-1 items-center gap-2 sm:grid-cols-3">
-                                            <div class="text-sm font-semibold text-slate-700">Exam <span class="text-red-600">*</span></div>
+                                            <div class="text-sm font-semibold text-slate-700">Exam <span
+                                                    class="text-red-600">*</span></div>
                                             <div class="sm:col-span-2">
-                                                <select v-model="form.exam_id" class="h-10 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none" required>
+                                                <select v-model="form.exam_id"
+                                                    class="h-10 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none"
+                                                    required>
                                                     <option value="">--Select Any--</option>
-                                                    <option v-for="e in exams" :key="'re-' + e.id" :value="String(e.id)">{{ e.name }}</option>
+                                                    <option v-for="e in exams" :key="'re-' + e.id"
+                                                        :value="String(e.id)">{{ e.name }}</option>
                                                 </select>
                                             </div>
                                         </div>
                                     </div>
 
                                     <div class="pt-8 text-center">
-                                        <button type="submit" class="rounded-sm bg-[#0b1d4d] px-10 py-2.5 text-sm font-extrabold text-white hover:bg-[#09163c]" :disabled="submitting">
+                                        <button type="submit"
+                                            class="rounded-sm bg-[#0b1d4d] px-10 py-2.5 text-sm font-bold text-white hover:bg-[#09163c]"
+                                            :disabled="submitting">
                                             {{ submitting ? 'Processing...' : 'Search' }}
                                         </button>
                                     </div>
@@ -83,26 +104,31 @@
                         </div>
                     </div>
 
-                    <div v-if="showModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4" @click.self="closeModal">
+                    <div v-if="showModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4"
+                        @click.self="closeModal">
                         <div class="max-h-[92vh] w-full max-w-5xl overflow-hidden rounded-sm bg-white shadow-xl">
-                            <div class="flex items-center justify-between gap-3 border-b border-slate-300 bg-slate-50 px-4 py-3">
-                                <div class="text-sm font-extrabold text-slate-800">RESULT SHEET</div>
+                            <div
+                                class="flex items-center justify-between gap-3 border-b border-slate-300 bg-slate-50 px-4 py-3">
+                                <div class="text-sm font-bold text-slate-800">RESULT SHEET</div>
                                 <div class="flex flex-wrap items-center justify-end gap-2">
-                                    <button type="button" class="rounded-sm border border-slate-300 bg-white px-3 py-1.5 text-xs font-extrabold text-slate-700 hover:bg-slate-50" @click="printResult">
+                                    <button type="button"
+                                        class="rounded-sm border border-slate-300 bg-white px-3 py-1.5 text-xs font-bold text-slate-700 hover:bg-slate-50"
+                                        @click="printResult">
                                         Print
                                     </button>
-                                    <button
-                                        v-if="canDownload"
-                                        type="button"
-                                        class="rounded-sm bg-[#2b6cb0] px-3 py-1.5 text-xs font-extrabold text-white hover:bg-[#245a94]"
-                                        @click="downloadMarksheet"
-                                    >
+                                    <button v-if="canDownload" type="button"
+                                        class="rounded-sm bg-[#2b6cb0] px-3 py-1.5 text-xs font-bold text-white hover:bg-[#245a94]"
+                                        @click="downloadMarksheet">
                                         Download
                                     </button>
-                                    <button type="button" class="rounded-sm bg-emerald-600 px-3 py-1.5 text-xs font-extrabold text-white hover:bg-emerald-700" @click="searchAgain">
+                                    <button type="button"
+                                        class="rounded-sm bg-emerald-600 px-3 py-1.5 text-xs font-bold text-white hover:bg-emerald-700"
+                                        @click="searchAgain">
                                         Search Again
                                     </button>
-                                    <button type="button" class="rounded-sm bg-slate-700 px-3 py-1.5 text-xs font-extrabold text-white hover:bg-slate-800" @click="closeModal">
+                                    <button type="button"
+                                        class="rounded-sm bg-slate-700 px-3 py-1.5 text-xs font-bold text-white hover:bg-slate-800"
+                                        @click="closeModal">
                                         Close
                                     </button>
                                 </div>
@@ -112,30 +138,42 @@
                                 <div id="printArea">
                                     <div class="grid grid-cols-1 gap-4">
                                         <div class="rounded-sm border border-slate-300 bg-white p-4">
-                                            <div class="text-sm font-extrabold text-slate-900">Student</div>
-                                            <div class="mt-2 grid grid-cols-1 gap-2 text-sm text-slate-700 sm:grid-cols-2">
-                                                <div><span class="font-semibold">Name:</span> {{ resultStudent.name || '' }}</div>
-                                                <div><span class="font-semibold">Student ID:</span> {{ resultStudent.student_id || '' }}</div>
-                                                <div><span class="font-semibold">Mobile:</span> {{ resultStudent.mobile || '' }}</div>
-                                                <div><span class="font-semibold">College Roll:</span> {{ resultStudent.college_roll || '' }}</div>
+                                            <div class="text-sm font-bold text-slate-900">Student</div>
+                                            <div
+                                                class="mt-2 grid grid-cols-1 gap-2 text-sm text-slate-700 sm:grid-cols-2">
+                                                <div><span class="font-semibold">Name:</span> {{ resultStudent.name ||
+                                                    '' }}</div>
+                                                <div><span class="font-semibold">Student ID:</span> {{
+                                                    resultStudent.student_id || '' }}</div>
+                                                <div><span class="font-semibold">Mobile:</span> {{ resultStudent.mobile
+                                                    || '' }}</div>
+                                                <div><span class="font-semibold">College Roll:</span> {{
+                                                    resultStudent.college_roll || '' }}</div>
                                             </div>
                                         </div>
 
                                         <div v-if="isTerm" class="rounded-sm border border-slate-300 bg-white p-4">
-                                            <div class="text-sm font-extrabold text-slate-900">Summary</div>
-                                            <div class="mt-2 grid grid-cols-1 gap-2 text-sm text-slate-700 sm:grid-cols-3">
-                                                <div><span class="font-semibold">GPA:</span> {{ resultDetails.gpa ?? '' }}</div>
-                                                <div><span class="font-semibold">Grade:</span> {{ resultDetails.letter_grade ?? '' }}</div>
-                                                <div><span class="font-semibold">Status:</span> {{ resultDetails.result_status ?? '' }}</div>
+                                            <div class="text-sm font-bold text-slate-900">Summary</div>
+                                            <div
+                                                class="mt-2 grid grid-cols-1 gap-2 text-sm text-slate-700 sm:grid-cols-3">
+                                                <div><span class="font-semibold">GPA:</span> {{ resultDetails.gpa ?? ''
+                                                    }}</div>
+                                                <div><span class="font-semibold">Grade:</span> {{
+                                                    resultDetails.letter_grade ?? '' }}</div>
+                                                <div><span class="font-semibold">Status:</span> {{
+                                                    resultDetails.result_status ?? '' }}</div>
                                             </div>
                                         </div>
 
                                         <div class="rounded-sm border border-slate-300 bg-white">
-                                            <div class="border-b border-slate-300 bg-slate-50 px-4 py-2 text-xs font-extrabold text-slate-800">Marks</div>
+                                            <div
+                                                class="border-b border-slate-300 bg-slate-50 px-4 py-2 text-xs font-bold text-slate-800">
+                                                Marks</div>
                                             <div class="overflow-x-auto p-4">
                                                 <table class="min-w-full text-sm">
                                                     <thead>
-                                                        <tr class="border-b bg-slate-100 text-left text-xs font-extrabold text-slate-700">
+                                                        <tr
+                                                            class="border-b bg-slate-100 text-left text-xs font-bold text-slate-700">
                                                             <th class="px-3 py-2">#</th>
                                                             <th class="px-3 py-2">Subject</th>
                                                             <th class="px-3 py-2 text-right">Total</th>
@@ -151,14 +189,19 @@
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        <tr v-for="(m, idx) in resultMarks" :key="'rm-' + idx" class="border-b last:border-b-0">
+                                                        <tr v-for="(m, idx) in resultMarks" :key="'rm-' + idx"
+                                                            class="border-b last:border-b-0">
                                                             <td class="px-3 py-2">{{ idx + 1 }}</td>
-                                                            <td class="px-3 py-2 font-semibold">{{ m.subject?.name_en || '' }}</td>
-                                                            <td class="px-3 py-2 text-right">{{ isTerm ? (m.total_mark ?? '') : (m.exam_mark ?? '') }}</td>
+                                                            <td class="px-3 py-2 font-semibold">{{ m.subject?.name_en ||
+                                                                '' }}</td>
+                                                            <td class="px-3 py-2 text-right">{{ isTerm ? (m.total_mark
+                                                                ?? '') : (m.exam_mark ?? '') }}</td>
                                                             <template v-if="isTerm">
-                                                                <td class="px-3 py-2 text-right">{{ m.obtained_mark ?? '' }}</td>
+                                                                <td class="px-3 py-2 text-right">{{ m.obtained_mark ??
+                                                                    '' }}</td>
                                                                 <td class="px-3 py-2 text-right">{{ m.gpa ?? '' }}</td>
-                                                                <td class="px-3 py-2 text-right">{{ m.letter_grade ?? '' }}</td>
+                                                                <td class="px-3 py-2 text-right">{{ m.letter_grade ?? ''
+                                                                    }}</td>
                                                             </template>
                                                             <template v-else>
                                                                 <td class="px-3 py-2 text-right">{{ m.mark ?? '' }}</td>

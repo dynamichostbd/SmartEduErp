@@ -5,30 +5,42 @@
                 <div class="grid grid-cols-1 items-center gap-2 py-2 sm:grid-cols-3 sm:py-3">
                     <button type="button" class="flex items-center gap-3 text-left" @click="go('/')">
                         <img v-if="site.logo" :src="site.logo" class="h-10 w-auto" alt="logo" />
-                        <div class="text-base font-extrabold leading-tight text-slate-900 sm:text-lg">{{ collegeName }}
+                        <div class="text-base font-bold leading-tight text-slate-900 sm:text-lg">{{ collegeName }}
                         </div>
                     </button>
 
-                    <div class="text-center text-sm font-bold text-slate-800 sm:text-base">
-                        <span class="font-extrabold">{{ hotline || '—' }}</span>
+                    <div class="flex items-center justify-center">
+                        <div class="flex items-center gap-2 rounded-full bg-slate-50 border border-slate-100 px-3 py-1.5 shadow-sm">
+                            <div class="relative flex h-2 w-2">
+                                <span :class="isSupportActive ? 'bg-emerald-500' : 'bg-rose-500'" class="absolute inline-flex h-full w-full animate-ping rounded-full opacity-75"></span>
+                                <span :class="isSupportActive ? 'bg-emerald-500' : 'bg-rose-500'" class="relative inline-flex h-2 w-2 rounded-full"></span>
+                            </div>
+                            <span class="text-[10px] font-black uppercase tracking-wider" :class="isSupportActive ? 'text-emerald-600' : 'text-rose-600'">
+                                {{ isSupportActive ? 'Online' : 'Offline' }}
+                            </span>
+                            <div class="h-3 w-[1px] bg-slate-200 mx-1"></div>
+                            <div class="text-[13px] font-bold text-slate-800">
+                                হটলাইন: <span class="text-[#0d6b75]">{{ hotline || '—' }}</span>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="flex flex-wrap items-center justify-start gap-2 sm:justify-end">
                         <template v-if="studentMe">
                             <button type="button"
-                                class="rounded-sm bg-[#2f855a] px-4 py-2 text-xs font-extrabold text-white hover:bg-[#276f4a] sm:text-sm"
+                                class="rounded-sm bg-[#2f855a] px-4 py-2 text-xs font-bold text-white hover:bg-[#276f4a] sm:text-sm"
                                 @click="go('/student/profile')">
                                 My Profile
                             </button>
                             <button type="button"
-                                class="rounded-sm bg-[#d20808] px-4 py-2 text-xs font-extrabold text-white hover:bg-[#b60606] sm:text-sm"
+                                class="rounded-sm bg-[#d20808] px-4 py-2 text-xs font-bold text-white hover:bg-[#b60606] sm:text-sm"
                                 @click="doStudentLogout" :disabled="studentAuthLoading">
                                 Logout
                             </button>
                         </template>
                         <template v-else>
                             <a href="/content/usermanual" target="_blank"
-                                class="hidden sm:inline-block rounded-full bg-[#0d6b75] px-4 py-2 text-xs font-extrabold text-white hover:bg-[#0b5b63] sm:text-sm">
+                                class="hidden sm:inline-block rounded-full bg-[#0d6b75] px-4 py-2 text-xs font-bold text-white hover:bg-[#0b5b63] sm:text-sm">
                                 শিক্ষার্থী রেজিস্ট্রেশন ও ই-পেমেন্ট সংক্রান্ত নিয়মাবলি
                             </a>
                         </template>
@@ -40,15 +52,16 @@
         <div class="mx-auto w-full max-w-[1700px] flex-1 px-2 sm:px-3">
             <div class="mt-2 overflow-hidden rounded-sm border border-slate-300 bg-white">
                 <div class="flex items-stretch">
-                    <div class="flex items-center bg-[#0d6b75] px-4 py-2 text-sm font-extrabold text-white">
+                    <div class="flex items-center bg-[#0d6b75] px-4 py-2 text-sm font-bold text-white">
                         College Notice
                     </div>
-                    <div class="relative flex min-w-0 flex-1 items-center overflow-hidden px-4 py-2">
+                    <div class="relative flex min-w-0 flex-1 items-center overflow-hidden px-2 py-2">
                         <div class="w-full overflow-hidden">
-                            <div v-if="notices && notices.length > 0" class="whitespace-nowrap text-sm font-semibold text-slate-800"
-                                :style="tickerStyle">
+                            <div v-if="notices && notices.length > 0"
+                                class="whitespace-nowrap text-sm font-semibold text-slate-800" :style="tickerStyle">
                                 <span v-for="(n, idx) in notices" :key="'tick-' + n.id">
-                                    <button type="button" @click="go(`/notices/${n.id}`)" class="hover:underline hover:text-[#0d6b75] outline-none">
+                                    <button type="button" @click="go(`/notices/${n.id}`)"
+                                        class="hover:underline hover:text-[#0d6b75] outline-none">
                                         {{ n.title }}
                                     </button>
                                     <span v-if="idx < notices.length - 1" class="mx-4 text-slate-500">►</span>
@@ -61,9 +74,8 @@
             </div>
 
             <div v-if="path !== '/' && !studentMe" class="mt-3 rounded-sm border border-slate-300 bg-white p-4">
-                <button type="button" class="text-sm font-bold text-[#0d6b75] hover:underline" @click="go('/')">← Back
-                    to
-                    Home</button>
+                <button type="button" class="bg-red-700 text-sm px-4 py-2 rounded-md font-bold text-white hover:bg-red-800"
+                    @click="go('/')"><i class="fa-solid fa-arrow-left mr-2"></i> Back to Home</button>
             </div>
 
             <div :key="path + search">
@@ -91,7 +103,8 @@
                     <StudentInvoiceView v-else-if="studentInvoiceId" />
                 </StudentLayout>
 
-                <div v-if="path === '/'" class="mt-3 sm:rounded-sm sm:border sm:border-slate-300 bg-white lg:border-0 lg:bg-[#e7efef]">
+                <div v-if="path === '/'"
+                    class="mt-3 sm:rounded-sm sm:border sm:border-slate-300 bg-white lg:border-0 lg:bg-[#e7efef]">
                     <!-- Slider -->
                     <div class="relative rounded-t-md">
                         <div class="overflow-hidden rounded-t-md">
@@ -111,7 +124,7 @@
                     <!-- Mobile-only: نيय়মাবলি button below slider -->
                     <div v-if="!studentMe" class="block sm:hidden px-4 pt-3">
                         <a href="/content/usermanual" target="_blank"
-                            class="block w-full text-center rounded-full bg-[#0d6b75] px-4 py-2.5 text-xs font-extrabold text-white hover:bg-[#0b5b63]">
+                            class="block w-full text-center rounded-full bg-[#0d6b75] px-4 py-2.5 text-xs font-bold text-white hover:bg-[#0b5b63]">
                             শিক্ষার্থী রেজিস্ট্রেশন ও ই-পেমেন্ট সংক্রান্ত নিয়মাবলি
                         </a>
                     </div>
@@ -132,13 +145,13 @@
                                         <div v-if="c.svg" v-html="c.svg"
                                             class="flex items-center justify-center scale-[0.65] sm:scale-[0.82] lg:scale-100">
                                         </div>
-                                        <div v-else class="text-base sm:text-lg lg:text-xl font-extrabold"
+                                        <div v-else class="text-base sm:text-lg lg:text-xl font-bold"
                                             :style="{ color: c.color || '#0d6b75' }">{{ c.icon }}</div>
                                     </div>
                                 </div>
                                 <div class="text-[11px] sm:text-xs lg:text-sm font-bold text-slate-800 leading-tight">{{
                                     c.label
-                                    }}</div>
+                                }}</div>
                             </a>
                         </div>
                     </div>
@@ -146,15 +159,42 @@
 
 
                 <div v-if="path === '/notices'" class="mt-3 rounded-sm border border-slate-300 bg-white p-4">
-                    <div class="text-lg font-extrabold text-slate-900">College Notice</div>
+                    <div class="text-xl font-bold text-slate-900 text-center mb-6 uppercase">Notices</div>
                     <div v-if="pageLoading" class="mt-3 text-sm text-slate-600">Loading...</div>
                     <div v-else-if="pageError" class="mt-3 text-sm text-red-700">{{ pageError }}</div>
-                    <div v-else class="mt-3 space-y-2">
+                    <div v-else class="mt-4 grid grid-cols-1 gap-3 max-w-6xl mx-auto">
                         <button v-for="n in noticeList" :key="'n-' + n.id" type="button"
-                            class="w-full rounded-sm border border-slate-300 bg-white px-3 py-2 text-left text-sm hover:bg-slate-50"
+                            class="group flex items-center gap-4 rounded-xl border border-slate-300 bg-white p-4 text-left transition-all duration-300 hover:-translate-y-1 hover:border-[#0d6b75]/30 hover:shadow-lg hover:shadow-[#0d6b75]/5"
                             @click="go(`/notices/${n.id}`)">
-                            <div class="font-semibold text-slate-900">{{ n.title }}</div>
-                            <div class="text-xs text-slate-600">{{ n.date || '' }}</div>
+                            
+                            <!-- Icon Box -->
+                            <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-teal-50 text-[#0d6b75] transition-colors duration-300 group-hover:bg-[#0d6b75] group-hover:text-white">
+                                <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+                                    <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
+                                </svg>
+                            </div>
+
+                            <!-- Content -->
+                            <div class="flex-1 overflow-hidden">
+                                <div class="truncate text-[15px] font-bold text-slate-800 transition-colors duration-300 group-hover:text-[#0d6b75]">
+                                    {{ n.title }}
+                                </div>
+                                <div class="mt-1 flex items-center gap-2 text-xs font-medium text-slate-500">
+                                    <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                        <line x1="16" y1="2" x2="16" y2="6"></line>
+                                        <line x1="8" y1="2" x2="8" y2="6"></line>
+                                        <line x1="3" y1="10" x2="21" y2="10"></line>
+                                    </svg>
+                                    {{ n.date || 'Published Today' }}
+                                </div>
+                            </div>
+
+                            <!-- Arrow icon that appears on hover -->
+                            <div class="translate-x-4 opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:opacity-100 text-[#0d6b75]">
+                                <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                            </div>
                         </button>
                     </div>
                 </div>
@@ -163,7 +203,7 @@
                     <div v-if="pageLoading" class="text-sm text-slate-600">Loading...</div>
                     <div v-else-if="pageError" class="text-sm text-red-700">{{ pageError }}</div>
                     <div v-else>
-                        <div class="text-lg font-extrabold text-slate-900">{{ noticeDetail?.title || 'Notice' }}</div>
+                        <div class="text-lg font-bold text-slate-900">{{ noticeDetail?.title || 'Notice' }}</div>
                         <div class="mt-1 text-xs text-slate-600">{{ noticeDetail?.date || '' }}</div>
                         <div v-if="noticeDetail?.description" class="prose prose-sm mt-4 max-w-none"
                             v-html="noticeDetail.description"></div>
@@ -179,7 +219,7 @@
                     <div v-if="pageLoading" class="text-sm text-slate-600">Loading...</div>
                     <div v-else-if="pageError" class="text-sm text-red-700">{{ pageError }}</div>
                     <div v-else>
-                        <div class="text-lg font-extrabold text-slate-900">{{ content?.title || '' }}</div>
+                        <div class="text-lg font-bold text-slate-900">{{ content?.title || '' }}</div>
                         <img v-if="content?.image_url" :src="content.image_url"
                             class="mt-3 w-full rounded-sm border border-slate-300" />
                         <div class="prose prose-sm mt-4 max-w-none" v-html="content?.description || ''"></div>
@@ -188,87 +228,133 @@
 
             </div>
         </div>
-        <div v-if="showOnlineAdmissionModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-4 backdrop-blur-sm">
+        <div v-if="showOnlineAdmissionModal"
+            class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-4 backdrop-blur-sm">
             <div class="w-full max-w-xl rounded-xl bg-white shadow-2xl overflow-hidden">
                 <div class="flex items-center justify-between border-b border-slate-100 px-6 py-4">
-                    <div class="text-lg font-extrabold text-[#0b1d4d]">Online Admission</div>
+                    <div class="text-lg font-bold text-[#0b1d4d]">Online Admission</div>
 
-                    <button type="button" @click="showOnlineAdmissionModal = false" class="text-slate-400 hover:text-slate-600">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <button type="button" @click="showOnlineAdmissionModal = false"
+                        class="text-slate-400 hover:text-slate-600">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor" stroke-width="2">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
                         </svg>
                     </button>
                 </div>
                 <div class="p-6">
-                    <div class="flex flex-wrap items-center gap-3 mb-6 p-4 bg-[#f8fafc] rounded-xl border border-slate-200">
-                        <button type="button" class="flex-1 whitespace-nowrap flex items-center justify-center gap-2 rounded-md bg-gradient-to-r from-[#0d6b75] to-[#12919e] px-4 py-2 text-sm font-bold text-white shadow-sm transition-transform hover:-translate-y-0.5 hover:shadow-md" @click="showOnlineAdmissionModal = false; go('/online-admission-download-form')">
+                    <div
+                        class="flex flex-wrap items-center gap-3 mb-6 p-4 bg-[#f8fafc] rounded-xl border border-slate-200">
+                        <button type="button"
+                            class="flex-1 whitespace-nowrap flex items-center justify-center gap-2 rounded-md bg-gradient-to-r from-[#059669] to-[#10b981] px-4 py-2 text-sm font-bold text-white shadow-sm transition-transform hover:-translate-y-0.5 hover:shadow-md"
+                            @click="showOnlineAdmissionModal = false; go('/online-admission-download-form')">
                             <i class="fa-solid fa-download"></i> Download Form
                         </button>
-                        <button type="button" class="flex-1 whitespace-nowrap flex items-center justify-center gap-2 rounded-md bg-gradient-to-r from-[#0d6b75] to-[#12919e] px-4 py-2 text-sm font-bold text-white shadow-sm transition-transform hover:-translate-y-0.5 hover:shadow-md" @click="showOnlineAdmissionModal = false; go('/online-admission-invoice')">
+                        <button type="button"
+                            class="flex-1 whitespace-nowrap flex items-center justify-center gap-2 rounded-md bg-gradient-to-r from-[#2563eb] to-[#3b82f6] px-4 py-2 text-sm font-bold text-white shadow-sm transition-transform hover:-translate-y-0.5 hover:shadow-md"
+                            @click="showOnlineAdmissionModal = false; go('/online-admission-invoice')">
                             <i class="fa-solid fa-file-invoice"></i> Pay Slip
                         </button>
-                        <button type="button" class="flex-1 whitespace-nowrap flex items-center justify-center gap-2 rounded-md bg-gradient-to-r from-[#0d6b75] to-[#12919e] px-4 py-2 text-sm font-bold text-white shadow-sm transition-transform hover:-translate-y-0.5 hover:shadow-md" @click="showOnlineAdmissionModal = false; go('/online-admission-payment')">
+                        <button type="button"
+                            class="flex-1 whitespace-nowrap flex items-center justify-center gap-2 rounded-md bg-gradient-to-r from-[#7c3aed] to-[#8b5cf6] px-4 py-2 text-sm font-bold text-white shadow-sm transition-transform hover:-translate-y-0.5 hover:shadow-md"
+                            @click="showOnlineAdmissionModal = false; go('/online-admission-payment')">
                             <i class="fa-solid fa-credit-card"></i> Payment
                         </button>
                     </div>
                     <div v-if="onlineAdmissionLoading" class="p-4 text-sm font-semibold text-slate-600">Loading...</div>
                     <div v-else>
-                        <div v-if="onlineAdmissionError" class="mb-4 rounded-sm border border-red-200 bg-red-50 p-3 text-sm font-semibold text-red-800">{{ onlineAdmissionError }}</div>
+                        <div v-if="onlineAdmissionError"
+                            class="mb-4 rounded-sm border border-red-200 bg-red-50 p-3 text-sm font-semibold text-red-800">
+                            {{
+                            onlineAdmissionError }}</div>
 
-                        <div v-if="!onlineAdmissionCheckApplicationFees && !onlineAdmissionCheckRollVerify && !onlineAdmissionShowForm" class="py-2">
-                            <div class="text-xs font-semibold text-slate-600 mb-1">Academic Level <span class="text-red-600">*</span></div>
-                            <select v-model="onlineAdmissionForm.academic_qualification_id" class="h-12 w-full rounded-md border border-slate-300 bg-slate-50 px-3 text-sm shadow-sm outline-none focus:border-[#0d6b75] focus:bg-white focus:ring-2 focus:ring-[#0d6b75]/10">
+                        <div v-if="!onlineAdmissionCheckApplicationFees && !onlineAdmissionCheckRollVerify && !onlineAdmissionShowForm"
+                            class="py-2">
+                            <div class="text-xs font-semibold text-slate-600 mb-1">Academic Level <span
+                                    class="text-red-600">*</span></div>
+                            <select v-model="onlineAdmissionForm.academic_qualification_id"
+                                class="h-12 w-full rounded-md border border-slate-300 bg-slate-50 px-3 text-sm shadow-sm outline-none focus:border-[#0d6b75] focus:bg-white focus:ring-2 focus:ring-[#0d6b75]/10">
                                 <option value="">Select an option</option>
-                                <option v-for="q in onlineAdmissionQualifications" :key="'moaq-' + q.id" :value="String(q.id)">{{ q.name }}</option>
+                                <option v-for="q in onlineAdmissionQualifications" :key="'moaq-' + q.id"
+                                    :value="String(q.id)">
+                                    {{ q.name }}</option>
                             </select>
-                            
-                            <button type="button" class="mt-6 h-11 w-full rounded-md bg-[#164e63] px-8 text-sm font-extrabold text-white shadow-sm hover:bg-[#083344]" @click="onlineAdmissionSelectAcademicLevel">Next</button>
+
+                            <button type="button"
+                                class="mt-6 h-11 w-full rounded-md bg-[#164e63] px-8 text-sm font-bold text-white shadow-sm hover:bg-[#083344]"
+                                @click="onlineAdmissionSelectAcademicLevel">Next</button>
                         </div>
 
                         <div v-else-if="onlineAdmissionCheckApplicationFees" class="py-2">
                             <div class="grid grid-cols-1 gap-4">
                                 <div>
-                                    <div class="text-xs font-semibold text-slate-600 mb-1">Application Fee Invoice No. <span class="text-red-600">*</span></div>
-                                    <input v-model="onlineAdmissionForm.application_invoice_no" type="text" class="h-12 w-full rounded-md border border-slate-300 bg-slate-50 px-3 text-sm shadow-sm outline-none focus:border-[#0d6b75] focus:bg-white focus:ring-2 focus:ring-[#0d6b75]/10" />
+                                    <div class="text-xs font-semibold text-slate-600 mb-1">Application Fee Invoice No.
+                                        <span class="text-red-600">*</span></div>
+                                    <input v-model="onlineAdmissionForm.application_invoice_no" type="text"
+                                        class="h-12 w-full rounded-md border border-slate-300 bg-slate-50 px-3 text-sm shadow-sm outline-none focus:border-[#0d6b75] focus:bg-white focus:ring-2 focus:ring-[#0d6b75]/10" />
                                 </div>
                                 <div>
-                                    <div class="text-xs font-semibold text-slate-600 mb-1">Admission Roll <span class="text-red-600">*</span></div>
-                                    <input v-model="onlineAdmissionForm.admission_roll" type="text" :readonly="onlineAdmissionDisabledFields.includes('admission_roll')" class="h-12 w-full rounded-md border border-slate-300 bg-slate-50 px-3 text-sm shadow-sm outline-none focus:border-[#0d6b75] focus:bg-white focus:ring-2 focus:ring-[#0d6b75]/10 disabled:bg-slate-100" />
+                                    <div class="text-xs font-semibold text-slate-600 mb-1">Admission Roll <span
+                                            class="text-red-600">*</span></div>
+                                    <input v-model="onlineAdmissionForm.admission_roll" type="text"
+                                        :readonly="onlineAdmissionDisabledFields.includes('admission_roll')"
+                                        class="h-12 w-full rounded-md border border-slate-300 bg-slate-50 px-3 text-sm shadow-sm outline-none focus:border-[#0d6b75] focus:bg-white focus:ring-2 focus:ring-[#0d6b75]/10 disabled:bg-slate-100" />
                                 </div>
-                                <button v-if="!onlineAdmissionCheckSpinner" type="button" class="mt-4 h-11 w-full sm:w-auto sm:px-10 mx-auto block rounded-md bg-[#164e63] text-sm font-extrabold text-white shadow-sm hover:bg-[#083344]" @click="onlineAdmissionCheckFees">Verify</button>
-                                <div v-else class="mt-4 text-center text-sm font-semibold text-slate-600">processing..</div>
+                                <button v-if="!onlineAdmissionCheckSpinner" type="button"
+                                    class="mt-4 h-11 w-full sm:w-auto sm:px-10 mx-auto block rounded-md bg-[#164e63] text-sm font-bold text-white shadow-sm hover:bg-[#083344]"
+                                    @click="onlineAdmissionCheckFees">Verify</button>
+                                <div v-else class="mt-4 text-center text-sm font-semibold text-slate-600">processing..
+                                </div>
                             </div>
                         </div>
 
                         <div v-else-if="onlineAdmissionCheckRollVerify && !onlineAdmissionDoubleVerify" class="py-2">
                             <div class="grid grid-cols-2 gap-4">
                                 <div>
-                                    <div class="text-xs font-semibold text-slate-600 mb-1">Department/Group <span class="text-red-600">*</span></div>
-                                    <select v-model="onlineAdmissionVerifyForm.department_id" :disabled="onlineAdmissionDisabledFields.includes('department_id')" class="h-12 w-full rounded-md border border-slate-300 bg-slate-50 px-3 text-sm shadow-sm outline-none focus:border-[#0d6b75] focus:bg-white focus:ring-2 focus:ring-[#0d6b75]/10 disabled:bg-slate-100 disabled:text-slate-500">
+                                    <div class="text-xs font-semibold text-slate-600 mb-1">Department/Group <span
+                                            class="text-red-600">*</span></div>
+                                    <select v-model="onlineAdmissionVerifyForm.department_id"
+                                        :disabled="onlineAdmissionDisabledFields.includes('department_id')"
+                                        class="h-12 w-full rounded-md border border-slate-300 bg-slate-50 px-3 text-sm shadow-sm outline-none focus:border-[#0d6b75] focus:bg-white focus:ring-2 focus:ring-[#0d6b75]/10 disabled:bg-slate-100 disabled:text-slate-500">
                                         <option value="">Select an option</option>
-                                        <option v-for="d in onlineAdmissionFilteredDepartments" :key="'moad-' + d.id" :value="String(d.id)">{{ d.name }}</option>
+                                        <option v-for="d in onlineAdmissionFilteredDepartments" :key="'moad-' + d.id"
+                                            :value="String(d.id)">{{ d.name }}</option>
                                     </select>
                                 </div>
                                 <div>
-                                    <div class="text-xs font-semibold text-slate-600 mb-1">Academic Session <span class="text-red-600">*</span></div>
-                                    <select v-model="onlineAdmissionVerifyForm.academic_session_id" :disabled="onlineAdmissionDisabledFields.includes('academic_session_id')" class="h-12 w-full rounded-md border border-slate-300 bg-slate-50 px-3 text-sm shadow-sm outline-none focus:border-[#0d6b75] focus:bg-white focus:ring-2 focus:ring-[#0d6b75]/10 disabled:bg-slate-100 disabled:text-slate-500">
+                                    <div class="text-xs font-semibold text-slate-600 mb-1">Academic Session <span
+                                            class="text-red-600">*</span></div>
+                                    <select v-model="onlineAdmissionVerifyForm.academic_session_id"
+                                        :disabled="onlineAdmissionDisabledFields.includes('academic_session_id')"
+                                        class="h-12 w-full rounded-md border border-slate-300 bg-slate-50 px-3 text-sm shadow-sm outline-none focus:border-[#0d6b75] focus:bg-white focus:ring-2 focus:ring-[#0d6b75]/10 disabled:bg-slate-100 disabled:text-slate-500">
                                         <option value="">Select an option</option>
-                                        <option v-for="s in onlineAdmissionSessions" :key="'moas-' + s.id" :value="String(s.id)">{{ s.name }}</option>
+                                        <option v-for="s in onlineAdmissionSessions" :key="'moas-' + s.id"
+                                            :value="String(s.id)">{{ s.name }}</option>
                                     </select>
                                 </div>
                                 <div>
-                                    <div class="text-xs font-semibold text-slate-600 mb-1">Class <span class="text-red-600">*</span></div>
-                                    <select v-model="onlineAdmissionVerifyForm.academic_class_id" :disabled="onlineAdmissionDisabledFields.includes('academic_class_id')" class="h-12 w-full rounded-md border border-slate-300 bg-slate-50 px-3 text-sm shadow-sm outline-none focus:border-[#0d6b75] focus:bg-white focus:ring-2 focus:ring-[#0d6b75]/10 disabled:bg-slate-100 disabled:text-slate-500">
+                                    <div class="text-xs font-semibold text-slate-600 mb-1">Class <span
+                                            class="text-red-600">*</span></div>
+                                    <select v-model="onlineAdmissionVerifyForm.academic_class_id"
+                                        :disabled="onlineAdmissionDisabledFields.includes('academic_class_id')"
+                                        class="h-12 w-full rounded-md border border-slate-300 bg-slate-50 px-3 text-sm shadow-sm outline-none focus:border-[#0d6b75] focus:bg-white focus:ring-2 focus:ring-[#0d6b75]/10 disabled:bg-slate-100 disabled:text-slate-500">
                                         <option value="">Select an option</option>
-                                        <option v-for="c in onlineAdmissionFilteredClasses" :key="'moac-' + c.id" :value="String(c.id)">{{ c.name }}</option>
+                                        <option v-for="c in onlineAdmissionFilteredClasses" :key="'moac-' + c.id"
+                                            :value="String(c.id)">{{ c.name }}</option>
                                     </select>
                                 </div>
                                 <div>
-                                    <div class="text-xs font-semibold text-slate-600 mb-1">Admission/College Roll <span class="text-red-600">*</span></div>
-                                    <input v-model="onlineAdmissionVerifyForm.admission_roll" type="text" placeholder="Enter Roll" :readonly="onlineAdmissionDisabledFields.includes('admission_roll')" class="h-12 w-full rounded-md border border-slate-300 bg-slate-50 px-3 text-sm shadow-sm outline-none focus:border-[#0d6b75] focus:bg-white focus:ring-2 focus:ring-[#0d6b75]/10 disabled:bg-slate-100" />
+                                    <div class="text-xs font-semibold text-slate-600 mb-1">Admission/College Roll <span
+                                            class="text-red-600">*</span></div>
+                                    <input v-model="onlineAdmissionVerifyForm.admission_roll" type="text"
+                                        placeholder="Enter Roll"
+                                        :readonly="onlineAdmissionDisabledFields.includes('admission_roll')"
+                                        class="h-12 w-full rounded-md border border-slate-300 bg-slate-50 px-3 text-sm shadow-sm outline-none focus:border-[#0d6b75] focus:bg-white focus:ring-2 focus:ring-[#0d6b75]/10 disabled:bg-slate-100" />
                                 </div>
                             </div>
-                            <button v-if="!onlineAdmissionCheckSpinner" type="button" class="mt-6 h-11 w-full sm:w-auto sm:px-10 mx-auto block rounded-md bg-[#164e63] text-sm font-extrabold text-white shadow-sm hover:bg-[#083344]" @click="onlineAdmissionVerifyRoll">Verify</button>
+                            <button v-if="!onlineAdmissionCheckSpinner" type="button"
+                                class="mt-6 h-11 w-full sm:w-auto sm:px-10 mx-auto block rounded-md bg-[#164e63] text-sm font-bold text-white shadow-sm hover:bg-[#083344]"
+                                @click="onlineAdmissionVerifyRoll">Verify</button>
                             <div v-else class="mt-6 text-center text-sm font-semibold text-slate-600">processing..</div>
                         </div>
                     </div>
@@ -277,7 +363,7 @@
         </div>
 
         <a v-if="links.live_chat" :href="links.live_chat" target="_blank" rel="noopener"
-            class="fixed bottom-6 right-6 z-50 rounded-full bg-[#0d6b75] px-5 py-3 text-sm font-extrabold text-white shadow-lg hover:bg-[#0b5b63]">
+            class="fixed bottom-6 right-6 z-50 rounded-full bg-[#0d6b75] px-5 py-3 text-sm font-bold text-white shadow-lg hover:bg-[#0b5b63]">
             Live Chat
         </a>
 
@@ -285,15 +371,20 @@
             <div class="mx-auto max-w-[1700px] px-2 sm:px-3">
                 <div
                     class="mt-6 flex flex-wrap items-center justify-center text-[13px] font-semibold text-slate-600 sm:text-sm md:text-base">
-                    <a class="px-3 hover:underline" href="/content/about-epayment" @click.prevent="go('/content/about-epayment')">About ePayment</a>
+                    <a class="px-3 hover:underline" href="/content/about-epayment"
+                        @click.prevent="go('/content/about-epayment')">About ePayment</a>
                     <span class="mx-1 text-slate-400">|</span>
-                    <a class="px-3 hover:underline" href="/content/terms-conditions" @click.prevent="go('/content/terms-conditions')">Terms &amp; Conditions</a>
+                    <a class="px-3 hover:underline" href="/content/terms-conditions"
+                        @click.prevent="go('/content/terms-conditions')">Terms &amp; Conditions</a>
                     <span class="mx-1 text-slate-400">|</span>
-                    <a class="px-3 hover:underline" href="/content/refund-return-policy" @click.prevent="go('/content/refund-return-policy')">Refund &amp; Return Policy</a>
+                    <a class="px-3 hover:underline" href="/content/refund-return-policy"
+                        @click.prevent="go('/content/refund-return-policy')">Refund &amp; Return Policy</a>
                     <span class="mx-1 text-slate-400">|</span>
-                    <a class="px-3 hover:underline" href="/content/support-policy" @click.prevent="go('/content/support-policy')">Support Policy</a>
+                    <a class="px-3 hover:underline" href="/content/support-policy"
+                        @click.prevent="go('/content/support-policy')">Support Policy</a>
                     <span class="mx-1 text-slate-400">|</span>
-                    <a class="px-3 hover:underline" href="/content/privacy-policy" @click.prevent="go('/content/privacy-policy')">Privacy Policy</a>
+                    <a class="px-3 hover:underline" href="/content/privacy-policy"
+                        @click.prevent="go('/content/privacy-policy')">Privacy Policy</a>
                 </div>
 
                 <div class="mt-6 flex flex-col items-center justify-center gap-3 pb-6 sm:flex-row">
@@ -302,22 +393,22 @@
                         @error="payWithImageOk = false" />
                     <div v-else class="flex flex-wrap items-center justify-center gap-2">
                         <div
-                            class="rounded-sm border border-slate-300 bg-white px-3 py-2 text-xs font-extrabold text-slate-700">
+                            class="rounded-sm border border-slate-300 bg-white px-3 py-2 text-xs font-bold text-slate-700">
                             SSLCommerz</div>
                         <div
-                            class="rounded-sm border border-slate-300 bg-white px-3 py-2 text-xs font-extrabold text-slate-700">
+                            class="rounded-sm border border-slate-300 bg-white px-3 py-2 text-xs font-bold text-slate-700">
                             bKash</div>
                         <div
-                            class="rounded-sm border border-slate-300 bg-white px-3 py-2 text-xs font-extrabold text-slate-700">
+                            class="rounded-sm border border-slate-300 bg-white px-3 py-2 text-xs font-bold text-slate-700">
                             Nagad</div>
                         <div
-                            class="rounded-sm border border-slate-300 bg-white px-3 py-2 text-xs font-extrabold text-slate-700">
+                            class="rounded-sm border border-slate-300 bg-white px-3 py-2 text-xs font-bold text-slate-700">
                             Rocket</div>
                         <div
-                            class="rounded-sm border border-slate-300 bg-white px-3 py-2 text-xs font-extrabold text-slate-700">
+                            class="rounded-sm border border-slate-300 bg-white px-3 py-2 text-xs font-bold text-slate-700">
                             Visa</div>
                         <div
-                            class="rounded-sm border border-slate-300 bg-white px-3 py-2 text-xs font-extrabold text-slate-700">
+                            class="rounded-sm border border-slate-300 bg-white px-3 py-2 text-xs font-bold text-slate-700">
                             MasterCard</div>
                     </div>
                 </div>
@@ -647,6 +738,7 @@ export default {
                 subject_choose: [],
                 documents: [],
             },
+            onlineAdmissionValidationErrors: {},
             onlineAdmissionSameAsPresent: false,
 
             onlineAdmissionPaymentHeadsLoading: false,
@@ -728,7 +820,13 @@ export default {
             return '/images/ssl-logo.webp'
         },
         hotline() {
-            return this.site?.mobile1 || this.site?.college_phone || ''
+            return this.site?.mobile2 || this.site?.college_phone || ''
+        },
+        isSupportActive() {
+            const now = new Date()
+            const hour = now.getHours()
+            // Active between 9:00 AM (inclusive) and 5:00 PM (exclusive)
+            return hour >= 9 && hour < 17
         },
         developedByText() {
             return this.site?.developed_by || 'Dynamic Host BD'
@@ -1785,7 +1883,7 @@ export default {
             this.onlineAdmissionDoubleVerify = !!(Number(qua?.application_fees || 0) && Number(qua?.admission_roll_verify || 0))
             this.onlineAdmissionShowForm = !(this.onlineAdmissionCheckApplicationFees || this.onlineAdmissionCheckRollVerify)
             this.onlineAdmissionSubjectChoose = !!Number(qua?.subject_choose || 0)
-            
+
             if (this.onlineAdmissionShowForm) {
                 this.showOnlineAdmissionModal = false
                 if (this.path !== '/online-admission') this.go('/online-admission')
@@ -2034,61 +2132,51 @@ export default {
         async onlineAdmissionSubmit() {
             if (this.onlineAdmissionSubmitting) return
 
-            if (!this.onlineAdmissionAgree) {
-                this.onlineAdmissionError = 'Please checked terms & conditions'
+            const errors = {}
+            let hasError = false
+            const addError = (field, msg) => {
+                errors[field] = msg
+                hasError = true
+            }
+
+            const form = this.onlineAdmissionForm || {}
+
+            if (!this.onlineAdmissionProfileFile) addError('profile', 'Picture is required')
+            if (!String(form.name || '')) addError('name', 'Name is required')
+            if (!String(form.fathers_name || '')) addError('fathers_name', 'Father name is required')
+            if (!String(form.mothers_name || '')) addError('mothers_name', 'Mother name is required')
+            if (!String(form.mobile || '')) addError('mobile', 'Mobile is required')
+            if (!String(form.dob || '')) addError('dob', 'Date of birth is required')
+            if (!String(form.religion || '')) addError('religion', 'Religion is required')
+            if (!String(form.address || '')) addError('address', 'Present address is required')
+            if (!String(form.division_id || '')) addError('division_id', 'Division is required')
+            if (!String(form.district_id || '')) addError('district_id', 'District is required')
+            if (!String(form.upazila_id || '')) addError('upazila_id', 'Upazila is required')
+            if (!String(form.guardian_type || '')) addError('guardian_type', 'Guardian type is required')
+            if (!String(form.guardian_name || '')) addError('guardian_name', 'Guardian name is required')
+            if (!String(form.guardian_mobile || '')) addError('guardian_mobile', 'Guardian mobile is required')
+            if (!String(form.nationality || '')) addError('nationality', 'Nationality is required')
+            if (!String(form.passing_year || '')) addError('passing_year', 'Passing Year is required')
+            
+            if (!String(form.academic_session_id || '')) addError('academic_session_id', 'Session is required')
+            if (!String(form.department_id || '')) addError('department_id', 'Department is required')
+            if (!String(form.academic_class_id || '')) addError('academic_class_id', 'Class is required')
+            if (!String(form.admission_roll || '')) addError('admission_roll', 'Roll is required')
+
+            this.onlineAdmissionValidationErrors = errors
+
+            if (hasError) {
+                this.onlineAdmissionError = 'Please fix the errors marked in red.'
+                const firstError = Object.keys(errors)[0]
+                setTimeout(() => {
+                    const el = document.getElementById(`field-${firstError}`) || document.getElementsByName(firstError)[0]
+                    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' })
+                }, 100)
                 return
             }
 
-            if (!this.onlineAdmissionProfileFile) {
-                this.onlineAdmissionError = 'Picture is required'
-                return
-            }
-            if (!String(this.onlineAdmissionForm?.academic_qualification_id || '')) {
-                this.onlineAdmissionError = 'Academic Level is required'
-                return
-            }
-            if (!String(this.onlineAdmissionForm?.academic_session_id || '')) {
-                this.onlineAdmissionError = 'Academic Session is required'
-                return
-            }
-            if (!String(this.onlineAdmissionForm?.department_id || '')) {
-                this.onlineAdmissionError = 'Department/Group is required'
-                return
-            }
-            if (!String(this.onlineAdmissionForm?.academic_class_id || '')) {
-                this.onlineAdmissionError = 'Academic Class is required'
-                return
-            }
-            if (!String(this.onlineAdmissionForm?.admission_roll || '')) {
-                this.onlineAdmissionError = 'Admission Roll is required'
-                return
-            }
-            if (!String(this.onlineAdmissionForm?.name || '')) {
-                this.onlineAdmissionError = 'Name is required'
-                return
-            }
-            if (!String(this.onlineAdmissionForm?.fathers_name || '')) {
-                this.onlineAdmissionError = 'Father name is required'
-                return
-            }
-            if (!String(this.onlineAdmissionForm?.mothers_name || '')) {
-                this.onlineAdmissionError = 'Mother name is required'
-                return
-            }
-            if (!String(this.onlineAdmissionForm?.mobile || '')) {
-                this.onlineAdmissionError = 'Mobile is required'
-                return
-            }
-            if (!String(this.onlineAdmissionForm?.guardian_type || '')) {
-                this.onlineAdmissionError = 'Guardian Type is required'
-                return
-            }
-            if (!String(this.onlineAdmissionForm?.religion || '')) {
-                this.onlineAdmissionError = 'Religion is required'
-                return
-            }
-            if (!String(this.onlineAdmissionForm?.address || '')) {
-                this.onlineAdmissionError = 'Present Address is required'
+            if (!this.onlineAdmissionAgree) {
+                this.onlineAdmissionError = 'Please check the terms & conditions'
                 return
             }
 

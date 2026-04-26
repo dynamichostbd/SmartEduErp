@@ -11,12 +11,14 @@
                                     <template v-if="studentMe?.profile">
                                         <img :src="studentMe.profile" class="h-full w-full object-cover" />
                                     </template>
-                                    <div v-else class="flex h-full w-full items-center justify-center text-xs font-extrabold">
+                                    <div v-else
+                                        class="flex h-full w-full items-center justify-center text-xs font-bold">
                                         {{ (studentMe?.name || 'NA').slice(0, 2).toUpperCase() }}
                                     </div>
                                 </div>
                                 <div class="min-w-0">
-                                    <div class="truncate text-sm font-extrabold">{{ (studentMe?.name || '').toUpperCase() }}</div>
+                                    <div class="truncate text-sm font-bold">{{ (studentMe?.name || '').toUpperCase() }}
+                                    </div>
                                     <div class="mt-1 text-xs font-semibold opacity-90 truncate">
                                         ID: {{ studentMe?.student_id || '—' }}
                                     </div>
@@ -24,25 +26,19 @@
                             </div>
                         </div>
                         <div class="py-2">
-                            <button 
-                                v-for="item in menuItems" 
-                                :key="item.key"
-                                @click="injectGo(item.href)"
-                                class="group relative flex w-full items-center gap-3 px-4 py-2.5 text-left text-sm font-semibold transition" 
-                                :class="studentSidebarActive === item.key ? 'bg-white/10 pl-3.5' : 'hover:bg-white/10 text-white/80 hover:text-white'"
-                            >
-                                <span v-if="studentSidebarActive === item.key" class="absolute left-0 top-0 h-full w-1 bg-emerald-400"></span>
+                            <button v-for="item in menuItems" :key="item.key" @click="injectGo(item.href)"
+                                class="group relative flex w-full items-center gap-3 px-4 py-2.5 text-left text-sm font-semibold transition"
+                                :class="studentSidebarActive === item.key ? 'bg-white/10 pl-3.5' : 'hover:bg-white/10 text-white/80 hover:text-white'">
+                                <span v-if="studentSidebarActive === item.key"
+                                    class="absolute left-0 top-0 h-full w-1 bg-emerald-400"></span>
                                 <div v-html="item.icon" class="h-4 w-4 opacity-90"></div>
                                 <span>{{ item.label }}</span>
                             </button>
                         </div>
                         <div class="border-t border-white/15 px-4 py-3">
-                            <button 
-                                type="button" 
-                                class="w-full rounded-sm bg-white/10 px-4 py-2 text-xs font-extrabold transition hover:bg-white/20" 
-                                @click="injectDoStudentLogout"
-                                :disabled="studentAuthLoading"
-                            >
+                            <button type="button"
+                                class="w-full rounded-sm bg-white/10 px-4 py-2 text-xs font-bold transition hover:bg-white/20"
+                                @click="injectDoStudentLogout" :disabled="studentAuthLoading">
                                 LOGOUT
                             </button>
                         </div>

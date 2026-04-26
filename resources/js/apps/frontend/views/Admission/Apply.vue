@@ -1,26 +1,41 @@
 <template>
     <div class="mt-3 rounded-sm border border-slate-300 bg-white p-4 sm:p-6">
         <div class="mx-auto w-full max-w-6xl">
-            <div class="flex flex-wrap items-end justify-between gap-3">
-                <div>
-                    <div class="text-xl font-extrabold text-slate-900 sm:text-2xl">STUDENT PAYMENT</div>
-                    <div class="mt-2 h-[2px] w-full max-w-3xl bg-red-500"></div>
+            <div class="flex flex-wrap items-center justify-between gap-6 mb-8">
+                <div class="flex items-center gap-4">
+                    <div class="flex h-16 w-16 items-center justify-center rounded-2xl bg-[#0d6b75] text-white shadow-lg shadow-[#0d6b75]/20">
+                        <svg class="h-10 w-10" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M22 10L12 5L2 10L12 15L22 10Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M6 12V17C6 17 6 20 12 20C18 20 18 17 18 17V12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <div class="text-2xl font-black tracking-tight text-slate-800">STUDENT PAYMENT</div>
+                        <div class="text-sm font-medium text-slate-500">Pay your application fees securely and easily</div>
+                        <div class="mt-2 h-1 w-24 rounded-full bg-[#0d6b75]"></div>
+                    </div>
                 </div>
 
-                <div class="flex items-center gap-2">
-                    <button type="button" class="rounded-t-md border border-b-0 px-4 py-2 text-sm font-extrabold"
-                        :class="app.applyFeesTab === 'fees' ? 'border-blue-500 bg-white text-blue-700' : 'border-slate-300 bg-slate-50 text-slate-600 hover:bg-white'"
+                <div class="flex items-center gap-3 p-1.5 bg-white/50 backdrop-blur-sm rounded-2xl">
+                    <button type="button" 
+                        class="flex items-center gap-2 px-5 py-3 text-[13px] font-bold rounded-xl transition-all duration-300"
+                        :class="app.applyFeesTab === 'fees' ? 'bg-[#0d6b75] text-white shadow-lg shadow-[#0d6b75]/30 -translate-y-0.5' : 'bg-white border border-slate-100 text-slate-500 hover:bg-slate-50 hover:text-[#0d6b75] shadow-sm'"
                         @click="app.applyFeesTab = 'fees'">
+                        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg>
                         APPLICATION FEES
                     </button>
-                    <button type="button" class="rounded-t-md border border-b-0 px-4 py-2 text-sm font-extrabold"
-                        :class="app.applyFeesTab === 'certificate' ? 'border-blue-500 bg-white text-blue-700' : 'border-slate-300 bg-slate-50 text-slate-600 hover:bg-white'"
+                    <button type="button" 
+                        class="flex items-center gap-2 px-5 py-3 text-[13px] font-bold rounded-xl transition-all duration-300"
+                        :class="app.applyFeesTab === 'certificate' ? 'bg-[#0d6b75] text-white shadow-lg shadow-[#0d6b75]/30 -translate-y-0.5' : 'bg-white border border-slate-100 text-slate-500 hover:bg-slate-50 hover:text-[#0d6b75] shadow-sm'"
                         @click="app.applyFeesTab = 'certificate'">
+                        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
                         APPLY FOR CERTIFICATE
                     </button>
-                    <button type="button" class="rounded-t-md border border-b-0 px-4 py-2 text-sm font-extrabold"
-                        :class="app.applyFeesTab === 'invoice' ? 'border-blue-500 bg-white text-blue-700' : 'border-slate-300 bg-slate-50 text-slate-600 hover:bg-white'"
+                    <button type="button" 
+                        class="flex items-center gap-2 px-5 py-3 text-[13px] font-bold rounded-xl transition-all duration-300"
+                        :class="app.applyFeesTab === 'invoice' ? 'bg-[#0d6b75] text-white shadow-lg shadow-[#0d6b75]/30 -translate-y-0.5' : 'bg-white border border-slate-100 text-slate-500 hover:bg-slate-50 hover:text-[#0d6b75] shadow-sm'"
                         @click="app.applyFeesTab = 'invoice'">
+                        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><path d="M9 15h3"></path><path d="M9 19h6"></path></svg>
                         CHECK INVOICE
                     </button>
                 </div>
@@ -43,135 +58,263 @@
                         </div>
 
                         <div v-if="!selectedFeeId" class="mt-6">
-                            <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                                <div v-for="p in app.applyFeesPurposes" :key="'fee-card-' + p.id"
-                                    class="flex flex-col justify-between rounded-xl border border-slate-200 bg-white p-5 shadow-md transition hover:shadow-lg transform hover:scale-102">
-                                    <div>
-                                        <div class="text-lg font-extrabold text-[#0d6b75]">{{ p?.head?.name || 'Fee' }}
+                            <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                                <div v-for="(p, index) in app.applyFeesPurposes" :key="'fee-card-' + p.id"
+                                    class="relative flex flex-col justify-between rounded-2xl border border-slate-100 bg-white p-5 shadow-sm transition hover:shadow-md hover:-translate-y-1 duration-300">
+                                    
+                                    <!-- Top Section: Icon and Title -->
+                                    <div class="flex items-center gap-4">
+                                        <!-- Circular Icon with themed background -->
+                                        <div :class="[
+                                            'flex h-14 w-14 shrink-0 items-center justify-center rounded-full',
+                                            index % 3 === 0 ? 'bg-emerald-100 text-emerald-600' : 
+                                            index % 3 === 1 ? 'bg-blue-100 text-blue-600' : 'bg-purple-100 text-purple-600'
+                                        ]">
+                                            <svg class="w-8 h-8" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M13 2H6C4.89543 2 4 2.89543 4 4V20C4 21.1046 4.89543 22 6 22H18C19.1046 22 20 21.1046 20 20V9L13 2Z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                                                <path d="M13 2V9H20" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                                                <line x1="7" y1="13" x2="12" y2="13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                                                <line x1="7" y1="16" x2="10" y2="16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                                                <circle cx="17.5" cy="18.5" r="4.5" fill="currentColor" />
+                                                <path d="M17.5 16v5M16 17.5c0-.8 1-.8 1.5-.8s1.5 0 1.5.8c0 .8-1 1-1.5 1.2s-1.5.4-1.5 1.2c0 .8 1 .8 1.5.8s1.5 0 1.5-.8" stroke="white" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+                                            </svg>
                                         </div>
-                                        <div class="mt-2 text-2xl font-bold text-slate-900">{{ Number(p?.amount ||
-                                            0).toFixed(2) }} <span class="text-sm font-bold text-slate-900">BDT</span>
+                                        
+                                        <!-- Title and Dotted Line -->
+                                        <div class="flex-1 overflow-hidden">
+                                            <div class="text-[16px] font-bold text-slate-800 leading-tight truncate">
+                                                {{ p?.head?.name || 'Fee' }}
+                                            </div>
+                                            <div class="mt-2 border-b border-dotted border-slate-300 w-full opacity-60"></div>
                                         </div>
                                     </div>
+
+                                    <!-- Amount Box: Styled with themed background -->
+                                    <div :class="[
+                                        'mt-4 flex items-center justify-between rounded-xl px-5 py-2',
+                                        index % 3 === 0 ? 'bg-emerald-50' : 
+                                        index % 3 === 1 ? 'bg-blue-50' : 'bg-purple-50'
+                                    ]">
+                                        <div :class="[
+                                            'flex items-center gap-2',
+                                            index % 3 === 0 ? 'text-emerald-600' : 
+                                            index % 3 === 1 ? 'text-blue-600' : 'text-purple-600'
+                                        ]">
+                                            <svg class="w-9 h-9" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <rect x="2" y="6" width="20" height="12" rx="2" stroke="currentColor" stroke-width="1.8"/>
+                                                <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.8"/>
+                                                <circle cx="12" cy="12" r="1.2" fill="currentColor"/>
+                                                <path d="M6 12h.01M18 12h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                            </svg>
+                                        </div>
+                                        <div class="flex items-baseline gap-1">
+                                            <span class="text-2xl font-black" :class="[
+                                                index % 3 === 0 ? 'text-emerald-600' : 
+                                                index % 3 === 1 ? 'text-blue-600' : 'text-purple-600'
+                                            ]">
+                                                {{ Number(p?.amount || 0).toFixed(2) }}
+                                            </span>
+                                            <span class="text-xs font-bold text-slate-500 tracking-wider">BDT</span>
+                                        </div>
+                                    </div>
+
+                                    <!-- Action Button: Gradient teal style -->
                                     <button type="button" @click="proceedToPay(p.id)"
-                                        class="mt-4 ml-auto w-[150px] flex items-center justify-center gap-2 rounded-md bg-gradient-to-r from-[#0d6b75] to-[#12919e] py-2.5 text-sm font-bold text-white shadow-md transition-transform hover:-translate-y-0.5 hover:shadow-lg">
-                                        Proceed to Pay <i class="fa-solid fa-arrow-right text-xs"></i>
+                                        class="mt-8 flex w-full items-center justify-center gap-2 rounded-xl bg-[#0d6b75] py-3.5 text-[15px] font-semibold text-white shadow-md transition-all hover:shadow-lg hover:brightness-110 active:scale-[0.98]">
+                                        Proceed to Pay 
+                                        <i class="fa-solid fa-arrow-right text-sm"></i>
                                     </button>
                                 </div>
                             </div>
                             <div v-if="!app.applyFeesPurposes || app.applyFeesPurposes.length === 0"
-                                class="text-sm text-slate-600">
-                                No fees available.
+                                class="mt-8 text-center py-10 rounded-2xl border border-dashed border-slate-300 bg-slate-50 text-slate-500 font-medium">
+                                <i class="fa-solid fa-receipt text-3xl mb-3 opacity-20 block"></i>
+                                No fees available at this moment.
                             </div>
                         </div>
 
-                        <div v-else class="mt-6">
-                            <div class="mb-4">
+                        <div v-else class="mt-8">
+                            <div class="mb-8">
                                 <button type="button" @click="selectedFeeId = null"
-                                    class="text-sm font-bold text-[#0d6b75] hover:underline">← Back to Fees</button>
+                                    class="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-teal-50 text-[#0d6b75] font-bold text-sm hover:bg-teal-100 transition-colors">
+                                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+                                    Back to Fees
+                                </button>
                             </div>
-                            <form @submit.prevent="app.submitApplyFees">
-                                <div class="grid grid-cols-1 gap-6 md:grid-cols-3">
-                                    <div class="space-y-4">
-                                        <input v-model="app.applyFeesForm.name" type="text" placeholder="Full Name"
-                                            class="h-10 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10"
-                                            required />
-                                        <input v-model="app.applyFeesForm.mobile" type="text" placeholder="Mobile"
-                                            class="h-10 w-full rounded-sm border border-slate-300 bg-[#eaf2ff] px-3 text-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10"
-                                            required />
-                                        <input v-model="app.applyFeesForm.admission_roll" type="text"
-                                            placeholder="Application ID / Admission Roll"
-                                            class="h-10 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10"
-                                            required />
+                            
+                            <form @submit.prevent="app.submitApplyFees" class="relative">
+                                <!-- Decorative background dots -->
+                                <div class="absolute -top-10 -right-10 opacity-20 pointer-events-none">
+                                    <svg width="100" height="100" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <circle cx="2" cy="2" r="2" fill="#0d6b75"/><circle cx="22" cy="2" r="2" fill="#0d6b75"/><circle cx="42" cy="2" r="2" fill="#0d6b75"/><circle cx="62" cy="2" r="2" fill="#0d6b75"/><circle cx="82" cy="2" r="2" fill="#0d6b75"/>
+                                        <circle cx="2" cy="22" r="2" fill="#0d6b75"/><circle cx="22" cy="22" r="2" fill="#0d6b75"/><circle cx="42" cy="22" r="2" fill="#0d6b75"/><circle cx="62" cy="22" r="2" fill="#0d6b75"/><circle cx="82" cy="22" r="2" fill="#0d6b75"/>
+                                        <circle cx="2" cy="42" r="2" fill="#0d6b75"/><circle cx="22" cy="42" r="2" fill="#0d6b75"/><circle cx="42" cy="42" r="2" fill="#0d6b75"/><circle cx="62" cy="42" r="2" fill="#0d6b75"/><circle cx="82" cy="42" r="2" fill="#0d6b75"/>
+                                    </svg>
+                                </div>
+
+                                <div class="grid grid-cols-1 gap-8 lg:grid-cols-3">
+                                    <!-- Column 1: Personal Info -->
+                                    <div class="space-y-5">
+                                        <div class="relative group">
+                                            <div class="absolute inset-y-0 left-0 flex items-center pl-4 text-[#0d6b75]">
+                                                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                                            </div>
+                                            <input v-model="app.applyFeesForm.name" type="text" placeholder="Full Name"
+                                                class="h-14 w-full rounded-2xl border border-slate-100 bg-white pl-12 pr-4 text-[15px] font-medium outline-none focus:border-[#0d6b75] focus:ring-4 focus:ring-[#0d6b75]/5 transition-all shadow-sm group-hover:border-slate-200"
+                                                required />
+                                        </div>
+                                        <div class="relative group">
+                                            <div class="absolute inset-y-0 left-0 flex items-center pl-4 text-emerald-500">
+                                                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+                                            </div>
+                                            <input v-model="app.applyFeesForm.mobile" type="text" placeholder="Mobile"
+                                                class="h-14 w-full rounded-2xl border border-slate-100 bg-[#f8fafc] pl-12 pr-4 text-[15px] font-medium outline-none focus:border-[#0d6b75] focus:ring-4 focus:ring-[#0d6b75]/5 transition-all shadow-sm group-hover:border-slate-200"
+                                                required />
+                                        </div>
+                                        <div class="relative group">
+                                            <div class="absolute inset-y-0 left-0 flex items-center pl-4 text-orange-400">
+                                                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"></rect><path d="M7 8h10"></path><path d="M7 12h10"></path><path d="M7 16h10"></path></svg>
+                                            </div>
+                                            <input v-model="app.applyFeesForm.admission_roll" type="text"
+                                                placeholder="Application ID / Admission Roll"
+                                                class="h-14 w-full rounded-2xl border border-slate-100 bg-white pl-12 pr-4 text-[15px] font-medium outline-none focus:border-[#0d6b75] focus:ring-4 focus:ring-[#0d6b75]/5 transition-all shadow-sm group-hover:border-slate-200"
+                                                required />
+                                        </div>
                                     </div>
 
-                                    <div class="space-y-4">
-                                        <select v-model="app.applyFeesForm.academic_session_id"
-                                            class="h-10 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10"
-                                            required>
-                                            <option value="">Session</option>
-                                            <option v-for="s in app.applyFeesSessionsSorted" :key="'afs-' + s.id"
-                                                :value="String(s.id)">{{ s.name }}</option>
-                                        </select>
+                                    <!-- Column 2: Academic Info -->
+                                    <div class="space-y-5">
+                                        <div class="relative group">
+                                            <div class="absolute inset-y-0 left-0 flex items-center pl-4 text-blue-500">
+                                                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                                            </div>
+                                            <select v-model="app.applyFeesForm.academic_session_id"
+                                                class="h-14 w-full appearance-none rounded-2xl border border-slate-100 bg-white pl-12 pr-10 text-[15px] font-medium outline-none focus:border-[#0d6b75] focus:ring-4 focus:ring-[#0d6b75]/5 transition-all shadow-sm group-hover:border-slate-200"
+                                                required>
+                                                <option value="">Session</option>
+                                                <option v-for="s in app.applyFeesSessionsSorted" :key="'afs-' + s.id"
+                                                    :value="String(s.id)">{{ s.name }}</option>
+                                            </select>
+                                            <div class="absolute inset-y-0 right-0 flex items-center pr-4 pointer-events-none text-slate-400">
+                                                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                                            </div>
+                                        </div>
 
-                                        <select v-model="app.applyFeesForm.academic_qualification_id"
-                                            class="h-10 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10"
-                                            required>
-                                            <option value="">Academic Level</option>
-                                            <option v-for="q in app.applyFeesQualifications" :key="'afq-' + q.id"
-                                                :value="String(q.id)">{{ q.name }}</option>
-                                        </select>
+                                        <div class="relative group">
+                                            <div class="absolute inset-y-0 left-0 flex items-center pl-4 text-[#8b5cf6]">
+                                                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10L12 5L2 10L12 15L22 10Z"></path><path d="M6 12V17C6 17 6 20 12 20C18 20 18 17 18 17V12"></path></svg>
+                                            </div>
+                                            <select v-model="app.applyFeesForm.academic_qualification_id"
+                                                class="h-14 w-full appearance-none rounded-2xl border border-slate-100 bg-white pl-12 pr-10 text-[15px] font-medium outline-none focus:border-[#0d6b75] focus:ring-4 focus:ring-[#0d6b75]/5 transition-all shadow-sm group-hover:border-slate-200"
+                                                required>
+                                                <option value="">Academic Level</option>
+                                                <option v-for="q in app.applyFeesQualifications" :key="'afq-' + q.id"
+                                                    :value="String(q.id)">{{ q.name }}</option>
+                                            </select>
+                                            <div class="absolute inset-y-0 right-0 flex items-center pr-4 pointer-events-none text-slate-400">
+                                                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                                            </div>
+                                        </div>
 
-                                        <select v-model="app.applyFeesForm.department_id"
-                                            :disabled="!app.applyFeesForm.academic_qualification_id"
-                                            class="h-10 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10 disabled:bg-slate-50 disabled:text-slate-400"
-                                            required>
-                                            <option value="">Department/Group</option>
-                                            <option v-for="d in app.applyFeesFilteredDepartments" :key="'afd-' + d.id"
-                                                :value="String(d.id)">{{ d.name }}</option>
-                                        </select>
+                                        <div class="relative group">
+                                            <div class="absolute inset-y-0 left-0 flex items-center pl-4 text-sky-500">
+                                                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"></path><path d="M3 7v1a3 3 0 0 0 6 0V7m0 1a3 3 0 0 0 6 0V7m0 1a3 3 0 0 0 6 0V7H3"></path><path d="M19 21V11"></path><path d="M5 21V11"></path><path d="M12 21V11"></path></svg>
+                                            </div>
+                                            <select v-model="app.applyFeesForm.department_id"
+                                                :disabled="!app.applyFeesForm.academic_qualification_id"
+                                                class="h-14 w-full appearance-none rounded-2xl border border-slate-100 bg-white pl-12 pr-10 text-[15px] font-medium outline-none focus:border-[#0d6b75] focus:ring-4 focus:ring-[#0d6b75]/5 transition-all shadow-sm group-hover:border-slate-200 disabled:bg-slate-50 disabled:text-slate-400"
+                                                required>
+                                                <option value="">Department/Group</option>
+                                                <option v-for="d in app.applyFeesFilteredDepartments" :key="'afd-' + d.id"
+                                                    :value="String(d.id)">{{ d.name }}</option>
+                                            </select>
+                                            <div class="absolute inset-y-0 right-0 flex items-center pr-4 pointer-events-none text-slate-400">
+                                                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                                            </div>
+                                        </div>
 
-                                        <select v-model="app.applyFeesForm.academic_class_id"
-                                            :disabled="!app.applyFeesForm.academic_qualification_id"
-                                            class="h-10 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10 disabled:bg-slate-50 disabled:text-slate-400"
-                                            required>
-                                            <option value="">Class</option>
-                                            <option v-for="c in app.applyFeesFilteredClasses" :key="'afc-' + c.id"
-                                                :value="String(c.id)">{{ c.name }}</option>
-                                        </select>
+                                        <div class="relative group">
+                                            <div class="absolute inset-y-0 left-0 flex items-center pl-4 text-pink-500">
+                                                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+                                            </div>
+                                            <select v-model="app.applyFeesForm.academic_class_id"
+                                                :disabled="!app.applyFeesForm.academic_qualification_id"
+                                                class="h-14 w-full appearance-none rounded-2xl border border-slate-100 bg-white pl-12 pr-10 text-[15px] font-medium outline-none focus:border-[#0d6b75] focus:ring-4 focus:ring-[#0d6b75]/5 transition-all shadow-sm group-hover:border-slate-200 disabled:bg-slate-50 disabled:text-slate-400"
+                                                required>
+                                                <option value="">Class</option>
+                                                <option v-for="c in app.applyFeesFilteredClasses" :key="'afc-' + c.id"
+                                                    :value="String(c.id)">{{ c.name }}</option>
+                                            </select>
+                                            <div class="absolute inset-y-0 right-0 flex items-center pr-4 pointer-events-none text-slate-400">
+                                                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                                            </div>
+                                        </div>
                                     </div>
 
-                                    <div class="space-y-4">
-                                        <select v-model="app.applyFeesForm.purpose_id"
-                                            class="h-10 w-full rounded-sm border border-slate-300 bg-slate-100 px-3 text-sm outline-none"
-                                            disabled required>
-                                            <option value="">Fees</option>
-                                            <option v-for="p in app.applyFeesPurposes" :key="'afp-' + p.id"
-                                                :value="String(p.id)">{{ p?.head?.name || '' }}</option>
-                                        </select>
+                                    <!-- Column 3: Display & Actions -->
+                                    <div class="space-y-6">
+                                        <div class="relative group">
+                                            <div class="absolute inset-y-0 left-0 flex items-center pl-4 text-emerald-500">
+                                                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"></path><path d="M2 17l10 5 10-5"></path><path d="M2 12l10 5 10-5"></path></svg>
+                                            </div>
+                                            <select v-model="app.applyFeesForm.purpose_id"
+                                                class="h-14 w-full appearance-none rounded-2xl border border-slate-100 bg-white pl-12 pr-10 text-[15px] font-medium outline-none shadow-sm cursor-not-allowed opacity-80"
+                                                disabled required>
+                                                <option value="">Fees</option>
+                                                <option v-for="p in app.applyFeesPurposes" :key="'afp-' + p.id"
+                                                    :value="String(p.id)">{{ p?.head?.name || '' }}</option>
+                                            </select>
+                                        </div>
 
-                                        <div
-                                            class="rounded-sm border border-slate-300 bg-slate-50 p-4 text-sm text-slate-700">
-                                            <div class="font-semibold">Amount</div>
-                                            <div class="mt-1 text-lg font-extrabold text-slate-900">{{
-                                                app.applyFeesSelectedAmountText }}</div>
+                                        <!-- Amount Display Box -->
+                                        <div class="relative overflow-hidden rounded-3xl bg-teal-50 border border-teal-100 p-6 flex items-center justify-between group transition-all hover:shadow-md">
+                                            <div>
+                                                <div class="text-sm font-bold text-slate-500 mb-1">Amount</div>
+                                                <div class="flex items-baseline gap-2">
+                                                    <div class="text-3xl font-black text-[#0d6b75]">
+                                                        {{ app.applyFeesSelectedAmountText }}
+                                                    </div>
+                                                    <div class="text-sm font-bold text-[#0d6b75]/60 uppercase tracking-wider">BDT</div>
+                                                </div>
+                                            </div>
+                                            <div class="relative w-16 h-16 transform transition-transform group-hover:scale-110">
+                                                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M19 7H5C3.89543 7 3 7.89543 3 9V18C3 19.1046 3.89543 20 5 20H19C20.1046 20 21 19.1046 21 18V9C21 7.89543 20.1046 7 19 7Z" fill="#0d6b75" fill-opacity="0.1" stroke="#0d6b75" stroke-width="1.5"/>
+                                                    <path d="M16 11H21V16H16V11Z" fill="white" stroke="#0d6b75" stroke-width="1.5" stroke-linejoin="round"/>
+                                                    <circle cx="18.5" cy="13.5" r="1.5" fill="#0d6b75"/>
+                                                    <path d="M7 7V5C7 4.44772 7.44772 4 8 4H16C16.5523 4 17 4.44772 17 5V7" stroke="#0d6b75" stroke-width="1.5" stroke-linecap="round"/>
+                                                </svg>
+                                                <!-- Tiny tick -->
+                                                <div class="absolute -top-1 -right-1 bg-emerald-500 text-white rounded-full p-1 shadow-sm">
+                                                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+                                                </div>
+                                            </div>
                                         </div>
 
                                         <div v-if="app.applyFeesInvoiceError"
-                                            class="rounded-sm border border-red-200 bg-red-50 p-3 text-sm text-red-800">
+                                            class="rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-800 flex items-center gap-2">
+                                            <svg class="w-5 h-5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
                                             {{ app.applyFeesInvoiceError }}
                                         </div>
-                                        <div v-else-if="app.applyFeesInvoice"
-                                            class="rounded-sm border border-slate-300 bg-white p-3 text-sm text-slate-700">
-                                            <div class="font-semibold text-slate-900">Invoice: {{
-                                                app.applyFeesInvoice.invoice_number || '—' }}</div>
-                                            <div class="mt-1">Status: <span class="font-semibold">{{
-                                                app.applyFeesInvoice.status || '—' }}</span></div>
-                                            <div class="mt-1">Amount: <span class="font-semibold">{{
-                                                Number(app.applyFeesInvoice.amount || 0).toFixed(2) }}</span></div>
-                                            <button
-                                                v-if="String(app.applyFeesInvoice.status || '') !== 'success' && app.applyFeesInvoice.invoice_number"
-                                                type="button"
-                                                class="mt-3 rounded-sm bg-[#0b1d4d] px-4 py-2 text-xs font-extrabold text-white hover:bg-[#09163c]"
-                                                :disabled="app.applyFeesPayExistingLoading"
-                                                @click="app.payApplyFeesExisting">
-                                                {{ app.applyFeesPayExistingLoading ? 'Processing...' : 'Pay This Invoice' }}
-                                            </button>
-                                        </div>
 
-                                        <div class="mt-4 flex items-center justify-end">
-                                            <button type="submit"
-                                                class="rounded-sm bg-[#0b1d4d] px-10 py-2.5 text-sm font-extrabold text-white hover:bg-[#09163c]"
-                                                :disabled="app.applyFeesSubmitting">
-                                                {{ app.applyFeesSubmitting ? 'Processing...' : 'Pay Now' }}
-                                            </button>
-                                        </div>
+                                        <!-- Pay Now Button -->
+                                        <button type="submit"
+                                            class="group relative w-full h-16 rounded-2xl bg-[#0d6b75] text-white font-bold text-lg shadow-xl shadow-[#0d6b75]/30 transition-all hover:shadow-[#0d6b75]/40 hover:-translate-y-1 active:scale-95 disabled:opacity-50 disabled:pointer-events-none overflow-hidden"
+                                            :disabled="app.applyFeesSubmitting">
+                                            <div class="absolute inset-0 bg-white/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
+                                            <div class="relative flex items-center justify-center gap-3">
+                                                <svg class="w-5 h-5 transition-transform group-hover:scale-110" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                                                <span>{{ app.applyFeesSubmitting ? 'Processing...' : 'Pay Now' }}</span>
+                                                <svg class="w-5 h-5 transition-transform group-hover:translate-x-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                                            </div>
+                                        </button>
                                     </div>
                                 </div>
                             </form>
                         </div>
                     </div>
                 </div>
+
 
                 <div v-else-if="app.applyFeesTab === 'certificate'">
                     <div v-if="app.certificateLoading" class="mt-6 text-sm text-slate-600">Loading...</div>
@@ -184,8 +327,7 @@
                         <form class="mt-8" @submit.prevent="app.submitCertificate">
                             <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
                                 <div class="rounded-sm border border-slate-300 bg-white p-4">
-                                    <div
-                                        class="border-l-4 border-orange-500 pl-3 text-sm font-extrabold text-slate-900">
+                                    <div class="border-l-4 border-orange-500 pl-3 text-sm font-bold text-slate-900">
                                         STUDENT INFO</div>
 
                                     <div class="mt-4 flex items-center gap-2">
@@ -193,7 +335,7 @@
                                             class="h-10 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10"
                                             required />
                                         <button type="button"
-                                            class="h-10 w-12 rounded-sm border border-slate-300 bg-slate-50 text-sm font-extrabold text-slate-700 hover:bg-white"
+                                            class="h-10 w-12 rounded-sm border border-slate-300 bg-slate-50 text-sm font-bold text-slate-700 hover:bg-white"
                                             :disabled="app.certificateLookupLoading" @click="app.certificateLookup">
                                             {{ app.certificateLookupLoading ? '…' : 'Go' }}
                                         </button>
@@ -322,8 +464,7 @@
                                 </div>
 
                                 <div class="rounded-sm border border-slate-300 bg-white p-4">
-                                    <div
-                                        class="border-l-4 border-orange-500 pl-3 text-sm font-extrabold text-slate-900">
+                                    <div class="border-l-4 border-orange-500 pl-3 text-sm font-bold text-slate-900">
                                         APPLY FOR CERTIFICATE</div>
 
                                     <div class="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
@@ -373,13 +514,13 @@
                                     <div
                                         class="mt-4 rounded-sm border border-slate-300 bg-slate-50 p-4 text-sm text-slate-700">
                                         <div class="font-semibold">Amount</div>
-                                        <div class="mt-1 text-lg font-extrabold text-slate-900">{{
+                                        <div class="mt-1 text-lg font-bold text-slate-900">{{
                                             app.certificateSelectedAmountText }}</div>
                                     </div>
 
                                     <div class="mt-6 text-center">
                                         <button type="submit"
-                                            class="rounded-sm bg-[#0b1d4d] px-10 py-2.5 text-sm font-extrabold text-white hover:bg-[#09163c]"
+                                            class="rounded-sm bg-[#0b1d4d] px-10 py-2.5 text-sm font-bold text-white hover:bg-[#09163c]"
                                             :disabled="app.certificateSubmitting">
                                             {{ app.certificateSubmitting ? 'Submitting...' : 'SUBMIT' }}
                                         </button>
@@ -416,7 +557,7 @@
                                         stroke-linecap="round" stroke-linejoin="round" />
                                 </svg>
                             </div>
-                            <h2 class="text-3xl font-extrabold text-slate-800 mb-4 z-10 text-center tracking-tight">
+                            <h2 class="text-3xl font-bold text-slate-800 mb-4 z-10 text-center tracking-tight">
                                 Check <br />
                                 <span
                                     class="bg-gradient-to-r from-[#0d6b75] to-[#20a3b2] bg-clip-text text-transparent">Invoice</span>
@@ -526,9 +667,9 @@
                                 <!-- Header: logo left, title + dates right (grid-cols-12) -->
                                 <div class="grid grid-cols-12 gap-4 border-b-2 border-slate-300 pb-2">
                                     <div class="col-span-3">
-                                                <img v-if="app.site?.logo"
-                                                    :src="app.site.logo?.startsWith('http') ? app.site.logo : ((laravel?.baseurl || '').replace(/\/$/, '')) + '/storage/' + (app.site.logo || '').replace(/^\//, '')"
-                                                    class="h-[75px] w-auto object-contain" />
+                                        <img v-if="app.site?.logo"
+                                            :src="app.site.logo?.startsWith('http') ? app.site.logo : ((laravel?.baseurl || '').replace(/\/$/, '')) + '/storage/' + (app.site.logo || '').replace(/^\//, '')"
+                                            class="h-[75px] w-auto object-contain" />
                                     </div>
                                     <div class="col-span-9">
                                         <div class="text-lg font-semibold text-slate-900">{{ app.collegeName ||
@@ -555,18 +696,18 @@
                                         <div><span class="font-semibold">Name :</span> {{ invoiceResult.name || '—' }}
                                         </div>
                                         <div><span class="font-semibold">Mobile :</span> {{ invoiceResult.mobile || '—'
-                                        }}</div>
+                                            }}</div>
                                         <div class="mt-2">
                                             <span class="font-semibold">Level :</span> {{
                                                 invoiceResult.qualification_name || '' }}
                                             <span v-if="invoiceResult.session_name">({{ invoiceResult.session_name
-                                            }})</span>
+                                                }})</span>
                                         </div>
                                         <div>
                                             <span class="font-semibold">Dept. :</span> {{ invoiceResult.department_name
                                                 || '' }}
                                             <span v-if="invoiceResult.class_name">({{ invoiceResult.class_name
-                                            }})</span>
+                                                }})</span>
                                         </div>
                                         <div v-if="invoiceResult.admission_roll" class="mt-2">
                                             <div><span class="font-semibold">Admission Roll :</span> {{

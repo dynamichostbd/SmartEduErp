@@ -3,68 +3,79 @@
         <div class="mx-auto w-full max-w-6xl">
             <div class="grid grid-cols-1 gap-4 lg:grid-cols-12">
                 <div class="lg:col-span-3">
-                    <StudentSidebar
-                        :studentMe="app.studentMe"
-                        :active="app.studentSidebarActive"
-                        :onNavigate="app.studentSidebarGo"
-                        :onLogout="app.doStudentLogout"
-                        :logoutDisabled="app.studentAuthLoading"
-                    />
+                    <StudentSidebar :studentMe="app.studentMe" :active="app.studentSidebarActive"
+                        :onNavigate="app.studentSidebarGo" :onLogout="app.doStudentLogout"
+                        :logoutDisabled="app.studentAuthLoading" />
                 </div>
 
                 <div class="lg:col-span-9">
                     <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
                         <div class="rounded-sm border border-slate-300 bg-white">
-                            <div class="border-b border-slate-300 bg-slate-50 px-4 py-3 text-sm font-extrabold text-slate-800">COMPULSORY SUBJECTS</div>
+                            <div
+                                class="border-b border-slate-300 bg-slate-50 px-4 py-3 text-sm font-bold text-slate-800">
+                                COMPULSORY SUBJECTS</div>
                             <div class="p-4">
                                 <div v-if="loading" class="text-sm text-slate-600">Loading...</div>
-                                <div v-else-if="error" class="rounded-sm border border-red-200 bg-red-50 p-3 text-sm text-red-800">{{ error }}</div>
+                                <div v-else-if="error"
+                                    class="rounded-sm border border-red-200 bg-red-50 p-3 text-sm text-red-800">{{ error
+                                    }}</div>
                                 <div v-else>
                                     <div v-if="mainSubjects.length" class="overflow-x-auto">
                                         <table class="min-w-full text-sm">
                                             <thead>
-                                                <tr class="border-b bg-slate-100 text-left text-xs font-extrabold text-slate-700">
+                                                <tr
+                                                    class="border-b bg-slate-100 text-left text-xs font-bold text-slate-700">
                                                     <th class="px-3 py-2 w-10"></th>
                                                     <th class="px-3 py-2">Subject Name</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr v-for="(s, idx) in mainSubjects" :key="'ms-' + idx" class="border-b last:border-b-0">
-                                                    <td class="px-3 py-2 text-center font-extrabold text-blue-700">✓</td>
+                                                <tr v-for="(s, idx) in mainSubjects" :key="'ms-' + idx"
+                                                    class="border-b last:border-b-0">
+                                                    <td class="px-3 py-2 text-center font-bold text-blue-700">✓</td>
                                                     <td class="px-3 py-2">{{ subjectName(s) }}</td>
                                                 </tr>
                                             </tbody>
                                         </table>
                                     </div>
-                                    <div v-else class="rounded-sm border border-slate-300 bg-slate-50 p-4 text-center text-sm text-slate-700">No subjects</div>
+                                    <div v-else
+                                        class="rounded-sm border border-slate-300 bg-slate-50 p-4 text-center text-sm text-slate-700">
+                                        No subjects</div>
                                 </div>
                             </div>
                         </div>
 
                         <div class="rounded-sm border border-slate-300 bg-white">
-                            <div class="border-b border-slate-300 bg-slate-50 px-4 py-3 text-sm font-extrabold text-slate-800">4TH / MAIN SUBJECT</div>
+                            <div
+                                class="border-b border-slate-300 bg-slate-50 px-4 py-3 text-sm font-bold text-slate-800">
+                                4TH / MAIN SUBJECT</div>
                             <div class="p-4">
                                 <div v-if="loading" class="text-sm text-slate-600">Loading...</div>
-                                <div v-else-if="error" class="rounded-sm border border-red-200 bg-red-50 p-3 text-sm text-red-800">{{ error }}</div>
+                                <div v-else-if="error"
+                                    class="rounded-sm border border-red-200 bg-red-50 p-3 text-sm text-red-800">{{ error
+                                    }}</div>
                                 <div v-else>
                                     <div v-if="assignedSubjects.length" class="overflow-x-auto">
                                         <table class="min-w-full text-sm">
                                             <tbody>
                                                 <tr class="border-b bg-slate-50">
-                                                    <td class="px-3 py-2 font-extrabold" colspan="2">4th Subject</td>
+                                                    <td class="px-3 py-2 font-bold" colspan="2">4th Subject</td>
                                                 </tr>
                                                 <tr class="border-b">
-                                                    <td class="px-3 py-2 w-10 text-center font-extrabold text-blue-700">✓</td>
+                                                    <td class="px-3 py-2 w-10 text-center font-bold text-blue-700">✓
+                                                    </td>
                                                     <td class="px-3 py-2">
                                                         {{ fourthAssignedName }}
                                                     </td>
                                                 </tr>
 
                                                 <tr class="border-b bg-slate-50">
-                                                    <td class="px-3 py-2 font-extrabold" colspan="2">Main Subjects</td>
+                                                    <td class="px-3 py-2 font-bold" colspan="2">Main Subjects</td>
                                                 </tr>
-                                                <tr v-for="(a, idx) in mainAssigned" :key="'ma-' + idx" class="border-b last:border-b-0">
-                                                    <td class="px-3 py-2 w-10 text-center font-extrabold text-blue-700">✓</td>
+                                                <tr v-for="(a, idx) in mainAssigned" :key="'ma-' + idx"
+                                                    class="border-b last:border-b-0">
+                                                    <td class="px-3 py-2 w-10 text-center font-bold text-blue-700">✓
+                                                    </td>
                                                     <td class="px-3 py-2">{{ a.subject_name || '' }}</td>
                                                 </tr>
                                             </tbody>
@@ -72,13 +83,18 @@
                                     </div>
 
                                     <div v-else>
-                                        <div v-if="subjectAssign?.note" class="mb-3 border-b border-slate-300 pb-2 text-xs font-semibold text-red-600">{{ subjectAssign.note }}</div>
+                                        <div v-if="subjectAssign?.note"
+                                            class="mb-3 border-b border-slate-300 pb-2 text-xs font-semibold text-red-600">
+                                            {{ subjectAssign.note }}</div>
 
                                         <div class="mb-4">
-                                            <div class="mb-2 text-sm font-semibold text-slate-700">Select 4th Subject</div>
-                                            <select v-model="forthSubjectId" class="h-10 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none">
+                                            <div class="mb-2 text-sm font-semibold text-slate-700">Select 4th Subject
+                                            </div>
+                                            <select v-model="forthSubjectId"
+                                                class="h-10 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none">
                                                 <option value="">--Select 4th Subject--</option>
-                                                <option v-for="s in fourthSubjects" :key="'fs-' + s.subject_id" :value="String(s.subject_id)">{{ subjectName(s) }}</option>
+                                                <option v-for="s in fourthSubjects" :key="'fs-' + s.subject_id"
+                                                    :value="String(s.subject_id)">{{ subjectName(s) }}</option>
                                             </select>
                                         </div>
 
@@ -86,23 +102,24 @@
                                         <div class="overflow-x-auto">
                                             <table class="min-w-full text-sm">
                                                 <thead>
-                                                    <tr class="border-b bg-slate-100 text-left text-xs font-extrabold text-slate-700">
+                                                    <tr
+                                                        class="border-b bg-slate-100 text-left text-xs font-bold text-slate-700">
                                                         <th class="px-3 py-2 w-10"></th>
                                                         <th class="px-3 py-2">Subject Name</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
                                                     <tr v-if="subjectLoader">
-                                                        <td colspan="2" class="px-3 py-8 text-center text-sm text-slate-600">loading..</td>
+                                                        <td colspan="2"
+                                                            class="px-3 py-8 text-center text-sm text-slate-600">
+                                                            loading..</td>
                                                     </tr>
-                                                    <tr v-for="(s, idx) in mainSubjectList" v-else :key="'ml-' + idx" class="border-b last:border-b-0">
+                                                    <tr v-for="(s, idx) in mainSubjectList" v-else :key="'ml-' + idx"
+                                                        class="border-b last:border-b-0">
                                                         <td class="px-3 py-2 text-center">
-                                                            <input
-                                                                type="checkbox"
-                                                                v-model="s.checked"
+                                                            <input type="checkbox" v-model="s.checked"
                                                                 :disabled="checkboxDisabled(s)"
-                                                                @change="selectAdditionalSubject(s)"
-                                                            />
+                                                                @change="selectAdditionalSubject(s)" />
                                                         </td>
                                                         <td class="px-3 py-2">{{ subjectName(s) }}</td>
                                                     </tr>
@@ -111,12 +128,9 @@
                                         </div>
 
                                         <div class="pt-5 text-center">
-                                            <button
-                                                type="button"
-                                                class="rounded-sm bg-emerald-600 px-10 py-2.5 text-sm font-extrabold text-white hover:bg-emerald-700 disabled:cursor-not-allowed disabled:opacity-60"
-                                                :disabled="submitting"
-                                                @click="submitAssign"
-                                            >
+                                            <button type="button"
+                                                class="rounded-sm bg-emerald-600 px-10 py-2.5 text-sm font-bold text-white hover:bg-emerald-700 disabled:cursor-not-allowed disabled:opacity-60"
+                                                :disabled="submitting" @click="submitAssign">
                                                 {{ submitting ? 'Processing...' : 'SUBMIT' }}
                                             </button>
                                         </div>

@@ -5,10 +5,11 @@
                 <div class="flex items-center gap-3">
                     <div class="h-10 w-10 overflow-hidden rounded-sm bg-white/10">
                         <img v-if="studentMe?.profile" :src="studentMe.profile" class="h-full w-full object-cover" />
-                        <div v-else class="flex h-full w-full items-center justify-center text-xs font-extrabold">{{ (studentMe?.student_id || 'NA').slice(0, 2) }}</div>
+                        <div v-else class="flex h-full w-full items-center justify-center text-xs font-bold">{{
+                            (studentMe?.student_id || 'NA').slice(0, 2) }}</div>
                     </div>
                     <div class="min-w-0">
-                        <div class="truncate text-sm font-extrabold">{{ (studentMe?.name || '').toUpperCase() }}</div>
+                        <div class="truncate text-sm font-bold">{{ (studentMe?.name || '').toUpperCase() }}</div>
                         <div class="mt-1 text-xs font-semibold opacity-90">
                             <span v-if="studentMe?.student_id">{{ studentMe.student_id }}</span>
                             <span v-else>—</span>
@@ -19,7 +20,7 @@
         </template>
         <template v-else>
             <div class="border-b border-white/15 px-4 py-3">
-                <div class="text-sm font-extrabold">{{ (studentMe?.name || '').toUpperCase() }}</div>
+                <div class="text-sm font-bold">{{ (studentMe?.name || '').toUpperCase() }}</div>
                 <div class="mt-1 text-xs font-semibold opacity-90">
                     <span v-if="studentMe?.student_id">{{ studentMe.student_id }}</span>
                     <span v-else>—</span>
@@ -28,39 +29,36 @@
         </template>
 
         <div class="flex-1 py-2">
-            <a
-                href="/dashboard"
+            <a href="/dashboard"
                 class="group relative flex w-full items-center gap-3 px-4 py-2.5 text-left text-sm font-semibold transition"
-                :class="active === 'dashboard' ? 'bg-white/10 pl-3.5' : 'hover:bg-white/10'"
-            >
+                :class="active === 'dashboard' ? 'bg-white/10 pl-3.5' : 'hover:bg-white/10'">
                 <span v-if="active === 'dashboard'" class="absolute left-0 top-0 h-full w-1 bg-emerald-300"></span>
-                <svg class="h-4 w-4 opacity-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <svg class="h-4 w-4 opacity-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
                     <path d="M3 11l9-8 9 8" />
                     <path d="M5 10v10h5v-6h4v6h5V10" />
                 </svg>
                 <span>Dashboard</span>
             </a>
 
-            <a
-                href="/student/profile"
+            <a href="/student/profile"
                 class="group relative flex w-full items-center gap-3 px-4 py-2.5 text-left text-sm font-semibold transition"
-                :class="active === 'profile' ? 'bg-white/10 pl-3.5' : 'hover:bg-white/10'"
-            >
+                :class="active === 'profile' ? 'bg-white/10 pl-3.5' : 'hover:bg-white/10'">
                 <span v-if="active === 'profile'" class="absolute left-0 top-0 h-full w-1 bg-emerald-300"></span>
-                <svg class="h-4 w-4 opacity-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <svg class="h-4 w-4 opacity-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
                     <path d="M20 21a8 8 0 10-16 0" />
                     <circle cx="12" cy="7" r="4" />
                 </svg>
                 <span>My Profile</span>
             </a>
 
-            <a
-                href="/student/pay-now"
+            <a href="/student/pay-now"
                 class="group relative flex w-full items-center gap-3 px-4 py-2.5 text-left text-sm font-semibold transition"
-                :class="active === 'pay' ? 'bg-white/10 pl-3.5' : 'hover:bg-white/10'"
-            >
+                :class="active === 'pay' ? 'bg-white/10 pl-3.5' : 'hover:bg-white/10'">
                 <span v-if="active === 'pay'" class="absolute left-0 top-0 h-full w-1 bg-emerald-300"></span>
-                <svg class="h-4 w-4 opacity-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <svg class="h-4 w-4 opacity-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
                     <rect x="2" y="5" width="20" height="14" rx="2" />
                     <path d="M2 10h20" />
                 </svg>
@@ -69,13 +67,12 @@
 
             <div class="my-2 border-t border-white/10"></div>
 
-            <a
-                href="/student/payment-history"
+            <a href="/student/payment-history"
                 class="group relative flex w-full items-center gap-3 px-4 py-2.5 text-left text-sm font-semibold transition"
-                :class="active === 'history' ? 'bg-white/10 pl-3.5' : 'hover:bg-white/10'"
-            >
+                :class="active === 'history' ? 'bg-white/10 pl-3.5' : 'hover:bg-white/10'">
                 <span v-if="active === 'history'" class="absolute left-0 top-0 h-full w-1 bg-emerald-300"></span>
-                <svg class="h-4 w-4 opacity-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <svg class="h-4 w-4 opacity-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
                     <path d="M3 12a9 9 0 101-4" />
                     <path d="M3 4v4h4" />
                     <path d="M12 7v5l3 3" />
@@ -83,13 +80,12 @@
                 <span>Payment History</span>
             </a>
 
-            <a
-                href="/student/fees"
+            <a href="/student/fees"
                 class="group relative flex w-full items-center gap-3 px-4 py-2.5 text-left text-sm font-semibold transition"
-                :class="active === 'fees' ? 'bg-white/10 pl-3.5' : 'hover:bg-white/10'"
-            >
+                :class="active === 'fees' ? 'bg-white/10 pl-3.5' : 'hover:bg-white/10'">
                 <span v-if="active === 'fees'" class="absolute left-0 top-0 h-full w-1 bg-emerald-300"></span>
-                <svg class="h-4 w-4 opacity-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <svg class="h-4 w-4 opacity-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
                     <path d="M8 6h13" />
                     <path d="M8 12h13" />
                     <path d="M8 18h13" />
@@ -100,13 +96,12 @@
                 <span>Fees List</span>
             </a>
 
-            <a
-                href="/student/admit-card"
+            <a href="/student/admit-card"
                 class="group relative flex w-full items-center gap-3 px-4 py-2.5 text-left text-sm font-semibold transition"
-                :class="active === 'admit' ? 'bg-white/10 pl-3.5' : 'hover:bg-white/10'"
-            >
+                :class="active === 'admit' ? 'bg-white/10 pl-3.5' : 'hover:bg-white/10'">
                 <span v-if="active === 'admit'" class="absolute left-0 top-0 h-full w-1 bg-emerald-300"></span>
-                <svg class="h-4 w-4 opacity-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <svg class="h-4 w-4 opacity-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
                     <path d="M14 3H6a2 2 0 00-2 2v14a2 2 0 002 2h12a2 2 0 002-2V9z" />
                     <path d="M14 3v6h6" />
                     <path d="M8 13h8" />
@@ -115,39 +110,36 @@
                 <span>Admit Card</span>
             </a>
 
-            <a
-                href="/student/result"
+            <a href="/student/result"
                 class="group relative flex w-full items-center gap-3 px-4 py-2.5 text-left text-sm font-semibold transition"
-                :class="active === 'result' ? 'bg-white/10 pl-3.5' : 'hover:bg-white/10'"
-            >
+                :class="active === 'result' ? 'bg-white/10 pl-3.5' : 'hover:bg-white/10'">
                 <span v-if="active === 'result'" class="absolute left-0 top-0 h-full w-1 bg-emerald-300"></span>
-                <svg class="h-4 w-4 opacity-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <svg class="h-4 w-4 opacity-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
                     <path d="M3 3v18h18" />
                     <path d="M7 14l4-4 3 3 5-6" />
                 </svg>
                 <span>Result</span>
             </a>
 
-            <a
-                href="/student/subjects"
+            <a href="/student/subjects"
                 class="group relative flex w-full items-center gap-3 px-4 py-2.5 text-left text-sm font-semibold transition"
-                :class="active === 'subject' ? 'bg-white/10 pl-3.5' : 'hover:bg-white/10'"
-            >
+                :class="active === 'subject' ? 'bg-white/10 pl-3.5' : 'hover:bg-white/10'">
                 <span v-if="active === 'subject'" class="absolute left-0 top-0 h-full w-1 bg-emerald-300"></span>
-                <svg class="h-4 w-4 opacity-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <svg class="h-4 w-4 opacity-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
                     <path d="M4 19.5A2.5 2.5 0 016.5 17H20" />
                     <path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z" />
                 </svg>
                 <span>Subject Choice</span>
             </a>
 
-            <a
-                href="/student/change-password"
+            <a href="/student/change-password"
                 class="group relative flex w-full items-center gap-3 px-4 py-2.5 text-left text-sm font-semibold transition"
-                :class="active === 'password' ? 'bg-white/10 pl-3.5' : 'hover:bg-white/10'"
-            >
+                :class="active === 'password' ? 'bg-white/10 pl-3.5' : 'hover:bg-white/10'">
                 <span v-if="active === 'password'" class="absolute left-0 top-0 h-full w-1 bg-emerald-300"></span>
-                <svg class="h-4 w-4 opacity-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <svg class="h-4 w-4 opacity-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
                     <rect x="3" y="11" width="18" height="11" rx="2" />
                     <path d="M7 11V7a5 5 0 0110 0v4" />
                 </svg>
@@ -156,12 +148,9 @@
         </div>
 
         <div class="border-t border-white/15 px-4 py-3">
-            <button
-                type="button"
-                class="w-full rounded-sm bg-white/10 px-4 py-2.5 text-sm font-extrabold transition hover:bg-white/20"
-                @click="onLogout"
-                :disabled="logoutDisabled"
-            >
+            <button type="button"
+                class="w-full rounded-sm bg-white/10 px-4 py-2.5 text-sm font-bold transition hover:bg-white/20"
+                @click="onLogout" :disabled="logoutDisabled">
                 Logout
             </button>
         </div>

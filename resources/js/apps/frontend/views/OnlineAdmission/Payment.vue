@@ -46,7 +46,7 @@
                 </div>
 
                 <!-- Text -->
-                <h2 class="text-3xl font-extrabold text-slate-800 mb-4 z-10 text-center tracking-tight">
+                <h2 class="text-3xl font-bold text-slate-800 mb-4 z-10 text-center tracking-tight">
                     Admission <br />
                     <span
                         class="bg-gradient-to-r from-[#0d6b75] to-[#20a3b2] bg-clip-text text-transparent">Payment</span>
@@ -183,7 +183,7 @@
                 <div v-if="Number(app.onlineAdmissionPaymentForm.amount || 0) > 0"
                     class="mt-8 pt-6 border-t border-slate-100 flex justify-end">
                     <button v-if="!app.onlineAdmissionPaymentSubmitting" type="button"
-                        class="w-full sm:w-auto rounded-md bg-gradient-to-r from-[#0d6b75] to-[#12919e] px-10 py-3.5 text-base font-extrabold text-white shadow-lg transition-transform hover:-translate-y-0.5 hover:shadow-xl hover:opacity-95 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center gap-3"
+                        class="w-full sm:w-auto rounded-md bg-gradient-to-r from-[#0d6b75] to-[#12919e] px-10 py-3.5 text-base font-bold text-white shadow-lg transition-transform hover:-translate-y-0.5 hover:shadow-xl hover:opacity-95 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center gap-3"
                         :disabled="app.onlineAdmissionPaymentPayFirst" @click="app.onlineAdmissionPayNow">
                         <span>PAY NOW</span> <i class="fa-solid fa-arrow-right"></i>
                     </button>

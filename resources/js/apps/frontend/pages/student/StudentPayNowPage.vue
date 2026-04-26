@@ -3,71 +3,87 @@
         <div class="mx-auto w-full max-w-6xl">
             <div class="grid grid-cols-1 gap-4 lg:grid-cols-12">
                 <div class="lg:col-span-3">
-                    <StudentSidebar
-                        :studentMe="app.studentMe"
-                        :active="app.studentSidebarActive"
-                        :onNavigate="app.studentSidebarGo"
-                        :onLogout="app.doStudentLogout"
-                        :logoutDisabled="app.studentAuthLoading"
-                    />
+                    <StudentSidebar :studentMe="app.studentMe" :active="app.studentSidebarActive"
+                        :onNavigate="app.studentSidebarGo" :onLogout="app.doStudentLogout"
+                        :logoutDisabled="app.studentAuthLoading" />
                 </div>
 
                 <div class="lg:col-span-9">
                     <div class="rounded-sm border border-slate-300 bg-white">
-                        <div class="border-b border-slate-300 bg-slate-50 px-4 py-3 text-sm font-extrabold text-slate-800">PAY NOW</div>
+                        <div class="border-b border-slate-300 bg-slate-50 px-4 py-3 text-sm font-bold text-slate-800">
+                            PAY NOW</div>
                         <div class="p-4">
-                            <div v-if="statusMessage" class="mb-4 rounded-sm border p-3 text-sm" :class="statusClass">{{ statusMessage }}</div>
+                            <div v-if="statusMessage" class="mb-4 rounded-sm border p-3 text-sm" :class="statusClass">{{
+                                statusMessage }}</div>
 
                             <div v-if="loading" class="text-sm text-slate-600">Loading...</div>
                             <div v-else>
-                                <div v-if="error" class="mb-4 rounded-sm border border-red-200 bg-red-50 p-3 text-sm text-red-800">{{ error }}</div>
+                                <div v-if="error"
+                                    class="mb-4 rounded-sm border border-red-200 bg-red-50 p-3 text-sm text-red-800">{{
+                                    error }}</div>
 
                                 <form class="mx-auto mt-2 w-full max-w-2xl" @submit.prevent="initPayment">
                                     <div class="grid grid-cols-1 gap-4">
                                         <div class="grid grid-cols-1 items-center gap-2 sm:grid-cols-3">
-                                            <div class="text-sm font-semibold text-slate-700">Date (Y-m-d) <span class="text-red-600">*</span></div>
+                                            <div class="text-sm font-semibold text-slate-700">Date (Y-m-d) <span
+                                                    class="text-red-600">*</span></div>
                                             <div class="sm:col-span-2">
                                                 <div class="relative">
-                                                    <input v-model="form.date" type="text" class="h-10 w-full rounded-sm border border-emerald-400 bg-slate-100 px-3 pr-10 text-sm outline-none" disabled />
-                                                    <div class="pointer-events-none absolute inset-y-0 right-3 flex items-center text-emerald-600">✓</div>
+                                                    <input v-model="form.date" type="text"
+                                                        class="h-10 w-full rounded-sm border border-emerald-400 bg-slate-100 px-3 pr-10 text-sm outline-none"
+                                                        disabled />
+                                                    <div
+                                                        class="pointer-events-none absolute inset-y-0 right-3 flex items-center text-emerald-600">
+                                                        ✓</div>
                                                 </div>
                                             </div>
                                         </div>
 
                                         <div class="grid grid-cols-1 items-center gap-2 sm:grid-cols-3">
-                                            <div class="text-sm font-semibold text-slate-700">Invoice Number <span class="text-red-600">*</span></div>
+                                            <div class="text-sm font-semibold text-slate-700">Invoice Number <span
+                                                    class="text-red-600">*</span></div>
                                             <div class="sm:col-span-2">
                                                 <div class="relative">
-                                                    <input v-model="form.invoice_number" type="text" class="h-10 w-full rounded-sm border border-emerald-400 bg-slate-100 px-3 pr-10 text-sm outline-none" disabled />
-                                                    <div class="pointer-events-none absolute inset-y-0 right-3 flex items-center text-emerald-600">✓</div>
+                                                    <input v-model="form.invoice_number" type="text"
+                                                        class="h-10 w-full rounded-sm border border-emerald-400 bg-slate-100 px-3 pr-10 text-sm outline-none"
+                                                        disabled />
+                                                    <div
+                                                        class="pointer-events-none absolute inset-y-0 right-3 flex items-center text-emerald-600">
+                                                        ✓</div>
                                                 </div>
                                             </div>
                                         </div>
 
                                         <div class="grid grid-cols-1 items-center gap-2 sm:grid-cols-3">
-                                            <div class="text-sm font-semibold text-slate-700">Payment Type <span class="text-red-600">*</span></div>
+                                            <div class="text-sm font-semibold text-slate-700">Payment Type <span
+                                                    class="text-red-600">*</span></div>
                                             <div class="sm:col-span-2">
-                                                <select v-model="form.account_head_id" class="h-10 w-full rounded-sm border border-blue-400 bg-white px-3 text-sm outline-none" required>
+                                                <select v-model="form.account_head_id"
+                                                    class="h-10 w-full rounded-sm border border-blue-400 bg-white px-3 text-sm outline-none"
+                                                    required>
                                                     <option value="">--Select Any--</option>
-                                                    <option v-for="h in heads" :key="'spn-head-' + h.id" :value="String(h.account_head_id)">{{ h.account_head?.name || '' }}</option>
+                                                    <option v-for="h in heads" :key="'spn-head-' + h.id"
+                                                        :value="String(h.account_head_id)">{{ h.account_head?.name || ''
+                                                        }}</option>
                                                 </select>
                                             </div>
                                         </div>
 
                                         <div class="grid grid-cols-1 items-center gap-2 sm:grid-cols-3">
-                                            <div class="text-sm font-semibold text-slate-700">Payable Amount <span class="text-red-600">*</span></div>
+                                            <div class="text-sm font-semibold text-slate-700">Payable Amount <span
+                                                    class="text-red-600">*</span></div>
                                             <div class="sm:col-span-2">
-                                                <input v-model="form.amount" type="text" class="h-10 w-full rounded-sm border border-slate-300 bg-slate-100 px-3 text-sm outline-none" placeholder="Amount" disabled />
+                                                <input v-model="form.amount" type="text"
+                                                    class="h-10 w-full rounded-sm border border-slate-300 bg-slate-100 px-3 text-sm outline-none"
+                                                    placeholder="Amount" disabled />
                                             </div>
                                         </div>
                                     </div>
 
                                     <div class="pt-10 text-center">
-                                        <button
-                                            type="submit"
-                                            class="rounded-sm bg-[#0b1d4d] px-10 py-2.5 text-sm font-extrabold text-white hover:bg-[#09163c]"
-                                            :disabled="submitting || !form.account_head_id"
-                                        >
+                                        <button type="submit"
+                                            class="rounded-sm bg-[#0b1d4d] px-10 py-2.5 text-sm font-bold text-white hover:bg-[#09163c]"
+                                            :disabled="submitting || !form.account_head_id">
                                             {{ submitting ? 'Processing...' : 'Pay Now' }}
                                         </button>
                                     </div>
