@@ -10,7 +10,7 @@
                     </button>
 
                     <div class="flex items-center justify-center">
-                        <div class="flex items-center gap-2 rounded-full bg-slate-50 border border-slate-100 px-3 py-1.5 shadow-sm">
+                        <div class="flex items-center gap-2 rounded-full bg-slate-50 border border-slate-100 px-3 py-1.5 shadow-xs">
                             <div class="relative flex h-2 w-2">
                                 <span :class="isSupportActive ? 'bg-emerald-500' : 'bg-rose-500'" class="absolute inline-flex h-full w-full animate-ping rounded-full opacity-75"></span>
                                 <span :class="isSupportActive ? 'bg-emerald-500' : 'bg-rose-500'" class="relative inline-flex h-2 w-2 rounded-full"></span>
@@ -19,8 +19,8 @@
                                 {{ isSupportActive ? 'Online' : 'Offline' }}
                             </span>
                             <div class="h-3 w-[1px] bg-slate-200 mx-1"></div>
-                            <div class="text-[13px] font-bold text-slate-800">
-                                হটলাইন: <span class="text-[#0d6b75]">{{ hotline || '—' }}</span>
+                            <div class="text-[15px] text-slate-800 " style="font-family: alinur !important;">
+                                 <span class="text-[#0d6b75]"> হটলাইন: {{ hotline || '—' }}</span>
                             </div>
                         </div>
                     </div>
@@ -58,7 +58,7 @@
                     <div class="relative flex min-w-0 flex-1 items-center overflow-hidden px-2 py-2">
                         <div class="w-full overflow-hidden">
                             <div v-if="notices && notices.length > 0"
-                                class="whitespace-nowrap text-sm font-semibold text-slate-800" :style="tickerStyle">
+                                class="whitespace-nowrap text-sm text-slate-800" :style="tickerStyle">
                                 <span v-for="(n, idx) in notices" :key="'tick-' + n.id">
                                     <button type="button" @click="go(`/notices/${n.id}`)"
                                         class="hover:underline hover:text-[#0d6b75] outline-none">
@@ -158,13 +158,13 @@
                 </div>
 
 
-                <div v-if="path === '/notices'" class="mt-3 rounded-sm border border-slate-300 bg-white p-4">
+                <div v-if="path === '/notices'" class="mt-3 rounded-sm border border-slate-300 bg-emerald-50 p-4">
                     <div class="text-xl font-bold text-slate-900 text-center mb-6 uppercase">Notices</div>
                     <div v-if="pageLoading" class="mt-3 text-sm text-slate-600">Loading...</div>
                     <div v-else-if="pageError" class="mt-3 text-sm text-red-700">{{ pageError }}</div>
                     <div v-else class="mt-4 grid grid-cols-1 gap-3 max-w-6xl mx-auto">
                         <button v-for="n in noticeList" :key="'n-' + n.id" type="button"
-                            class="group flex items-center gap-4 rounded-xl border border-slate-300 bg-white p-4 text-left transition-all duration-300 hover:-translate-y-1 hover:border-[#0d6b75]/30 hover:shadow-lg hover:shadow-[#0d6b75]/5"
+                            class="group flex items-center gap-4 rounded-xl border border-slate-300 bg-white p-4 text-left transition-all duration-300 hover:-translate-y-1 hover:border-[#0d6b75]/30 hover:shadow-lg hover:shadow-[#0d6b75]/5 hover:bg-yellow-50"
                             @click="go(`/notices/${n.id}`)">
                             
                             <!-- Icon Box -->
@@ -309,6 +309,7 @@
                         </div>
 
                         <div v-else-if="onlineAdmissionCheckRollVerify && !onlineAdmissionDoubleVerify" class="py-2">
+                            <div class="text-sm font-semibold text-slate-900 mb-4 p-4 bg-emerald-100 rounded-xl">CHECK APPLICATION FEES / ADMISSION ROLL / REG NO</div>
                             <div class="grid grid-cols-2 gap-4">
                                 <div>
                                     <div class="text-xs font-semibold text-slate-600 mb-1">Department/Group <span
@@ -359,6 +360,229 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+
+        <div v-if="showStudentLoginModal"
+            class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-4 backdrop-blur-sm">
+            <div class="relative w-full max-w-[500px] rounded-[2.5rem] bg-white p-4 md:p-8 shadow-2xl overflow-hidden">
+                <!-- Close Button -->
+                <button type="button" @click="showStudentLoginModal = false"
+                    class="absolute top-6 right-6 z-20 text-slate-400 hover:text-slate-600 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+
+                <!-- Decorative Background Blobs -->
+                <div class="absolute -top-24 -right-24 h-64 w-64 rounded-full bg-blue-50/50 blur-3xl -z-10"></div>
+                <div class="absolute -bottom-24 -left-24 h-64 w-64 rounded-full bg-teal-50/50 blur-3xl -z-10"></div>
+
+                <!-- Header Section -->
+                <div class="text-center mb-6">
+                    <div class="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-teal-50 shadow-sm border border-teal-100">
+                        <svg class="h-7 w-7 text-[#0d6b75]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M22 10L12 5L2 10L12 15L22 10Z"></path>
+                            <path d="M6 12V17C6 17 6 20 12 20C18 20 18 17 18 17V12"></path>
+                        </svg>
+                    </div>
+                    <h1 class="text-2xl font-black tracking-tight text-slate-800 uppercase">
+                        STUDENT <span class="text-[#0d6b75]">{{ studentForgotPasswordStep ? 'PASSWORD' : 'LOGIN' }}</span>
+                    </h1>
+                    <div v-if="studentForgotPasswordStep" class="text-xs font-bold text-slate-500 uppercase tracking-widest mt-1">Reset Process</div>
+                    <div class="mx-auto my-3 flex items-center justify-center gap-2">
+                        <div class="h-px w-6 bg-slate-200"></div>
+                        <div class="h-1.5 w-1.5 rounded-full bg-teal-500"></div>
+                        <div class="h-px w-6 bg-slate-200"></div>
+                    </div>
+                </div>
+
+                <div v-if="studentAuthError"
+                    class="mb-6 rounded-2xl border border-red-100 bg-red-50 p-4 text-sm font-semibold text-red-600 animate-shake">
+                    {{ studentAuthError }}
+                </div>
+
+                <!-- LOGIN VIEW -->
+                <template v-if="!studentForgotPasswordStep">
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-teal-50 text-[#0d6b75]">
+                            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="12" cy="7" r="4"></circle>
+                            </svg>
+                        </div>
+                        <div>
+                            <h2 class="text-lg font-bold text-slate-800">Account Login</h2>
+                            <p class="text-xs font-medium text-slate-400">Please enter your credentials to login</p>
+                        </div>
+                    </div>
+
+                    <form class="space-y-5" @submit.prevent="submitStudentLogin">
+                        <div class="space-y-2">
+                            <label class="flex items-center gap-2 text-[11px] font-bold text-slate-700">
+                                <svg class="h-3.5 w-3.5 text-emerald-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                                Email or Mobile <span class="text-red-500">*</span>
+                            </label>
+                            <div class="relative group">
+                                <div class="absolute inset-y-0 left-0 flex items-center pl-4 text-emerald-500 transition-colors group-focus-within:text-[#0d6b75]">
+                                    <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                                </div>
+                                <input v-model="studentLoginForm.login" type="text"
+                                    class="h-12 w-full rounded-xl border-2 border-emerald-50 bg-white pl-12 pr-4 text-[14px] font-bold text-slate-700 placeholder:text-slate-300 outline-none focus:border-[#0d6b75] focus:ring-4 focus:ring-[#0d6b75]/5 transition-all"
+                                    placeholder="Email or Mobile"
+                                    required />
+                            </div>
+                        </div>
+
+                        <div class="space-y-2">
+                            <label class="flex items-center gap-2 text-[11px] font-bold text-slate-700">
+                                <svg class="h-3.5 w-3.5 text-purple-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                                Password <span class="text-red-500">*</span>
+                            </label>
+                            <div class="relative group">
+                                <div class="absolute inset-y-0 left-0 flex items-center pl-4 text-purple-500 transition-colors group-focus-within:text-purple-600">
+                                    <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                                </div>
+                                <input v-model="studentLoginForm.password" :type="showStudentLoginPassword ? 'text' : 'password'"
+                                    class="h-12 w-full rounded-xl border-2 border-purple-50 bg-[#f8fafc] pl-12 pr-10 text-[14px] font-bold text-slate-700 placeholder:text-slate-300 outline-none focus:border-purple-200 focus:ring-4 focus:ring-purple-500/5 transition-all"
+                                    placeholder="••••••••••••"
+                                    required />
+                                <button type="button" @click="showStudentLoginPassword = !showStudentLoginPassword"
+                                    class="absolute inset-y-0 right-0 flex items-center pr-4 text-slate-400 hover:text-slate-600">
+                                    <svg v-if="!showStudentLoginPassword" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                                    <svg v-else class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="10" x2="23" y2="10"></line></svg>
+                                </button>
+                            </div>
+                            <div class="flex justify-end">
+                                <button type="button" class="text-[12px] font-bold text-indigo-600 hover:underline" @click="openStudentForgotPassword()">Forgot password?</button>
+                            </div>
+                        </div>
+
+                        <button type="submit"
+                            class="group relative flex w-full h-12 items-center justify-center gap-3 overflow-hidden rounded-xl bg-[#0d6b75] text-sm font-bold text-white shadow-sm shadow-emerald-500/50 transition-all hover:-translate-y-1 hover:shadow-emerald-500/30 active:scale-[0.98] disabled:opacity-70"
+                            :disabled="studentAuthLoading">
+                            <div class="absolute inset-0 bg-white/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
+                            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                            <span>{{ studentAuthLoading ? 'LOGGING IN...' : 'LOGIN' }}</span>
+                        </button>
+                    </form>
+                </template>
+
+                <!-- FORGOT PASSWORD: REQUEST OTP -->
+                <template v-else-if="studentForgotPasswordStep === 'request'">
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-red-700 text-white">
+                            <i class="fa-solid fa-lock"></i>
+                        </div>
+                        <div>
+                            <h2 class="text-lg font-bold text-slate-800">Forgot Password</h2>
+                            <p class="text-xs font-medium text-slate-400">Enter your mobile to receive OTP</p>
+                        </div>
+                    </div>
+
+                    <form class="space-y-5" @submit.prevent="sendStudentForgotPasswordOTP">
+                        <div class="space-y-2">
+                            <label class="flex items-center gap-2 text-[11px] font-bold text-slate-700">
+                                <svg class="h-3.5 w-3.5 text-red-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l2.27-2.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+                                Mobile Number <span class="text-red-500">*</span>
+                            </label>
+                            <div class="relative group">
+                                <div class="absolute inset-y-0 left-0 flex items-center pl-4 text-red-700">
+                                    <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l2.27-2.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+                                </div>
+                                <input v-model="studentForgotPasswordForm.mobile" type="tel"
+                                    class="h-12 w-full rounded-xl border-2 border-red-100 bg-white pl-12 pr-4 text-[14px] font-bold text-slate-700 placeholder:text-slate-300 outline-none focus:border-red-700 focus:ring-4 focus:ring-red-700/5 transition-all"
+                                    placeholder="017XXXXXXXX"
+                                    required />
+                            </div>
+                        </div>
+
+                        <div class="flex items-center gap-3">
+                            <button type="button" @click="studentForgotPasswordStep = ''"
+                                class="flex-1 h-12 rounded-xl border-2 border-slate-100 text-sm font-bold text-slate-600 hover:bg-slate-50 transition-all">Back</button>
+                            <button type="submit"
+                                class="flex-[2] h-12 rounded-xl bg-red-700 text-sm font-bold text-white shadow-sm shadow-amber-500/30 hover:-translate-y-1 hover:shadow-amber-500/50 transition-all disabled:opacity-70"
+                                :disabled="studentAuthLoading">
+                                {{ studentAuthLoading ? 'SENDING...' : 'SEND OTP' }}
+                            </button>
+                        </div>
+                    </form>
+                </template>
+
+                <!-- FORGOT PASSWORD: VERIFY OTP -->
+                <template v-else-if="studentForgotPasswordStep === 'otp'">
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-indigo-50 text-indigo-600">
+                            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            <h2 class="text-lg font-bold text-slate-800">Verify OTP</h2>
+                            <p class="text-xs font-medium text-slate-400">Enter the code sent to {{ studentForgotPasswordForm.mobile }}</p>
+                        </div>
+                    </div>
+
+                    <form class="space-y-5" @submit.prevent="verifyStudentForgotPasswordOTP">
+                        <div class="space-y-2">
+                            <label class="flex items-center justify-center gap-2 text-[11px] font-bold text-slate-700 uppercase tracking-widest">
+                                Enter 4 or 6 digit code
+                            </label>
+                            <input v-model="studentForgotPasswordForm.otp" type="number"
+                                class="h-14 w-full rounded-2xl border-2 border-indigo-50 bg-indigo-50/30 text-center text-2xl font-black tracking-[1em] text-indigo-600 placeholder:text-slate-200 outline-none focus:border-indigo-500 focus:bg-white focus:ring-8 focus:ring-indigo-500/5 transition-all"
+                                placeholder="XXXX"
+                                required />
+                        </div>
+
+                        <div class="flex items-center gap-3">
+                            <button type="button" @click="studentForgotPasswordStep = 'request'"
+                                class="flex-1 h-12 rounded-xl border-2 border-slate-100 text-sm font-bold text-slate-600 hover:bg-slate-50 transition-all">Resend</button>
+                            <button type="submit"
+                                class="flex-[2] h-12 rounded-xl bg-indigo-600 text-sm font-bold text-white shadow-sm shadow-indigo-600/30 hover:-translate-y-1 hover:shadow-indigo-600/50 transition-all disabled:opacity-70"
+                                :disabled="studentAuthLoading">
+                                {{ studentAuthLoading ? 'VERIFYING...' : 'VERIFY OTP' }}
+                            </button>
+                        </div>
+                    </form>
+                </template>
+
+                <!-- FORGOT PASSWORD: RESET -->
+                <template v-else-if="studentForgotPasswordStep === 'reset'">
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-emerald-50 text-emerald-600">
+                            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12 15V3m0 12l-4-4m4 4l4-4"></path>
+                                <path d="M2 17l.621 2.485A2 2 0 0 0 4.561 21h14.878a2 2 0 0 0 1.94-1.515L22 17"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            <h2 class="text-lg font-bold text-slate-800">Reset Password</h2>
+                            <p class="text-xs font-medium text-slate-400">Create a secure new password</p>
+                        </div>
+                    </div>
+
+                    <form class="space-y-4" @submit.prevent="submitStudentForgotPasswordReset">
+                        <div class="space-y-2">
+                            <label class="text-[11px] font-bold text-slate-700">New Password <span class="text-red-500">*</span></label>
+                            <input v-model="studentForgotPasswordForm.new_password" type="password"
+                                class="h-12 w-full rounded-xl border-2 border-emerald-50 bg-white px-4 text-sm font-bold outline-none focus:border-emerald-500 transition-all"
+                                placeholder="••••••••" required />
+                        </div>
+                        <div class="space-y-2">
+                            <label class="text-[11px] font-bold text-slate-700">Confirm Password <span class="text-red-500">*</span></label>
+                            <input v-model="studentForgotPasswordForm.confirm_password" type="password"
+                                class="h-12 w-full rounded-xl border-2 border-emerald-50 bg-white px-4 text-sm font-bold outline-none focus:border-emerald-500 transition-all"
+                                placeholder="••••••••" required />
+                        </div>
+
+                        <button type="submit"
+                            class="w-full h-12 rounded-xl bg-emerald-600 text-sm font-bold text-white shadow-sm shadow-emerald-600/30 hover:-translate-y-1 hover:shadow-emerald-600/50 transition-all disabled:opacity-70"
+                            :disabled="studentAuthLoading">
+                            {{ studentAuthLoading ? 'SAVING...' : 'RESET PASSWORD' }}
+                        </button>
+                    </form>
+                </template>
             </div>
         </div>
 
@@ -554,6 +778,7 @@ export default {
             registrationLoading: false,
             registrationSaving: false,
             registrationError: '',
+            registrationErrors: {},
             registrationSuccess: '',
             registrationSameAsPresent: false,
             registrationProfileFile: null,
@@ -593,6 +818,15 @@ export default {
             studentLoginForm: {
                 login: '',
                 password: '',
+            },
+            showStudentLoginModal: false,
+            showStudentLoginPassword: false,
+            studentForgotPasswordStep: '', // 'request', 'otp', 'reset'
+            studentForgotPasswordForm: {
+                mobile: '',
+                otp: '',
+                new_password: '',
+                confirm_password: '',
             },
 
             studentDashboardLoading: false,
@@ -1417,9 +1651,17 @@ export default {
         onCardClick(href) {
             if (href === '/online-admission') {
                 this.openOnlineAdmissionModal()
+            } else if (href === '/login') {
+                this.openStudentLoginModal()
             } else {
                 this.go(href)
             }
+        },
+        openStudentLoginModal() {
+            this.studentLoginForm.login = ''
+            this.studentLoginForm.password = ''
+            this.studentAuthError = ''
+            this.showStudentLoginModal = true
         },
         openOnlineAdmissionModal() {
             this.onlineAdmissionResetForm(true)
@@ -1510,6 +1752,7 @@ export default {
         },
         resetRegistrationForm() {
             this.registrationError = ''
+            this.registrationErrors = {}
             this.registrationSuccess = ''
             this.registrationProfileFile = null
             this.registrationSameAsPresent = false
@@ -1550,9 +1793,39 @@ export default {
                 }
             }
         },
+        regenPassword() {
+            const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
+            let pass = ''
+            for (let i = 0; i < 8; i++) {
+                pass += chars.charAt(Math.floor(Math.random() * chars.length))
+            }
+            this.registrationForm.password = pass
+        },
+        onPickRegistrationProfile(e) {
+            const file = e.target.files[0]
+            if (file) {
+                this.registrationProfileFile = file
+            }
+        },
+        copyRegistrationAddress() {
+            if (this.registrationSameAsPresent) {
+                this.registrationForm.permanent_division_id = this.registrationForm.division_id
+                this.registrationForm.permanent_district_id = this.registrationForm.district_id
+                this.registrationForm.permanent_upazila_id = this.registrationForm.upazila_id
+                this.registrationForm.permanent_union_id = this.registrationForm.union_id
+                this.registrationForm.permanent_address = this.registrationForm.address
+            } else {
+                this.registrationForm.permanent_division_id = ''
+                this.registrationForm.permanent_district_id = ''
+                this.registrationForm.permanent_upazila_id = ''
+                this.registrationForm.permanent_union_id = ''
+                this.registrationForm.permanent_address = ''
+            }
+        },
         async submitRegistration() {
             if (this.registrationSaving) return
             this.registrationSaving = true
+            this.registrationErrors = {}
             this.registrationError = ''
             this.registrationSuccess = ''
             try {
@@ -1574,12 +1847,9 @@ export default {
                 if (Number(e?.response?.status) === 422) {
                     const errors = e?.response?.data?.errors
                     if (errors && typeof errors === 'object') {
-                        const firstKey = Object.keys(errors)[0]
-                        const firstMsg = Array.isArray(errors[firstKey]) ? errors[firstKey][0] : errors[firstKey]
-                        this.registrationError = String(firstMsg || e?.response?.data?.message || 'Validation failed.')
-                    } else {
-                        this.registrationError = String(e?.response?.data?.message || 'Validation failed.')
+                        this.registrationErrors = errors
                     }
+                    this.registrationError = e?.response?.data?.message || 'Validation failed.'
                 } else {
                     this.registrationError = e?.response?.data?.message || 'Registration failed.'
                 }
@@ -1609,9 +1879,87 @@ export default {
             try {
                 const res = await window.axios.post('/api/public/auth/login', this.studentLoginForm)
                 this.studentMe = res?.data?.student || res?.data || null
+                this.showStudentLoginModal = false
                 this.go('/dashboard')
             } catch (e) {
                 this.studentAuthError = e?.response?.data?.message || 'Login failed.'
+            } finally {
+                this.studentAuthLoading = false
+            }
+        },
+        openStudentForgotPassword() {
+            this.studentForgotPasswordStep = 'request'
+            this.studentForgotPasswordForm.mobile = ''
+            this.studentForgotPasswordForm.otp = ''
+            this.studentForgotPasswordForm.new_password = ''
+            this.studentForgotPasswordForm.confirm_password = ''
+            this.studentAuthError = ''
+        },
+        async sendStudentForgotPasswordOTP() {
+            if (this.studentAuthLoading) return
+            if (!this.studentForgotPasswordForm.mobile) {
+                this.studentAuthError = 'Mobile number is required'
+                return
+            }
+            this.studentAuthLoading = true
+            this.studentAuthError = ''
+            try {
+                const res = await window.axios.post('/api/public/auth/send-otp', {
+                    mobile: this.studentForgotPasswordForm.mobile
+                })
+                this.studentForgotPasswordStep = 'otp'
+            } catch (e) {
+                this.studentAuthError = e?.response?.data?.message || 'Failed to send OTP.'
+            } finally {
+                this.studentAuthLoading = false
+            }
+        },
+        async verifyStudentForgotPasswordOTP() {
+            if (this.studentAuthLoading) return
+            if (!this.studentForgotPasswordForm.otp) {
+                this.studentAuthError = 'OTP is required'
+                return
+            }
+            this.studentAuthLoading = true
+            this.studentAuthError = ''
+            try {
+                await window.axios.post('/api/public/auth/check-otp', {
+                    mobile: this.studentForgotPasswordForm.mobile,
+                    otp: this.studentForgotPasswordForm.otp
+                })
+                this.studentForgotPasswordStep = 'reset'
+            } catch (e) {
+                this.studentAuthError = e?.response?.data?.message || 'Invalid OTP.'
+            } finally {
+                this.studentAuthLoading = false
+            }
+        },
+        async submitStudentForgotPasswordReset() {
+            if (this.studentAuthLoading) return
+            const f = this.studentForgotPasswordForm
+            if (!f.new_password || !f.confirm_password) {
+                this.studentAuthError = 'All fields are required'
+                return
+            }
+            if (f.new_password !== f.confirm_password) {
+                this.studentAuthError = 'Passwords do not match'
+                return
+            }
+            this.studentAuthLoading = true
+            this.studentAuthError = ''
+            try {
+                const res = await window.axios.post('/api/public/auth/forgot-password', {
+                    mobile: f.mobile,
+                    new_password: f.new_password,
+                    confirm_password: f.confirm_password
+                })
+                // Reset successful — go back to login view with a success hint
+                this.studentForgotPasswordStep = ''
+                this.studentAuthError = ''
+                this.studentLoginForm.login = f.mobile
+                this.studentLoginForm.password = ''
+            } catch (e) {
+                this.studentAuthError = e?.response?.data?.message || 'Failed to reset password.'
             } finally {
                 this.studentAuthLoading = false
             }

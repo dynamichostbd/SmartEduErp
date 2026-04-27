@@ -58,6 +58,9 @@ Route::post('/api/public/registration', [PublicRegistrationController::class, 'r
 Route::post('/api/public/auth/login', [PublicStudentAuthController::class, 'login']);
 Route::get('/api/public/auth/me', [PublicStudentAuthController::class, 'me']);
 Route::post('/api/public/auth/logout', [PublicStudentAuthController::class, 'logout']);
+Route::post('/api/public/auth/send-otp', [PublicStudentAuthController::class, 'sendOTP']);
+Route::post('/api/public/auth/check-otp', [PublicStudentAuthController::class, 'checkOTP']);
+Route::post('/api/public/auth/forgot-password', [PublicStudentAuthController::class, 'forgotPassword']);
 
 Route::get('/api/public/student/dashboard', [PublicStudentDashboardController::class, 'dashboard']);
 Route::get('/api/public/student/invoices/{id}/view', [PublicStudentDashboardController::class, 'viewInvoice']);

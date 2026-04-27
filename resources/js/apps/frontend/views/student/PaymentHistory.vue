@@ -14,7 +14,7 @@
                         <th class="px-6 py-4 font-bold uppercase tracking-wider text-center">Action</th>
                     </tr>
                 </thead>
-                <tbody class="divide-y divide-slate-100 italic">
+                <tbody class="divide-y divide-slate-100">
                     <tr v-for="inv in invoices" :key="inv.id" class="hover:bg-slate-50 transition-colors">
                         <td class="px-6 py-4 text-slate-900 font-medium">{{ inv.invoice_number }}</td>
                         <td class="px-6 py-4 text-slate-600">{{ inv.head?.name || '—' }}</td>
@@ -31,7 +31,7 @@
                         </td>
                     </tr>
                     <tr v-if="!invoices.length && !loading">
-                        <td colspan="5" class="px-6 py-12 text-center text-slate-400 not-italic">
+                        <td colspan="5" class="px-6 py-12 text-center text-slate-400">
                             <div class="flex flex-col items-center gap-2">
                                 <svg class="h-10 w-10 opacity-20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                                 <span>No payment records found.</span>

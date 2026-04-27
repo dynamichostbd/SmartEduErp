@@ -97,13 +97,6 @@
                     </button>
                 </form>
             </div>
-
-            <!-- Footer -->
-            <div class="mt-8 text-center">
-                <p class="text-[15px] font-medium text-slate-500">
-                    Not registered? <button @click="app.go('/registration')" class="font-bold text-[#0d6b75] hover:underline">Apply Now</button>
-                </p>
-            </div>
         </div>
     </div>
 </template>

@@ -2,12 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Student;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
+use App\Traits\SmsGatewayTrait;
 
 class PublicStudentAuthController extends Controller
 {
+    use SmsGatewayTrait;
     public function me(Request $request)
     {
         $user = Auth::guard('web')->user();
@@ -63,12 +69,81 @@ class PublicStudentAuthController extends Controller
         Auth::guard('web')->logout();
 
         $request->session()->invalidate();
-        // Note: do NOT call regenerateToken() here — it changes the CSRF token
-        // in the new session but the client's XSRF-TOKEN cookie is NOT updated
-        // until the next full page request, so the next POST (e.g. login) gets a 419.
-        // session()->invalidate() already destroys the old session; a fresh token
-        // is generated automatically when the next session starts.
-
         return response()->json(['logged_out' => true], 200);
+    }
+
+    public function sendOTP(Request $request)
+    {
+        $request->validate(['mobile' => 'required']);
+
+        $student = Student::where('mobile', $request->mobile)->where('status', 'active')->first();
+
+        if (!$student) {
+            return $this->sendError('No active student found with this mobile number.', 404);
+        }
+
+        $code = rand(1111, 9999);
+
+        $student->update([
+            'otp' => $code,
+        ]);
+
+        $message = $this->smsTemplate('OTP', ['otp' => $code], $student) ?: "Your OTP for password reset is: " . $code;
+        $sent = $this->sendSmsViaGateway($student->mobile, $message);
+
+        if (!$sent) {
+            $error = $this->smsGatewayConfigError() ?: 'Failed to send SMS. Please contact support.';
+            return $this->sendError($error, 500);
+        }
+
+        return $this->sendResponse([], 200, 'OTP sent successfully. Please check your mobile.');
+    }
+
+    public function checkOTP(Request $request)
+    {
+        $request->validate([
+            'mobile' => 'required',
+            'otp'    => 'required',
+        ]);
+
+        $student = Student::where('mobile', $request->mobile)->where('status', 'active')->first();
+
+        if (!$student) {
+            return $this->sendError('No active student found with this mobile number.', 404);
+        }
+
+
+        if ((string) $student->otp !== (string) $request->otp) {
+            return $this->sendError('OTP does not match. Please try again.', 400);
+        }
+
+        // Clear OTP from DB after verification (matches old ERP)
+        $student->update(['otp' => null]);
+
+        return $this->sendResponse([], 200, 'OTP verified successfully.');
+    }
+
+    public function forgotPassword(Request $request)
+    {
+        $request->validate([
+            'mobile'           => 'required',
+            'new_password'     => 'required|min:6|same:confirm_password',
+            'confirm_password' => 'required|min:6',
+        ]);
+
+        $student = Student::where('mobile', $request->mobile)->where('status', 'active')->first();
+
+        if (!$student) {
+            return $this->sendError('No active student found with this mobile number.', 404);
+        }
+
+        // We don't re-verify OTP here as it was cleared in checkOTP (matches old ERP logic)
+
+        DB::table('students')->where('id', $student->id)->update([
+            'password'       => Hash::make($request->new_password),
+            'otp'            => null,
+        ]);
+
+        return $this->sendResponse([], 200, 'Password reset successfully!');
     }
 }

@@ -1,5 +1,5 @@
 <template>
-    <div class="mt-3 rounded-sm border border-slate-300 bg-white p-4 sm:p-6">
+    <div class="mt-3 rounded-sm border border-slate-300 bg-emerald-50 p-4 sm:p-6">
         <div class="mx-auto w-full max-w-6xl">
             <div v-if="app.onlineAdmissionStatusMessage" class="mb-4 rounded-sm border p-3 text-sm"
                 :class="app.onlineAdmissionStatusClass">
@@ -21,23 +21,18 @@
             </div>
 
             <template v-else>
-                <div class="mb-4">
+                <div class="mb-4 flex items-center justify-between gap-3 pb-2">
                     <div class="text-xl font-bold text-slate-900 sm:text-2xl">ONLINE ADMISSION</div>
+                    <button
+                        v-if="app.onlineAdmissionShowForm || app.onlineAdmissionCheckApplicationFees || app.onlineAdmissionCheckRollVerify"
+                        type="button"
+                        class="rounded-full bg-[#d20808] px-4 py-1.5 text-xs font-bold text-white  hover:bg-[#b60606]"
+                        @click="app.onlineAdmissionResetForm">
+                        RESET FORM
+                    </button>
                 </div>
 
-                <div class="mt-4 rounded-xl border border-red-600 bg-white p-5 ">
-                    <div class="mb-4 flex items-center justify-between gap-3 border-b border-slate-100 pb-2">
-                        <div class="text-sm font-semibold text-slate-900">CHECK APPLICATION FEES / ADMISSION ROLL / REG
-                            NO</div>
-                        <button
-                            v-if="app.onlineAdmissionShowForm || app.onlineAdmissionCheckApplicationFees || app.onlineAdmissionCheckRollVerify"
-                            type="button"
-                            class="rounded-full bg-[#d20808] px-4 py-1.5 text-xs font-bold text-white  hover:bg-[#b60606]"
-                            @click="app.onlineAdmissionResetForm">
-                            RESET FORM
-                        </button>
-                    </div>
-
+                <div v-show="app.onlineAdmissionError || !app.onlineAdmissionLoading || !app.onlineAdmissionShowForm" class="mt-4 rounded-xl bg-white p-5 ">
                     <div v-if="app.onlineAdmissionLoading" class="p-4 text-sm font-semibold text-slate-600">Loading...
                     </div>
                     <div v-else>
@@ -66,53 +61,68 @@
                                         <div class="text-xs font-semibold text-slate-600">Full Name <span
                                                 class="text-red-600">*</span></div>
                                         <div class="relative mt-1">
-                                            <input v-model="app.onlineAdmissionForm.name" type="text"
-                                                id="field-name"
+                                            <input v-model="app.onlineAdmissionForm.name" type="text" id="field-name"
                                                 placeholder="Enter full name"
                                                 :readonly="app.onlineAdmissionDisabledFields.includes('name')"
                                                 class="h-9 w-full rounded-sm border bg-white px-3 text-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10 disabled:bg-slate-50 transition-all"
                                                 :class="app.onlineAdmissionValidationErrors.name ? 'border-red-500 pr-10' : 'border-slate-300'" />
-                                            <div v-if="app.onlineAdmissionValidationErrors.name" class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
-                                                <svg class="h-4 w-4 text-red-500" fill="currentColor" viewBox="0 0 20 20">
-                                                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                                            <div v-if="app.onlineAdmissionValidationErrors.name"
+                                                class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
+                                                <svg class="h-4 w-4 text-red-500" fill="currentColor"
+                                                    viewBox="0 0 20 20">
+                                                    <path fill-rule="evenodd"
+                                                        d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+                                                        clip-rule="evenodd" />
                                                 </svg>
                                             </div>
                                         </div>
-                                        <div v-if="app.onlineAdmissionValidationErrors.name" class="mt-1 text-xs text-red-600">{{ app.onlineAdmissionValidationErrors.name }}</div>
+                                        <div v-if="app.onlineAdmissionValidationErrors.name"
+                                            class="mt-1 text-xs text-red-600">{{
+                                                app.onlineAdmissionValidationErrors.name }}</div>
                                     </div>
                                     <div>
                                         <div class="text-xs font-semibold text-slate-600">Father's Name <span
                                                 class="text-red-600">*</span></div>
                                         <div class="relative mt-1">
                                             <input v-model="app.onlineAdmissionForm.fathers_name" type="text"
-                                                id="field-fathers_name"
-                                                placeholder="Enter father's name"
+                                                id="field-fathers_name" placeholder="Enter father's name"
                                                 class="h-9 w-full rounded-sm border bg-white px-3 text-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10 transition-all"
                                                 :class="app.onlineAdmissionValidationErrors.fathers_name ? 'border-red-500 pr-10' : 'border-slate-300'" />
-                                            <div v-if="app.onlineAdmissionValidationErrors.fathers_name" class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
-                                                <svg class="h-4 w-4 text-red-500" fill="currentColor" viewBox="0 0 20 20">
-                                                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                                            <div v-if="app.onlineAdmissionValidationErrors.fathers_name"
+                                                class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
+                                                <svg class="h-4 w-4 text-red-500" fill="currentColor"
+                                                    viewBox="0 0 20 20">
+                                                    <path fill-rule="evenodd"
+                                                        d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+                                                        clip-rule="evenodd" />
                                                 </svg>
                                             </div>
                                         </div>
-                                        <div v-if="app.onlineAdmissionValidationErrors.fathers_name" class="mt-1 text-xs text-red-600">{{ app.onlineAdmissionValidationErrors.fathers_name }}</div>
+                                        <div v-if="app.onlineAdmissionValidationErrors.fathers_name"
+                                            class="mt-1 text-xs text-red-600">{{
+                                                app.onlineAdmissionValidationErrors.fathers_name }}</div>
                                     </div>
                                     <div>
                                         <div class="text-xs font-semibold text-slate-600">Mother's Name <span
                                                 class="text-red-600">*</span></div>
                                         <div class="relative mt-1">
                                             <input v-model="app.onlineAdmissionForm.mothers_name" type="text"
-                                                id="field-mothers_name"
-                                                placeholder="Enter mother's name"
+                                                id="field-mothers_name" placeholder="Enter mother's name"
                                                 class="h-9 w-full rounded-sm border bg-white px-3 text-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10 transition-all"
                                                 :class="app.onlineAdmissionValidationErrors.mothers_name ? 'border-red-500 pr-10' : 'border-slate-300'" />
-                                            <div v-if="app.onlineAdmissionValidationErrors.mothers_name" class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
-                                                <svg class="h-4 w-4 text-red-500" fill="currentColor" viewBox="0 0 20 20">
-                                                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                                            <div v-if="app.onlineAdmissionValidationErrors.mothers_name"
+                                                class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
+                                                <svg class="h-4 w-4 text-red-500" fill="currentColor"
+                                                    viewBox="0 0 20 20">
+                                                    <path fill-rule="evenodd"
+                                                        d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+                                                        clip-rule="evenodd" />
                                                 </svg>
                                             </div>
                                         </div>
-                                        <div v-if="app.onlineAdmissionValidationErrors.mothers_name" class="mt-1 text-xs text-red-600">{{ app.onlineAdmissionValidationErrors.mothers_name }}</div>
+                                        <div v-if="app.onlineAdmissionValidationErrors.mothers_name"
+                                            class="mt-1 text-xs text-red-600">{{
+                                                app.onlineAdmissionValidationErrors.mothers_name }}</div>
                                     </div>
 
                                     <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -146,27 +156,31 @@
                                             <div class="text-xs font-semibold text-slate-600">Date of Birth <span
                                                     class="text-red-600">*</span></div>
                                             <div class="relative mt-1">
-                                                <input v-model="app.onlineAdmissionForm.dob" type="date"
-                                                    id="field-dob"
+                                                <input v-model="app.onlineAdmissionForm.dob" type="date" id="field-dob"
                                                     class="h-9 w-full rounded-sm border bg-white px-3 text-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10 transition-all"
                                                     :class="app.onlineAdmissionValidationErrors.dob ? 'border-red-500 pr-10' : 'border-slate-300'" />
-                                                <div v-if="app.onlineAdmissionValidationErrors.dob" class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
-                                                    <svg class="h-4 w-4 text-red-500" fill="currentColor" viewBox="0 0 20 20">
-                                                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                                                <div v-if="app.onlineAdmissionValidationErrors.dob"
+                                                    class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
+                                                    <svg class="h-4 w-4 text-red-500" fill="currentColor"
+                                                        viewBox="0 0 20 20">
+                                                        <path fill-rule="evenodd"
+                                                            d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+                                                            clip-rule="evenodd" />
                                                     </svg>
                                                 </div>
                                             </div>
-                                            <div v-if="app.onlineAdmissionValidationErrors.dob" class="mt-1 text-xs text-red-600">{{ app.onlineAdmissionValidationErrors.dob }}</div>
+                                            <div v-if="app.onlineAdmissionValidationErrors.dob"
+                                                class="mt-1 text-xs text-red-600">{{
+                                                app.onlineAdmissionValidationErrors.dob }}</div>
                                         </div>
                                     </div>
 
                                     <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
                                         <div>
                                             <div class="text-xs font-semibold text-slate-600">Religion <span
-                                                class="text-red-600">*</span></div>
+                                                    class="text-red-600">*</span></div>
                                             <div class="mt-1">
-                                                <select v-model="app.onlineAdmissionForm.religion"
-                                                    id="field-religion"
+                                                <select v-model="app.onlineAdmissionForm.religion" id="field-religion"
                                                     class="h-9 w-full rounded-sm border bg-white px-3 text-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10 transition-all"
                                                     :class="app.onlineAdmissionValidationErrors.religion ? 'border-red-500' : 'border-slate-300'">
                                                     <option value="">--Select--</option>
@@ -174,7 +188,9 @@
                                                         :value="r">{{ r }}</option>
                                                 </select>
                                             </div>
-                                            <div v-if="app.onlineAdmissionValidationErrors.religion" class="mt-1 text-xs text-red-600">{{ app.onlineAdmissionValidationErrors.religion }}</div>
+                                            <div v-if="app.onlineAdmissionValidationErrors.religion"
+                                                class="mt-1 text-xs text-red-600">{{
+                                                    app.onlineAdmissionValidationErrors.religion }}</div>
                                         </div>
                                         <div>
                                             <div class="text-xs font-semibold text-slate-600">Blood Group</div>
@@ -201,7 +217,9 @@
                                             class="mt-1 block w-full text-sm text-slate-700 file:mr-3 file:rounded-sm file:border-0 file:bg-[#0d6b75] file:px-3 file:py-2 file:font-semibold file:text-white hover:file:bg-[#0d6b75]/90 border"
                                             :class="app.onlineAdmissionValidationErrors.profile ? 'border-red-500 rounded-sm' : 'border-transparent'"
                                             @change="app.onPickOnlineAdmissionProfile" />
-                                        <div v-if="app.onlineAdmissionValidationErrors.profile" class="mt-1 text-xs text-red-600">{{ app.onlineAdmissionValidationErrors.profile }}</div>
+                                        <div v-if="app.onlineAdmissionValidationErrors.profile"
+                                            class="mt-1 text-xs text-red-600">{{
+                                                app.onlineAdmissionValidationErrors.profile }}</div>
                                     </div>
                                 </div>
                             </div>
@@ -214,21 +232,26 @@
                                 <div class="grid grid-cols-1 gap-4">
                                     <div>
                                         <div class="text-xs font-semibold text-slate-600">Admission Roll / Reg No <span
-                                            class="text-red-600">*</span></div>
+                                                class="text-red-600">*</span></div>
                                         <div class="relative mt-1">
                                             <input v-model="app.onlineAdmissionForm.admission_roll" type="text"
-                                                id="field-admission_roll"
-                                                placeholder="Enter admission roll or reg no"
+                                                id="field-admission_roll" placeholder="Enter admission roll or reg no"
                                                 :readonly="app.onlineAdmissionDisabledFields.includes('admission_roll')"
                                                 class="h-9 w-full rounded-sm border bg-white px-3 text-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10 disabled:bg-slate-50 transition-all"
                                                 :class="app.onlineAdmissionValidationErrors.admission_roll ? 'border-red-500 pr-10' : 'border-slate-300'" />
-                                            <div v-if="app.onlineAdmissionValidationErrors.admission_roll" class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
-                                                <svg class="h-4 w-4 text-red-500" fill="currentColor" viewBox="0 0 20 20">
-                                                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                                            <div v-if="app.onlineAdmissionValidationErrors.admission_roll"
+                                                class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
+                                                <svg class="h-4 w-4 text-red-500" fill="currentColor"
+                                                    viewBox="0 0 20 20">
+                                                    <path fill-rule="evenodd"
+                                                        d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+                                                        clip-rule="evenodd" />
                                                 </svg>
                                             </div>
                                         </div>
-                                        <div v-if="app.onlineAdmissionValidationErrors.admission_roll" class="mt-1 text-xs text-red-600">{{ app.onlineAdmissionValidationErrors.admission_roll }}</div>
+                                        <div v-if="app.onlineAdmissionValidationErrors.admission_roll"
+                                            class="mt-1 text-xs text-red-600">{{
+                                                app.onlineAdmissionValidationErrors.admission_roll }}</div>
                                     </div>
                                     <div>
                                         <div class="text-xs font-semibold text-slate-600">SSC GPA</div>
@@ -244,7 +267,7 @@
                                     </div>
                                     <div>
                                         <div class="text-xs font-semibold text-slate-600">Academic Session <span
-                                            class="text-red-600">*</span></div>
+                                                class="text-red-600">*</span></div>
                                         <div class="mt-1">
                                             <select v-model="app.onlineAdmissionForm.academic_session_id"
                                                 id="field-academic_session_id"
@@ -256,7 +279,9 @@
                                                     :value="String(s.id)">{{ s.name }}</option>
                                             </select>
                                         </div>
-                                        <div v-if="app.onlineAdmissionValidationErrors.academic_session_id" class="mt-1 text-xs text-red-600">{{ app.onlineAdmissionValidationErrors.academic_session_id }}</div>
+                                        <div v-if="app.onlineAdmissionValidationErrors.academic_session_id"
+                                            class="mt-1 text-xs text-red-600">{{
+                                                app.onlineAdmissionValidationErrors.academic_session_id }}</div>
                                     </div>
                                     <div>
                                         <div class="mb-1 text-xs font-semibold text-slate-600">Qualification</div>
@@ -267,7 +292,7 @@
                                     </div>
                                     <div>
                                         <div class="text-xs font-semibold text-slate-600">Department/Group <span
-                                            class="text-red-600">*</span></div>
+                                                class="text-red-600">*</span></div>
                                         <div class="mt-1">
                                             <select v-model="app.onlineAdmissionForm.department_id"
                                                 id="field-department_id"
@@ -279,11 +304,13 @@
                                                     :key="'oad2-' + d.id" :value="String(d.id)">{{ d.name }}</option>
                                             </select>
                                         </div>
-                                        <div v-if="app.onlineAdmissionValidationErrors.department_id" class="mt-1 text-xs text-red-600">{{ app.onlineAdmissionValidationErrors.department_id }}</div>
+                                        <div v-if="app.onlineAdmissionValidationErrors.department_id"
+                                            class="mt-1 text-xs text-red-600">{{
+                                                app.onlineAdmissionValidationErrors.department_id }}</div>
                                     </div>
                                     <div>
                                         <div class="text-xs font-semibold text-slate-600">Class <span
-                                            class="text-red-600">*</span></div>
+                                                class="text-red-600">*</span></div>
                                         <div class="mt-1">
                                             <select v-model="app.onlineAdmissionForm.academic_class_id"
                                                 id="field-academic_class_id"
@@ -295,7 +322,9 @@
                                                     :key="'oac2-' + c.id" :value="String(c.id)">{{ c.name }}</option>
                                             </select>
                                         </div>
-                                        <div v-if="app.onlineAdmissionValidationErrors.academic_class_id" class="mt-1 text-xs text-red-600">{{ app.onlineAdmissionValidationErrors.academic_class_id }}</div>
+                                        <div v-if="app.onlineAdmissionValidationErrors.academic_class_id"
+                                            class="mt-1 text-xs text-red-600">{{
+                                                app.onlineAdmissionValidationErrors.academic_class_id }}</div>
                                     </div>
                                 </div>
                             </div>
@@ -313,23 +342,27 @@
                                                 class="text-red-600">*</span></div>
                                         <div class="relative mt-1">
                                             <input v-model="app.onlineAdmissionForm.mobile" type="text"
-                                                id="field-mobile"
-                                                placeholder="Enter mobile number"
+                                                id="field-mobile" placeholder="Enter mobile number"
                                                 :readonly="app.onlineAdmissionDisabledFields.includes('mobile')"
                                                 class="h-9 w-full rounded-sm border bg-white px-3 text-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10 disabled:bg-slate-50 transition-all"
                                                 :class="app.onlineAdmissionValidationErrors.mobile ? 'border-red-500 pr-10' : 'border-slate-300'" />
-                                            <div v-if="app.onlineAdmissionValidationErrors.mobile" class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
-                                                <svg class="h-4 w-4 text-red-500" fill="currentColor" viewBox="0 0 20 20">
-                                                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                                            <div v-if="app.onlineAdmissionValidationErrors.mobile"
+                                                class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
+                                                <svg class="h-4 w-4 text-red-500" fill="currentColor"
+                                                    viewBox="0 0 20 20">
+                                                    <path fill-rule="evenodd"
+                                                        d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+                                                        clip-rule="evenodd" />
                                                 </svg>
                                             </div>
                                         </div>
-                                        <div v-if="app.onlineAdmissionValidationErrors.mobile" class="mt-1 text-xs text-red-600">{{ app.onlineAdmissionValidationErrors.mobile }}</div>
+                                        <div v-if="app.onlineAdmissionValidationErrors.mobile"
+                                            class="mt-1 text-xs text-red-600">{{
+                                                app.onlineAdmissionValidationErrors.mobile }}</div>
                                     </div>
                                     <div>
                                         <div class="text-xs font-semibold text-slate-600">Email</div>
-                                        <input v-model="app.onlineAdmissionForm.email" type="email"
-                                            id="field-email"
+                                        <input v-model="app.onlineAdmissionForm.email" type="email" id="field-email"
                                             placeholder="Enter email address"
                                             class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm  outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10" />
                                     </div>
@@ -338,7 +371,7 @@
                             </div>
                         </div>
 
-                        <div class="lg:col-span-6">
+                        <div class="lg:col-span-6 bg-white">
                             <!-- Present Address -->
                             <div class="rounded-sm border border-emerald-300">
                                 <div
@@ -348,10 +381,9 @@
                                 <div class="grid grid-cols-1 gap-3 p-3">
                                     <div>
                                         <div class="text-xs font-semibold text-slate-600">Division <span
-                                            class="text-red-600">*</span></div>
+                                                class="text-red-600">*</span></div>
                                         <div class="mt-1">
-                                            <select v-model="app.onlineAdmissionForm.division_id"
-                                                id="field-division_id"
+                                            <select v-model="app.onlineAdmissionForm.division_id" id="field-division_id"
                                                 class="h-9 w-full rounded-sm border bg-white px-3 text-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10 transition-all"
                                                 :class="app.onlineAdmissionValidationErrors.division_id ? 'border-red-500' : 'border-slate-300'">
                                                 <option value="">-- Division --</option>
@@ -360,14 +392,15 @@
                                                 </option>
                                             </select>
                                         </div>
-                                        <div v-if="app.onlineAdmissionValidationErrors.division_id" class="mt-1 text-xs text-red-600">{{ app.onlineAdmissionValidationErrors.division_id }}</div>
+                                        <div v-if="app.onlineAdmissionValidationErrors.division_id"
+                                            class="mt-1 text-xs text-red-600">{{
+                                                app.onlineAdmissionValidationErrors.division_id }}</div>
                                     </div>
                                     <div>
                                         <div class="text-xs font-semibold text-slate-600">District <span
-                                            class="text-red-600">*</span></div>
+                                                class="text-red-600">*</span></div>
                                         <div class="mt-1">
-                                            <select v-model="app.onlineAdmissionForm.district_id"
-                                                id="field-district_id"
+                                            <select v-model="app.onlineAdmissionForm.district_id" id="field-district_id"
                                                 :disabled="!app.onlineAdmissionForm.division_id"
                                                 class="h-9 w-full rounded-sm border bg-white px-3 text-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10 disabled:bg-slate-50 disabled:text-slate-400 transition-all"
                                                 :class="app.onlineAdmissionValidationErrors.district_id ? 'border-red-500' : 'border-slate-300'">
@@ -377,14 +410,15 @@
                                                 </option>
                                             </select>
                                         </div>
-                                        <div v-if="app.onlineAdmissionValidationErrors.district_id" class="mt-1 text-xs text-red-600">{{ app.onlineAdmissionValidationErrors.district_id }}</div>
+                                        <div v-if="app.onlineAdmissionValidationErrors.district_id"
+                                            class="mt-1 text-xs text-red-600">{{
+                                                app.onlineAdmissionValidationErrors.district_id }}</div>
                                     </div>
                                     <div>
                                         <div class="text-xs font-semibold text-slate-600">Upazila <span
-                                            class="text-red-600">*</span></div>
+                                                class="text-red-600">*</span></div>
                                         <div class="mt-1">
-                                            <select v-model="app.onlineAdmissionForm.upazila_id"
-                                                id="field-upazila_id"
+                                            <select v-model="app.onlineAdmissionForm.upazila_id" id="field-upazila_id"
                                                 :disabled="!app.onlineAdmissionForm.district_id"
                                                 class="h-9 w-full rounded-sm border bg-white px-3 text-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10 disabled:bg-slate-50 disabled:text-slate-400 transition-all"
                                                 :class="app.onlineAdmissionValidationErrors.upazila_id ? 'border-red-500' : 'border-slate-300'">
@@ -394,7 +428,9 @@
                                                 </option>
                                             </select>
                                         </div>
-                                        <div v-if="app.onlineAdmissionValidationErrors.upazila_id" class="mt-1 text-xs text-red-600">{{ app.onlineAdmissionValidationErrors.upazila_id }}</div>
+                                        <div v-if="app.onlineAdmissionValidationErrors.upazila_id"
+                                            class="mt-1 text-xs text-red-600">{{
+                                                app.onlineAdmissionValidationErrors.upazila_id }}</div>
                                     </div>
                                     <div>
                                         <div class="text-xs font-semibold text-slate-600">Union</div>
@@ -415,19 +451,25 @@
                                                 placeholder="Enter Village/Area, Post Office & Postal Code"
                                                 class="w-full rounded-sm border bg-white px-3 py-2 text-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10 transition-all"
                                                 :class="app.onlineAdmissionValidationErrors.address ? 'border-red-500 pr-10' : 'border-slate-300'"></textarea>
-                                            <div v-if="app.onlineAdmissionValidationErrors.address" class="pointer-events-none absolute top-3 right-3">
-                                                <svg class="h-4 w-4 text-red-500" fill="currentColor" viewBox="0 0 20 20">
-                                                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                                            <div v-if="app.onlineAdmissionValidationErrors.address"
+                                                class="pointer-events-none absolute top-3 right-3">
+                                                <svg class="h-4 w-4 text-red-500" fill="currentColor"
+                                                    viewBox="0 0 20 20">
+                                                    <path fill-rule="evenodd"
+                                                        d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+                                                        clip-rule="evenodd" />
                                                 </svg>
                                             </div>
                                         </div>
-                                        <div v-if="app.onlineAdmissionValidationErrors.address" class="mt-1 text-xs text-red-600">{{ app.onlineAdmissionValidationErrors.address }}</div>
+                                        <div v-if="app.onlineAdmissionValidationErrors.address"
+                                            class="mt-1 text-xs text-red-600">{{
+                                                app.onlineAdmissionValidationErrors.address }}</div>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="lg:col-span-6">
+                        <div class="lg:col-span-6 bg-white">
                             <!-- Permanent Address -->
                             <div class="rounded-sm border border-emerald-300">
                                 <div class="flex items-center justify-between bg-emerald-50 px-3 py-2">
@@ -491,8 +533,7 @@
                                         <div class="text-xs font-semibold text-slate-600">Village/Area, Post
                                             Office & Postal Code</div>
                                         <textarea v-model="app.onlineAdmissionForm.permanent_address" rows="2"
-                                            id="field-permanent_address"
-                                            :readonly="app.onlineAdmissionSameAsPresent"
+                                            id="field-permanent_address" :readonly="app.onlineAdmissionSameAsPresent"
                                             placeholder="Enter Village/Area, Post Office & Postal Code"
                                             class="mt-1 w-full rounded-sm border bg-white px-3 py-2 text-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10 read-only:bg-slate-50 border-slate-300"></textarea>
                                     </div>
@@ -522,25 +563,32 @@
                                                     @change="onOnlineAdmissionGuardianType" class="accent-[#0d6b75]" />
                                                 Other</label>
                                         </div>
-                                        <div v-if="app.onlineAdmissionValidationErrors.guardian_type" class="mt-1 text-xs text-red-600">{{ app.onlineAdmissionValidationErrors.guardian_type }}</div>
+                                        <div v-if="app.onlineAdmissionValidationErrors.guardian_type"
+                                            class="mt-1 text-xs text-red-600">{{
+                                                app.onlineAdmissionValidationErrors.guardian_type }}</div>
                                     </div>
                                     <div>
                                         <div class="text-xs font-semibold text-slate-600">Guardian Name <span
                                                 class="text-red-600">*</span></div>
                                         <div class="relative mt-1">
                                             <input v-model="app.onlineAdmissionForm.guardian_name"
-                                                id="field-guardian_name"
-                                                placeholder="Enter guardian name"
+                                                id="field-guardian_name" placeholder="Enter guardian name"
                                                 :readonly="app.onlineAdmissionRelationReadonly" type="text"
                                                 class="h-9 w-full rounded-sm border bg-white px-3 text-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10 disabled:bg-slate-50 transition-all"
                                                 :class="app.onlineAdmissionValidationErrors.guardian_name ? 'border-red-500 pr-10' : 'border-slate-300'" />
-                                            <div v-if="app.onlineAdmissionValidationErrors.guardian_name" class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
-                                                <svg class="h-4 w-4 text-red-500" fill="currentColor" viewBox="0 0 20 20">
-                                                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                                            <div v-if="app.onlineAdmissionValidationErrors.guardian_name"
+                                                class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
+                                                <svg class="h-4 w-4 text-red-500" fill="currentColor"
+                                                    viewBox="0 0 20 20">
+                                                    <path fill-rule="evenodd"
+                                                        d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+                                                        clip-rule="evenodd" />
                                                 </svg>
                                             </div>
                                         </div>
-                                        <div v-if="app.onlineAdmissionValidationErrors.guardian_name" class="mt-1 text-xs text-red-600">{{ app.onlineAdmissionValidationErrors.guardian_name }}</div>
+                                        <div v-if="app.onlineAdmissionValidationErrors.guardian_name"
+                                            class="mt-1 text-xs text-red-600">{{
+                                                app.onlineAdmissionValidationErrors.guardian_name }}</div>
                                     </div>
 
                                     <div>
@@ -548,23 +596,27 @@
                                                 class="text-red-600">*</span></div>
                                         <div class="relative mt-1">
                                             <input v-model="app.onlineAdmissionForm.guardian_mobile" type="text"
-                                                id="field-guardian_mobile"
-                                                placeholder="Enter guardian mobile number"
+                                                id="field-guardian_mobile" placeholder="Enter guardian mobile number"
                                                 class="h-9 w-full rounded-sm border bg-white px-3 text-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10 transition-all"
                                                 :class="app.onlineAdmissionValidationErrors.guardian_mobile ? 'border-red-500 pr-10' : 'border-slate-300'" />
-                                            <div v-if="app.onlineAdmissionValidationErrors.guardian_mobile" class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
-                                                <svg class="h-4 w-4 text-red-500" fill="currentColor" viewBox="0 0 20 20">
-                                                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                                            <div v-if="app.onlineAdmissionValidationErrors.guardian_mobile"
+                                                class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
+                                                <svg class="h-4 w-4 text-red-500" fill="currentColor"
+                                                    viewBox="0 0 20 20">
+                                                    <path fill-rule="evenodd"
+                                                        d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+                                                        clip-rule="evenodd" />
                                                 </svg>
                                             </div>
                                         </div>
-                                        <div v-if="app.onlineAdmissionValidationErrors.guardian_mobile" class="mt-1 text-xs text-red-600">{{ app.onlineAdmissionValidationErrors.guardian_mobile }}</div>
+                                        <div v-if="app.onlineAdmissionValidationErrors.guardian_mobile"
+                                            class="mt-1 text-xs text-red-600">{{
+                                                app.onlineAdmissionValidationErrors.guardian_mobile }}</div>
                                     </div>
                                     <div>
                                         <div class="text-xs font-semibold text-slate-600">Guardian Relations</div>
                                         <input v-model="app.onlineAdmissionForm.guardian_relations"
-                                            id="field-guardian_relations"
-                                            placeholder="Relation with guardian"
+                                            id="field-guardian_relations" placeholder="Relation with guardian"
                                             :readonly="app.onlineAdmissionRelationReadonly" type="text"
                                             class="mt-1 h-9 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm  outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10 disabled:bg-slate-50" />
                                     </div>
@@ -580,37 +632,47 @@
 
                                     <div>
                                         <div class="text-xs font-semibold text-slate-600">Passing Year <span
-                                            class="text-red-600">*</span></div>
+                                                class="text-red-600">*</span></div>
                                         <div class="relative mt-1">
                                             <input v-model="app.onlineAdmissionForm.passing_year" type="text"
-                                                id="field-passing_year"
-                                                placeholder="Enter passing year"
+                                                id="field-passing_year" placeholder="Enter passing year"
                                                 class="h-9 w-full rounded-sm border bg-white px-3 text-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10 transition-all"
                                                 :class="app.onlineAdmissionValidationErrors.passing_year ? 'border-red-500 pr-10' : 'border-slate-300'" />
-                                            <div v-if="app.onlineAdmissionValidationErrors.passing_year" class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
-                                                <svg class="h-4 w-4 text-red-500" fill="currentColor" viewBox="0 0 20 20">
-                                                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                                            <div v-if="app.onlineAdmissionValidationErrors.passing_year"
+                                                class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
+                                                <svg class="h-4 w-4 text-red-500" fill="currentColor"
+                                                    viewBox="0 0 20 20">
+                                                    <path fill-rule="evenodd"
+                                                        d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+                                                        clip-rule="evenodd" />
                                                 </svg>
                                             </div>
                                         </div>
-                                        <div v-if="app.onlineAdmissionValidationErrors.passing_year" class="mt-1 text-xs text-red-600">{{ app.onlineAdmissionValidationErrors.passing_year }}</div>
+                                        <div v-if="app.onlineAdmissionValidationErrors.passing_year"
+                                            class="mt-1 text-xs text-red-600">{{
+                                                app.onlineAdmissionValidationErrors.passing_year }}</div>
                                     </div>
                                     <div>
                                         <div class="text-xs font-semibold text-slate-600">Nationality <span
                                                 class="text-red-600">*</span></div>
                                         <div class="relative mt-1">
                                             <input v-model="app.onlineAdmissionForm.nationality" type="text"
-                                                id="field-nationality"
-                                                placeholder="Enter nationality"
+                                                id="field-nationality" placeholder="Enter nationality"
                                                 class="h-9 w-full rounded-sm border bg-white px-3 text-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10 transition-all"
                                                 :class="app.onlineAdmissionValidationErrors.nationality ? 'border-red-500 pr-10' : 'border-slate-300'" />
-                                            <div v-if="app.onlineAdmissionValidationErrors.nationality" class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
-                                                <svg class="h-4 w-4 text-red-500" fill="currentColor" viewBox="0 0 20 20">
-                                                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                                            <div v-if="app.onlineAdmissionValidationErrors.nationality"
+                                                class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
+                                                <svg class="h-4 w-4 text-red-500" fill="currentColor"
+                                                    viewBox="0 0 20 20">
+                                                    <path fill-rule="evenodd"
+                                                        d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+                                                        clip-rule="evenodd" />
                                                 </svg>
                                             </div>
                                         </div>
-                                        <div v-if="app.onlineAdmissionValidationErrors.nationality" class="mt-1 text-xs text-red-600">{{ app.onlineAdmissionValidationErrors.nationality }}</div>
+                                        <div v-if="app.onlineAdmissionValidationErrors.nationality"
+                                            class="mt-1 text-xs text-red-600">{{
+                                                app.onlineAdmissionValidationErrors.nationality }}</div>
                                     </div>
                                     <div>
                                         <div class="text-xs font-semibold text-slate-600">Extra Curricular Activity
@@ -634,8 +696,9 @@
                                     <div>
                                         <div class="text-xs font-semibold text-slate-600">Quota</div>
                                         <div class="mt-2 flex items-center gap-4 text-sm text-slate-700">
-                                            <label class="inline-flex items-center gap-2"><input type="radio" value="Yes"
-                                                    v-model="app.onlineAdmissionForm.quota" class="accent-[#0d6b75]" />
+                                            <label class="inline-flex items-center gap-2"><input type="radio"
+                                                    value="Yes" v-model="app.onlineAdmissionForm.quota"
+                                                    class="accent-[#0d6b75]" />
                                                 Yes</label>
                                             <label class="inline-flex items-center gap-2"><input type="radio" value="No"
                                                     v-model="app.onlineAdmissionForm.quota" class="accent-[#0d6b75]" />

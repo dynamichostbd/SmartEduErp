@@ -293,8 +293,8 @@ const printInvoice = (id) => {
                 <title>Invoice Print</title>
                 <script src="https://cdn.tailwindcss.com"><\/script>
                 <style>
-                    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
-                    body { font-family: 'Inter', sans-serif; }
+                    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;700&display=swap');
+                    body { font-family: 'Noto Sans Bengali', sans-serif; }
                     @media print {
                         @page { margin: 5mm; }
                         body { margin: 0; -webkit-print-color-adjust: exact; print-color-adjust: exact; }

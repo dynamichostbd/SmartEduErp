@@ -3,7 +3,7 @@
         <div class="mx-auto w-full max-w-6xl">
             <div class="flex flex-wrap items-center justify-between gap-6 mb-8">
                 <div class="flex items-center gap-4">
-                    <div class="flex h-16 w-16 items-center justify-center rounded-2xl bg-[#0d6b75] text-white shadow-lg shadow-[#0d6b75]/20">
+                    <div class="flex h-14 w-16 items-center justify-center rounded-2xl bg-[#0d6b75] text-white shadow-lg shadow-[#0d6b75]/20">
                         <svg class="h-10 w-10" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M22 10L12 5L2 10L12 15L22 10Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                             <path d="M6 12V17C6 17 6 20 12 20C18 20 18 17 18 17V12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -66,7 +66,7 @@
                                     <div class="flex items-center gap-4">
                                         <!-- Circular Icon with themed background -->
                                         <div :class="[
-                                            'flex h-14 w-14 shrink-0 items-center justify-center rounded-full',
+                                            'flex h-12 w-14 shrink-0 items-center justify-center rounded-full',
                                             index % 3 === 0 ? 'bg-emerald-100 text-emerald-600' : 
                                             index % 3 === 1 ? 'bg-blue-100 text-blue-600' : 'bg-purple-100 text-purple-600'
                                         ]">
@@ -160,7 +160,7 @@
                                                 <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
                                             </div>
                                             <input v-model="app.applyFeesForm.name" type="text" placeholder="Full Name"
-                                                class="h-14 w-full rounded-2xl border border-slate-100 bg-white pl-12 pr-4 text-[15px] font-medium outline-none focus:border-[#0d6b75] focus:ring-4 focus:ring-[#0d6b75]/5 transition-all shadow-sm group-hover:border-slate-200"
+                                                class="h-12 w-full rounded-2xl border border-slate-100 bg-white pl-12 pr-4 text-[15px] font-medium outline-none focus:border-[#0d6b75] focus:ring-4 focus:ring-[#0d6b75]/5 transition-all shadow-sm group-hover:border-slate-200"
                                                 required />
                                         </div>
                                         <div class="relative group">
@@ -168,7 +168,7 @@
                                                 <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
                                             </div>
                                             <input v-model="app.applyFeesForm.mobile" type="text" placeholder="Mobile"
-                                                class="h-14 w-full rounded-2xl border border-slate-100 bg-[#f8fafc] pl-12 pr-4 text-[15px] font-medium outline-none focus:border-[#0d6b75] focus:ring-4 focus:ring-[#0d6b75]/5 transition-all shadow-sm group-hover:border-slate-200"
+                                                class="h-12 w-full rounded-2xl border border-slate-100 bg-[#f8fafc] pl-12 pr-4 text-[15px] font-medium outline-none focus:border-[#0d6b75] focus:ring-4 focus:ring-[#0d6b75]/5 transition-all shadow-sm group-hover:border-slate-200"
                                                 required />
                                         </div>
                                         <div class="relative group">
@@ -177,7 +177,7 @@
                                             </div>
                                             <input v-model="app.applyFeesForm.admission_roll" type="text"
                                                 placeholder="Application ID / Admission Roll"
-                                                class="h-14 w-full rounded-2xl border border-slate-100 bg-white pl-12 pr-4 text-[15px] font-medium outline-none focus:border-[#0d6b75] focus:ring-4 focus:ring-[#0d6b75]/5 transition-all shadow-sm group-hover:border-slate-200"
+                                                class="h-12 w-full rounded-2xl border border-slate-100 bg-white pl-12 pr-4 text-[15px] font-medium outline-none focus:border-[#0d6b75] focus:ring-4 focus:ring-[#0d6b75]/5 transition-all shadow-sm group-hover:border-slate-200"
                                                 required />
                                         </div>
                                     </div>
@@ -189,7 +189,7 @@
                                                 <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
                                             </div>
                                             <select v-model="app.applyFeesForm.academic_session_id"
-                                                class="h-14 w-full appearance-none rounded-2xl border border-slate-100 bg-white pl-12 pr-10 text-[15px] font-medium outline-none focus:border-[#0d6b75] focus:ring-4 focus:ring-[#0d6b75]/5 transition-all shadow-sm group-hover:border-slate-200"
+                                                class="h-12 w-full appearance-none rounded-2xl border border-slate-100 bg-white pl-12 pr-10 text-[15px] font-medium outline-none focus:border-[#0d6b75] focus:ring-4 focus:ring-[#0d6b75]/5 transition-all shadow-sm group-hover:border-slate-200"
                                                 required>
                                                 <option value="">Session</option>
                                                 <option v-for="s in app.applyFeesSessionsSorted" :key="'afs-' + s.id"
@@ -205,7 +205,7 @@
                                                 <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10L12 5L2 10L12 15L22 10Z"></path><path d="M6 12V17C6 17 6 20 12 20C18 20 18 17 18 17V12"></path></svg>
                                             </div>
                                             <select v-model="app.applyFeesForm.academic_qualification_id"
-                                                class="h-14 w-full appearance-none rounded-2xl border border-slate-100 bg-white pl-12 pr-10 text-[15px] font-medium outline-none focus:border-[#0d6b75] focus:ring-4 focus:ring-[#0d6b75]/5 transition-all shadow-sm group-hover:border-slate-200"
+                                                class="h-12 w-full appearance-none rounded-2xl border border-slate-100 bg-white pl-12 pr-10 text-[15px] font-medium outline-none focus:border-[#0d6b75] focus:ring-4 focus:ring-[#0d6b75]/5 transition-all shadow-sm group-hover:border-slate-200"
                                                 required>
                                                 <option value="">Academic Level</option>
                                                 <option v-for="q in app.applyFeesQualifications" :key="'afq-' + q.id"
@@ -222,7 +222,7 @@
                                             </div>
                                             <select v-model="app.applyFeesForm.department_id"
                                                 :disabled="!app.applyFeesForm.academic_qualification_id"
-                                                class="h-14 w-full appearance-none rounded-2xl border border-slate-100 bg-white pl-12 pr-10 text-[15px] font-medium outline-none focus:border-[#0d6b75] focus:ring-4 focus:ring-[#0d6b75]/5 transition-all shadow-sm group-hover:border-slate-200 disabled:bg-slate-50 disabled:text-slate-400"
+                                                class="h-12 w-full appearance-none rounded-2xl border border-slate-100 bg-white pl-12 pr-10 text-[15px] font-medium outline-none focus:border-[#0d6b75] focus:ring-4 focus:ring-[#0d6b75]/5 transition-all shadow-sm group-hover:border-slate-200 disabled:bg-slate-50 disabled:text-slate-400"
                                                 required>
                                                 <option value="">Department/Group</option>
                                                 <option v-for="d in app.applyFeesFilteredDepartments" :key="'afd-' + d.id"
@@ -239,7 +239,7 @@
                                             </div>
                                             <select v-model="app.applyFeesForm.academic_class_id"
                                                 :disabled="!app.applyFeesForm.academic_qualification_id"
-                                                class="h-14 w-full appearance-none rounded-2xl border border-slate-100 bg-white pl-12 pr-10 text-[15px] font-medium outline-none focus:border-[#0d6b75] focus:ring-4 focus:ring-[#0d6b75]/5 transition-all shadow-sm group-hover:border-slate-200 disabled:bg-slate-50 disabled:text-slate-400"
+                                                class="h-12 w-full appearance-none rounded-2xl border border-slate-100 bg-white pl-12 pr-10 text-[15px] font-medium outline-none focus:border-[#0d6b75] focus:ring-4 focus:ring-[#0d6b75]/5 transition-all shadow-sm group-hover:border-slate-200 disabled:bg-slate-50 disabled:text-slate-400"
                                                 required>
                                                 <option value="">Class</option>
                                                 <option v-for="c in app.applyFeesFilteredClasses" :key="'afc-' + c.id"
@@ -258,7 +258,7 @@
                                                 <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"></path><path d="M2 17l10 5 10-5"></path><path d="M2 12l10 5 10-5"></path></svg>
                                             </div>
                                             <select v-model="app.applyFeesForm.purpose_id"
-                                                class="h-14 w-full appearance-none rounded-2xl border border-slate-100 bg-white pl-12 pr-10 text-[15px] font-medium outline-none shadow-sm cursor-not-allowed opacity-80"
+                                                class="h-12 w-full appearance-none rounded-2xl border border-slate-100 bg-white pl-12 pr-10 text-[15px] font-medium outline-none shadow-sm cursor-not-allowed opacity-80"
                                                 disabled required>
                                                 <option value="">Fees</option>
                                                 <option v-for="p in app.applyFeesPurposes" :key="'afp-' + p.id"
@@ -277,7 +277,7 @@
                                                     <div class="text-sm font-bold text-[#0d6b75]/60 uppercase tracking-wider">BDT</div>
                                                 </div>
                                             </div>
-                                            <div class="relative w-16 h-16 transform transition-transform group-hover:scale-110">
+                                            <div class="relative w-16 h-14 transform transition-transform group-hover:scale-110">
                                                 <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                     <path d="M19 7H5C3.89543 7 3 7.89543 3 9V18C3 19.1046 3.89543 20 5 20H19C20.1046 20 21 19.1046 21 18V9C21 7.89543 20.1046 7 19 7Z" fill="#0d6b75" fill-opacity="0.1" stroke="#0d6b75" stroke-width="1.5"/>
                                                     <path d="M16 11H21V16H16V11Z" fill="white" stroke="#0d6b75" stroke-width="1.5" stroke-linejoin="round"/>
@@ -299,7 +299,7 @@
 
                                         <!-- Pay Now Button -->
                                         <button type="submit"
-                                            class="group relative w-full h-16 rounded-2xl bg-[#0d6b75] text-white font-bold text-lg shadow-xl shadow-[#0d6b75]/30 transition-all hover:shadow-[#0d6b75]/40 hover:-translate-y-1 active:scale-95 disabled:opacity-50 disabled:pointer-events-none overflow-hidden"
+                                            class="group relative w-full h-14 rounded-2xl bg-[#0d6b75] text-white font-bold text-lg shadow-xl shadow-[#0d6b75]/30 transition-all hover:shadow-[#0d6b75]/40 hover:-translate-y-1 active:scale-95 disabled:opacity-50 disabled:pointer-events-none overflow-hidden"
                                             :disabled="app.applyFeesSubmitting">
                                             <div class="absolute inset-0 bg-white/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
                                             <div class="relative flex items-center justify-center gap-3">
@@ -324,210 +324,304 @@
                             {{ app.certificateError }}
                         </div>
 
-                        <form class="mt-8" @submit.prevent="app.submitCertificate">
-                            <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
-                                <div class="rounded-sm border border-slate-300 bg-white p-4">
-                                    <div class="border-l-4 border-orange-500 pl-3 text-sm font-bold text-slate-900">
-                                        STUDENT INFO</div>
+                        <form @submit.prevent="app.submitCertificate" class="relative">
+                            <!-- Decorative background dots -->
+                            <div class="absolute -top-10 -right-10 opacity-20 pointer-events-none">
+                                <svg width="100" height="100" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <circle cx="2" cy="2" r="2" fill="#0d6b75"/><circle cx="22" cy="2" r="2" fill="#0d6b75"/><circle cx="42" cy="2" r="2" fill="#0d6b75"/><circle cx="62" cy="2" r="2" fill="#0d6b75"/><circle cx="82" cy="2" r="2" fill="#0d6b75"/>
+                                    <circle cx="2" cy="22" r="2" fill="#0d6b75"/><circle cx="22" cy="22" r="2" fill="#0d6b75"/><circle cx="42" cy="22" r="2" fill="#0d6b75"/><circle cx="62" cy="22" r="2" fill="#0d6b75"/><circle cx="82" cy="22" r="2" fill="#0d6b75"/>
+                                    <circle cx="2" cy="42" r="2" fill="#0d6b75"/><circle cx="22" cy="42" r="2" fill="#0d6b75"/><circle cx="42" cy="42" r="2" fill="#0d6b75"/><circle cx="62" cy="42" r="2" fill="#0d6b75"/><circle cx="82" cy="42" r="2" fill="#0d6b75"/>
+                                </svg>
+                            </div>
 
-                                    <div class="mt-4 flex items-center gap-2">
-                                        <input v-model="app.certificateForm.mobile" type="text" placeholder="Mobile"
-                                            class="h-10 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10"
-                                            required />
-                                        <button type="button"
-                                            class="h-10 w-12 rounded-sm border border-slate-300 bg-slate-50 text-sm font-bold text-slate-700 hover:bg-white"
-                                            :disabled="app.certificateLookupLoading" @click="app.certificateLookup">
-                                            {{ app.certificateLookupLoading ? '…' : 'Go' }}
-                                        </button>
+                            <div class="grid grid-cols-1 gap-8 lg:grid-cols-3">
+                                <!-- Main Form Columns -->
+                                <div class="lg:col-span-2 space-y-8">
+                                    <!-- Section 1: Basic Info & Academic Setup -->
+                                    <div class="bg-white rounded-3xl border border-slate-100 p-6 shadow-sm space-y-6">
+                                        <div class="flex items-center gap-3 mb-2">
+                                            <div class="w-10 h-10 rounded-xl bg-orange-100 flex items-center justify-center text-orange-600">
+                                                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><line x1="20" y1="8" x2="20" y2="14"></line><line x1="23" y1="11" x2="17" y2="11"></line></svg>
+                                            </div>
+                                            <h3 class="font-bold text-slate-800 uppercase tracking-tight">Identity & Academic</h3>
+                                        </div>
+
+                                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 mt-6">
+                                            <!-- Mobile Lookup -->
+                                            <div class="relative group col-span-2">
+                                                <div class="absolute inset-y-0 left-0 flex items-center pl-4 text-emerald-500">
+                                                    <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+                                                </div>
+                                                <div class="flex items-center gap-2">
+                                                    <input v-model="app.certificateForm.mobile" type="text" placeholder="Mobile"
+                                                        class="h-12 w-full rounded-2xl border border-slate-100 bg-[#f8fafc] pl-12 pr-4 text-[15px] font-medium outline-none focus:border-[#0d6b75] focus:ring-4 focus:ring-[#0d6b75]/5 transition-all shadow-sm group-hover:border-slate-200"
+                                                        required />
+                                                    <button type="button"
+                                                        class="h-12 w-16 shrink-0 rounded-2xl bg-slate-900 text-white font-bold hover:bg-slate-800 transition-all flex items-center justify-center shadow-lg active:scale-95"
+                                                        :disabled="app.certificateLookupLoading" @click="app.certificateLookup">
+                                                        <svg v-if="!app.certificateLookupLoading" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
+                                                        <span v-else class="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
+                                                    </button>
+                                                </div>
+                                            </div>
+
+                                            <!-- Certificate Type -->
+                                            <div class="flex items-center gap-3 bg-slate-50 rounded-2xl border border-slate-100 px-4 h-12 group">
+                                                <span class="text-xs font-bold text-slate-500 uppercase">Type:</span>
+                                                <div class="flex items-center gap-4 text-[13px] font-bold text-slate-700">
+                                                    <label class="inline-flex items-center gap-2 cursor-pointer">
+                                                        <input v-model="app.certificateForm.certificate_type" type="radio" value="en" class="accent-[#0d6b75]" />
+                                                        EN
+                                                    </label>
+                                                    <label class="inline-flex items-center gap-2 cursor-pointer">
+                                                        <input v-model="app.certificateForm.certificate_type" type="radio" value="bn" class="accent-[#0d6b75]" />
+                                                        BN
+                                                    </label>
+                                                    <label class="inline-flex items-center gap-2 cursor-pointer">
+                                                        <input v-model="app.certificateForm.certificate_type" type="radio" value="both" class="accent-[#0d6b75]" />
+                                                        Both
+                                                    </label>
+                                                </div>
+                                            </div>
+
+                                            <!-- Session -->
+                                            <div class="relative group">
+                                                <div class="absolute inset-y-0 left-0 flex items-center pl-4 text-blue-500">
+                                                    <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                                                </div>
+                                                <select v-model="app.certificateForm.academic_session_id"
+                                                    class="h-12 w-full appearance-none rounded-2xl border border-slate-100 bg-white pl-12 pr-10 text-[15px] font-medium outline-none focus:border-[#0d6b75] focus:ring-4 focus:ring-[#0d6b75]/5 transition-all shadow-sm group-hover:border-slate-200"
+                                                    required>
+                                                    <option value="">Session</option>
+                                                    <option v-for="s in app.certificateSessionsSorted" :key="'cs-' + s.id" :value="String(s.id)">{{ s.name }}</option>
+                                                </select>
+                                                <div class="absolute inset-y-0 right-0 flex items-center pr-4 pointer-events-none text-slate-400">
+                                                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                                                </div>
+                                            </div>
+
+                                            <!-- Certificate Template -->
+                                            <div class="relative group">
+                                                <div class="absolute inset-y-0 left-0 flex items-center pl-4 text-orange-400">
+                                                    <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 15l-2 5l2 2l2-2l-2-5z"></path><path d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7z"></path><circle cx="12" cy="9" r="3"></circle></svg>
+                                                </div>
+                                                <select v-model="app.certificateForm.template_id"
+                                                    class="h-12 w-full appearance-none rounded-2xl border border-slate-100 bg-white pl-12 pr-10 text-[15px] font-medium outline-none focus:border-[#0d6b75] focus:ring-4 focus:ring-[#0d6b75]/5 transition-all shadow-sm group-hover:border-slate-200"
+                                                    required>
+                                                    <option value="">Certificate Template</option>
+                                                    <option v-for="t in app.certificateFilteredTemplates" :key="'ct-' + t.id" :value="String(t.id)">{{ t.title }}</option>
+                                                </select>
+                                                <div class="absolute inset-y-0 right-0 flex items-center pr-4 pointer-events-none text-slate-400">
+                                                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                                                </div>
+                                            </div>
+
+                                            <!-- Academic Level -->
+                                            <div class="relative group">
+                                                <div class="absolute inset-y-0 left-0 flex items-center pl-4 text-[#8b5cf6]">
+                                                    <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10L12 5L2 10L12 15L22 10Z"></path><path d="M6 12V17C6 17 6 20 12 20C18 20 18 17 18 17V12"></path></svg>
+                                                </div>
+                                                <select v-model="app.certificateForm.academic_qualification_id"
+                                                    class="h-12 w-full appearance-none rounded-2xl border border-slate-100 bg-white pl-12 pr-10 text-[15px] font-medium outline-none focus:border-[#0d6b75] focus:ring-4 focus:ring-[#0d6b75]/5 transition-all shadow-sm group-hover:border-slate-200"
+                                                    required>
+                                                    <option value="">Academic Level</option>
+                                                    <option v-for="q in app.certificateQualifications" :key="'cq-' + q.id" :value="String(q.id)">{{ q.name }}</option>
+                                                </select>
+                                                <div class="absolute inset-y-0 right-0 flex items-center pr-4 pointer-events-none text-slate-400">
+                                                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                                                </div>
+                                            </div>
+
+                                            <!-- Lookup Error -->
+                                            <div v-if="app.certificateLookupError"
+                                                class="sm:col-span-2 rounded-2xl border border-red-200 bg-red-50 p-4 text-xs text-red-800 flex items-center gap-2">
+                                                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                                                {{ app.certificateLookupError }}
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div v-if="app.certificateLookupError"
-                                        class="mt-3 rounded-sm border border-red-200 bg-red-50 p-2 text-xs text-red-800">
-                                        {{ app.certificateLookupError }}</div>
 
-                                    <div class="mt-4 text-sm font-semibold text-slate-800">Certificate Type :</div>
-                                    <div class="mt-2 flex flex-wrap items-center gap-4 text-sm text-slate-700">
-                                        <label class="inline-flex items-center gap-2">
-                                            <input v-model="app.certificateForm.certificate_type" type="radio"
-                                                name="certificate_type" value="en" />
-                                            English
-                                        </label>
-                                        <label class="inline-flex items-center gap-2">
-                                            <input v-model="app.certificateForm.certificate_type" type="radio"
-                                                name="certificate_type" value="bn" />
-                                            Bangla
-                                        </label>
-                                        <label class="inline-flex items-center gap-2">
-                                            <input v-model="app.certificateForm.certificate_type" type="radio"
-                                                name="certificate_type" value="both" />
-                                            Both
-                                        </label>
-                                    </div>
+                                    <!-- Section 2: Detailed Information (EN/BN Grid) -->
+                                    <div class="bg-slate-50 rounded-3xl border border-slate-100 p-8 shadow-sm">
+                                        <div class="flex items-center gap-3 mb-6">
+                                            <div class="w-10 h-10 rounded-xl bg-teal-100 flex items-center justify-center text-[#0d6b75]">
+                                                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                                            </div>
+                                            <h3 class="font-bold text-slate-800 uppercase tracking-tight">Detailed Information</h3>
+                                        </div>
 
-                                    <div class="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
-                                        <input v-model="app.certificateForm.student_name_en" type="text"
-                                            placeholder="Student name (EN)"
-                                            class="h-10 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10"
-                                            :disabled="app.certificateEnDisabled"
-                                            :required="!app.certificateEnDisabled" />
-                                        <input v-model="app.certificateForm.student_name_bn" type="text"
-                                            placeholder="Student name (BN)"
-                                            class="h-10 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10"
-                                            :disabled="app.certificateBnDisabled"
-                                            :required="!app.certificateBnDisabled" />
+                                        <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
+                                            <!-- Row 1: Names -->
+                                            <div class="space-y-4">
+                                                <input v-model="app.certificateForm.student_name_en" type="text" placeholder="Student Name (EN)"
+                                                    class="h-12 w-full rounded-xl border border-slate-200 bg-white px-4 text-[14px] font-medium outline-none focus:border-[#0d6b75] focus:ring-4 focus:ring-[#0d6b75]/5 transition-all shadow-sm disabled:opacity-50"
+                                                    :disabled="app.certificateEnDisabled" :required="!app.certificateEnDisabled" />
+                                                <input v-model="app.certificateForm.student_name_bn" type="text" placeholder="Student Name (BN)"
+                                                    class="h-12 w-full rounded-xl border border-slate-200 bg-white px-4 text-[14px] font-medium outline-none focus:border-[#0d6b75] focus:ring-4 focus:ring-[#0d6b75]/5 transition-all shadow-sm disabled:opacity-50"
+                                                    :disabled="app.certificateBnDisabled" :required="!app.certificateBnDisabled" />
+                                            </div>
 
-                                        <input v-model="app.certificateForm.fathers_name_en" type="text"
-                                            placeholder="Father's name (EN)"
-                                            class="h-10 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10"
-                                            :disabled="app.certificateEnDisabled"
-                                            :required="!app.certificateEnDisabled" />
-                                        <input v-model="app.certificateForm.fathers_name_bn" type="text"
-                                            placeholder="Father's name (BN)"
-                                            class="h-10 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10"
-                                            :disabled="app.certificateBnDisabled"
-                                            :required="!app.certificateBnDisabled" />
+                                            <!-- Row 2: Fathers -->
+                                            <div class="space-y-4">
+                                                <input v-model="app.certificateForm.fathers_name_en" type="text" placeholder="Father's Name (EN)"
+                                                    class="h-12 w-full rounded-xl border border-slate-200 bg-white px-4 text-[14px] font-medium outline-none focus:border-[#0d6b75] focus:ring-4 focus:ring-[#0d6b75]/5 transition-all shadow-sm disabled:opacity-50"
+                                                    :disabled="app.certificateEnDisabled" :required="!app.certificateEnDisabled" />
+                                                <input v-model="app.certificateForm.fathers_name_bn" type="text" placeholder="Father's Name (BN)"
+                                                    class="h-12 w-full rounded-xl border border-slate-200 bg-white px-4 text-[14px] font-medium outline-none focus:border-[#0d6b75] focus:ring-4 focus:ring-[#0d6b75]/5 transition-all shadow-sm disabled:opacity-50"
+                                                    :disabled="app.certificateBnDisabled" :required="!app.certificateBnDisabled" />
+                                            </div>
 
-                                        <input v-model="app.certificateForm.mothers_name_en" type="text"
-                                            placeholder="Mother's name (EN)"
-                                            class="h-10 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10"
-                                            :disabled="app.certificateEnDisabled"
-                                            :required="!app.certificateEnDisabled" />
-                                        <input v-model="app.certificateForm.mothers_name_bn" type="text"
-                                            placeholder="Mother's name (BN)"
-                                            class="h-10 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10"
-                                            :disabled="app.certificateBnDisabled"
-                                            :required="!app.certificateBnDisabled" />
+                                            <!-- Row 3: Mothers -->
+                                            <div class="space-y-4">
+                                                <input v-model="app.certificateForm.mothers_name_en" type="text" placeholder="Mother's Name (EN)"
+                                                    class="h-12 w-full rounded-xl border border-slate-200 bg-white px-4 text-[14px] font-medium outline-none focus:border-[#0d6b75] focus:ring-4 focus:ring-[#0d6b75]/5 transition-all shadow-sm disabled:opacity-50"
+                                                    :disabled="app.certificateEnDisabled" :required="!app.certificateEnDisabled" />
+                                                <input v-model="app.certificateForm.mothers_name_bn" type="text" placeholder="Mother's Name (BN)"
+                                                    class="h-12 w-full rounded-xl border border-slate-200 bg-white px-4 text-[14px] font-medium outline-none focus:border-[#0d6b75] focus:ring-4 focus:ring-[#0d6b75]/5 transition-all shadow-sm disabled:opacity-50"
+                                                    :disabled="app.certificateBnDisabled" :required="!app.certificateBnDisabled" />
+                                            </div>
 
-                                        <input v-model="app.certificateForm.academic_year_en" type="text"
-                                            placeholder="Academic year (EN)"
-                                            class="h-10 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10"
-                                            :disabled="app.certificateEnDisabled"
-                                            :required="!app.certificateEnDisabled" />
-                                        <input v-model="app.certificateForm.academic_year_bn" type="text"
-                                            placeholder="Academic year (BN)"
-                                            class="h-10 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10"
-                                            :disabled="app.certificateBnDisabled"
-                                            :required="!app.certificateBnDisabled" />
+                                            <!-- Row 4: Academic Year -->
+                                            <div class="space-y-4">
+                                                <input v-model="app.certificateForm.academic_year_en" type="text" placeholder="Academic Year (EN)"
+                                                    class="h-12 w-full rounded-xl border border-slate-200 bg-white px-4 text-[14px] font-medium outline-none focus:border-[#0d6b75] focus:ring-4 focus:ring-[#0d6b75]/5 transition-all shadow-sm disabled:opacity-50"
+                                                    :disabled="app.certificateEnDisabled" :required="!app.certificateEnDisabled" />
+                                                <input v-model="app.certificateForm.academic_year_bn" type="text" placeholder="Academic Year (BN)"
+                                                    class="h-12 w-full rounded-xl border border-slate-200 bg-white px-4 text-[14px] font-medium outline-none focus:border-[#0d6b75] focus:ring-4 focus:ring-[#0d6b75]/5 transition-all shadow-sm disabled:opacity-50"
+                                                    :disabled="app.certificateBnDisabled" :required="!app.certificateBnDisabled" />
+                                            </div>
 
-                                        <input v-model="app.certificateForm.registration_no_en" type="text"
-                                            placeholder="Registration no (EN)"
-                                            class="h-10 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10"
-                                            :disabled="app.certificateEnDisabled"
-                                            :required="!app.certificateEnDisabled" />
-                                        <input v-model="app.certificateForm.registration_no_bn" type="text"
-                                            placeholder="Registration no (BN)"
-                                            class="h-10 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10"
-                                            :disabled="app.certificateBnDisabled"
-                                            :required="!app.certificateBnDisabled" />
+                                            <!-- Row 5: Registration No -->
+                                            <div class="space-y-4">
+                                                <input v-model="app.certificateForm.registration_no_en" type="text" placeholder="Registration No (EN)"
+                                                    class="h-12 w-full rounded-xl border border-slate-200 bg-white px-4 text-[14px] font-medium outline-none focus:border-[#0d6b75] focus:ring-4 focus:ring-[#0d6b75]/5 transition-all shadow-sm disabled:opacity-50"
+                                                    :disabled="app.certificateEnDisabled" :required="!app.certificateEnDisabled" />
+                                                <input v-model="app.certificateForm.registration_no_bn" type="text" placeholder="Registration No (BN)"
+                                                    class="h-12 w-full rounded-xl border border-slate-200 bg-white px-4 text-[14px] font-medium outline-none focus:border-[#0d6b75] focus:ring-4 focus:ring-[#0d6b75]/5 transition-all shadow-sm disabled:opacity-50"
+                                                    :disabled="app.certificateBnDisabled" :required="!app.certificateBnDisabled" />
+                                            </div>
 
-                                        <input v-model="app.certificateForm.exam_roll_en" type="text"
-                                            placeholder="Exam roll (EN)"
-                                            class="h-10 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10"
-                                            :disabled="app.certificateEnDisabled"
-                                            :required="!app.certificateEnDisabled" />
-                                        <input v-model="app.certificateForm.exam_roll_bn" type="text"
-                                            placeholder="Exam roll (BN)"
-                                            class="h-10 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10"
-                                            :disabled="app.certificateBnDisabled"
-                                            :required="!app.certificateBnDisabled" />
+                                            <!-- Row 6: Exam Roll -->
+                                            <div class="space-y-4">
+                                                <input v-model="app.certificateForm.exam_roll_en" type="text" placeholder="Exam Roll (EN)"
+                                                    class="h-12 w-full rounded-xl border border-slate-200 bg-white px-4 text-[14px] font-medium outline-none focus:border-[#0d6b75] focus:ring-4 focus:ring-[#0d6b75]/5 transition-all shadow-sm disabled:opacity-50"
+                                                    :disabled="app.certificateEnDisabled" :required="!app.certificateEnDisabled" />
+                                                <input v-model="app.certificateForm.exam_roll_bn" type="text" placeholder="Exam Roll (BN)"
+                                                    class="h-12 w-full rounded-xl border border-slate-200 bg-white px-4 text-[14px] font-medium outline-none focus:border-[#0d6b75] focus:ring-4 focus:ring-[#0d6b75]/5 transition-all shadow-sm disabled:opacity-50"
+                                                    :disabled="app.certificateBnDisabled" :required="!app.certificateBnDisabled" />
+                                            </div>
 
-                                        <input v-model="app.certificateForm.exam_year_en" type="text"
-                                            placeholder="Exam year (EN)"
-                                            class="h-10 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10"
-                                            :disabled="app.certificateEnDisabled"
-                                            :required="!app.certificateEnDisabled" />
-                                        <input v-model="app.certificateForm.exam_year_bn" type="text"
-                                            placeholder="Exam year (BN)"
-                                            class="h-10 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10"
-                                            :disabled="app.certificateBnDisabled"
-                                            :required="!app.certificateBnDisabled" />
+                                            <!-- Row 7: Exam Year -->
+                                            <div class="space-y-4">
+                                                <input v-model="app.certificateForm.exam_year_en" type="text" placeholder="Exam Year (EN)"
+                                                    class="h-12 w-full rounded-xl border border-slate-200 bg-white px-4 text-[14px] font-medium outline-none focus:border-[#0d6b75] focus:ring-4 focus:ring-[#0d6b75]/5 transition-all shadow-sm disabled:opacity-50"
+                                                    :disabled="app.certificateEnDisabled" :required="!app.certificateEnDisabled" />
+                                                <input v-model="app.certificateForm.exam_year_bn" type="text" placeholder="Exam Year (BN)"
+                                                    class="h-12 w-full rounded-xl border border-slate-200 bg-white px-4 text-[14px] font-medium outline-none focus:border-[#0d6b75] focus:ring-4 focus:ring-[#0d6b75]/5 transition-all shadow-sm disabled:opacity-50"
+                                                    :disabled="app.certificateBnDisabled" :required="!app.certificateBnDisabled" />
+                                            </div>
 
-                                        <input v-model="app.certificateForm.gpa_en" type="text" placeholder="GPA (EN)"
-                                            class="h-10 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10"
-                                            :disabled="app.certificateEnDisabled"
-                                            :required="!app.certificateEnDisabled" />
-                                        <input v-model="app.certificateForm.gpa_bn" type="text" placeholder="GPA (BN)"
-                                            class="h-10 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10"
-                                            :disabled="app.certificateBnDisabled"
-                                            :required="!app.certificateBnDisabled" />
+                                            <!-- Row 8: GPA -->
+                                            <div class="space-y-4">
+                                                <input v-model="app.certificateForm.gpa_en" type="text" placeholder="GPA (EN)"
+                                                    class="h-12 w-full rounded-xl border border-slate-200 bg-white px-4 text-[14px] font-medium outline-none focus:border-[#0d6b75] focus:ring-4 focus:ring-[#0d6b75]/5 transition-all shadow-sm disabled:opacity-50"
+                                                    :disabled="app.certificateEnDisabled" :required="!app.certificateEnDisabled" />
+                                                <input v-model="app.certificateForm.gpa_bn" type="text" placeholder="GPA (BN)"
+                                                    class="h-12 w-full rounded-xl border border-slate-200 bg-white px-4 text-[14px] font-medium outline-none focus:border-[#0d6b75] focus:ring-4 focus:ring-[#0d6b75]/5 transition-all shadow-sm disabled:opacity-50"
+                                                    :disabled="app.certificateBnDisabled" :required="!app.certificateBnDisabled" />
+                                            </div>
 
-                                        <input v-model="app.certificateForm.division_en" type="text"
-                                            placeholder="Division (EN)"
-                                            class="h-10 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10"
-                                            :disabled="app.certificateEnDisabled"
-                                            :required="!app.certificateEnDisabled" />
-                                        <input v-model="app.certificateForm.division_bn" type="text"
-                                            placeholder="Division (BN)"
-                                            class="h-10 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10"
-                                            :disabled="app.certificateBnDisabled"
-                                            :required="!app.certificateBnDisabled" />
+                                            <!-- Row 9: Division -->
+                                            <div class="space-y-4">
+                                                <input v-model="app.certificateForm.division_en" type="text" placeholder="Division (EN)"
+                                                    class="h-12 w-full rounded-xl border border-slate-200 bg-white px-4 text-[14px] font-medium outline-none focus:border-[#0d6b75] focus:ring-4 focus:ring-[#0d6b75]/5 transition-all shadow-sm disabled:opacity-50"
+                                                    :disabled="app.certificateEnDisabled" :required="!app.certificateEnDisabled" />
+                                                <input v-model="app.certificateForm.division_bn" type="text" placeholder="Division (BN)"
+                                                    class="h-12 w-full rounded-xl border border-slate-200 bg-white px-4 text-[14px] font-medium outline-none focus:border-[#0d6b75] focus:ring-4 focus:ring-[#0d6b75]/5 transition-all shadow-sm disabled:opacity-50"
+                                                    :disabled="app.certificateBnDisabled" :required="!app.certificateBnDisabled" />
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
 
-                                <div class="rounded-sm border border-slate-300 bg-white p-4">
-                                    <div class="border-l-4 border-orange-500 pl-3 text-sm font-bold text-slate-900">
-                                        APPLY FOR CERTIFICATE</div>
+                                <!-- Summary & Actions Column -->
+                                <div class="space-y-6">
+                                    <div class="bg-white rounded-3xl border border-slate-100 p-6 shadow-sm space-y-5">
+                                        <!-- Dept -->
+                                        <div class="relative group">
+                                            <div class="absolute inset-y-0 left-0 flex items-center pl-4 text-sky-500">
+                                                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18"></path><path d="M3 7v1a3 3 0 0 0 6 0V7m0 1a3 3 0 0 0 6 0V7m0 1a3 3 0 0 0 6 0V7H3"></path><path d="M19 21V11"></path><path d="M5 21V11"></path><path d="M12 21V11"></path></svg>
+                                            </div>
+                                            <select v-model="app.certificateForm.department_id"
+                                                class="h-12 w-full appearance-none rounded-2xl border border-slate-100 bg-white pl-12 pr-10 text-[15px] font-medium outline-none focus:border-[#0d6b75] focus:ring-4 focus:ring-[#0d6b75]/5 transition-all shadow-sm group-hover:border-slate-200"
+                                                :required="app.certificateDepartmentRequired">
+                                                <option value="">Department/Group</option>
+                                                <option v-for="d in app.certificateFilteredDepartments" :key="'cd-' + d.id" :value="String(d.id)">{{ d.name }}</option>
+                                            </select>
+                                            <div class="absolute inset-y-0 right-0 flex items-center pr-4 pointer-events-none text-slate-400">
+                                                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                                            </div>
+                                        </div>
 
-                                    <div class="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
-                                        <select v-model="app.certificateForm.academic_session_id"
-                                            class="h-10 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10"
-                                            required>
-                                            <option value="">--Select Session--</option>
-                                            <option v-for="s in app.certificateSessionsSorted" :key="'cs-' + s.id"
-                                                :value="String(s.id)">{{ s.name }}</option>
-                                        </select>
+                                        <!-- Class -->
+                                        <div v-if="app.certificateClasses && app.certificateClasses.length" class="relative group">
+                                            <div class="absolute inset-y-0 left-0 flex items-center pl-4 text-pink-500">
+                                                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+                                            </div>
+                                            <select v-model="app.certificateForm.academic_class_id"
+                                                class="h-12 w-full appearance-none rounded-2xl border border-slate-100 bg-white pl-12 pr-10 text-[15px] font-medium outline-none focus:border-[#0d6b75] focus:ring-4 focus:ring-[#0d6b75]/5 transition-all shadow-sm group-hover:border-slate-200"
+                                                :required="app.certificateClassRequired">
+                                                <option value="">Class</option>
+                                                <option v-for="c in app.certificateFilteredClasses" :key="'cc-' + c.id" :value="String(c.id)">{{ c.name }}</option>
+                                            </select>
+                                            <div class="absolute inset-y-0 right-0 flex items-center pr-4 pointer-events-none text-slate-400">
+                                                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                                            </div>
+                                        </div>
 
-                                        <select v-model="app.certificateForm.template_id"
-                                            class="h-10 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10"
-                                            required>
-                                            <option value="">--Select Certificate--</option>
-                                            <option v-for="t in app.certificateFilteredTemplates" :key="'ct-' + t.id"
-                                                :value="String(t.id)">{{ t.title }}</option>
-                                        </select>
+                                        <!-- Amount Display Box -->
+                                        <div class="relative overflow-hidden rounded-3xl bg-teal-50 border border-teal-100 p-6 flex items-center justify-between group transition-all hover:shadow-md">
+                                            <div>
+                                                <div class="text-sm font-bold text-slate-500 mb-1">Amount</div>
+                                                <div class="flex items-baseline gap-2">
+                                                    <div class="text-2xl font-black text-[#0d6b75]">
+                                                        {{ app.certificateSelectedAmountText }}
+                                                    </div>
+                                                    <div class="text-[10px] font-bold text-[#0d6b75]/60 uppercase tracking-wider">BDT</div>
+                                                </div>
+                                            </div>
+                                            <div class="relative w-12 h-12 transform transition-transform group-hover:scale-110">
+                                                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M19 7H5C3.89543 7 3 7.89543 3 9V18C3 19.1046 3.89543 20 5 20H19C20.1046 20 21 19.1046 21 18V9C21 7.89543 20.1046 7 19 7Z" fill="#0d6b75" fill-opacity="0.1" stroke="#0d6b75" stroke-width="1.5"/>
+                                                    <path d="M16 11H21V16H16V11Z" fill="white" stroke="#0d6b75" stroke-width="1.5" stroke-linejoin="round"/>
+                                                    <circle cx="18.5" cy="13.5" r="1.5" fill="#0d6b75"/>
+                                                    <path d="M7 7V5C7 4.44772 7.44772 4 8 4H16C16.5523 4 17 4.44772 17 5V7" stroke="#0d6b75" stroke-width="1.5" stroke-linecap="round"/>
+                                                </svg>
+                                            </div>
+                                        </div>
 
-                                        <select v-model="app.certificateForm.academic_qualification_id"
-                                            class="h-10 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10"
-                                            required>
-                                            <option value="">--Select Academic Level--</option>
-                                            <option v-for="q in app.certificateQualifications" :key="'cq-' + q.id"
-                                                :value="String(q.id)">{{ q.name }}</option>
-                                        </select>
-
-                                        <select v-model="app.certificateForm.department_id"
-                                            class="h-10 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10"
-                                            :required="app.certificateDepartmentRequired">
-                                            <option value="">--Select Department/Group--</option>
-                                            <option v-for="d in app.certificateFilteredDepartments" :key="'cd-' + d.id"
-                                                :value="String(d.id)">{{ d.name }}</option>
-                                        </select>
-                                    </div>
-
-                                    <div v-if="app.certificateClasses && app.certificateClasses.length" class="mt-3">
-                                        <select v-model="app.certificateForm.academic_class_id"
-                                            class="h-10 w-full rounded-sm border border-slate-300 bg-white px-3 text-sm outline-none focus:border-[#0d6b75] focus:ring-2 focus:ring-[#0d6b75]/10"
-                                            :required="app.certificateClassRequired">
-                                            <option value="">--Select Class--</option>
-                                            <option v-for="c in app.certificateFilteredClasses" :key="'cc-' + c.id"
-                                                :value="String(c.id)">{{ c.name }}</option>
-                                        </select>
-                                    </div>
-
-                                    <div
-                                        class="mt-4 rounded-sm border border-slate-300 bg-slate-50 p-4 text-sm text-slate-700">
-                                        <div class="font-semibold">Amount</div>
-                                        <div class="mt-1 text-lg font-bold text-slate-900">{{
-                                            app.certificateSelectedAmountText }}</div>
-                                    </div>
-
-                                    <div class="mt-6 text-center">
+                                        <!-- Submit Button -->
                                         <button type="submit"
-                                            class="rounded-sm bg-[#0b1d4d] px-10 py-2.5 text-sm font-bold text-white hover:bg-[#09163c]"
+                                            class="group relative w-full h-14 rounded-2xl bg-[#0d6b75] text-white font-bold text-lg shadow-xl shadow-[#0d6b75]/30 transition-all hover:shadow-[#0d6b75]/40 hover:-translate-y-1 active:scale-95 disabled:opacity-50 disabled:pointer-events-none overflow-hidden"
                                             :disabled="app.certificateSubmitting">
-                                            {{ app.certificateSubmitting ? 'Submitting...' : 'SUBMIT' }}
+                                            <div class="absolute inset-0 bg-white/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
+                                            <div class="relative flex items-center justify-center gap-3">
+                                                <svg class="w-5 h-5 transition-transform group-hover:scale-110" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                                                <span>{{ app.certificateSubmitting ? 'Processing...' : 'SUBMIT' }}</span>
+                                                <svg class="w-5 h-5 transition-transform group-hover:translate-x-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                                            </div>
                                         </button>
+                                    </div>
+
+                                    <div v-if="app.certificateError"
+                                        class="rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-800 flex items-center gap-2">
+                                        <svg class="w-5 h-5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                                        {{ app.certificateError }}
                                     </div>
                                 </div>
                             </div>
                         </form>
+                        
                     </div>
                 </div>
 
@@ -801,8 +895,8 @@ const printInvoice = () => {
                 <title>Invoice Print</title>
                 <script src="https://cdn.tailwindcss.com"><\/script>
                 <style>
-                    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
-                    body { font-family: 'Inter', sans-serif; }
+                    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;700&display=swap');
+                    body { font-family: 'Noto Sans Bengali', sans-serif; }
                     @media print {
                         @page { margin: 5mm; }
                         body { margin: 0; -webkit-print-color-adjust: exact; print-color-adjust: exact; }

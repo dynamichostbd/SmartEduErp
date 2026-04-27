@@ -35,8 +35,8 @@ trait SmsGatewayTrait
         $gateway = $this->smsGatewayName();
 
         if ($gateway === 'mram') {
-            $apiKey = (string) env('SMS_MRAM_API_KEY', '');
-            $senderId = (string) env('SMS_MRAM_SENDERID', '');
+            $apiKey = (string) env('SMS_MRAM_API_KEY', 'R700003667bf4438073693.96702578');
+            $senderId = (string) env('SMS_MRAM_SENDERID', '8809601014859');
             if ($apiKey === '' || $senderId === '') {
                 return 'SMS API not configured';
             }
@@ -45,8 +45,8 @@ trait SmsGatewayTrait
         }
 
         if ($gateway === 'gennet') {
-            $token = (string) env('SMS_GENNET_API_TOKEN', '');
-            $sid = (string) env('SMS_GENNET_SID', '');
+            $token = (string) env('SMS_GENNET_API_TOKEN', '$2y$12$rMJmXiIL.rCWo/iTfaQDy.shIUR/Fm/umZi7fptV42wL/fXXoT52O');
+            $sid = (string) env('SMS_GENNET_SID', '8809612777555');
             if ($token === '' || $sid === '') {
                 return 'SMS API not configured';
             }
@@ -56,7 +56,7 @@ trait SmsGatewayTrait
 
         $token = (string) env('SMS_SSL_API_TOKEN', '');
         if ($token === '') {
-            $token = (string) env('SMS_API_TOKEN', '');
+            $token = (string) env('SMS_API_TOKEN', '9knet9jt-be80iqtz-t4d8gowh-kbk3il17-l0yx4lcf');
         }
 
         if ($token === '') {
@@ -72,8 +72,8 @@ trait SmsGatewayTrait
 
         if ($gateway === 'mram') {
             $baseUrl = (string) env('SMS_MRAM_BASE_URL', 'https://sms.mram.com.bd/smsapi');
-            $apiKey = (string) env('SMS_MRAM_API_KEY', '');
-            $senderId = (string) env('SMS_MRAM_SENDERID', '');
+            $apiKey = (string) env('SMS_MRAM_API_KEY', 'R700003667bf4438073693.96702578');
+            $senderId = (string) env('SMS_MRAM_SENDERID', '8809601014859');
 
             if ($apiKey === '' || $senderId === '') {
                 return false;
@@ -97,8 +97,8 @@ trait SmsGatewayTrait
 
         if ($gateway === 'gennet') {
             $baseUrl = (string) env('SMS_GENNET_BASE_URL', 'https://isms.gennet.com.bd/api/v3/send-sms');
-            $apiToken = (string) env('SMS_GENNET_API_TOKEN', '');
-            $sid = (string) env('SMS_GENNET_SID', '');
+            $apiToken = (string) env('SMS_GENNET_API_TOKEN', '$2y$12$rMJmXiIL.rCWo/iTfaQDy.shIUR/Fm/umZi7fptV42wL/fXXoT52O');
+            $sid = (string) env('SMS_GENNET_SID', '8809612777555');
 
             if ($apiToken === '' || $sid === '') {
                 return false;
@@ -129,7 +129,7 @@ trait SmsGatewayTrait
 
         $token = (string) env('SMS_SSL_API_TOKEN', '');
         if ($token === '') {
-            $token = (string) env('SMS_API_TOKEN', '');
+            $token = (string) env('SMS_API_TOKEN', '9knet9jt-be80iqtz-t4d8gowh-kbk3il17-l0yx4lcf');
         }
 
         $sid = (string) env('SMS_SSL_SID', '');
@@ -179,5 +179,38 @@ trait SmsGatewayTrait
         }
 
         return $out;
+    }
+
+    protected function smsTemplate(string $sms_type, array $params = [], $user = null): ?string
+    {
+        $otp = (string) ($params['otp'] ?? '');
+        $password = (string) ($params['password'] ?? '');
+        $invoice_id = (string) ($params['invoice_id'] ?? '');
+        $date = !empty($params['date']) ? date('D, d F Y', strtotime((string) $params['date'])) : date('D, d F Y');
+
+        $template = DB::table('sms_templates')
+            ->where('sms_type', $sms_type)
+            ->where('sending_status', 1)
+            ->first();
+
+        if (!$template || empty($template->sms_body)) {
+            return null;
+        }
+
+        $sms_body = (string) $template->sms_body;
+
+        if ($user) {
+            $sms_body = str_replace('[_Student_Name_]', (string) ($user->name ?? ''), $sms_body);
+            $sms_body = str_replace('[_Mobile_]', (string) ($user->mobile ?? ''), $sms_body);
+            $sms_body = str_replace('[_Email_]', (string) ($user->email ?? ''), $sms_body);
+            $sms_body = str_replace('[_College_Roll_]', (string) ($user->college_roll ?? ''), $sms_body);
+        }
+
+        $sms_body = str_replace('[_Password_]', $password, $sms_body);
+        $sms_body = str_replace('[_Date_]', $date, $sms_body);
+        $sms_body = str_replace('[_OTP_]', $otp, $sms_body);
+        $sms_body = str_replace('[_Invoice_ID_]', $invoice_id, $sms_body);
+
+        return $sms_body;
     }
 }
